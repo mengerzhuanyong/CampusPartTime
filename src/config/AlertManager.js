@@ -1,7 +1,14 @@
-//import liraries
-import React from 'react';
+/**
+ * 校园空兼 - 
+ * https://menger.me
+ * @大梦
+ */
+ 
+'use strict';
+
+import React from 'react'
 import { View, Text } from 'react-native';
-import AlertContent from '../component/AlertContent';
+import AlertContent from '../component/common/AlertContent';
 import { bouncer } from '../util/Tool';
 import { Overlay } from 'teaset';
 import Theme from './Theme'
@@ -65,5 +72,4 @@ class AlertManager {
 
 }
 
-//make this component available to the app
 export default AlertManager;

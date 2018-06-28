@@ -1,8 +1,7 @@
-//import liraries
+
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, WebView } from 'react-native';
 import NavigationBar from '../../components/NavigationBar';
-// create a component
 class UserProtocol extends React.PureComponent {
 
     con
@@ -21,7 +20,6 @@ class UserProtocol extends React.PureComponent {
     }
 }
 
-// define your styles
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -29,5 +27,4 @@ const styles = StyleSheet.create({
     },
 });
 
-//make this component available to the app
 export default UserProtocol;

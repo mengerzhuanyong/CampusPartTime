@@ -1,3 +1,9 @@
+/**
+ * 校园空兼 - 
+ * https://menger.me
+ * @大梦
+ */
+ 
 'use strict';
 
 import React from 'react'
@@ -64,7 +70,6 @@ const Tab = createBottomTabNavigator({
         initialRouteName: 'Home'
     });
 
-// create a component
 // class TabNavigation extends React.PureComponent {
 //     componentDidMount() {
 
@@ -78,7 +83,6 @@ const Tab = createBottomTabNavigator({
 //     }
 // }
 
-// define your styles
 const styles = StyleSheet.create({
     tabBarIcon: {
         height: ScaleSize(80),
@@ -86,5 +90,4 @@ const styles = StyleSheet.create({
     }
 });
 
-//make this component available to the app
 export default Tab;

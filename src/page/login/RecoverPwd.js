@@ -1,4 +1,4 @@
-//import liraries
+
 import React, { Component } from 'react';
 import {
     View,
@@ -8,8 +8,7 @@ import {
     TouchableOpacity
 } from 'react-native';
 import { Button } from 'teaset';
-import NavigationBar from '../../component/NavigationBar'
-// create a component
+import NavigationBar from '../../component/common/NavigationBar'
 class RecoverPwd extends React.PureComponent {
     constructor(props) {
         super(props)
@@ -98,7 +97,6 @@ class RecoverPwd extends React.PureComponent {
     }
 }
 
-// define your styles
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -152,5 +150,4 @@ const styles = StyleSheet.create({
     },
 });
 
-//make this component available to the app
 export default RecoverPwd;

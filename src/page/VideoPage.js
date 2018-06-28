@@ -1,13 +1,12 @@
-//import liraries
+
 import React, { Component } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import Orientation from 'react-native-orientation';
-import NavigationBar from '../component/NavigationBar'
-import Container from '../component/Container';
-import VideoPlayer from '../component/Video/index'
+import NavigationBar from '../component/common/NavigationBar'
+import Container from '../component/common/Container';
+import VideoPlayer from '../component/video/index'
 import { Button } from 'teaset';
 
-// create a component
 class VideoPage extends React.PureComponent {
 
     constructor(props) {
@@ -88,7 +87,6 @@ class VideoPage extends React.PureComponent {
     }
 }
 
-// define your styles
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -101,5 +99,4 @@ const styles = StyleSheet.create({
     }
 });
 
-//make this component available to the app
 export default VideoPage;

@@ -1,10 +1,10 @@
-//import liraries
+
 
 import React, { Component } from 'react'
 import { ScrollView, StyleSheet, Text, View } from 'react-native'
-import NavigationBar from '../component/NavigationBar'
-import DropDownMenu from '../component/DropdownMenu';
-import Container from '../component/Container';
+import NavigationBar from '../component/common/NavigationBar'
+import DropDownMenu from '../component/common/DropdownMenu';
+import Container from '../component/common/Container';
 
 class Setting extends Component {
 
@@ -99,7 +99,6 @@ class Setting extends Component {
     }
 }
 
-// define your styles
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -125,5 +124,4 @@ const styles = StyleSheet.create({
     },
 });
 
-//make this component available to the app
 export default Setting;

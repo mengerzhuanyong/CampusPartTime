@@ -46,6 +46,7 @@ const CusTheme = {
     fitIPhoneXBottom: 34,
     screen_width: width,
     screen_height: height,
+    ThemeColor: '#1ab588',
     pageBackgroundColor: '#e7e7ef',
     // 全局公用样式表 ,感觉不是很合理
     // 居中样式
@@ -87,6 +88,14 @@ const CusTheme = {
     // 设置toastManager的初始化配置，有些样式请去上方teaset里配置，目前因为时间原因先用teaset自带的组件，后续将自定义组件。
     toastOptions: {
         position: 'center',
+    },
+    containerBackgroundImage: {
+        flex: 1,
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        position: 'absolute',
     }
 }
 

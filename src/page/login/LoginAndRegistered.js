@@ -1,73 +1,160 @@
-//import liraries
-import React, { Component } from 'react';
+/**
+ * 校园空兼 - Login
+ * https://menger.me
+ * @大梦
+ */
+ 
+'use strict';
+
+import React, {PureComponent} from 'react'
 import {
     View,
     Text,
-    StyleSheet
-} from 'react-native';
-import NavigationBar from '../../component/NavigationBar'
-import Container from '../../component/Container';
-import SegmentedView from '../../component/SegmentedView'
+    Image,
+    TextInput,
+    StyleSheet,
+} from 'react-native'
+
+import { Button } from 'teaset';
+import NavigationBar from '../../component/common/NavigationBar'
+import Container from '../../component/common/Container';
+import SegmentedView from '../../component/segmentedView'
 import LRComponent from './LRComponent'
-// create a component
-class LoginAndRegistered extends React.PureComponent {
+import {HorizontalLine, VerticalLine} from '../../component/common/commonLine'
+
+export default class Login extends PureComponent {
 
     render() {
         return (
             <Container style={styles.container}>
+                <Image source={Images.img_bg_login} style={Theme.containerBackgroundImage} />
                 <NavigationBar
-                    title={'登陆/注册'}
+                    title={'登录'}
+                    style={styles.navigationBarStyle}
                     leftView={null}
                     rightViewOnPress={this.rightOnPress}
                 />
-                <SegmentedView
-                    style={styles.segmentedView}
-                    barStyle={styles.segmentedBar}
-                    indicatorLineColor={"#247E25"}
-                    indicatorPositionPadding={ScaleSize(0)}
-                    scrollEnabled={false}
-                    lazy={false}
-                    keyboardShouldPersistTaps={'always'}
-                >
-                    <View title={'密码登陆'}
-                        activeTitleStyle={styles.sheetActiveTitle}
-                        titleStyle={styles.sheetTitle}
-                        style={{ backgroundColor: 'red', flex: 1 }}>
-                        <LRComponent type={'登陆'} />
+                <View style={styles.loginContent}>
+                    <View style={styles.inputItemView}>
+                        <Image source={Images.icon_user_sign} style={styles.inputIcon} />
+                        <TextInput
+                            style={styles.inputItem}
+                            ref={v => this.input = v}
+                            keyboardType={'numeric'}
+                            underlineColorAndroid={'rgba(0, 0, 0, 0)'}
+                            placeholder={'请输入手机号'}
+                            placeholderTextColor={'#fff'}
+                            returnKeyType={'done'}
+                            clearButtonMode='while-editing'
+                            onChangeText={this._onChangeLogin}
+                        />
                     </View>
-                    <View title={'快速注册'} activeTitleStyle={styles.sheetActiveTitle}
-                        titleStyle={styles.sheetTitle}
-                        style={{ backgroundColor: 'blue', flex: 1 }} >
-                        <LRComponent type={'注册'} />
+                    <HorizontalLine lineStyle={styles.verLine} />
+                    <View style={styles.inputItemView}>
+                        <Image source={Images.icon_lock} style={styles.inputIcon} />
+                        <TextInput
+                            style={styles.inputItem}
+                            ref={v => this.input = v}
+                            keyboardType={'numeric'}
+                            underlineColorAndroid={'rgba(0, 0, 0, 0)'}
+                            placeholder={'请输入密码'}
+                            secureTextEntry={true}
+                            placeholderTextColor={'#fff'}
+                            returnKeyType={'done'}
+                            clearButtonMode='while-editing'
+                            onChangeText={this._onChangeLogin}
+                        />
                     </View>
-                </SegmentedView>
+                    <HorizontalLine lineStyle={styles.verLine} />
+                    <Button
+                        onPress={this._onPress}
+                        style={[styles.btnItem, styles.signBtnItem]}
+                        titleStyle={[styles.btnItemTitle, styles.signBtnItemTitle]}
+                        title={'登录'}
+                    />
+                    <Button
+                        onPress={this._onPress}
+                        style={[styles.btnItem, styles.registerBtnItem]}
+                        titleStyle={[styles.btnItemTitle, styles.registerBtnItemTitle]}
+                        title={'注册'}
+                    />
+                    <View style={styles.otherBtnView}>
+                        <Text
+                            style={styles.otherBtnItem}
+                            onPress={this._onPress}
+                        >游客登录</Text>
+                        <Text
+                            style={styles.otherBtnItem}
+                            onPress={this._onPress}
+                        >忘记密码？</Text>
+                    </View>
+                </View>
             </Container>
         );
     }
 }
 
-// define your styles
 const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#fff'
     },
-    sheetActiveTitle: {
-        color: '#247E25',
+    navigationBarStyle: {
+        backgroundColor: 'transparent',
+    },
+    verLine: {
+        marginBottom: 10,
+        backgroundColor: '#fff',
+    },
+    loginContent: {
+        padding: 20,
+        marginTop: ScaleSize(80),
+    },
+    inputItemView: {
+        height: 50,
+        alignItems: 'center',
+        flexDirection: 'row',
+    },
+    inputIcon: {
+        tintColor: '#fff',
+        width: ScaleSize(35),
+        height: ScaleSize(35),
+        resizeMode: 'contain',
+    },
+    inputItem: {
+        flex: 1,
+        height: 50,
+        color: '#fff',
+        marginLeft: 10,
+    },
+    btnItem: {
+        height: 50,
+        borderRadius: 25,
+        borderColor: '#fff',
+    },
+    signBtnItem: {
+        marginTop: 40,
+        marginBottom: 20,
+        backgroundColor: 'transparent',
+    },
+    registerBtnItem: {},
+    btnItemTitle: {
+        color: Theme.ThemeColor,
         fontSize: FontSize(14),
     },
-    sheetTitle: {
-        color: '#333',
-        fontSize: FontSize(14),
+    signBtnItemTitle: {
+        color: '#fff',
     },
-    segmentedView: {
-        marginTop: ScaleSize(48),
+    registerBtnItemTitle: {
     },
-    segmentedBar: {
-        marginHorizontal: ScaleSize(80),
-        height: ScaleSize(80)
-    }
+    otherBtnView: {
+        height: 50,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+    },
+    otherBtnItem: {
+        color: '#fff',
+        fontSize: FontSize(11),
+    },
 });
-
-//make this component available to the app
-export default LoginAndRegistered;

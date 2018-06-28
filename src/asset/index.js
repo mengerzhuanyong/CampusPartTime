@@ -22,6 +22,7 @@ const Images = {
     icon_files: require('./icon/icon_files.png'),
     icon_hot: require('./icon/icon_hot.png'),
     icon_hot_text: require('./icon/icon_hot_text.png'),
+    icon_lock: require('./icon/icon_lock.png'),
     icon_medal: require('./icon/icon_medal.png'),
     icon_message: require('./icon/icon_message.png'),
     icon_message_circle: require('./icon/icon_message_circle.png'),
@@ -70,6 +71,7 @@ const Images = {
     icon_user_card: require('./icon/icon_user_card.png'),
     icon_user_contact: require('./icon/icon_user_contact.png'),
     icon_user_line: require('./icon/icon_user_line.png'),
+    icon_user_sign: require('./icon/icon_user_sign.png'),
     icon_wechat: require('./icon/icon_wechat.png'),
 
     // IMAGES

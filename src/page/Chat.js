@@ -1,15 +1,17 @@
-/*
- * @author: jiasong 
- * @creation time: 2018-06-12 10:00:24
+/**
+ * 校园空兼 - 
+ * https://menger.me
+ * @大梦
  */
-
+ 
 'use strict';
-import React from 'react';
+
+import React from 'react'
 import { View, Text, StyleSheet, TouchableOpacity, } from 'react-native';
-import NavigationBar from '../component/NavigationBar';
-import Container from '../component/Container';
-import SpinnerLoading from '../component/SpinnerLoading';
-import ChatPage from '../component/Chat1/ChatPage'
+import NavigationBar from '../component/common/NavigationBar';
+import Container from '../component/common/Container';
+import SpinnerLoading from '../component/common/SpinnerLoading';
+import ChatPage from '../component/chat/ChatPage'
 
 
 

@@ -1,4 +1,4 @@
-//import liraries
+
 import React, { Component } from 'react';
 import {
     View,
@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import { Button } from 'teaset';
 import PropTypes from 'prop-types'
-import SpinnerLoading from '../../component/SpinnerLoading'
+import SpinnerLoading from '../../component/common/SpinnerLoading'
 import moduleName from 'jshare-react-native';
 import { checkMobile, checkPassword } from '../../util/Tool';
 
@@ -139,7 +139,6 @@ class LRComponent extends React.PureComponent {
     }
 }
 
-// define your styles
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -245,5 +244,4 @@ const styles = StyleSheet.create({
     }
 });
 
-//make this component available to the app
 export default LRComponent;
