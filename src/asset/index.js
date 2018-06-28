@@ -6,13 +6,14 @@ const Images = {
     icon_bottom_play: require('./icon/icon_bottom_play.png'),
     icon_calendar: require('./icon/icon_calendar.png'),
     icon_category: require('./icon/icon_category.png'),
-    icon_center_paly: require('./icon/icon_center_paly.png'),
+    icon_center_play: require('./icon/icon_center_play.png'),
     icon_center_pause: require('./icon/icon_center_pause.png'),
     icon_check: require('./icon/icon_check.png'),
+    icon_checked: require('./icon/icon_checked.png'),
     icon_close: require('./icon/icon_close.png'),
-    icon_colude: require('./icon/icon_colude.png'),
+    icon_cloud: require('./icon/icon_cloud.png'),
     icon_completed: require('./icon/icon_completed.png'),
-    icon_creame: require('./icon/icon_creame.png'),
+    icon_camera: require('./icon/icon_camera.png'),
     icon_customer_service: require('./icon/icon_customer_service.png'),
     icon_delete: require('./icon/icon_delete.png'),
     icon_edit: require('./icon/icon_edit.png'),
@@ -29,8 +30,9 @@ const Images = {
     icon_message_square: require('./icon/icon_message_square.png'),
     icon_micrify: require('./icon/icon_micrify.png'),
     icon_mobile: require('./icon/icon_mobile.png'),
+    icon_mobile_cur: require('./icon/icon_mobile_cur.png'),
     icon_more: require('./icon/icon_more.png'),
-    icon_nav_creame: require('./icon/icon_nav_creame.png'),
+    icon_nav_camera: require('./icon/icon_nav_camera.png'),
     icon_nav_left: require('./icon/icon_nav_left.png'),
     icon_nav_mobile: require('./icon/icon_nav_mobile.png'),
     icon_nav_mouse: require('./icon/icon_nav_mouse.png'),
@@ -74,6 +76,7 @@ const Images = {
     icon_user_sign: require('./icon/icon_user_sign.png'),
     icon_wechat: require('./icon/icon_wechat.png'),
 
+
     // IMAGES
     img_bg_navbar: require('./img/img_bg_navbar.png'),
     img_avatar_default: require('./img/img_avatar_default.png'),
@@ -106,13 +109,5 @@ const Images = {
     icon_tabbar_live_cur: require('./tabbar/icon_tabbar_live_cur.png'),
     icon_tabbar_chat_cur: require('./tabbar/icon_tabbar_chat_cur.png'),
     icon_tabbar_mine_cur: require('./tabbar/icon_tabbar_mine_cur.png'),
-
-    icon_center_play: require('./icon/icon_center_paly.png'),
-    icon_center_pause: require('./icon/icon_center_pause.png'),
-    icon_bottom_play: require('./icon/icon_bottom_play.png'),
-    icon_bottom_pause: require('./icon/icon_bottom_pause.png'),
-    icon_enlarge: require('./icon/icon_enlarge.png'),
-    icon_micrify: require('./icon/icon_micrify.png'),
-    icon_no_record: require('./icon/icon_no_record.png')
 };
 export default Images;

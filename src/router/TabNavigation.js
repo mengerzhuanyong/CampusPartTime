@@ -9,8 +9,8 @@
 import React from 'react'
 import { Image, StyleSheet, View } from 'react-native'
 import { createBottomTabNavigator } from 'react-navigation'
-import Home from '../page/Home'
-import Mine from '../page/Mine'
+import Home from '../page/home'
+import Mine from '../page/mine'
 
 // import TabBarBottom from '../component/TabBarBottom'
 

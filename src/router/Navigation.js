@@ -16,30 +16,38 @@ import {createStackNavigator} from 'react-navigation'
 import {configRoute} from './addToRouteStack'
 import StackViewStyleInterpolator from 'react-navigation/src/views/StackView/StackViewStyleInterpolator'
 import SplashScreen from 'react-native-splash-screen'
+
 import TabNavigation from './TabNavigation'
-import Home from '../page/Home'
-import Mine from '../page/Mine'
-import Setting from '../page/Setting'
-import LoginAndRegistered from '../page/login/LoginAndRegistered'
-import RecoverPwd from '../page/login/RecoverPwd'
-import VideoPage from '../page/VideoPage';
-import Chat from '../page/Chat';
+
+import Login from '../page/login/login'
+import Register from '../page/login/register'
+import RecoverPwd from '../page/login/recoverPwd'
+
+import Home from '../page/home'
+import Mine from '../page/mine'
+
+import Setting from '../page/setting'
+import VideoPage from '../page/videoPage';
+import Chat from '../page/chat';
 
 const Nav = createStackNavigator(configRoute({
     Tab: {
         screen: TabNavigation
+    },
+    Login: {
+        screen: Login
+    },
+    Register: {
+        screen: Register
+    },
+    RecoverPwd: {
+        screen: RecoverPwd
     },
     Mine: {
         screen: Mine
     },
     Setting: {
         screen: Setting
-    },
-    LoginAndRegistered: {
-        screen: LoginAndRegistered
-    },
-    RecoverPwd: {
-        screen: RecoverPwd
     },
     VideoPage: {
         screen: VideoPage
@@ -48,7 +56,7 @@ const Nav = createStackNavigator(configRoute({
         screen: Chat
     },
 }), {
-    initialRouteName: 'LoginAndRegistered',
+    initialRouteName: 'Login',
     cardStyle: {
         shadowOpacity: 0,
         shadowRadius: 0,

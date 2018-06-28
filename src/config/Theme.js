@@ -1,4 +1,4 @@
-import { Dimensions, Platform, Text, StyleSheet } from 'react-native'
+import { Dimensions, Platform, Text, StyleSheet, PixelRatio } from 'react-native'
 import { Theme } from 'teaset'
 import { fontSize, scaleSize } from '../util/Tool';
 
@@ -38,7 +38,7 @@ const globalStyles = StyleSheet.create({
     bgTransparentStyle: {
         backgroundColor: 'transparent',
     }
-})
+});
 
 const CusTheme = {
     isIPhoneX: Theme.isIPhoneX,
@@ -46,7 +46,8 @@ const CusTheme = {
     fitIPhoneXBottom: 34,
     screen_width: width,
     screen_height: height,
-    ThemeColor: '#1ab588',
+    minPixel: 1 / PixelRatio.get(),
+    themeColor: '#1ab588',
     pageBackgroundColor: '#e7e7ef',
     // 全局公用样式表 ,感觉不是很合理
     // 居中样式
@@ -96,6 +97,7 @@ const CusTheme = {
         right: 0,
         bottom: 0,
         position: 'absolute',
+        resizeMode: 'contain',
     }
 }
 

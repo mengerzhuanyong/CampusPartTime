@@ -24,6 +24,22 @@ import {HorizontalLine, VerticalLine} from '../../component/common/commonLine'
 
 export default class Login extends PureComponent {
 
+    _guestLogin = () => {
+        RouteHelper.reset('Tab');
+    };
+
+    _onNavigateRecoverPwd = () => {
+        RouteHelper.navigate('RecoverPwd');
+    };
+
+    _onNavigateRegister = () => {
+        RouteHelper.navigate('Register');
+    };
+
+    _doLogin = () => {
+
+    };
+
     render() {
         return (
             <Container style={styles.container}>
@@ -67,13 +83,13 @@ export default class Login extends PureComponent {
                     </View>
                     <HorizontalLine lineStyle={styles.verLine} />
                     <Button
-                        onPress={this._onPress}
+                        onPress={this._doLogin}
                         style={[styles.btnItem, styles.signBtnItem]}
                         titleStyle={[styles.btnItemTitle, styles.signBtnItemTitle]}
                         title={'登录'}
                     />
                     <Button
-                        onPress={this._onPress}
+                        onPress={this._onNavigateRegister}
                         style={[styles.btnItem, styles.registerBtnItem]}
                         titleStyle={[styles.btnItemTitle, styles.registerBtnItemTitle]}
                         title={'注册'}
@@ -81,11 +97,11 @@ export default class Login extends PureComponent {
                     <View style={styles.otherBtnView}>
                         <Text
                             style={styles.otherBtnItem}
-                            onPress={this._onPress}
+                            onPress={this._guestLogin}
                         >游客登录</Text>
                         <Text
                             style={styles.otherBtnItem}
-                            onPress={this._onPress}
+                            onPress={this._onNavigateRecoverPwd}
                         >忘记密码？</Text>
                     </View>
                 </View>
@@ -139,7 +155,7 @@ const styles = StyleSheet.create({
     },
     registerBtnItem: {},
     btnItemTitle: {
-        color: Theme.ThemeColor,
+        color: Theme.themeColor,
         fontSize: FontSize(14),
     },
     signBtnItemTitle: {

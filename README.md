@@ -76,7 +76,7 @@ note:如果想使用`Redux`，请自行引入。
 
 >实现的一个悬浮的header，具体用法可以参考SegmentedView
 
-- 登陆注册页面 （pages/login/LoginAndRegistered.js）
+- 登陆注册页面 （pages/login/login.js）
 
 >登陆注册页面，项目尽量保证登陆注册UI一致
 
