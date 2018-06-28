@@ -18,7 +18,7 @@ class EmojiText extends React.PureComponent {
 
     render() {
         const { content, ...others } = this.props
-        console.log('EmojiText')
+         // console.log('EmojiText')
         return (
             <Text {...others}>
                 {content}

@@ -1,27 +1,28 @@
-'use strict'
-import React, { PureComponent } from 'react'
+'use strict';
+
+import React, {PureComponent} from 'react'
 import RouteHelper from './RouteHelper'
 import hoistNonReactStatics from 'hoist-non-react-statics'
 
 export const addToRouteStack = (OldComponent) => {
 
     class NewComponent extends PureComponent {
-        
+
         static displayName = `addToRouteStack(${OldComponent.displayName ||
-            OldComponent.name})`;
+        OldComponent.name})`;
 
         componentDidMount() {
-            console.log('componentDidMount')
+            // console.log('componentDidMount')
             requestAnimationFrame(() => {
-                console.log('componentDidMount--requestAnimationFrame')
+                // console.log('componentDidMount--requestAnimationFrame')
 
-            })
+            });
             InteractionManager.runAfterInteractions(() => {
-                console.log('addToRouteStackcomponentDidMount--runAfterInteractions')
+                // console.log('addToRouteStackcomponentDidMount--runAfterInteractions')
                 RouteHelper.addStack(this.props.navigation);
                 this.subscriptions = [
                     this.props.navigation.addListener('willBlur', (payload) => {
-                        console.log('willBlur')
+                        // console.log('willBlur')
                         this.oldComponent && this.oldComponent.componentWillBlur && this.oldComponent.componentWillBlur(payload)
                     }),
                     this.props.navigation.addListener('willFocus', (payload) => {
@@ -31,8 +32,8 @@ export const addToRouteStack = (OldComponent) => {
                         this.oldComponent && this.oldComponent.componentDidFocus && this.oldComponent.componentDidFocus(payload)
                     }),
                     this.props.navigation.addListener('didBlur', (payload) => {
-                        console.log('didBlur')
-                        console.log(this.props.navigation)
+                        // console.log('didBlur')
+                        // console.log(this.props.navigation)
                         this.oldComponent && this.oldComponent.componentDidBlur && this.oldComponent.componentDidBlur(payload)
                     }),
                 ]
@@ -60,7 +61,7 @@ export const addToRouteStack = (OldComponent) => {
                 <OldComponent
                     ref={v => this.oldComponent = v}
                     {...this.props}
-                // {...this.props.navigation.state.params}
+                    // {...this.props.navigation.state.params}
                 />
             )
         }
@@ -75,4 +76,4 @@ export const configRoute = (routeConfig) => {
         routeConfig[name].screen = addToRouteStack(Component)
     }
     return routeConfig
-}
+};

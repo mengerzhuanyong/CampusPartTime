@@ -93,7 +93,7 @@ const styles = StyleSheet.create({
     leftText: {
         fontSize: FontSize(13),
         lineHeight: 26,
-        color: "#ffffff"
+        color: "#fff"
     }
 });
 

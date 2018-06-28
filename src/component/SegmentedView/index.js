@@ -75,11 +75,11 @@ class CusSegmentedView extends PureComponent {
     _changePage = (cardIndex) => {
         if (this.state.activeIndex != cardIndex && !this.isScrollMark) {
             const { lazy, lazyDelay } = this.props
-            console.log(this.state.activeIndex, cardIndex)
+             // console.log(this.state.activeIndex, cardIndex)
             this.isScrollMark = true
             this.cusSegmentedBar && this.cusSegmentedBar.changeBarIndex && this.cusSegmentedBar.changeBarIndex(cardIndex)
             requestAnimationFrame(() => {
-                console.log('requestAnimationFrame')
+                 // console.log('requestAnimationFrame')
                 let delay = lazy ? lazyDelay : 0
                 setTimeout(() => {
                     this.setState({ activeIndex: cardIndex }, () => {
@@ -178,7 +178,7 @@ class CusSegmentedView extends PureComponent {
 
     _renderSegmentedBar = () => {
         const { stickyScrollY, stickyHeaderY } = this.props
-        console.log(stickyScrollY)
+         // console.log(stickyScrollY)
         return (
             <StickyHeader
                 stickyHeaderY={stickyHeaderY} // 滑动到多少悬浮
@@ -195,7 +195,7 @@ class CusSegmentedView extends PureComponent {
     }
     render() {
         const { style, onLayout, showSegmentedBar } = this.props
-        console.log('rednder')
+         // console.log('rednder')
         return (
             <View style={[styles.container, style]}
             // onLayout={(e) => onLayout && onLayout(e)}
@@ -214,7 +214,7 @@ class CusSegmentedBar extends PureComponent {
 
     constructor(props) {
         super(props);
-        console.log('props.activeIndex', props.activeIndex)
+         // console.log('props.activeIndex', props.activeIndex)
         this.state = { activeIndex: props.activeIndex != undefined ? props.activeIndex : 0 }
     }
     componentWillReceiveProps(nextProps) {
@@ -233,7 +233,7 @@ class CusSegmentedBar extends PureComponent {
     }
     _onChangeBar = (index) => {
         const { onChangeBar, onChange } = this.props
-        console.log('_onChangeBar')
+         // console.log('_onChangeBar')
         if (index != this.state.activeIndex) {
             if (this.props.activeIndex == undefined) {
                 this.setState({ activeIndex: index });
@@ -302,7 +302,7 @@ class SceneView extends React.PureComponent {
     render() {
         const { width, item } = this.props
         const { isFocused } = this.state
-        console.log('isFocused', isFocused)
+         // console.log('isFocused', isFocused)
         return (
             isFocused ? React.cloneElement(item, {
                 style: [item.props.style, { width }],

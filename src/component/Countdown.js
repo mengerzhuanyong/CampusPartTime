@@ -29,7 +29,7 @@ class Countdown extends React.PureComponent {
         this.currentTime = Moment().format('X')
         this.difference = props.deadline - this.currentTime
         let timeArr = [0, 0, 0, 0]
-        console.log('this.difference', this.difference)
+         // console.log('this.difference', this.difference)
         if (this.difference >= 0) {
             timeArr = sec_to_time_day(this.difference)
         }

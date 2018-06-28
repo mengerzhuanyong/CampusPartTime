@@ -14,19 +14,19 @@ class Setting extends Component {
     }
 
     componentWillBlur() {
-        console.log('componentWillBlur')
+         // console.log('componentWillBlur')
     }
 
     componentWillFocus() {
-        console.log('componentWillFocus')
+         // console.log('componentWillFocus')
     }
 
     componentDidFocus() {
-        console.log('componentDidFocus')
+         // console.log('componentDidFocus')
     }
 
     componentDidBlur() {
-        console.log('componentDidBlur')
+         // console.log('componentDidBlur')
     }
 
     backOnPress = () => {

@@ -14,7 +14,7 @@ class PayManager {
                     sign: data.sign,
                 }
                 XPay.wxPay(wx, (res) => {
-                    console.log('微信支付', res)
+                     // console.log('微信支付', res)
                     if (res.errCode == 0) {
                         resolve({ reslut: 'sucess', code: 0 }) // resule可以自定义
                     } else {
@@ -23,7 +23,7 @@ class PayManager {
                 })
             } else {
                 XPay.alipay(data, (res) => {
-                    console.log('支付宝支付', res)
+                     // console.log('支付宝支付', res)
                     if (res.resultStatus === '6001') {
                         resolve({ reslut: 'fail', code: 1 }) // resule可以自定义
                     } else {

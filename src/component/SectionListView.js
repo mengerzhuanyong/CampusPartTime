@@ -124,7 +124,7 @@ class SectionListView extends React.PureComponent {
     };
     _onRefresh = () => {
         this.startRefresh();
-        console.log('_onRefreshzzzz')
+         // console.log('_onRefreshzzzz')
         this.props.onRefresh && this.props.onRefresh(this.stopRefresh)
     };
 
@@ -133,7 +133,7 @@ class SectionListView extends React.PureComponent {
             refreshableColors, refreshableProgressBackgroundColor,
             refreshableSize, refreshableTintColor, refreshableTitle,
         } = this.props;
-        console.log(this.state.isRefreshing)
+         // console.log(this.state.isRefreshing)
         return (
             <RefreshControl
                 refreshing={this.state.isRefreshing}
@@ -148,7 +148,7 @@ class SectionListView extends React.PureComponent {
     };
     startRefresh = () => {
         if (!this.state.isRefreshing) {
-            console.log('startRefresh')
+             // console.log('startRefresh')
             if (this._currentEndReachedStatus === EndReachedStatus.ALL_LOADED) {
                 this._currentEndReachedStatus = EndReachedStatus.WAITING_LOADING
             }
@@ -186,13 +186,13 @@ class SectionListView extends React.PureComponent {
         if (isRefreshing || isEndReached) {
             return;
         }
-        console.log('contentHeight', this._currentContentSize.contentHeight)
-        console.log('height', this._currentListSize.height)
+         // console.log('contentHeight', this._currentContentSize.contentHeight)
+         // console.log('height', this._currentListSize.height)
         // 解决内容视图不够列表的高度时,_onEndReached回调不正确的Bug，必须放在FIRST_LOADED后面
         if (this._currentContentSize.contentHeight <= this._currentListSize.height) {
             return
         }
-        console.log('_onEndReached')
+         // console.log('_onEndReached')
         this.startEndReached();
         this.props.onEndReached && this.props.onEndReached(this.stopEndReached)
     };
@@ -211,7 +211,7 @@ class SectionListView extends React.PureComponent {
     };
     stopEndReached = (option = { allLoad: false }) => {
         if (this.state.isEndReached) {
-            console.log('stopEndReached', option)
+             // console.log('stopEndReached', option)
             setTimeout(() => {
                 if (option.allLoad === true) {
                     this._currentEndReachedStatus = EndReachedStatus.ALL_LOADED;
@@ -240,7 +240,7 @@ class SectionListView extends React.PureComponent {
         return null
     };
     _renderEmptyView = () => {
-        console.log('_renderEmptyView')
+         // console.log('_renderEmptyView')
         return (
             <EmptyComponent />
         )
@@ -252,7 +252,7 @@ class SectionListView extends React.PureComponent {
     };
     _onLayout = (event) => {
         const { onLayout } = this.props
-        console.log(event.nativeEvent.layout.height)
+         // console.log(event.nativeEvent.layout.height)
         if (event.nativeEvent.layout.height != 0 && event.nativeEvent.layout.width != 0) {
             this._currentListSize = { width: event.nativeEvent.layout.width, height: event.nativeEvent.layout.height }
         }

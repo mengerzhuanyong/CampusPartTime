@@ -14,7 +14,7 @@ class PlayerTools extends React.PureComponent {
 
     static defaultProps = {
         minimumTrackTintColor: '#357ede',
-        maximumTrackTintColor: '#FFFFFF',
+        maximumTrackTintColor: '#fff',
         defaultPaused: false,
         defaultEnlarge: false
     };
@@ -93,7 +93,7 @@ class PlayerTools extends React.PureComponent {
         return (
             <TouchableWithoutFeedback onPress={this._onPressfull}>
                 <Animated.View style={[styles.container, style, { opacity: this.opacity }]}>
-                    <Text style={{ color: '#FFFFFF', marginLeft: 20, marginTop: 30 }}
+                    <Text style={{ color: '#fff', marginLeft: 20, marginTop: 30 }}
                         onPress={this._onPressBack}>
                         返回
                     </Text>
@@ -176,12 +176,12 @@ const styles = StyleSheet.create({
         opacity: 1,
     },
     currentDuration: {
-        color: '#FFFFFF',
+        color: '#fff',
         fontSize: FontSize(11),
         marginRight: ScaleSize(10)
     },
     totalDuration: {
-        color: '#FFFFFF',
+        color: '#fff',
         fontSize: FontSize(11),
         marginLeft: ScaleSize(10),
     },

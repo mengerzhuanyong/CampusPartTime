@@ -10,21 +10,21 @@ class CusSlider extends React.PureComponent {
     static defaultProps = {
         ...Slider.defaultProps,
         minimumTrackTintColor: '#357ede',
-        maximumTrackTintColor: '#FFFFFF',
+        maximumTrackTintColor: '#fff',
     }
     _onSlidingStart = (params) => {
-        console.log('_onSlidingStart', params)
+         // console.log('_onSlidingStart', params)
         const { onSlidingStart } = this.props
         onSlidingStart && onSlidingStart(params)
     };
     _onSlidingComplete = (params) => {
-        console.log('_onSlidingComplete', params)
+         // console.log('_onSlidingComplete', params)
         const { onSlidingComplete } = this.props
         onSlidingComplete && onSlidingComplete(params)
 
     };
     _onValueChange = (params) => {
-        console.log('_onValueChange', params)
+         // console.log('_onValueChange', params)
         const { onValueChange } = this.props
         onValueChange && onValueChange(params)
     };
@@ -48,7 +48,7 @@ class CusSlider extends React.PureComponent {
 // define your styles
 const styles = StyleSheet.create({
     thumbStyle: {
-        backgroundColor: '#FFFFFF',
+        backgroundColor: '#fff',
         width: 10,
         height: 10
     },

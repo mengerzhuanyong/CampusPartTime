@@ -18,7 +18,7 @@ class MessageContainer extends React.PureComponent {
 
 
     setNativeProps(props) {
-        console.log(props)
+         // console.log(props)
         if (this._flatListRef) {
             this._flatListRef.setNativeProps(props);
         }
@@ -55,7 +55,7 @@ class MessageContainer extends React.PureComponent {
 
     render() {
         const { messages, onScrollBeginDrag } = this.props
-        console.log('MessageContainer')
+         // console.log('MessageContainer')
         return (
             <FlatListView
                 ref={this._captureRef}

@@ -141,7 +141,7 @@ class TabOption extends React.PureComponent {
 
 const styles = StyleSheet.create({
     tabsContainerStyle: {
-        backgroundColor: '#FFFFFF',
+        backgroundColor: '#fff',
         flexDirection: 'row',
         borderWidth: 1,
         borderColor: '#0076FF',

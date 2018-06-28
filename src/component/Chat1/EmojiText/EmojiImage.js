@@ -14,7 +14,7 @@ class EmojiImage extends React.PureComponent {
 
 
     render() {
-        console.log('EmojiImage')
+         // console.log('EmojiImage')
         return (
             <Image {...this.props} />
         );

@@ -82,7 +82,7 @@ class AlertContent extends React.PureComponent {
                     {actions.map((item, index) => {
                         return (
                             <TouchableHighlight
-                                underlayColor={'#eeeeee'}
+                                underlayColor={'#eee'}
                                 style={[styles.action, this.separator(index)]}
                                 key={`action_${index}`}
                                 onPress={() => this._onPress(item.onPress)}>
@@ -103,7 +103,7 @@ const styles = StyleSheet.create({
         width: Theme.alertWidth,
         minHeight: Theme.alertMinHeight,
         alignItems: 'center',
-        backgroundColor: '#FFFFFF',
+        backgroundColor: '#fff',
         borderRadius: 10,
         overflow: 'hidden',
     },
@@ -113,7 +113,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         fontSize: fontSize(16),
         fontWeight: 'bold',
-        color: '#000000',
+        color: '#000',
         // backgroundColor: 'red',
     },
     detail: {
@@ -122,7 +122,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         fontSize: fontSize(13),
         lineHeight: scaleSize(40),
-        color: '#000000',
+        color: '#000',
         // backgroundColor: 'blue',
     },
     actionContainer: {

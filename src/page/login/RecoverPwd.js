@@ -102,7 +102,7 @@ class RecoverPwd extends React.PureComponent {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#FFFFFF',
+        backgroundColor: '#fff',
     },
     loginContainer: {
         marginTop: ScaleSize(20),
@@ -115,7 +115,7 @@ const styles = StyleSheet.create({
         paddingLeft: ScaleSize(10),
         padding: 0,
         // backgroundColor: 'red',
-        color: '#333333',
+        color: '#333',
         borderBottomWidth: 1,
         borderColor: '#ededed',
     },
@@ -127,7 +127,7 @@ const styles = StyleSheet.create({
         borderColor: '#ededed',
     },
     verification: {
-        color: '#1BB77A',
+        color: '#1bb77a',
         fontSize: FontSize(14),
     },
     verificationInput: {
@@ -137,17 +137,17 @@ const styles = StyleSheet.create({
         paddingLeft: ScaleSize(10),
         padding: 0,
         // backgroundColor: 'red',
-        color: '#333333',
+        color: '#333',
     },
     loginButton: {
         marginHorizontal: ScaleSize(0),
         height: ScaleSize(90),
-        backgroundColor: '#1BB77A',
+        backgroundColor: '#1bb77a',
         borderWidth: 0,
         marginTop: ScaleSize(70),
     },
     loginButtonTitle: {
-        color: '#FFFFFF',
+        color: '#fff',
         fontSize: FontSize(18),
     },
 });

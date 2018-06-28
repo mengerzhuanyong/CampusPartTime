@@ -119,7 +119,7 @@ class FlatListView extends React.PureComponent {
     };
     _onRefresh = () => {
         this.startRefresh();
-        console.log('_onRefreshzzzz')
+         // console.log('_onRefreshzzzz')
         this.props.onRefresh && this.props.onRefresh(this.stopRefresh)
     };
 
@@ -128,7 +128,7 @@ class FlatListView extends React.PureComponent {
             refreshableColors, refreshableProgressBackgroundColor,
             refreshableSize, refreshableTintColor, refreshableTitle,
         } = this.props;
-        console.log(this.state.isRefreshing)
+         // console.log(this.state.isRefreshing)
         return (
             <RefreshControl
                 refreshing={this.state.isRefreshing}
@@ -143,7 +143,7 @@ class FlatListView extends React.PureComponent {
     };
     startRefresh = () => {
         if (!this.state.isRefreshing) {
-            console.log('startRefresh')
+             // console.log('startRefresh')
             if (this._currentEndReachedStatus === EndReachedStatus.ALL_LOADED) {
                 this._currentEndReachedStatus = EndReachedStatus.WAITING_LOADING
             }
@@ -180,20 +180,20 @@ class FlatListView extends React.PureComponent {
         if (isRefreshing || isEndReached) {
             return;
         }
-        console.log('contentHeight', this._currentContentSize.contentHeight)
-        console.log('height', this._currentListSize.height)
+         // console.log('contentHeight', this._currentContentSize.contentHeight)
+         // console.log('height', this._currentListSize.height)
         // 解决内容视图不够列表的高度时,_onEndReached回调不正确的Bug，必须放在FIRST_LOADED后面
         if (this._currentContentSize.contentHeight <= this._currentListSize.height) {
             return
         }
 
-        console.log('_onEndReached')
+         // console.log('_onEndReached')
         this.startEndReached();
         this.props.onEndReached && this.props.onEndReached(this.stopEndReached)
     };
     startEndReached = () => {
         if (!this.state.isEndReached) {
-            console.log('startEndReached');
+             // console.log('startEndReached');
             this._currentEndReachedStatus = EndReachedStatus.START_LOADED;
             this.setState({ isEndReached: true }, () => {
                 // 问题所在，不能显示到视图最底层
@@ -206,7 +206,7 @@ class FlatListView extends React.PureComponent {
     };
     stopEndReached = (option = { allLoad: false }) => {
         if (this.state.isEndReached) {
-            console.log('stopEndReached', option)
+             // console.log('stopEndReached', option)
             setTimeout(() => {
                 if (option.allLoad === true) {
                     this._currentEndReachedStatus = EndReachedStatus.ALL_LOADED;
@@ -221,7 +221,7 @@ class FlatListView extends React.PureComponent {
         const { data } = this.props;
         const { isEndReached } = this.state;
         const status = this._currentEndReachedStatus === EndReachedStatus.ALL_LOADED;
-        console.log(isEndReached)
+         // console.log(isEndReached)
         if (isEndReached === false || data.length === 0) {
             if (status) {
                 return <FooterComponent loading={this.state.isEndReached} allLoad={status} />
@@ -236,7 +236,7 @@ class FlatListView extends React.PureComponent {
         return null
     };
     _renderEmptyView = () => {
-        console.log('_renderEmptyView')
+         // console.log('_renderEmptyView')
         return (
             <EmptyComponent />
         )
@@ -297,7 +297,7 @@ class FooterComponent extends React.PureComponent {
 
     render() {
         const { loading, allLoad } = this.props;
-        console.log('FooterComponent');
+         // console.log('FooterComponent');
         return (
             <View style={styles.footerContainer}>
                 {!allLoad ? (

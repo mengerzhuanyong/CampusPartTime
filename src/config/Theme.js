@@ -17,14 +17,14 @@ Theme.set({
     asItemFontSize: fontSize(16),
 
     // 设置MenuManager的颜色和字体大小
-    menuItemTitleColor: '#53812F',
+    menuItemTitleColor: '#53812f',
     menuItemFontSize: fontSize(14),
-    menuItemSeparatorColor: '#D8D8D8',
+    menuItemSeparatorColor: '#d8d8d8',
 
     // 设置ToastManager的颜色和字体大小
-    toastTextColor: '#FFFFFF',
+    toastTextColor: '#fff',
     toastFontSize: fontSize(16),
-})
+});
 
 // 通过系统API获得屏幕宽高
 const { height, width } = Dimensions.get('window');
@@ -63,14 +63,14 @@ const CusTheme = {
     alertSeparatorColor: '#eaeaea',
 
     // 分享组件的样式
-    shareBackColor: '#eeeeee',
+    shareBackColor: '#eee',
     shareActionWidth: scaleSize(100),
     shareActionHeight: scaleSize(100),
     shareActionRadius: 7,
-    shareActionTextColor: '#000000',
+    shareActionTextColor: '#000',
     shareCancelActionHeight: scaleSize(90),
-    shareCancelBackColor: '#FFFFFF',
-    shareCancelTextColor: '#000000',
+    shareCancelBackColor: '#fff',
+    shareCancelTextColor: '#000',
 
     // 地区选择组件的样式
     areaActionTitleColor: '#5d7f3b',
@@ -78,7 +78,7 @@ const CusTheme = {
     // 设置MenuManager的初始化配置，有些样式请去上方teaset里配置，目前因为时间原因先用teaset自带的组件，后续将自定义组件。
     menuOptions: {
         menuAlign: 'end',
-        menuPopoverStyle: { backgroundColor: '#FFFFFF', },
+        menuPopoverStyle: { backgroundColor: '#fff', },
         menuShowArrow: true,
         menuAnimated: true,
         menuOverlayOpacity: 0.3,

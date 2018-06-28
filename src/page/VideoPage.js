@@ -26,13 +26,13 @@ class VideoPage extends React.PureComponent {
         // // Orientation.unlockAllOrientations();
 
         Orientation.addOrientationListener(this._orientationDidChange);
-        console.log('VideoPage-componentDidMount')
+         // console.log('VideoPage-componentDidMount')
         // setTimeout(() => {
         //     this.props.navigation.goBack()
         // }, 100);
         // alert('VideoPage-componentDidMount')
         this.inter = InteractionManager.runAfterInteractions(() => {
-            console.log('VideoPage-runAfterInteractions')
+             // console.log('VideoPage-runAfterInteractions')
             // alert('VideoPage-runAfterInteractions')
         })
     }
@@ -65,7 +65,7 @@ class VideoPage extends React.PureComponent {
         }
     }
     render() {
-        console.log('render')
+         // console.log('render')
         return (
             <Container style={styles.container}>
                 {/* <Button style={{ marginTop: 50, }} title={'测试'} onPress={this.onPress} /> */}

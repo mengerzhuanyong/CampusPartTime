@@ -61,7 +61,7 @@ class RichText extends React.PureComponent {
         }
         indexArray.push(pos);//尾  
 
-        console.log("indexArray = ", indexArray);
+         // console.log("indexArray = ", indexArray);
         for (let i = 0; i < indexArray.length; i++) {
             if (indexArray[i] === 0) {//一开始就是表情  
                 contentArray.push({ 'resource': EMOTIONS_DATA[EMOTIONS_ZHCN_INVERT[regArray[i]]] });

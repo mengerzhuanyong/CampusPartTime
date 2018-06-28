@@ -33,7 +33,7 @@ class Container extends React.PureComponent {
 
     _onPresssContainer = () => {
         Keyboard.dismiss()
-        console.log('_onPresssContainer')
+         // console.log('_onPresssContainer')
     }
 
     buildProps = () => {

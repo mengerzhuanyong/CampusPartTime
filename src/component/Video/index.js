@@ -38,7 +38,7 @@ class index extends React.PureComponent {
     }
 
     _orientationDidChange = (orientation) => {
-        console.log(orientation)
+         // console.log(orientation)
         if (orientation === 'LANDSCAPE') {
             this.changeLandscapeVideoStyle(true)
             this._toolsRef.changeEnlarge(true)
@@ -97,7 +97,7 @@ class index extends React.PureComponent {
             const { width, height } = Dimensions.get('window');
             // 安卓减去状态栏的高度
             this.setState({ videoStyle: { width: width, height: __IOS__ ? height + 20 : height - Theme.statusBarHeight } })
-            console.log(width, height)
+             // console.log(width, height)
         }, 200);
     }
 

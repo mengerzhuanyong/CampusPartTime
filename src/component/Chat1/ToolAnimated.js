@@ -32,7 +32,7 @@ class ToolAnimated extends React.PureComponent {
             })
             this.currentValue = toValue
         }
-        console.log('startAnimatedSpring')
+         // console.log('startAnimatedSpring')
     };
 
     startAnimatedTiming = (toValue, duration = 195) => {
@@ -46,7 +46,7 @@ class ToolAnimated extends React.PureComponent {
             })
             this.currentValue = toValue
         }
-        console.log('startAnimatedTiming')
+         // console.log('startAnimatedTiming')
     };
 
     render() {

@@ -51,7 +51,7 @@ class DropDownMenu extends PureComponent {
 
     render() {
         const { children, renderContentComponent, contentHeight, style, onClose, ...others } = this.props;
-        console.log('render');
+         // console.log('render');
         return (
             <View style={[styles.container, style]}>
                 <MenuBar
@@ -115,12 +115,12 @@ class MenuBar extends PureComponent {
         }
         this.setState({ activeIndex });
         this.props.onPress && this.props.onPress(activeIndex);
-        console.log('zzz');
+         // console.log('zzz');
     };
 
     render() {
         const { titleArray, visible } = this.props;
-        console.log('MenuBar');
+         // console.log('MenuBar');
         return (
             <View style={styles.barContainer}>
                 {titleArray.map((item, index) => {
@@ -175,7 +175,7 @@ class ContentContainer extends PureComponent {
     };
 
     // static getDerivedStateFromProps(nextProps, prevState) {
-    //     console.log('getDerivedStateFromProps--->',nextProps, prevState);
+    //      // console.log('getDerivedStateFromProps--->',nextProps, prevState);
     //     if (prevState.visible !== nextProps.visible) {
     //         return {
     //             isVisible: nextProps.visible,
@@ -186,7 +186,7 @@ class ContentContainer extends PureComponent {
     // }
 
     // componentDidUpdate(prevProps, prevState) {
-    //     console.log('componentDidUpdate-------->',prevProps, prevState, this.state);
+    //      // console.log('componentDidUpdate-------->',prevProps, prevState, this.state);
     //     if (prevProps.visible !== this.state.isVisible) {
     //         this.startAnimated(this.state.isVisible);
     //     }
@@ -293,7 +293,7 @@ const styles = StyleSheet.create({
     },
     barContainer: {
         height: ScaleSize(60),
-        backgroundColor: '#FFFFFF',
+        backgroundColor: '#fff',
         flexDirection: 'row',
         justifyContent: 'space-around',
         alignItems: 'center',

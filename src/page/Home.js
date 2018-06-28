@@ -104,7 +104,7 @@ class Home extends Component {
         // console.log('componentDidBlur')
     }
     _onChange = (params) => {
-        console.log(params)
+         // console.log(params)
         this.setState({ value: params })
         // console.log('_onChangezzzzzzzzzzz', params)
     }
@@ -149,7 +149,7 @@ class Home extends Component {
                     onChange={this._onChange}
                 >
                     <View title='投道一ssss' style={{ flex: 1 }} activeTitleStyle={{ color: '#247E25', }}
-                        titleStyle={{ color: '#333333' }}>
+                        titleStyle={{ color: '#333' }}>
                         <FlatListView // 自定义FlatListb
                             ref={this._captureRef}
                             data={this.state.data}
@@ -161,10 +161,10 @@ class Home extends Component {
                         />
                     </View>
                     <View title='投道二' style={{ flex: 1 }} activeTitleStyle={{ color: '#247E25' }}
-                        titleStyle={{ color: '#333333' }}>
+                        titleStyle={{ color: '#333' }}>
                     </View>
                     <View title='投道三sad' style={{ flex: 1 }} activeTitleStyle={{ color: '#247E25' }}
-                        titleStyle={{ color: '#333333' }}>
+                        titleStyle={{ color: '#333' }}>
                         <ScrollView>
                             {this.data.map((item, index) => {
                                 return (<Text key={index} style={{ flex: 1 }}>123</Text>)
@@ -188,7 +188,7 @@ const styles = StyleSheet.create({
         fontSize: FontSize(14),
     },
     sheetTitle: {
-        color: '#333333',
+        color: '#333',
         fontSize: FontSize(14),
     },
 });

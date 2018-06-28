@@ -20,7 +20,7 @@ class Message extends React.Component {
         super(props);
         const from_user_id = props.info.item.from_user.id
         this.position = from_user_id === props.user.id ? 'right' : 'left' // 头像的位置
-        console.log(props.info.item)
+         // console.log(props.info.item)
     }
 
     shouldComponentUpdate(nextProps, nextState, nextContext) {
@@ -62,7 +62,7 @@ class Message extends React.Component {
     };
 
     render() {
-        console.log('Message')
+         // console.log('Message')
         return (
             this.position === 'left' ? this.renderPositionLeft() : this.renderPositionRight()
         )

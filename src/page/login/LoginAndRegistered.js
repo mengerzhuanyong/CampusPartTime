@@ -50,14 +50,14 @@ class LoginAndRegistered extends React.PureComponent {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#FFFFFF'
+        backgroundColor: '#fff'
     },
     sheetActiveTitle: {
         color: '#247E25',
         fontSize: FontSize(14),
     },
     sheetTitle: {
-        color: '#333333',
+        color: '#333',
         fontSize: FontSize(14),
     },
     segmentedView: {

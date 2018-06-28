@@ -62,7 +62,7 @@ class VideoPlayer extends React.PureComponent {
     // 使用这种方式更易于管理状态
     // 自动管理是否播放，使用Props的话，要在父组件管理太多的状态,引起不必要的渲染
     setPause = (paused) => {
-        console.log('paused')
+         // console.log('paused')
         if (this.playStatus == PlayStatus.END) {
             this.setSeek(0)
             this.playStatus == PlayStatus.END
@@ -87,7 +87,7 @@ class VideoPlayer extends React.PureComponent {
     setSeek = (number) => {
         if (this._videoRef) {
             this._videoRef.seek(number)
-            console.log(number)
+             // console.log(number)
         }
     };
 
@@ -103,7 +103,7 @@ class VideoPlayer extends React.PureComponent {
     };
 
     _onBuffer = (data) => {
-        console.log('_onBuffer', data)
+         // console.log('_onBuffer', data)
     };
 
     _onEnd = (data) => {

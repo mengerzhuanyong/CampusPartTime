@@ -1,8 +1,13 @@
 'use strict';
+
 import React from 'react'
-import { StyleSheet, View } from 'react-native'
-import { createStackNavigator } from 'react-navigation'
-import { configRoute } from './addToRouteStack'
+import {
+    View,
+    StyleSheet,
+} from 'react-native'
+
+import {createStackNavigator} from 'react-navigation'
+import {configRoute} from './addToRouteStack'
 import StackViewStyleInterpolator from 'react-navigation/src/views/StackView/StackViewStyleInterpolator'
 import SplashScreen from 'react-native-splash-screen'
 import TabNavigation from './TabNavigation'
@@ -15,35 +20,49 @@ import VideoPage from '../page/VideoPage';
 import Chat from '../page/Chat';
 
 const Nav = createStackNavigator(configRoute({
-    Tab: { screen: TabNavigation },
-    Mine: { screen: Mine },
-    Setting: { screen: Setting },
-    LoginAndRegistered: { screen: LoginAndRegistered },
-    RecoverPwd: { screen: RecoverPwd },
-    VideoPage: { screen: VideoPage },
-    Chat: { screen: Chat },
+    Tab: {
+        screen: TabNavigation
+    },
+    Mine: {
+        screen: Mine
+    },
+    Setting: {
+        screen: Setting
+    },
+    LoginAndRegistered: {
+        screen: LoginAndRegistered
+    },
+    RecoverPwd: {
+        screen: RecoverPwd
+    },
+    VideoPage: {
+        screen: VideoPage
+    },
+    Chat: {
+        screen: Chat
+    },
 }), {
-        initialRouteName: 'Chat',
-        cardStyle: {
-            shadowOpacity: 0,
-            shadowRadius: 0,
-            backgroundColor: Theme.pageBackgroundColor,
-        },
-        navigationOptions: {
-            header: null,
-            gesturesEnabled: true
-        },
-        transitionConfig: () => {
-            return {
-                screenInterpolator: (sceneProps) => {
-                    return StackViewStyleInterpolator.forHorizontal(sceneProps)
-                },
-                // containerStyle: {
-                //     backgroundColor: 'black',
-                // }
-            }
+    initialRouteName: 'LoginAndRegistered',
+    cardStyle: {
+        shadowOpacity: 0,
+        shadowRadius: 0,
+        backgroundColor: Theme.pageBackgroundColor,
+    },
+    navigationOptions: {
+        header: null,
+        gesturesEnabled: true
+    },
+    transitionConfig: () => {
+        return {
+            screenInterpolator: (sceneProps) => {
+                return StackViewStyleInterpolator.forHorizontal(sceneProps)
+            },
+            // containerStyle: {
+            //     backgroundColor: 'black',
+            // }
         }
-    });
+    }
+});
 
 
 class Navigation extends React.PureComponent {
@@ -55,11 +74,12 @@ class Navigation extends React.PureComponent {
     render() {
         return (
             <View style={styles.container}>
-                <Nav />
+                <Nav/>
             </View>
         );
     }
 }
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,

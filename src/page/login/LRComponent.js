@@ -143,7 +143,7 @@ class LRComponent extends React.PureComponent {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#FFFFFF',
+        backgroundColor: '#fff',
         justifyContent: 'space-between',
     },
     input: {
@@ -152,7 +152,7 @@ const styles = StyleSheet.create({
         paddingLeft: ScaleSize(10),
         padding: 0,
         // backgroundColor: 'red',
-        color: '#333333',
+        color: '#333',
         borderBottomWidth: 1,
         borderColor: '#ededed',
     },
@@ -162,19 +162,19 @@ const styles = StyleSheet.create({
     },
     forgetPwd: {
         fontSize: FontSize(12),
-        color: '#1BB77A',
+        color: '#1bb77a',
         alignSelf: 'flex-end',
         marginTop: ScaleSize(40),
     },
     loginButton: {
         marginHorizontal: ScaleSize(0),
         height: ScaleSize(90),
-        backgroundColor: '#1BB77A',
+        backgroundColor: '#1bb77a',
         borderWidth: 0,
         marginTop: ScaleSize(100),
     },
     loginButtonTitle: {
-        color: '#FFFFFF',
+        color: '#fff',
         fontSize: FontSize(18),
     },
     fastMarkText: {
@@ -216,7 +216,7 @@ const styles = StyleSheet.create({
         marginLeft: ScaleSize(20),
     },
     protocolText2: {
-        color: '#1BB77A',
+        color: '#1bb77a',
         fontSize: FontSize(12),
         marginLeft: ScaleSize(15),
     },
@@ -231,7 +231,7 @@ const styles = StyleSheet.create({
         borderColor: '#ededed',
     },
     verification: {
-        color: '#1BB77A',
+        color: '#1bb77a',
         fontSize: FontSize(14),
     },
     verificationInput: {
@@ -241,7 +241,7 @@ const styles = StyleSheet.create({
         paddingLeft: ScaleSize(10),
         padding: 0,
         // backgroundColor: 'red',
-        color: '#333333',
+        color: '#333',
     }
 });
 
