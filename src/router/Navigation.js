@@ -23,12 +23,12 @@ import Login from '../page/login/login'
 import Register from '../page/login/register'
 import RecoverPwd from '../page/login/recoverPwd'
 
-import Home from '../page/home'
-import Mine from '../page/mine'
+import Home from '../page/home/home'
+import Mine from '../page/mine/mine'
 
-import Setting from '../page/setting'
-import VideoPage from '../page/videoPage';
-import Chat from '../page/chat';
+import Setting from '../page/mine/setting'
+import VideoPage from '../page/mine/videoPage';
+import Chat from '../page/mine/chat';
 
 const Nav = createStackNavigator(configRoute({
     Tab: {
@@ -56,7 +56,8 @@ const Nav = createStackNavigator(configRoute({
         screen: Chat
     },
 }), {
-    initialRouteName: 'Login',
+    initialRouteName: 'Tab',
+    // initialRouteName: 'Login',
     cardStyle: {
         shadowOpacity: 0,
         shadowRadius: 0,
@@ -82,7 +83,13 @@ const Nav = createStackNavigator(configRoute({
 class Navigation extends React.PureComponent {
 
     componentDidMount() {
-        SplashScreen.hide();
+        this.timer = setTimeout(() => {
+            SplashScreen.hide();
+        }, 1000);
+    }
+
+    componentWillUnmount() {
+        clearTimeout(this.timer);
     }
 
     render() {

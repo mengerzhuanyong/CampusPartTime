@@ -40,11 +40,11 @@ class Container extends React.PureComponent {
 
     _onPresssContainer = () => {
         Keyboard.dismiss()
-         // console.log('_onPresssContainer')
-    }
+        // console.log('_onPresssContainer')
+    };
 
     buildProps = () => {
-        const { fitIPhoneX, fitIPhoneXType } = this.props
+        const {fitIPhoneX, fitIPhoneXType} = this.props;
         let iphoneXStyle;
         if (fitIPhoneX) {
             iphoneXStyle = fitIPhoneXType === 'padding' ? {
@@ -57,8 +57,8 @@ class Container extends React.PureComponent {
     };
 
     render() {
-        const { children, style, keyboardShouldPersistTaps } = this.props
-        const { iphoneXStyle } = this.buildProps()
+        const {children, style, keyboardShouldPersistTaps} = this.props;
+        const {iphoneXStyle} = this.buildProps();
         return (
             <TouchableWithoutFeedback disabled={!keyboardShouldPersistTaps} onPress={this._onPresssContainer}>
                 <View style={[styles.container, iphoneXStyle, style]}>

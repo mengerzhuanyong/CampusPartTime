@@ -10,7 +10,7 @@ class UserProtocol extends React.PureComponent {
             <View style={styles.container}>
                 <NavigationBar
                     title={'用户服务协议'}
-                    rightViewOnPress={this.rightOnPress}
+                    rightViewOnPress={this.renderHeaderRightView}
                 />
                 <WebView
                     source={{ uri: '' }}

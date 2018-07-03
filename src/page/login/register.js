@@ -34,7 +34,7 @@ export default class Register extends PureComponent {
                 <NavigationBar
                     title={'注册'}
                     style={styles.navigationBarStyle}
-                    rightViewOnPress={this.rightOnPress}
+                    rightViewOnPress={this.renderHeaderRightView}
                 />
                 <View style={styles.loginContent}>
                     <View style={styles.inputItemView}>

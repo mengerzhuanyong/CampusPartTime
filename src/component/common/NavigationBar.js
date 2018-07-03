@@ -1,8 +1,8 @@
 'use strict';
 
 import React, {PureComponent} from 'react'
-import { Image, ImageBackground, StyleSheet, TouchableOpacity, Text } from 'react-native'
-import { NavigationBar } from 'teaset'
+import {View, Image, ImageBackground, StyleSheet, TouchableOpacity, Text} from 'react-native'
+import {NavigationBar} from 'teaset'
 
 class CusNavigationBar extends PureComponent {
     static propTypes = {
@@ -12,56 +12,41 @@ class CusNavigationBar extends PureComponent {
     static defaultProps = {
         ...NavigationBar.defaultProps
     };
-    // }
 
     constructor(props) {
         super(props);
         this.state = {}
     }
+
     _rightViewOnPress = (p) => {
-        this.props.rightViewOnPress && this.props.rightViewOnPress({ event: p, rightView: this.rightView })
+        this.props.rightViewOnPress && this.props.rightViewOnPress({event: p, rightView: this.rightView})
     };
 
-    // 新api
-    // static getDerivedStateFromProps(nextProps, prevState) {
-    //     // console.log(prevState)
-    //     return prevState
-    // }
     _backOnPress = (p) => {
         if (this.props.backOnPress) {
-            this.props.backOnPress({ event: p, backButton: this.leftView })
+            this.props.backOnPress({event: p, backButton: this.leftView})
         } else {
             RouteHelper.goBack()
         }
     };
+
     render() {
-        const { style, title, ...others } = this.props;
+        const {style, statusBarStyle, leftView, rightViewOnPress, backgroundImage, titleStyle, title, ...others} = this.props;
         return (
             <NavigationBar
                 style={[styles.navBarStyle, style]}
+                statusBarStyle={statusBarStyle}
                 title={
-                    <Text style={styles.navTitle}>{title}</Text>
+                    <Text style={[styles.navTitle, titleStyle]}>{title}</Text>
                 }
-                background={
+                background={ backgroundImage &&
                     <ImageBackground
                         style={styles.navBackImage}
-                        source={Images.nav_bar}
+                        source={Images.img_bg_navbar}
                     />
                 }
-                rightView={
-                    <TouchableOpacity
-                        ref={v => this.rightView = v}
-                        style={styles.navRight}
-                        onPress={this._rightViewOnPress}
-                    >
-                        <Image
-                            source={Images.nav_right_button}
-                        />
-                    </TouchableOpacity>
-                }
-                leftView={
-                    <TouchableOpacity
-                        ref={v => this.rightView = v}
+                leftView={leftView && <TouchableOpacity
+                        ref={v => this.leftView = v}
                         style={styles.navLeft}
                         onPress={this._backOnPress}
                     >
@@ -71,6 +56,18 @@ class CusNavigationBar extends PureComponent {
                         />
                     </TouchableOpacity>
                 }
+                // rightView={
+                //     <TouchableOpacity
+                //         ref={v => this.rightView = v}
+                //         style={styles.navRight}
+                //         onPress={this._rightViewOnPress}
+                //     >
+                //         <Image
+                //             source={Images.nav_right_button}
+                //         />
+                //     </TouchableOpacity>
+                // }
+                rightView={rightViewOnPress}
                 {...others}
             />
         );
@@ -79,7 +76,9 @@ class CusNavigationBar extends PureComponent {
 
 const styles = StyleSheet.create({
     navBarStyle: {
-        position: 'relative', backgroundColor: '#53812f'
+        zIndex: 999,
+        position: 'relative',
+        backgroundColor: Theme.themeColor,
     },
     navBackImage: {
         flex: 1,
@@ -98,9 +97,7 @@ const styles = StyleSheet.create({
         width: ScaleSize(55),
         height: ScaleSize(55),
     },
-    navLeft: {
-
-    }
+    navLeft: {}
 });
 
 export default CusNavigationBar;

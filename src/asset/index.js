@@ -1,6 +1,11 @@
 const Images = {
 
     // ICONS
+    icon_arrow_down: require('./icon/icon_arrow_down.png'),
+    icon_arrow_left: require('./icon/icon_arrow_left.png'),
+    icon_arrow_right: require('./icon/icon_arrow_right.png'),
+    icon_arrow_up: require('./icon/icon_arrow_up.png'),
+    icon_arrow_right_list: require('./icon/icon_arrow_right_list.png'),
     icon_bell: require('./icon/icon_bell.png'),
     icon_bottom_pause: require('./icon/icon_bottom_pause.png'),
     icon_bottom_play: require('./icon/icon_bottom_play.png'),
@@ -75,6 +80,7 @@ const Images = {
     icon_user_line: require('./icon/icon_user_line.png'),
     icon_user_sign: require('./icon/icon_user_sign.png'),
     icon_wechat: require('./icon/icon_wechat.png'),
+    icon_work_space: require('./icon/icon_work_space.png'),
 
 
     // IMAGES
@@ -101,13 +107,13 @@ const Images = {
 
     // TABBARS
     icon_tabbar_home: require('./tabbar/icon_tabbar_home.png'),
-    icon_tabbar_live: require('./tabbar/icon_tabbar_live.png'),
-    icon_tabbar_chat: require('./tabbar/icon_tabbar_chat.png'),
+    icon_tabbar_work: require('./tabbar/icon_tabbar_work.png'),
+    icon_tabbar_shop: require('./tabbar/icon_tabbar_shop.png'),
     icon_tabbar_mine: require('./tabbar/icon_tabbar_mine.png'),
 
     icon_tabbar_home_cur: require('./tabbar/icon_tabbar_home_cur.png'),
-    icon_tabbar_live_cur: require('./tabbar/icon_tabbar_live_cur.png'),
-    icon_tabbar_chat_cur: require('./tabbar/icon_tabbar_chat_cur.png'),
+    icon_tabbar_work_cur: require('./tabbar/icon_tabbar_work_cur.png'),
+    icon_tabbar_shop_cur: require('./tabbar/icon_tabbar_shop_cur.png'),
     icon_tabbar_mine_cur: require('./tabbar/icon_tabbar_mine_cur.png'),
 };
 export default Images;

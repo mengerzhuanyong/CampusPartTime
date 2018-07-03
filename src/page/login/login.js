@@ -25,7 +25,8 @@ import {HorizontalLine, VerticalLine} from '../../component/common/commonLine'
 export default class Login extends PureComponent {
 
     _guestLogin = () => {
-        RouteHelper.reset('Tab');
+        // RouteHelper.reset('Tab');
+        RouteHelper.navigate('Tab');
     };
 
     _onNavigateRecoverPwd = () => {
@@ -37,7 +38,7 @@ export default class Login extends PureComponent {
     };
 
     _doLogin = () => {
-
+        RouteHelper.navigate('Tab');
     };
 
     render() {
@@ -48,7 +49,7 @@ export default class Login extends PureComponent {
                     title={'登录'}
                     style={styles.navigationBarStyle}
                     leftView={null}
-                    rightViewOnPress={this.rightOnPress}
+                    rightViewOnPress={this.renderHeaderRightView}
                 />
                 <View style={styles.loginContent}>
                     <View style={styles.inputItemView}>

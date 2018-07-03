@@ -37,7 +37,23 @@ const globalStyles = StyleSheet.create({
     },
     bgTransparentStyle: {
         backgroundColor: 'transparent',
-    }
+    },
+    headerButtonView: {
+        position: 'absolute',
+        height: 44,
+        top: 24,
+    },
+    headerLeftView: {
+        left: 15,
+    },
+    headerRightView: {
+        right: 10,
+    },
+    headerIcon: {
+        width: scaleSize(35),
+        height: scaleSize(35),
+        resizeMode: 'contain',
+    },
 });
 
 const CusTheme = {
@@ -48,13 +64,17 @@ const CusTheme = {
     screen_height: height,
     minPixel: 1 / PixelRatio.get(),
     themeColor: '#1ab588',
-    pageBackgroundColor: '#e7e7ef',
+    pageBackgroundColor: '#f6f6f6',
     // 全局公用样式表 ,感觉不是很合理
     // 居中样式
     centerStyle: globalStyles.centerStyle,
     // 背景透明样式
     bgTransparentStyle: globalStyles.bgTransparentStyle,
 
+    headerButtonView: globalStyles.headerButtonView,
+    headerLeftView: globalStyles.headerLeftView,
+    headerRightView: globalStyles.headerRightView,
+    headerIcon: globalStyles.headerIcon,
     // 弹窗提示组件的样式
     alertWidth: 260,
     alertMinHeight: 52,
@@ -80,7 +100,7 @@ const CusTheme = {
     // 设置MenuManager的初始化配置，有些样式请去上方teaset里配置，目前因为时间原因先用teaset自带的组件，后续将自定义组件。
     menuOptions: {
         menuAlign: 'end',
-        menuPopoverStyle: { backgroundColor: '#fff', },
+        menuPopoverStyle: {backgroundColor: '#fff',},
         menuShowArrow: true,
         menuAnimated: true,
         menuOverlayOpacity: 0.3,
@@ -98,7 +118,26 @@ const CusTheme = {
         bottom: 0,
         position: 'absolute',
         resizeMode: 'contain',
-    }
-}
+    },
+    contentTitleIcon: {
+        width: scaleSize(35),
+        height: scaleSize(35),
+        resizeMode: 'contain',
+    },
+    contentRightIcon: {
+        width: scaleSize(25),
+        height: scaleSize(25),
+        resizeMode: 'contain',
+    },
+    pointView: {
+        width: 5,
+        height: 5,
+        borderRadius: 3,
+        position: 'absolute',
+        right: 0,
+        top: 0,
+        backgroundColor: '#f00',
+    },
+};
 
 export default CusTheme

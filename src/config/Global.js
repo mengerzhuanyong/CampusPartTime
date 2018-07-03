@@ -22,7 +22,8 @@ import ActionsManager from './ActionsManager'
 import AlertManager from './AlertManager';
 import InteractionManager from './InteractionManager';
 import RouteHelper from '../router/RouteHelper'
-import * as Constants from './Constants'
+import ServicesApi from './ServicesApi'
+import Constant from './Constant'
 import moment from 'moment'
 import 'moment/locale/zh-cn'
 
@@ -38,10 +39,10 @@ if (Platform.OS === 'ios') {
 JShareModule.setDebug({enable: __DEV__});
 
 // 设置微信ID
-XPay.setWxId(Constants.WEI_XIN_APPID);
+XPay.setWxId(Constant.WECHAT_APPID);
 
 // 设置支付宝URL Schemes
-XPay.setAlipayScheme(Constants.ALIPAY_SCHME);
+XPay.setAlipayScheme(Constant.ALIPAY_SCHME);
 
 // 发布版屏蔽日志打印
 if (!__DEV__) {
@@ -84,6 +85,12 @@ global.Storage = AsyncStorage;
 // 网络请求
 global.Services = Services;
 
+// 网络接口
+global.ServicesApi = ServicesApi;
+
+// 系统常量
+global.Constant = Constant;
+
 // 事件处理
 global.Moment = moment;
 
@@ -95,9 +102,6 @@ global.MenuManager = MenuManager;
 
 // 轻提示
 global.ToastManager = ToastManager;
-
-// 常量
-global.Constants = Constants;
 
 // 操作管理
 global.ActionsManager = ActionsManager;
