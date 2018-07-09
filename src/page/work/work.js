@@ -4,7 +4,6 @@
  * @大梦
  */
 
-
 'use strict';
 
 import React, {Component} from 'react'
@@ -40,6 +39,7 @@ import {QRscanner} from 'react-native-qr-scanner'
 import {Carousel, ListRow} from 'teaset'
 import {scaleSize} from "../../util/Tool"
 import {HorizontalLine, VerticalLine} from '../../component/common/commonLine'
+import JobItem from "../../component/item/jobItem";
 
 
 
@@ -80,16 +80,42 @@ export default class Work extends Component {
         );
     };
 
+    _captureRef = (v) => {
+        this.flatList = v;
+    };
 
     _keyExtractor = (item, index) => {
-        return `list_${index}`;
+        return `z_${index}`
     };
 
-    _captureRef = (v) => {
-        this.flatListRef = v;
+    // 上拉加载
+    _onEndReached = () => {
+        setTimeout(() => {
+            let dataTemp = this.state.listData;
+            let allLoad = false;
+            //模拟数据加载完毕,即page > 0,
+            if (this.page < 2) {
+                this.setState({ data: dataTemp.concat(this.state.listData) });
+            }
+            // allLoad 当全部加载完毕后可以设置此属性，默认为false
+            this.flatList.stopEndReached({ allLoad: this.page === 2 });
+            this.page++;
+        }, 2000);
     };
 
-    renderHeaderComponent = () => {
+    // 下拉刷新
+    _onRefresh = () => {
+        setTimeout(() => {
+            // 调用停止刷新
+            this.flatList.stopRefresh()
+        }, 2000);
+    };
+
+    _renderSeparator = () => {
+        return <HorizontalLine style={styles.horLine} />;
+    };
+
+    _renderHeaderComponent = () => {
         return (
             <View style={styles.listHeaderComponent}>
                 <ScrollView style={styles.contentTopView}>
@@ -167,50 +193,13 @@ export default class Work extends Component {
         );
     };
 
-    renderListItem = ({item}) => {
+    _renderListItem = ({item}) => {
         return (
-            <TouchableOpacity style={styles.jobItemView}>
-                <View style={styles.jobItemPicView}>
-                    <Image
-                        style={styles.jobItemPic}
-                        resizeMode={'cover'}
-                        source={Images.img_jobs1}
-                    />
-                </View>
-                <View style={styles.jobInfoView}>
-                    <View style={[styles.jobInfoItemView, styles.jobInfoTitleView]}>
-                        <Text style={styles.jobInfoTitle}>花海地产新盘传单派发</Text>
-                        <View style={styles.jobInfoTagsView}>
-                            <View style={styles.jobInfoTagItemView}>
-                                <Text style={styles.jobInfoTagItemName}>急招</Text>
-                            </View>
-                            <View style={[styles.jobInfoTagItemView, styles.jobInfoTagIconView]}>
-                                <Image source={Images.icon_hot} style={[styles.jobInfoIcon]} />
-                            </View>
-                        </View>
-                    </View>
-                    <View style={[styles.jobInfoItemView, styles.marginVerticalView]}>
-                        <View style={styles.jobInfoLeftView} />
-                        <View style={styles.jobInfoRightView}>
-                            <Text style={styles.jobInfoPrice}>12元/h</Text>
-                        </View>
-                    </View>
-                    <View style={styles.jobInfoItemView}>
-                        <View style={styles.jobInfoLeftView}>
-                            <Image source={Images.icon_user} style={[styles.jobInfoIcon]} />
-                            <Text style={styles.jobInfoContext}>报名人数</Text>
-                            <Text style={styles.jobInfoContext}>7/20</Text>
-                        </View>
-                        <View style={styles.jobInfoRightView}>
-                            <Text style={styles.jobInfoContext}>0.8工分/h</Text>
-                        </View>
-                    </View>
-                </View>
-            </TouchableOpacity>
+            <JobItem />
         );
     };
 
-    renderSeparator = () => {
+    _renderSeparator = () => {
         return <HorizontalLine lineStyle={styles.horLine} />
     };
 
@@ -227,15 +216,15 @@ export default class Work extends Component {
                 />
                 <FlatListView
                     style={styles.listContent}
+                    initialRefresh={false}
                     ref={this._captureRef}
-                    data={listData}
-                    enableRefresh={false}
-                    enableLoadMore={false}
+                    data={this.state.listData}
+                    renderItem={this._renderListItem}
                     keyExtractor={this._keyExtractor}
+                    onEndReached={this._onEndReached}
                     onRefresh={this._onRefresh}
-                    renderItem={this.renderListItem}
-                    ItemSeparatorComponent={this.renderSeparator}
-                    ListHeaderComponent = {this.renderHeaderComponent}
+                    ItemSeparatorComponent={this._renderSeparator}
+                    ListHeaderComponent={this._renderHeaderComponent}
                 />
             </View>
         );
@@ -283,6 +272,7 @@ const styles = StyleSheet.create({
     },
 
     listContent: {
+        flex: 1,
         backgroundColor: '#fff',
     },
     listHeaderComponent: {},
@@ -337,13 +327,13 @@ const styles = StyleSheet.create({
         width: headBackImageW,
         height: headBackImageW * 0.485,
     },
-    
+
     listSortBtnView: {
         marginVertical: 10,
         // padding: 15,
         flexDirection: 'row',
         alignItems: 'center',
-        borderTopColor: '#e5e5e5',
+        borderTopColor: '#eee',
         borderBottomColor: '#d9d9d9',
         backgroundColor: '#fff',
         justifyContent: 'space-between',
@@ -370,94 +360,5 @@ const styles = StyleSheet.create({
         marginLeft: 5,
         height: scaleSize(30),
         resizeMode: 'contain',
-    },
-
-
-    jobItemView: {
-        paddingHorizontal: 15,
-        marginVertical: 8,
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-    },
-    jobItemPicView: {
-        width: 80,
-        height: 70,
-        marginRight: 10,
-        borderRadius: 5,
-        overflow: 'hidden',
-        backgroundColor: '#f60',
-    },
-    jobItemPic: {
-        width: 80,
-        height: 70,
-        resizeMode: 'contain',
-    },
-    jobInfoView: {
-        flex: 1,
-    },
-    marginVerticalView: {
-        marginVertical: 5,
-    },
-    jobInfoItemView: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-    },
-    jobInfoTitleView: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'flex-start',
-        // backgroundColor: '#123',
-    },
-    jobInfoTitle: {
-        color: '#333',
-        fontSize: FontSize(14),
-    },
-    jobInfoIcon: {
-        width: scaleSize(28),
-        height: scaleSize(28),
-        resizeMode: 'contain',
-    },
-    jobInfoTagsView: {
-        marginLeft: 10,
-        flexDirection: 'row',
-        alignItems: 'center',
-    },
-    jobInfoTagItemView: {
-        marginRight: 3,
-        borderRadius: 2,
-        paddingVertical: 2,
-        paddingHorizontal: 4,
-        alignItems: 'center',
-        justifyContent: 'center',
-        borderWidth: Theme.minPixel,
-    },
-    jobInfoTagIconView: {
-        borderWidth: 0,
-        padding: 0,
-    },
-    jobInfoTagItemName: {
-        color: Theme.themeColor,
-        fontSize: FontSize(10),
-    },
-    jobInfoLeftView: {
-        flexDirection: 'row',
-        alignItems: 'center',
-    },
-    jobInfoRightView: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'flex-end',
-        // backgroundColor: '#f60',
-    },
-    jobInfoPrice: {
-        color: '#ed3126',
-        fontSize: FontSize(15),
-    },
-    jobInfoContext: {
-        color: '#999',
-        marginLeft: 5,
-        fontSize: FontSize(12),
     },
 });

@@ -124,10 +124,24 @@ const CusTheme = {
         height: scaleSize(35),
         resizeMode: 'contain',
     },
+    contentTitle: {
+        marginLeft: 10,
+        color: '#333',
+        fontSize: fontSize(14),
+    },
+    contentRightView: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'flex-end',
+    },
     contentRightIcon: {
         width: scaleSize(25),
         height: scaleSize(25),
         resizeMode: 'contain',
+    },
+    contentRightText: {
+        color: '#999',
+        fontSize: fontSize(13),
     },
     pointView: {
         width: 5,
@@ -138,6 +152,15 @@ const CusTheme = {
         top: 0,
         backgroundColor: '#f00',
     },
+    flexCenter: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    defaultFont: {
+        color: '#333',
+        fontSize: fontSize(20),
+    },
 };
 
-export default CusTheme
+export default CusTheme;

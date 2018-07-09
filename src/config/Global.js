@@ -70,12 +70,6 @@ global.SCREEN_WIDTH = Theme.screen_width;
 // 获取屏幕高度
 global.SCREEN_HEIGHT = Theme.screen_height;
 
-// 适配字体
-global.FontSize = fontSize;
-
-// 屏幕适配
-global.ScaleSize = scaleSize;
-
 // 图片加载
 global.Images = Images;
 
@@ -114,3 +108,9 @@ global.InteractionManager = InteractionManager;
 
 // 全局的主题和控件的配置以及样式
 global.Theme = Theme;
+
+// 适配字体
+global.FontSize = fontSize;
+
+// 屏幕适配
+global.ScaleSize = scaleSize;

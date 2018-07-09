@@ -23,12 +23,23 @@ import Login from '../page/login/login'
 import Register from '../page/login/register'
 import RecoverPwd from '../page/login/recoverPwd'
 
-import Home from '../page/home/home'
-import Mine from '../page/mine/mine'
+import MineAccount from '../page/mine/mineAccount'
+import MineIntegritySystem from '../page/mine/mineIntegritySystem'
+import MinePoints from '../page/mine/minePoints'
+import MineProfile from '../page/mine/mineProfile'
+import MineWorkSpace from '../page/mine/mineWorkSpace'
 
-import Setting from '../page/mine/setting'
-import VideoPage from '../page/mine/videoPage';
-import Chat from '../page/mine/chat';
+import CertificationIDCard from '../page/certification/certificationIDCard'
+import CertificationMobile from '../page/certification/certificationMobile'
+import CertificationStudent from '../page/certification/certificationStudent'
+import EmergencyContact from '../page/certification/emergencyContact'
+
+import Setting from '../page/system/setting'
+import ShareApp from '../page/system/shareApp'
+
+
+import VideoPage from '../page/common/videoPage';
+import Chat from '../page/common/chat';
 
 const Nav = createStackNavigator(configRoute({
     Tab: {
@@ -43,11 +54,38 @@ const Nav = createStackNavigator(configRoute({
     RecoverPwd: {
         screen: RecoverPwd
     },
-    Mine: {
-        screen: Mine
+    MineAccount: {
+        screen: MineAccount
+    },
+    MineIntegritySystem: {
+        screen: MineIntegritySystem
+    },
+    MinePoints: {
+        screen: MinePoints
+    },
+    MineProfile: {
+        screen: MineProfile
+    },
+    MineWorkSpace: {
+        screen: MineWorkSpace
     },
     Setting: {
         screen: Setting
+    },
+    ShareApp: {
+        screen: ShareApp
+    },
+    CertificationIDCard: {
+        screen: CertificationIDCard
+    },
+    CertificationMobile: {
+        screen: CertificationMobile
+    },
+    CertificationStudent: {
+        screen: CertificationStudent
+    },
+    EmergencyContact: {
+        screen: EmergencyContact
     },
     VideoPage: {
         screen: VideoPage
@@ -56,7 +94,7 @@ const Nav = createStackNavigator(configRoute({
         screen: Chat
     },
 }), {
-    initialRouteName: 'Tab',
+    initialRouteName: 'MineProfile',
     // initialRouteName: 'Login',
     cardStyle: {
         shadowOpacity: 0,

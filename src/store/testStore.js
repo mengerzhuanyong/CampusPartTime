@@ -3,16 +3,16 @@ import BaseStore from './baseStore'
 
 class SearchStore extends BaseStore {
 
-    @observable query = '点击跳转';
-    @action
-    addQuery = (z) => {
-        return this.query = z
-    };
-
-    constructor(params) {
-        super(params)
-
-    }
+    // @observable query = '点击跳转';
+    // @action
+    // addQuery = (z) => {
+    //     return this.query = z
+    // };
+    //
+    // constructor(params) {
+    //     super(params)
+    //
+    // }
 }
 
 export default SearchStore;

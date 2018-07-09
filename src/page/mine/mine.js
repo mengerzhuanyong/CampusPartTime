@@ -4,7 +4,6 @@
  * @大梦
  */
 
-
 'use strict';
 
 import React, {Component} from 'react'
@@ -26,7 +25,7 @@ import NavigationBar from '../../component/common/NavigationBar'
 import SegmentedView from '../../component/segmentedView/index'
 import ImageView from '../../component/common/ImageView'
 import {inject, observer} from 'mobx-react'
-import {Button} from 'teaset'
+import {Button, Carousel, ListRow} from 'teaset'
 import FlatListView from '../../component/common/FlatListView'
 import AreaContent from '../../component/common/AreaContent'
 import Container from '../../component/common/Container';
@@ -37,7 +36,6 @@ import ImagePicker from 'react-native-image-picker';
 import PayManager from '../../config/PayManager'
 import Stepper from '../../component/common/Stepper'
 import {QRscanner} from 'react-native-qr-scanner'
-import {Carousel, ListRow} from 'teaset'
 import {scaleSize} from "../../util/Tool"
 import {HorizontalLine, VerticalLine} from '../../component/common/commonLine'
 
@@ -55,6 +53,13 @@ export default class Mine extends Component {
 
     componentDidMount() {
     }
+
+    onPushToNextPage = (pageTitle, component, params = {}) => {
+        RouteHelper.navigate(component, {
+            pageTitle: pageTitle,
+            ...this.params
+        })
+    };
 
     renderNavigationBarView = () => {
         return (
@@ -76,6 +81,7 @@ export default class Mine extends Component {
                     title={this.renderNavigationBarView()}
                     style={styles.navigationBarStyle}
                     statusBarStyle={'default'}
+                    leftView={null}
                 />
                 <ImageBackground
                     style={styles.contentTopView}
@@ -104,55 +110,69 @@ export default class Mine extends Component {
                         <ListRow
                             style={styles.contentTitleView}
                             title={'我的资料'}
-                            titleStyle={styles.contentTitle}
+                            titleStyle={Theme.contentTitle}
                             icon={<Image source={Images.icon_files} style={[Theme.contentTitleIcon, {}]} />}
                             detail={<Image source={Images.icon_arrow_right} style={[Theme.contentRightIcon, {}]} />}
+                            accessory={'none'}
+                            onPress={() => this.onPushToNextPage('我的资料', 'MineProfile', {})}
                         />
                         <ListRow
                             style={styles.contentTitleView}
                             title={'我的账户'}
-                            titleStyle={styles.contentTitle}
+                            titleStyle={Theme.contentTitle}
                             icon={<Image source={Images.icon_cloud} style={[Theme.contentTitleIcon, {}]} />}
                             detail={<Image source={Images.icon_arrow_right} style={[Theme.contentRightIcon, {}]} />}
+                            accessory={'none'}
+                            onPress={() => this.onPushToNextPage('我的账户', 'MineAccount', {})}
                         />
                         <ListRow
                             style={styles.contentTitleView}
                             title={'我的积分'}
-                            titleStyle={styles.contentTitle}
+                            titleStyle={Theme.contentTitle}
                             icon={<Image source={Images.icon_points} style={[Theme.contentTitleIcon, {}]} />}
                             detail={<Image source={Images.icon_arrow_right} style={[Theme.contentRightIcon, {}]} />}
+                            accessory={'none'}
+                            onPress={() => this.onPushToNextPage('我的积分', 'MinePoints', {})}
                         />
                     </View>
                     <View style={styles.contentItemView}>
                         <ListRow
                             style={styles.contentTitleView}
                             title={'诚信体系'}
-                            titleStyle={styles.contentTitle}
+                            titleStyle={Theme.contentTitle}
                             icon={<Image source={Images.icon_medal} style={[Theme.contentTitleIcon, {}]} />}
                             detail={<Image source={Images.icon_arrow_right} style={[Theme.contentRightIcon, {}]} />}
+                            accessory={'none'}
+                            onPress={() => this.onPushToNextPage('诚信体系', 'MineIntegritySystem', {})}
                         />
                         <ListRow
                             style={styles.contentTitleView}
                             title={'工作台'}
-                            titleStyle={styles.contentTitle}
+                            titleStyle={Theme.contentTitle}
                             icon={<Image source={Images.icon_work_space} style={[Theme.contentTitleIcon, {}]} />}
                             detail={<Image source={Images.icon_arrow_right} style={[Theme.contentRightIcon, {}]} />}
+                            accessory={'none'}
+                            onPress={() => this.onPushToNextPage('工作台', 'MineWorkSpace', {})}
                         />
                         <ListRow
                             style={styles.contentTitleView}
                             title={'分享APP'}
-                            titleStyle={styles.contentTitle}
+                            titleStyle={Theme.contentTitle}
                             icon={<Image source={Images.icon_share} style={[Theme.contentTitleIcon, {}]} />}
                             detail={<Image source={Images.icon_arrow_right} style={[Theme.contentRightIcon, {}]} />}
+                            accessory={'none'}
+                            onPress={() => this.onPushToNextPage('分享APP', 'ShareApp', {})}
                         />
                     </View>
                     <View style={[styles.contentItemView, styles.lastContentItemView]}>
                         <ListRow
                             style={styles.contentTitleView}
                             title={'设置'}
-                            titleStyle={styles.contentTitle}
+                            titleStyle={Theme.contentTitle}
                             icon={<Image source={Images.icon_setting} style={[Theme.contentTitleIcon, {}]} />}
                             detail={<Image source={Images.icon_arrow_right} style={[Theme.contentRightIcon, {}]} />}
+                            accessory={'none'}
+                            onPress={() => this.onPushToNextPage('设置', 'Setting', {})}
                         />
                     </View>
                 </View>

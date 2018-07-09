@@ -1,9 +1,9 @@
-'use strict';/**
- * 校园空兼 - 
+/**
+ * 校园空兼 -
  * https://menger.me
  * @大梦
  */
- 
+
 'use strict';
 
 import React from 'react'
@@ -21,7 +21,7 @@ class Avatar extends React.PureComponent {
     };
 
     render() {
-        const { source } = this.props
+        const {source} = this.props;
         return (
             <Image style={styles.avatarImage} source={source} />
         );

@@ -4,7 +4,6 @@
  * @大梦
  */
 
-
 'use strict';
 
 import React, {Component} from 'react'
@@ -39,6 +38,7 @@ import Stepper from '../../component/common/Stepper'
 import {QRscanner} from 'react-native-qr-scanner'
 import {Carousel, ListRow} from 'teaset'
 import {scaleSize} from "../../util/Tool";
+import JobItem from "../../component/item/jobItem";
 
 
 @inject('testStore111111')
@@ -95,45 +95,7 @@ export default class Home extends Component {
         }
         if (type === 2) {
             listView = data.map((item, index) => {
-                let itemView = <TouchableOpacity style={styles.jobItemView} key={index}>
-                    <View style={styles.jobItemPicView}>
-                        <Image
-                            style={styles.jobItemPic}
-                            resizeMode={'cover'}
-                            source={Images.img_jobs1}
-                        />
-                    </View>
-                    <View style={styles.jobInfoView}>
-                        <View style={[styles.jobInfoItemView, styles.jobInfoTitleView]}>
-                            <Text style={styles.jobInfoTitle}>花海地产新盘传单派发</Text>
-                            <View style={styles.jobInfoTagsView}>
-                                <View style={styles.jobInfoTagItemView}>
-                                    <Text style={styles.jobInfoTagItemName}>急招</Text>
-                                </View>
-                                <View style={[styles.jobInfoTagItemView, styles.jobInfoTagIconView]}>
-                                    <Image source={Images.icon_hot} style={[styles.jobInfoIcon]} />
-                                </View>
-                            </View>
-                        </View>
-                        <View style={[styles.jobInfoItemView, styles.marginVerticalView]}>
-                            <View style={styles.jobInfoLeftView} />
-                            <View style={styles.jobInfoRightView}>
-                                <Text style={styles.jobInfoPrice}>12元/h</Text>
-                            </View>
-                        </View>
-                        <View style={styles.jobInfoItemView}>
-                            <View style={styles.jobInfoLeftView}>
-                                <Image source={Images.icon_user} style={[styles.jobInfoIcon]} />
-                                <Text style={styles.jobInfoContext}>报名人数</Text>
-                                <Text style={styles.jobInfoContext}>7/20</Text>
-                            </View>
-                            <View style={styles.jobInfoRightView}>
-                                <Text style={styles.jobInfoContext}>0.8工分/h</Text>
-                            </View>
-                        </View>
-                    </View>
-                </TouchableOpacity>;
-                return itemView;
+                return <JobItem key={index} {...this.props}/>;
             });
         }
         if (type === 3) {
@@ -229,9 +191,11 @@ export default class Home extends Component {
                                 <ListRow
                                     style={styles.contentTitleView}
                                     title={'热门换购'}
-                                    titleStyle={styles.contentTitle}
+                                    titleStyle={Theme.contentTitle}
                                     icon={<Image source={Images.icon_shop_package} style={[Theme.contentTitleIcon, {tintColor: '#ed3126'}]} />}
                                     detail={'更多 >>'}
+                                    accessory={'none'}
+                                    onPress={() => alert('Press!')}
                                 />
                                 <View style={[styles.contentItemConView, styles.contentExchangeShopView]}>
                                     <ScrollView style={styles.listRowContent} horizontal={true}>
@@ -246,9 +210,11 @@ export default class Home extends Component {
                                 <ListRow
                                     style={styles.contentTitleView}
                                     title={'热门工作推荐'}
-                                    titleStyle={styles.contentTitle}
+                                    titleStyle={Theme.contentTitle}
                                     icon={<Image source={Images.icon_category} style={[Theme.contentTitleIcon, {tintColor: '#2f91eb'}]} />}
                                     detail={'更多 >>'}
+                                    accessory={'none'}
+                                    onPress={() => alert('Press!')}
                                 />
                                 <View style={styles.contentItemConView}>
                                     {this.renderListView(2, [1,2,3])}
@@ -258,9 +224,11 @@ export default class Home extends Component {
                                 <ListRow
                                     style={styles.contentTitleView}
                                     title={'积分兑换热榜'}
-                                    titleStyle={styles.contentTitle}
+                                    titleStyle={Theme.contentTitle}
                                     icon={<Image source={Images.icon_points} style={[Theme.contentTitleIcon, {tintColor: '#ffb04a'}]} />}
                                     detail={'更多 >>'}
+                                    accessory={'none'}
+                                    onPress={() => alert('Press!')}
                                 />
                                 <View style={[styles.contentItemConView, styles.contentExchangeShopView]}>
                                     <ScrollView style={styles.listRowContent} horizontal={true}>

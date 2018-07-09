@@ -45,7 +45,7 @@ class CusNavigationBar extends PureComponent {
                         source={Images.img_bg_navbar}
                     />
                 }
-                leftView={leftView && <TouchableOpacity
+                leftView={<TouchableOpacity
                         ref={v => this.leftView = v}
                         style={styles.navLeft}
                         onPress={this._backOnPress}
@@ -96,6 +96,7 @@ const styles = StyleSheet.create({
     leftImage: {
         width: ScaleSize(55),
         height: ScaleSize(55),
+        resizeMode: 'contain',
     },
     navLeft: {}
 });

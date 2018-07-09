@@ -1,3 +1,10 @@
+/**
+ * 校园空兼 - VideoPage
+ * https://menger.me
+ * @大梦
+ */
+ 
+'use strict';
 
 import React, { Component } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
@@ -7,7 +14,7 @@ import Container from '../../component/common/Container';
 import VideoPlayer from '../../component/video/index'
 import { Button } from 'teaset';
 
-class VideoPage extends React.PureComponent {
+export default class VideoPage extends React.PureComponent {
 
     constructor(props) {
         super(props)
@@ -98,5 +105,3 @@ const styles = StyleSheet.create({
         zIndex: 20
     }
 });
-
-export default VideoPage;
