@@ -36,8 +36,7 @@ import ImagePicker from 'react-native-image-picker';
 import PayManager from '../../config/PayManager'
 import Stepper from '../../component/common/Stepper'
 import {QRscanner} from 'react-native-qr-scanner'
-import {Carousel, ListRow} from 'teaset'
-import {scaleSize} from "../../util/Tool";
+import {Carousel, ListRow} from 'teaset';
 import JobItem from "../../component/item/jobItem";
 
 
@@ -126,6 +125,7 @@ export default class Home extends Component {
                         backgroundColor: '#fff',
                     }}
                     statusBarStyle={'default'}
+                    leftView={null}
                 />
                 {!loading ? (
                     <ScrollView
@@ -278,7 +278,7 @@ const styles = StyleSheet.create({
     },
     headerRightView: {
         right: 15,
-        height: 40,
+        // height: 40,
         position: 'absolute',
     },
     leftViewBar: {
@@ -301,18 +301,18 @@ const styles = StyleSheet.create({
         alignItems: 'flex-end',
     },
     carouselControl: {
-        width: scaleSize(25),
-        height: scaleSize(10),
+        width: ScaleSize(25),
+        height: ScaleSize(10),
         marginRight: 5,
-        borderRadius: scaleSize(8),
+        borderRadius: ScaleSize(8),
         backgroundColor: "rgba(255, 255, 255, 0.5)",
     },
     carouselControlCur: {
         backgroundColor: '#fff',
     },
     noticeIcon: {
-        width: scaleSize(30),
-        height: scaleSize(30),
+        width: ScaleSize(30),
+        height: ScaleSize(30),
         resizeMode: 'contain',
     },
     noticeContext: {
@@ -383,12 +383,12 @@ const styles = StyleSheet.create({
     },
 
     contentRightIconView: {
-        width: scaleSize(35),
+        width: ScaleSize(35),
         alignItems: 'center',
     },
     arrowIcon: {
-        // width: scaleSize(20),
-        height: scaleSize(40),
+        // width: ScaleSize(20),
+        height: ScaleSize(40),
         resizeMode: 'contain',
     },
     
@@ -433,8 +433,8 @@ const styles = StyleSheet.create({
         fontSize: FontSize(14),
     },
     jobInfoIcon: {
-        width: scaleSize(28),
-        height: scaleSize(28),
+        width: ScaleSize(28),
+        height: ScaleSize(28),
         resizeMode: 'contain',
     },
     jobInfoTagsView: {

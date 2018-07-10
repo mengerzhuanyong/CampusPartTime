@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 import React, {PureComponent} from 'react';
 import {
     View,
@@ -29,7 +29,7 @@ class CusSegmentedView extends PureComponent {
         // 悬浮的SegmentedBar
         stickyScrollY: PropTypes.any,
         stickyHeaderY: PropTypes.number,
-    }
+    };
     static defaultProps = {
         ...SegmentedBar.defaultProps,
         initialPage: 0,
@@ -39,12 +39,14 @@ class CusSegmentedView extends PureComponent {
         pageHeight: -1,
         showSegmentedBar: true,
         // backgroundImage: Images.img_bg_navbar
-    }
+    };
+
     constructor(props) {
         super(props);
-        this.state = { width: 0, height: 0, activeIndex: 0 }
+        this.state = {width: 0, height: 0, activeIndex: 0};
         this.isScrollMark = false
     }
+
     componentDidMount() {
         if (__IOS__) {
             setTimeout(() => this._onChangeBar(this.props.initialPage, false), 50);
@@ -58,64 +60,64 @@ class CusSegmentedView extends PureComponent {
     };
 
     changeScrollPage = (index, animated) => {
-        const { width } = this.state
+        const {width} = this.state;
         if (__IOS__) {
-            this._scrollRef.scrollTo({ x: width * index, y: 0, animated: animated });
+            this._scrollRef.scrollTo({x: width * index, y: 0, animated: animated});
         } else {
             animated ? this._scrollRef.setPage(index) : this._scrollRef.setPageWithoutAnimation(index)
         }
-    }
+    };
 
     _onChangeBar = (index) => {
-        const { animated } = this.props
-        if (this.state.activeIndex != index) {
+        const {animated} = this.props;
+        if (this.state.activeIndex !== index) {
             this.changeScrollPage(index, false)
         }
-    }
+    };
     _changePage = (cardIndex) => {
-        if (this.state.activeIndex != cardIndex && !this.isScrollMark) {
-            const { lazy, lazyDelay } = this.props
-             // console.log(this.state.activeIndex, cardIndex)
-            this.isScrollMark = true
+        if (this.state.activeIndex !== cardIndex && !this.isScrollMark) {
+            const {lazy, lazyDelay} = this.props;
+            // console.log(this.state.activeIndex, cardIndex)
+            this.isScrollMark = true;
             this.cusSegmentedBar && this.cusSegmentedBar.changeBarIndex && this.cusSegmentedBar.changeBarIndex(cardIndex)
             requestAnimationFrame(() => {
-                 // console.log('requestAnimationFrame')
-                let delay = lazy ? lazyDelay : 0
+                // console.log('requestAnimationFrame')
+                let delay = lazy ? lazyDelay : 0;
                 setTimeout(() => {
-                    this.setState({ activeIndex: cardIndex }, () => {
+                    this.setState({activeIndex: cardIndex}, () => {
                         this.isScrollMark = false
                     })
                 }, delay);
             })
         }
-    }
+    };
     _onScroll = (e) => {
-        const { width } = this.state
-        const { x } = e.nativeEvent.contentOffset;
+        const {width} = this.state;
+        const {x} = e.nativeEvent.contentOffset;
         const cardIndex = Math.round(x / width);
-        this._changePage(cardIndex)
+        this._changePage(cardIndex);
 
-    }
+    };
     _onPageScroll = (e) => {
-        const { lazy, lazyDelay } = this.props
+        const {lazy, lazyDelay} = this.props;
         const offset = e.nativeEvent.offset + e.nativeEvent.position;
         const cardIndex = Math.round(offset);
         this._changePage(cardIndex)
-    }
+    };
 
     _onLayout = (e) => {
-        const width = e.nativeEvent.layout.width
-        const height = e.nativeEvent.layout.height
-        this.setState({ width, height })
-    }
+        const width = e.nativeEvent.layout.width;
+        const height = e.nativeEvent.layout.height;
+        this.setState({width, height})
+    };
 
     _captureRef = (v) => {
         this._scrollRef = v
-    }
+    };
 
     _renderScrollView = () => {
-        const { children, scrollEnabled, initialPage, lazy, keyboardShouldPersistTaps } = this.props
-        const { width, activeIndex } = this.state
+        const {children, scrollEnabled, initialPage, lazy, keyboardShouldPersistTaps} = this.props;
+        const {width, activeIndex} = this.state;
         return (
             <ScrollView
                 ref={this._captureRef}
@@ -131,7 +133,8 @@ class CusSegmentedView extends PureComponent {
             >
                 {children.map((item, index) => {
                     return (
-                        <SceneView key={`todo_page${index}`}
+                        <SceneView
+                            key={`todo_page${index}`}
                             lazy={lazy}
                             width={width}
                             item={item}
@@ -143,11 +146,12 @@ class CusSegmentedView extends PureComponent {
                 })}
             </ScrollView>
         )
-    }
+    };
+
     _renderViewPagerAndroid = () => {
-        const { children, initialPage, scrollEnabled, pageHeight, lazy } = this.props
-        const { width, activeIndex } = this.state
-        let h = pageHeight != -1 ? { height: pageHeight } : {}
+        const {children, initialPage, scrollEnabled, pageHeight, lazy} = this.props;
+        const {width, activeIndex} = this.state;
+        let h = pageHeight !== -1 ? {height: pageHeight} : {};
         return (
             <ViewPagerAndroid
                 ref={this._captureRef}
@@ -160,7 +164,7 @@ class CusSegmentedView extends PureComponent {
             >
                 {children.map((item, index) => {
                     return (
-                        <View key={`todo_page${index}`} style={{ width }}>
+                        <View key={`todo_page${index}`} style={{width}}>
                             <SceneView
                                 lazy={lazy}
                                 width={width}
@@ -174,11 +178,11 @@ class CusSegmentedView extends PureComponent {
                 })}
             </ViewPagerAndroid>
         )
-    }
+    };
 
     _renderSegmentedBar = () => {
-        const { stickyScrollY, stickyHeaderY } = this.props
-         // console.log(stickyScrollY)
+        const {stickyScrollY, stickyHeaderY} = this.props;
+        // console.log(stickyScrollY)
         return (
             <StickyHeader
                 stickyHeaderY={stickyHeaderY} // 滑动到多少悬浮
@@ -192,13 +196,14 @@ class CusSegmentedView extends PureComponent {
             </StickyHeader>
 
         )
-    }
+    };
+
     render() {
-        const { style, onLayout, showSegmentedBar } = this.props
-         // console.log('rednder')
+        const {style, onLayout, showSegmentedBar} = this.props;
+        // console.log('rednder')
         return (
             <View style={[styles.container, style]}
-            // onLayout={(e) => onLayout && onLayout(e)}
+                // onLayout={(e) => onLayout && onLayout(e)}
             >
                 {showSegmentedBar ? this._renderSegmentedBar() : null}
                 {
@@ -213,46 +218,49 @@ class CusSegmentedBar extends PureComponent {
 
     constructor(props) {
         super(props);
-         // console.log('props.activeIndex', props.activeIndex)
-        this.state = { activeIndex: props.activeIndex != undefined ? props.activeIndex : 0 }
+        // console.log('props.activeIndex', props.activeIndex)
+        this.state = {activeIndex: props.activeIndex !== undefined ? props.activeIndex : 0}
     }
+
     componentWillReceiveProps(nextProps) {
-        if (this.props.activeIndex != undefined && nextProps.activeIndex != this.state.activeIndex) {
-            this.setState({ activeIndex: nextProps.activeIndex });
+        if (this.props.activeIndex !== undefined && nextProps.activeIndex !== this.state.activeIndex) {
+            this.setState({activeIndex: nextProps.activeIndex});
         }
     }
+
     changeBarIndex = (cardIndex) => {
-        const { onChange } = this.props
-        if (cardIndex != this.state.activeIndex) {
-            if (this.props.activeIndex == undefined) {
-                this.setState({ activeIndex: cardIndex });
+        const {onChange} = this.props;
+        if (cardIndex !== this.state.activeIndex) {
+            if (this.props.activeIndex === undefined) {
+                this.setState({activeIndex: cardIndex});
             }
             onChange && onChange(cardIndex)
         }
-    }
+    };
     _onChangeBar = (index) => {
-        const { onChangeBar, onChange } = this.props
-         // console.log('_onChangeBar')
-        if (index != this.state.activeIndex) {
-            if (this.props.activeIndex == undefined) {
-                this.setState({ activeIndex: index });
+        const {onChangeBar, onChange} = this.props;
+        // console.log('_onChangeBar')
+        if (index !== this.state.activeIndex) {
+            if (this.props.activeIndex === undefined) {
+                this.setState({activeIndex: index});
             }
-            onChangeBar && onChangeBar(index)
-            onChange && onChange(index)
+            onChangeBar && onChangeBar(index);
+            onChange && onChange(index);
         }
-    }
+    };
+
     render() {
-        let { onChange, renderCustomBar, children, style, barStyle, backgroundImage, ...others } = this.props
+        let {onChange, renderCustomBar, children, style, barStyle, backgroundImage, ...others} = this.props;
         let customBar;
         if (renderCustomBar && React.isValidElement(renderCustomBar)) {
             customBar = renderCustomBar
-        } else if (typeof renderCustomBar == 'function') {
-            customBar = <this.props.renderCustomBar />
+        } else if (typeof renderCustomBar === 'function') {
+            customBar = <this.props.renderCustomBar/>
         }
 
         return (
-            <View style={styles.barStyleContainer} >
-                <ImageBackground style={styles.segmentedBarImage} source={backgroundImage} />
+            <View style={styles.barStyleContainer}>
+                <ImageBackground style={styles.segmentedBarImage} source={backgroundImage}/>
                 <SegmentedBar
                     style={[styles.barStyle, barStyle]}
                     activeIndex={this.state.activeIndex}
@@ -260,15 +268,15 @@ class CusSegmentedBar extends PureComponent {
                     {...others}
                 >
                     {customBar ? customBar : children.map((item, index) => {
-                        const { style, ...itemOthers } = item.props
-                        return <SegmentedBar.Item
-                            {...itemOthers}
-                            key={`todo_bar${index}`}
-                        />
-                    }
+                        const {style, ...itemOthers} = item.props;
+                            return <SegmentedBar.Item
+                                {...itemOthers}
+                                key={`todo_bar${index}`}
+                            />
+                        }
                     )}
                 </SegmentedBar>
-            </View >
+            </View>
         );
     }
 }
@@ -281,30 +289,33 @@ class SceneView extends React.PureComponent {
         activeIndex: PropTypes.number,
         initialPage: PropTypes.number,
         lazy: PropTypes.bool
-    }
+    };
     static defaultProps = {
         initialPage: 0,
         activeIndex: 0,
-    }
+    };
+
     constructor(props) {
         super(props);
-        this.state = { isFocused: props.lazy ? props.index == props.initialPage : true }
+        this.state = {isFocused: props.lazy ? props.index === props.initialPage : true}
 
     }
+
     componentWillReceiveProps(nextProps) {
-        const { index } = this.props
-        if (!this.state.isFocused && nextProps.activeIndex == index) {
-            this.setState({ isFocused: true })
+        const {index} = this.props;
+        if (!this.state.isFocused && nextProps.activeIndex === index) {
+            this.setState({isFocused: true})
         }
     }
+
     render() {
-        const { width, item } = this.props
-        const { isFocused } = this.state
-         // console.log('isFocused', isFocused)
+        const {width, item} = this.props;
+        const {isFocused} = this.state;
+        // console.log('isFocused', isFocused)
         return (
             isFocused ? React.cloneElement(item, {
-                style: [item.props.style, { width }],
-            }) : <View style={{ width }} />
+                style: [item.props.style, {width}],
+            }) : <View style={{width}}/>
         );
     }
 }

@@ -37,7 +37,6 @@ import PayManager from '../../config/PayManager'
 import Stepper from '../../component/common/Stepper'
 import {QRscanner} from 'react-native-qr-scanner'
 import {Carousel, ListRow} from 'teaset'
-import {scaleSize} from "../../util/Tool"
 import {HorizontalLine, VerticalLine} from '../../component/common/commonLine'
 import JobItem from "../../component/item/jobItem";
 
@@ -213,11 +212,13 @@ export default class Work extends Component {
                         backgroundColor: '#fff',
                     }}
                     statusBarStyle={'default'}
+                    leftView={null}
                 />
                 <FlatListView
                     style={styles.listContent}
                     initialRefresh={false}
                     ref={this._captureRef}
+                    removeClippedSubviews={false}
                     data={this.state.listData}
                     renderItem={this._renderListItem}
                     keyExtractor={this._keyExtractor}
@@ -294,18 +295,18 @@ const styles = StyleSheet.create({
         alignItems: 'flex-end',
     },
     carouselControl: {
-        width: scaleSize(25),
-        height: scaleSize(10),
+        width: ScaleSize(25),
+        height: ScaleSize(10),
         marginRight: 5,
-        borderRadius: scaleSize(8),
+        borderRadius: ScaleSize(8),
         backgroundColor: "rgba(255, 255, 255, 0.5)",
     },
     carouselControlCur: {
         backgroundColor: '#fff',
     },
     noticeIcon: {
-        width: scaleSize(30),
-        height: scaleSize(30),
+        width: ScaleSize(30),
+        height: ScaleSize(30),
         resizeMode: 'contain',
     },
     noticeContext: {
@@ -358,7 +359,7 @@ const styles = StyleSheet.create({
     },
     sortBtnIcon: {
         marginLeft: 5,
-        height: scaleSize(30),
+        height: ScaleSize(30),
         resizeMode: 'contain',
     },
 });

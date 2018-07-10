@@ -161,6 +161,21 @@ const CusTheme = {
         color: '#333',
         fontSize: fontSize(20),
     },
+
+    emptyComponentView: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    listEmptyTipsImg: {
+        marginTop: scaleSize(40),
+        resizeMode: 'contain',
+        width: width / 1.5,
+    },
+    emptyText: {
+        color: '#666',
+        fontSize: fontSize(14),
+    },
 };
 
 export default CusTheme;

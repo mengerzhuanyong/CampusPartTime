@@ -345,9 +345,10 @@ class EmptyComponent extends React.PureComponent {
 
 const styles = StyleSheet.create({
     footerContainer: {
+        marginBottom: 20,
         flexDirection: 'row',
-        justifyContent: 'center',
         alignItems: 'center',
+        justifyContent: 'center',
         // backgroundColor: 'red',
     },
     indicatorContainer: {

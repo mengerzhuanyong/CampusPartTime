@@ -37,7 +37,6 @@ import PayManager from '../../config/PayManager'
 import Stepper from '../../component/common/Stepper'
 import {QRscanner} from 'react-native-qr-scanner'
 import {Carousel, ListRow} from 'teaset'
-import {scaleSize} from '../../util/Tool'
 import {HorizontalLine} from '../../component/common/commonLine'
 import GoodsItem from "../../component/item/goodsItem";
 
@@ -171,6 +170,7 @@ export default class Shop extends Component {
                         backgroundColor: '#fff',
                     }}
                     statusBarStyle={'default'}
+                    leftView={null}
                 />
                 <View style={styles.content}>
                     <FlatListView
@@ -178,6 +178,7 @@ export default class Shop extends Component {
                         initialRefresh={false}
                         ref={this._captureRef}
                         data={this.state.listData}
+                        removeClippedSubviews={false}
                         renderItem={this._renderListItem}
                         keyExtractor={this._keyExtractor}
                         onEndReached={this._onEndReached}
@@ -266,8 +267,8 @@ const styles = StyleSheet.create({
     },
     navIcon: {
         resizeMode: 'contain',
-        width: scaleSize(100),
-        height: scaleSize(100),
+        width: ScaleSize(100),
+        height: ScaleSize(100),
     },
     navTitle: {
         color: '#666',

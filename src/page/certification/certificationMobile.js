@@ -145,8 +145,8 @@ const styles = StyleSheet.create({
         marginVertical: 3,
     },
     userInfoItemIcon: {
-        width: ScaleSize(50),
-        height: ScaleSize(50),
+        width: ScaleSize(40),
+        height: ScaleSize(40),
         resizeMode: 'contain',
         marginRight: 10,
     },

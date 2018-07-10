@@ -49,8 +49,8 @@ class RouteHelper {
 
     static goBack(routeName) {
         if (routeName) {
-            const index = this.routeStack.findIndex((item) => routeName === item.state.routeName)
-            const navTarget = this.routeStack[index + 1]
+            const index = this.routeStack.findIndex((item) => routeName === item.state.routeName);
+            const navTarget = this.routeStack[index + 1];
             const key = navTarget.state.key;
             this.navigation.goBack(key);
         } else {

@@ -25,17 +25,20 @@ export default class MineProfile extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {};
+        this.state = {
+            stu_cer_uri: 'https://h5.apix.cn/degrees?signature=64392c4592131eee29c24579e5d6bd65',
+        };
     }
 
     onPushToNextPage = (pageTitle, component, params = {}) => {
         RouteHelper.navigate(component, {
             pageTitle: pageTitle,
-            ...this.params
+            ...params
         })
     };
 
     render() {
+        let {stu_cer_uri} = this.state;
         let {params} = this.props.navigation.state;
         let pageTitle = params && params.pageTitle ? params.pageTitle : '我的资料';
         return (
@@ -80,7 +83,7 @@ export default class MineProfile extends Component {
                             titleStyle={Theme.contentTitle}
                             icon={<Image source={Images.icon_school_roll} style={[Theme.contentTitleIcon, {}]} />}
                             accessory={<Image source={Images.icon_arrow_right} style={[Theme.contentRightIcon, {}]} />}
-                            onPress={() => this.onPushToNextPage('学籍资料认证', 'CertificationStudent', {})}
+                            onPress={() => this.onPushToNextPage('学籍资料认证', 'CommonWebPage', {url: stu_cer_uri, style: styles.webViewStyle})}
                         />
                         <ListRow
                             style={styles.contentTitleView}
@@ -171,5 +174,8 @@ const styles = StyleSheet.create({
         marginLeft: 10,
         color: '#333',
         fontSize: FontSize(14),
+    },
+    webViewStyle: {
+        marginTop: -46,
     },
 });

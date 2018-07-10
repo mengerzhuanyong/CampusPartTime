@@ -7,10 +7,21 @@
 'use strict';
 
 import React, { Component } from 'react'
-import { ScrollView, StyleSheet, Text, View } from 'react-native'
+import {
+    Text,
+    View,
+    Image,
+    Alert,
+    Animated,
+    TextInput,
+    ScrollView,
+    StyleSheet,
+    ImageBackground,
+    TouchableOpacity,
+    TouchableWithoutFeedback,
+} from 'react-native'
 import NavigationBar from '../../component/common/NavigationBar'
-import DropDownMenu from '../../component/common/DropdownMenu';
-import Container from '../../component/common/Container';
+import {Button, Carousel, ListRow} from 'teaset'
 
 export default class MineAccount extends Component {
 
@@ -18,6 +29,13 @@ export default class MineAccount extends Component {
         super(props);
         this.state = {};
     }
+
+    onPushToNextPage = (pageTitle, component, params = {}) => {
+        RouteHelper.navigate(component, {
+            pageTitle: pageTitle,
+            ...params
+        })
+    };
 
     render() {
         let {params} = this.props.navigation.state;
@@ -27,18 +45,82 @@ export default class MineAccount extends Component {
                 <NavigationBar
                     title={pageTitle}
                 />
-                <View style={Theme.flexCenter}>
-                    <Text style={Theme.defaultFont}>敬请期待</Text>
-                </View>
+                <ScrollView style={styles.content}>
+                    <ListRow
+                        title={'我的余额'}
+                        detail={'25350.00元'}
+                        style={styles.contentTitleView}
+                        titleStyle={Theme.contentTitle}
+                        accessory={<Image source={Images.icon_arrow_right} style={[Theme.contentRightIcon, {}]} />}
+                        onPress={() => this.onPushToNextPage('我的余额', 'MineIntegritySystem', {})}
+                    />
+                    <ListRow
+                        title={'信用额度'}
+                        detail={''}
+                        style={styles.contentTitleView}
+                        titleStyle={Theme.contentTitle}
+                        accessory={<Image source={Images.icon_arrow_right} style={[Theme.contentRightIcon, {}]} />}
+                        onPress={() => this.onPushToNextPage('信用额度', 'MineIntegritySystem', {})}
+                    />
+                    <ListRow
+                        title={'工分明细'}
+                        detail={''}
+                        style={styles.contentTitleView}
+                        titleStyle={Theme.contentTitle}
+                        accessory={<Image source={Images.icon_arrow_right} style={[Theme.contentRightIcon, {}]} />}
+                        onPress={() => this.onPushToNextPage('工分明细', 'MineIntegritySystem', {})}
+                    />
+                    <ListRow
+                        title={'兼职收入明细'}
+                        detail={''}
+                        style={styles.contentTitleView}
+                        titleStyle={Theme.contentTitle}
+                        accessory={<Image source={Images.icon_arrow_right} style={[Theme.contentRightIcon, {}]} />}
+                        onPress={() => this.onPushToNextPage('兼职收入明细', 'MineIntegritySystem', {})}
+                    />
+                    <ListRow
+                        title={'我的订单'}
+                        detail={''}
+                        style={styles.contentTitleView}
+                        titleStyle={Theme.contentTitle}
+                        accessory={<Image source={Images.icon_arrow_right} style={[Theme.contentRightIcon, {}]} />}
+                        onPress={() => this.onPushToNextPage('我的订单', 'MineIntegritySystem', {})}
+                    />
+                    <ListRow
+                        title={'提前还款'}
+                        detail={''}
+                        style={styles.contentTitleView}
+                        titleStyle={Theme.contentTitle}
+                        accessory={<Image source={Images.icon_arrow_right} style={[Theme.contentRightIcon, {}]} />}
+                        bottomSeparator={'none'}
+                        onPress={() => this.onPushToNextPage('提前还款', 'MineIntegritySystem', {})}
+                    />
+                </ScrollView>
             </View>
         );
     }
 }
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        backgroundColor: '#eee',
     },
     content: {
         flex: 1,
+        // backgroundColor: '#fff',
+    },
+
+    contentItemView: {
+        marginTop: 10,
+    },
+    contentTitleView: {
+        height: 60,
+        alignItems: 'center',
+    },
+    contentTitle: {
+        marginLeft: 10,
+        color: '#333',
+        fontSize: FontSize(14),
     },
 });

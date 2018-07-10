@@ -36,7 +36,6 @@ import ImagePicker from 'react-native-image-picker';
 import PayManager from '../../config/PayManager'
 import Stepper from '../../component/common/Stepper'
 import {QRscanner} from 'react-native-qr-scanner'
-import {scaleSize} from "../../util/Tool"
 import {HorizontalLine, VerticalLine} from '../../component/common/commonLine'
 
 
@@ -57,7 +56,7 @@ export default class Mine extends Component {
     onPushToNextPage = (pageTitle, component, params = {}) => {
         RouteHelper.navigate(component, {
             pageTitle: pageTitle,
-            ...this.params
+            ...params
         })
     };
 
@@ -112,8 +111,8 @@ export default class Mine extends Component {
                             title={'我的资料'}
                             titleStyle={Theme.contentTitle}
                             icon={<Image source={Images.icon_files} style={[Theme.contentTitleIcon, {}]} />}
-                            detail={<Image source={Images.icon_arrow_right} style={[Theme.contentRightIcon, {}]} />}
-                            accessory={'none'}
+                            detail={''}
+                            accessory={<Image source={Images.icon_arrow_right} style={[Theme.contentRightIcon, {}]} />}
                             onPress={() => this.onPushToNextPage('我的资料', 'MineProfile', {})}
                         />
                         <ListRow
@@ -121,8 +120,8 @@ export default class Mine extends Component {
                             title={'我的账户'}
                             titleStyle={Theme.contentTitle}
                             icon={<Image source={Images.icon_cloud} style={[Theme.contentTitleIcon, {}]} />}
-                            detail={<Image source={Images.icon_arrow_right} style={[Theme.contentRightIcon, {}]} />}
-                            accessory={'none'}
+                            detail={''}
+                            accessory={<Image source={Images.icon_arrow_right} style={[Theme.contentRightIcon, {}]} />}
                             onPress={() => this.onPushToNextPage('我的账户', 'MineAccount', {})}
                         />
                         <ListRow
@@ -130,8 +129,8 @@ export default class Mine extends Component {
                             title={'我的积分'}
                             titleStyle={Theme.contentTitle}
                             icon={<Image source={Images.icon_points} style={[Theme.contentTitleIcon, {}]} />}
-                            detail={<Image source={Images.icon_arrow_right} style={[Theme.contentRightIcon, {}]} />}
-                            accessory={'none'}
+                            detail={''}
+                            accessory={<Image source={Images.icon_arrow_right} style={[Theme.contentRightIcon, {}]} />}
                             onPress={() => this.onPushToNextPage('我的积分', 'MinePoints', {})}
                         />
                     </View>
@@ -141,8 +140,8 @@ export default class Mine extends Component {
                             title={'诚信体系'}
                             titleStyle={Theme.contentTitle}
                             icon={<Image source={Images.icon_medal} style={[Theme.contentTitleIcon, {}]} />}
-                            detail={<Image source={Images.icon_arrow_right} style={[Theme.contentRightIcon, {}]} />}
-                            accessory={'none'}
+                            detail={''}
+                            accessory={<Image source={Images.icon_arrow_right} style={[Theme.contentRightIcon, {}]} />}
                             onPress={() => this.onPushToNextPage('诚信体系', 'MineIntegritySystem', {})}
                         />
                         <ListRow
@@ -150,8 +149,8 @@ export default class Mine extends Component {
                             title={'工作台'}
                             titleStyle={Theme.contentTitle}
                             icon={<Image source={Images.icon_work_space} style={[Theme.contentTitleIcon, {}]} />}
-                            detail={<Image source={Images.icon_arrow_right} style={[Theme.contentRightIcon, {}]} />}
-                            accessory={'none'}
+                            detail={''}
+                            accessory={<Image source={Images.icon_arrow_right} style={[Theme.contentRightIcon, {}]} />}
                             onPress={() => this.onPushToNextPage('工作台', 'MineWorkSpace', {})}
                         />
                         <ListRow
@@ -159,8 +158,8 @@ export default class Mine extends Component {
                             title={'分享APP'}
                             titleStyle={Theme.contentTitle}
                             icon={<Image source={Images.icon_share} style={[Theme.contentTitleIcon, {}]} />}
-                            detail={<Image source={Images.icon_arrow_right} style={[Theme.contentRightIcon, {}]} />}
-                            accessory={'none'}
+                            detail={''}
+                            accessory={<Image source={Images.icon_arrow_right} style={[Theme.contentRightIcon, {}]} />}
                             onPress={() => this.onPushToNextPage('分享APP', 'ShareApp', {})}
                         />
                     </View>
@@ -170,8 +169,8 @@ export default class Mine extends Component {
                             title={'设置'}
                             titleStyle={Theme.contentTitle}
                             icon={<Image source={Images.icon_setting} style={[Theme.contentTitleIcon, {}]} />}
-                            detail={<Image source={Images.icon_arrow_right} style={[Theme.contentRightIcon, {}]} />}
-                            accessory={'none'}
+                            detail={''}
+                            accessory={<Image source={Images.icon_arrow_right} style={[Theme.contentRightIcon, {}]} />}
                             onPress={() => this.onPushToNextPage('设置', 'Setting', {})}
                         />
                     </View>
@@ -234,7 +233,7 @@ const styles = StyleSheet.create({
         width: SCREEN_WIDTH,
         alignItems: 'center',
         // justifyContent: 'center',
-        height: scaleSize(510),
+        height: ScaleSize(510),
         // backgroundColor: '#123',
     },
     contentTopItemView: {
@@ -244,20 +243,20 @@ const styles = StyleSheet.create({
     },
     userAvatarView: {
         // marginTop: 60,
-        width: scaleSize(160),
-        height: scaleSize(160),
-        borderRadius: scaleSize(80),
+        width: ScaleSize(160),
+        height: ScaleSize(160),
+        borderRadius: ScaleSize(80),
         overflow: 'hidden',
         backgroundColor: '#f50'
     },
     userAvatar: {
-        width: scaleSize(160),
-        height: scaleSize(160),
-        borderRadius: scaleSize(80),
+        width: ScaleSize(160),
+        height: ScaleSize(160),
+        borderRadius: ScaleSize(80),
         resizeMode: 'cover',
     },
     userNameView: {
-        marginVertical: scaleSize(30),
+        marginVertical: ScaleSize(30),
     },
     userName: {
         color: '#fff',
@@ -281,8 +280,8 @@ const styles = StyleSheet.create({
     },
     pointsIcon: {
         marginLeft: 5,
-        width: scaleSize(35),
-        height: scaleSize(35),
+        width: ScaleSize(35),
+        height: ScaleSize(35),
         resizeMode: 'contain',
     },
     userAccountView: {

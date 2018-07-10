@@ -1,48 +1,50 @@
-'use strict'
-import React, { PureComponent } from 'react';
-import {
-    View,
-    Text,
-    StyleSheet,
-    TouchableOpacity,
-    Image,
-    ImageBackground,
-} from 'react-native';
-import { NavigationBar } from 'teaset';
-// create a component
+'use strict';
+
+import React, {PureComponent} from 'react'
+import {View, Image, ImageBackground, StyleSheet, TouchableOpacity, Text} from 'react-native'
+import {NavigationBar} from 'teaset'
+
 class CusNavigationBar extends PureComponent {
     static propTypes = {
         ...NavigationBar.propTypes
-    }
+    };
 
     static defaultProps = {
         ...NavigationBar.defaultProps
+    };
+
+    constructor(props) {
+        super(props);
+        this.state = {}
     }
+
     _rightViewOnPress = (p) => {
-        this.props.rightViewOnPress && this.props.rightViewOnPress({ event: p, rightView: this.rightView })
-    }
+        this.props.rightViewOnPress && this.props.rightViewOnPress({event: p, rightView: this.rightView})
+    };
+
     _backOnPress = (p) => {
         if (this.props.backOnPress) {
-            this.props.backOnPress({ event: p, backButton: this.leftView })
+            this.props.backOnPress({event: p, backButton: this.leftView})
         } else {
             RouteHelper.goBack()
         }
-    }
+    };
+
     render() {
-        const { style, backgroundImage, title, ...others } = this.props;
+        const {style, statusBarStyle, leftView, rightViewOnPress, backgroundImage, titleStyle, title, ...others} = this.props;
         return (
             <NavigationBar
                 style={[styles.navBarStyle, style]}
+                statusBarStyle={statusBarStyle}
                 title={
-                    <Text style={styles.navTitle}>{title}</Text>
+                    <Text style={[styles.navTitle, titleStyle]}>{title}</Text>
                 }
-                background={backgroundImage &&
+                background={ backgroundImage &&
                     <ImageBackground
                         style={styles.navBackImage}
                         source={Images.img_bg_navbar}
                     />
                 }
-                rightView={null}
                 leftView={
                     <TouchableOpacity
                         ref={v => this.leftView = v}
@@ -55,13 +57,13 @@ class CusNavigationBar extends PureComponent {
                         />
                     </TouchableOpacity>
                 }
+                rightView={rightViewOnPress}
                 {...others}
             />
         );
     }
 }
 
-// define your styles
 const styles = StyleSheet.create({
     navBarStyle: {
         zIndex: 999,
@@ -89,5 +91,4 @@ const styles = StyleSheet.create({
     navLeft: {}
 });
 
-//make this component available to the app
 export default CusNavigationBar;

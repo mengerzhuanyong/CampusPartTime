@@ -19,6 +19,8 @@ import SplashScreen from 'react-native-splash-screen'
 
 import TabNavigation from './TabNavigation'
 
+import CommonWebPage from '../page/common/commonWebPage'
+
 import Login from '../page/login/login'
 import Register from '../page/login/register'
 import RecoverPwd from '../page/login/recoverPwd'
@@ -28,6 +30,11 @@ import MineIntegritySystem from '../page/mine/mineIntegritySystem'
 import MinePoints from '../page/mine/minePoints'
 import MineProfile from '../page/mine/mineProfile'
 import MineWorkSpace from '../page/mine/mineWorkSpace'
+
+import MineCredits from '../page/account/mineCredits'
+import MineWorkPoints from '../page/account/mineWorkPoints'
+import MinePartTimeIncome from '../page/account/minePartTimeIncome'
+import MineOrder from '../page/order/mineOrder'
 
 import CertificationIDCard from '../page/certification/certificationIDCard'
 import CertificationMobile from '../page/certification/certificationMobile'
@@ -42,59 +49,30 @@ import VideoPage from '../page/common/videoPage';
 import Chat from '../page/common/chat';
 
 const Nav = createStackNavigator(configRoute({
-    Tab: {
-        screen: TabNavigation
-    },
-    Login: {
-        screen: Login
-    },
-    Register: {
-        screen: Register
-    },
-    RecoverPwd: {
-        screen: RecoverPwd
-    },
-    MineAccount: {
-        screen: MineAccount
-    },
-    MineIntegritySystem: {
-        screen: MineIntegritySystem
-    },
-    MinePoints: {
-        screen: MinePoints
-    },
-    MineProfile: {
-        screen: MineProfile
-    },
-    MineWorkSpace: {
-        screen: MineWorkSpace
-    },
-    Setting: {
-        screen: Setting
-    },
-    ShareApp: {
-        screen: ShareApp
-    },
-    CertificationIDCard: {
-        screen: CertificationIDCard
-    },
-    CertificationMobile: {
-        screen: CertificationMobile
-    },
-    CertificationStudent: {
-        screen: CertificationStudent
-    },
-    EmergencyContact: {
-        screen: EmergencyContact
-    },
-    VideoPage: {
-        screen: VideoPage
-    },
-    Chat: {
-        screen: Chat
-    },
+    Tab: {screen: TabNavigation},
+    CommonWebPage: {screen: CommonWebPage},
+    Login: {screen: Login},
+    Register: {screen: Register},
+    RecoverPwd: {screen: RecoverPwd},
+    MineAccount: {screen: MineAccount},
+    MineIntegritySystem: {screen: MineIntegritySystem},
+    MinePoints: {screen: MinePoints},
+    MineProfile: {screen: MineProfile},
+    MineWorkSpace: {screen: MineWorkSpace},
+    MineCredits: {screen: MineCredits},
+    MineWorkPoints: {screen: MineWorkPoints},
+    MinePartTimeIncome: {screen: MinePartTimeIncome},
+    MineOrder: {screen: MineOrder},
+    Setting: {screen: Setting},
+    ShareApp: {screen: ShareApp},
+    CertificationIDCard: {screen: CertificationIDCard},
+    CertificationMobile: {screen: CertificationMobile},
+    CertificationStudent: {screen: CertificationStudent},
+    EmergencyContact: {screen: EmergencyContact},
+    VideoPage: {screen: VideoPage},
+    Chat: {screen: Chat},
 }), {
-    initialRouteName: 'MineProfile',
+    initialRouteName: 'MineOrder',
     // initialRouteName: 'Login',
     cardStyle: {
         shadowOpacity: 0,

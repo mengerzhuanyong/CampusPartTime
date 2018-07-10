@@ -1,9 +1,9 @@
 /**
- * 校园空兼 - 
+ * 校园空兼 -
  * https://menger.me
  * @大梦
  */
- 
+
 'use strict';
 
 import React from 'react'
@@ -34,7 +34,7 @@ class SegmentedControlTab extends React.PureComponent {
         activeTabBadgeContainerStyle: Text.propTypes.style,
         tabBadgeStyle: Text.propTypes.style,
         activeTabBadgeStyle: Text.propTypes.style,
-    }
+    };
 
     static defaultProps = {
         values: ['One', 'Two', 'Three'],
@@ -42,31 +42,33 @@ class SegmentedControlTab extends React.PureComponent {
         multiple: false,
         selectedIndex: null, // 默认为null
         selectedIndices: [],
-    }
+    };
+
     constructor(props) {
-        super(props)
-        this.state = { selectedIndex: 0, selectedIndices: [0] }
+        super(props);
+        this.state = {selectedIndex: 0, selectedIndices: [0]}
     }
 
     _handleTabPress = (index) => {
-        const { multiple, selectedIndex, onTabPress } = this.props
-        if (selectedIndex && selectedIndex != index) {
+        const {multiple, selectedIndex, onTabPress} = this.props;
+        if (selectedIndex && selectedIndex !== index) {
             onTabPress && onTabPress(index);
-        } else if (!selectedIndex && this.state.selectedIndex != index) {
+        } else if (!selectedIndex && this.state.selectedIndex !== index) {
             if (multiple) {
                 // this.setState({selectedIndices:[]})
             } else {
-                this.setState({ selectedIndex: index }, () => {
+                this.setState({selectedIndex: index}, () => {
                     onTabPress && onTabPress(index);
                 })
             }
         }
     };
+
     render() {
-        const { multiple, selectedIndex, selectedIndices, values, badges, tabsContainerStyle, onTabPress, tabStyle, ...others } = this.props
-        const firstTabStyle = []
-        const lastTabStyle = []
-        const currentIndex = !selectedIndex ? this.state.selectedIndex : selectedIndex
+        const {multiple, selectedIndex, selectedIndices, values, badges, tabsContainerStyle, onTabPress, tabStyle, ...others} = this.props;
+        const firstTabStyle = [];
+        const lastTabStyle = [];
+        const currentIndex = !selectedIndex ? this.state.selectedIndex : selectedIndex;
         return (
             <View
                 style={[styles.tabsContainerStyle, tabsContainerStyle]}
@@ -81,7 +83,7 @@ class SegmentedControlTab extends React.PureComponent {
                                 isTabActive={multiple ? selectedIndices.includes(index) : currentIndex === index}
                                 text={item}
                                 onTabPress={this._handleTabPress}
-                                firstTabStyle={index === 0 ? [{ borderLeftWidth: 0 }] : {}}
+                                firstTabStyle={index === 0 ? [{borderLeftWidth: 0}] : {}}
                                 tabStyle={[tabStyle, index !== 0 && index !== values.length - 1 ? {} : {}]}
                                 {...others}
                             />
@@ -96,43 +98,56 @@ class SegmentedControlTab extends React.PureComponent {
 
 class TabOption extends React.PureComponent {
     _onPress = () => {
-        const { onTabPress, index } = this.props
+        const {onTabPress, index} = this.props;
         onTabPress && onTabPress(index)
-    }
+    };
+
     render() {
-        const { isTabActive, index, badge, text,
+        const {
+            isTabActive, index, badge, text,
             firstTabStyle,
             tabStyle, activeTabStyle,
             tabTextStyle, activeTabTextStyle,
             tabBadgeContainerStyle, activeTabBadgeContainerStyle,
             tabBadgeStyle, activeTabBadgeStyle,
-        } = this.props
+        } = this.props;
         return (
-            <TouchableOpacity style={[
-                styles.tabStyle,
-                tabStyle,
-                isTabActive ? [styles.activeTabStyle, activeTabStyle] : {},
-                firstTabStyle]}
+            <TouchableOpacity
+                style={[
+                    styles.tabStyle,
+                    tabStyle,
+                    isTabActive ? [styles.activeTabStyle, activeTabStyle] : {},
+                    firstTabStyle
+                ]}
                 onPress={this._onPress}
-                activeOpacity={1}>
-                <View style={{ flexDirection: "row" }}>
-                    <Text style={[
-                        styles.tabTextStyle,
-                        tabTextStyle,
-                        isTabActive ? [styles.activeTabTextStyle, activeTabTextStyle] : {}]}
+                activeOpacity={1}
+            >
+                <View style={{flexDirection: "row"}}>
+                    <Text
+                        style={[
+                            styles.tabTextStyle,
+                            tabTextStyle,
+                            isTabActive ? [styles.activeTabTextStyle, activeTabTextStyle] : {}
+                        ]}
                         numberOfLines={1}
-                        ellipsizeMode="tail">
+                        ellipsizeMode="tail"
+                    >
                         {text}
                     </Text>
                     {badge ?
-                        <View style={[
-                            styles.tabBadgeContainerStyle,
-                            tabBadgeContainerStyle,
-                            isTabActive ? [styles.activeTabBadgeContainerStyle, activeTabBadgeContainerStyle] : {}]}>
-                            <Text style={[
-                                styles.tabBadgeStyle,
-                                tabBadgeStyle,
-                                isTabActive ? [styles.activeTabBadgeStyle, activeTabBadgeStyle] : {}]}>
+                        <View
+                            style={[
+                                styles.tabBadgeContainerStyle,
+                                tabBadgeContainerStyle,
+                                isTabActive ? [styles.activeTabBadgeContainerStyle, activeTabBadgeContainerStyle] : {}
+                            ]}>
+                            <Text
+                                style={[
+                                    styles.tabBadgeStyle,
+                                    tabBadgeStyle,
+                                    isTabActive ? [styles.activeTabBadgeStyle, activeTabBadgeStyle] : {}
+                                ]}
+                            >
                                 {badge}
                             </Text>
                         </View> : null}
@@ -143,13 +158,12 @@ class TabOption extends React.PureComponent {
 }
 
 
-
 const styles = StyleSheet.create({
     tabsContainerStyle: {
         backgroundColor: '#fff',
         flexDirection: 'row',
         borderWidth: 1,
-        borderColor: '#0076FF',
+        borderColor: Theme.themeColor,
         overflow: 'hidden',
     },
     tabStyle: {
@@ -157,16 +171,16 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        borderColor: '#0076FF',
+        borderColor: Theme.themeColor,
         backgroundColor: 'white',
         borderLeftWidth: 1,
     },
     activeTabStyle: {
-        backgroundColor: '#0076FF',
+        backgroundColor: Theme.themeColor,
         paddingRight: 0.5,
     },
     tabTextStyle: {
-        color: '#0076FF'
+        color: Theme.themeColor
     },
     activeTabTextStyle: {
         color: 'white'
@@ -190,6 +204,6 @@ const styles = StyleSheet.create({
     activeTabBadgeStyle: {
         color: 'black'
     }
-})
+});
 
 export default SegmentedControlTab;

@@ -104,6 +104,9 @@ const Images = {
     img_jobs2: require('./img/img_jobs2.png'),
     img_jobs3: require('./img/img_jobs3.png'),
     img_jobs4: require('./img/img_jobs4.png'),
+    img_bg_dial: require('./img/img_bg_dial.png'),
+    img_hand: require('./img/img_hand.png'),
+    img_bg_credits: require('./img/img_bg_credits.png'),
 
     // TABBARS
     icon_tabbar_home: require('./tabbar/icon_tabbar_home.png'),
