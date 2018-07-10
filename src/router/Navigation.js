@@ -35,6 +35,7 @@ import MineCredits from '../page/account/mineCredits'
 import MineWorkPoints from '../page/account/mineWorkPoints'
 import MinePartTimeIncome from '../page/account/minePartTimeIncome'
 import MineOrder from '../page/order/mineOrder'
+import OrderDetail from '../page/order/orderDetail'
 
 import CertificationIDCard from '../page/certification/certificationIDCard'
 import CertificationMobile from '../page/certification/certificationMobile'
@@ -63,6 +64,7 @@ const Nav = createStackNavigator(configRoute({
     MineWorkPoints: {screen: MineWorkPoints},
     MinePartTimeIncome: {screen: MinePartTimeIncome},
     MineOrder: {screen: MineOrder},
+    OrderDetail: {screen: OrderDetail},
     Setting: {screen: Setting},
     ShareApp: {screen: ShareApp},
     CertificationIDCard: {screen: CertificationIDCard},
@@ -72,7 +74,7 @@ const Nav = createStackNavigator(configRoute({
     VideoPage: {screen: VideoPage},
     Chat: {screen: Chat},
 }), {
-    initialRouteName: 'MineOrder',
+    initialRouteName: 'OrderDetail',
     // initialRouteName: 'Login',
     cardStyle: {
         shadowOpacity: 0,

@@ -56,6 +56,8 @@ const globalStyles = StyleSheet.create({
     },
 });
 
+const themeColor = '#1ab588';
+
 const CusTheme = {
     isIPhoneX: Theme.isIPhoneX,
     fitIPhoneXTop: 44,
@@ -63,7 +65,7 @@ const CusTheme = {
     screen_width: width,
     screen_height: height,
     minPixel: 1 / PixelRatio.get(),
-    themeColor: '#1ab588',
+    themeColor: themeColor,
     pageBackgroundColor: '#f6f6f6',
     // 全局公用样式表 ,感觉不是很合理
     // 居中样式
@@ -175,6 +177,16 @@ const CusTheme = {
     emptyText: {
         color: '#666',
         fontSize: fontSize(14),
+    },
+
+    btnView: {
+        height: 45,
+        borderWidth: 0,
+        backgroundColor: themeColor,
+    },
+    btnName: {
+        color: '#fff',
+        fontSize: fontSize(15),
     },
 };
 

@@ -88,8 +88,8 @@ export default class MinePartTimeIncome extends Component {
                 <Text style={Theme.emptyText}>您还没有过兼职哦, 快去看看有哪些兼职吧</Text>
                 <Button
                     title={'去看看'}
-                    style={styles.btnView}
-                    titleStyle={styles.btnName}
+                    style={[Theme.btnView, styles.btnView]}
+                    titleStyle={[Theme.btnName, styles.btnName]}
                     onPress={() => this.onPushToNextPage('', 'Work')}
                 />
             </View>
