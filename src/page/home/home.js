@@ -54,6 +54,13 @@ export default class Home extends Component {
     componentDidMount() {
     }
 
+    onPushToNextPage = (pageTitle, component, params = {}) => {
+        RouteHelper.navigate(component, {
+            pageTitle: pageTitle,
+            ...params
+        })
+    };
+
     renderNavigationBarView = () => {
         return (
             <View style={styles.headerView}>
@@ -62,7 +69,10 @@ export default class Home extends Component {
                     <Text style={[Theme.headerIconTitle, styles.headerIconTitle]}>黄岛区</Text>
                 </TouchableOpacity>
                 <Text style={[Theme.headerTitle, styles.headerTitle]}>首页</Text>
-                <TouchableOpacity style={styles.headerRightView}>
+                <TouchableOpacity
+                    style={styles.headerRightView}
+                    onPress={() => this.onPushToNextPage('消息', 'SystemMessage')}
+                >
                     <Image source={Images.icon_message} style={Theme.headerIcon}/>
                     <View style={Theme.pointView} />
                 </TouchableOpacity>
@@ -167,10 +177,8 @@ export default class Home extends Component {
 
                             </Carousel>
                             <TouchableOpacity
-                                onPress={() => {
-                                    RouteHelper.navigate('SysNotify')
-                                }}
                                 style={styles.noticeContainer}
+                                onPress={() => this.onPushToNextPage('消息', 'SystemMessage')}
                             >
                                 <Image
                                     style={styles.noticeIcon}

@@ -85,7 +85,7 @@ const CusTheme = {
     alertWidth: 260,
     alertMinHeight: 52,
     alertTitleMaxWidth: 200,
-    alertDetailMaxWidth: 230,
+    alertDetailMaxWidth: 280,
     alertActionHeight: 42,
     alertActionColor: '#348fe4',
     alertSeparatorColor: '#eaeaea',
@@ -194,6 +194,16 @@ const CusTheme = {
     btnName: {
         color: '#fff',
         fontSize: fontSize(15),
+    },
+    inputBtnView: {
+        width: scaleSize(34),
+        height: scaleSize(34),
+    },
+    inputBtnIcon: {
+        width: scaleSize(34),
+        height: scaleSize(34),
+        tintColor: '#999',
+        resizeMode: 'contain',
     },
 };
 

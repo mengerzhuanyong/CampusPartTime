@@ -44,7 +44,7 @@ class ActionsManager {
         ActionSheet.show(actions, cancelAction);
     };
 
-    static showShare(func) {
+    static showShare(moduleTitle, func) {
         this.pullViewRefs = bouncer(this.pullViewRefs.slice()); // 过滤
         if (this.pullViewRefs.length === 0) {
             Overlay.show(
@@ -56,7 +56,7 @@ class ActionsManager {
                     containerStyle={Theme.bgTransparentStyle}
                     onCloseRequest={() => this.hide()}
                 >
-                    <ShareContent onPress={func}/>
+                    <ShareContent moduleTitle={moduleTitle} onPress={func}/>
                 </Overlay.PullView>
             )
         }
@@ -81,8 +81,9 @@ class ActionsManager {
     }
 
     static showShareModule(params) {
-        const {type, url, title, text} = params;
-        ActionsManager.showShare((item) => {
+        const {moduleTitle, type, url, title, text} = params;
+        const _moduleTitle = moduleTitle ? moduleTitle : '分享APP';
+        ActionsManager.showShare(_moduleTitle, (item) => {
             let platform;
             switch (item) {
                 case 1:

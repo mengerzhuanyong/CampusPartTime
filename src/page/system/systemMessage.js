@@ -311,6 +311,8 @@ const styles = StyleSheet.create({
         marginBottom: 10,
         width: SCREEN_WIDTH / 2.2,
     },
+
+    // 弹窗区
     alertContainer: {
         paddingVertical: 15,
         paddingHorizontal: 10,

@@ -8,7 +8,7 @@
 'use strict';
 
 import React from 'react'
-import { View, Text, StyleSheet, TouchableHighlight } from 'react-native';
+import { View, Text, StyleSheet, TouchableHighlight, Image, TouchableOpacity } from 'react-native';
 import PropTypes from 'prop-types'
 import { fontSize, scaleSize, isEmpty } from '../../util/Tool';
 import Theme from '../../config/Theme';
@@ -42,7 +42,7 @@ class AlertContent extends React.PureComponent {
                 params()
             }
         }, 300); // 防止两个alert同时触发
-        AlertManager.hide()
+        AlertManager.hide();
     };
 
     separator = (index) => {
@@ -80,9 +80,15 @@ class AlertContent extends React.PureComponent {
         return detailComponent
     };
     render() {
-        const {style, actions, actionStyle, btnStyle} = this.props;
+        const {style, actions, actionStyle, btnStyle, showClose} = this.props;
         return (
             <View style={[styles.container, style]}>
+                {showClose && <TouchableOpacity
+                    style={styles.closeView}
+                    onPress={() => this._onPress()}
+                >
+                    <Image source={Images.icon_close} style={styles.closeIcon} />
+                </TouchableOpacity>}
                 {this._renderTitleComponent()}
                 {this._renderDetailComponent()}
                 <View style={[styles.actionContainer , actionStyle]}>
@@ -114,6 +120,19 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         borderRadius: 5,
         overflow: 'hidden',
+    },
+    closeView: {
+        position: 'absolute',
+        top: 10,
+        right: 10,
+        width: scaleSize(40),
+        height: scaleSize(40),
+        // backgroundColor: '#123',
+    },
+    closeIcon: {
+        width: scaleSize(40),
+        height: scaleSize(40),
+        resizeMode: 'contain',
     },
     title: {
         color: '#333',

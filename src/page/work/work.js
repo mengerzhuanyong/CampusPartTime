@@ -63,6 +63,13 @@ export default class Work extends Component {
         console.log(result);
     }
 
+    onPushToNextPage = (pageTitle, component, params = {}) => {
+        RouteHelper.navigate(component, {
+            pageTitle: pageTitle,
+            ...params
+        })
+    };
+
     renderNavigationBarView = () => {
         return (
             <View style={styles.headerView}>
@@ -71,7 +78,10 @@ export default class Work extends Component {
                     <Text style={[Theme.headerIconTitle, styles.headerIconTitle]}>黄岛区</Text>
                 </TouchableOpacity>
                 <Text style={[Theme.headerTitle, styles.headerTitle]}>工作</Text>
-                <TouchableOpacity style={styles.headerRightView}>
+                <TouchableOpacity
+                    style={styles.headerRightView}
+                    onPress={() => this.onPushToNextPage('消息', 'SystemMessage')}
+                >
                     <Image source={Images.icon_message} style={Theme.headerIcon}/>
                     <View style={Theme.pointView} />
                 </TouchableOpacity>
@@ -228,6 +238,12 @@ export default class Work extends Component {
                     ItemSeparatorComponent={this._renderSeparator}
                     ListHeaderComponent={this._renderHeaderComponent}
                 />
+                <TouchableOpacity
+                    style={styles.btnView}
+                    onPress={() => this.onPushToNextPage('平台分配工作', 'AutoGetWork')}
+                >
+                    <Image source={Images.img_platform} style={styles.btnIcon} />
+                </TouchableOpacity>
             </View>
         );
     }
@@ -361,6 +377,16 @@ const styles = StyleSheet.create({
     sortBtnIcon: {
         marginLeft: 5,
         height: ScaleSize(30),
+        resizeMode: 'contain',
+    },
+    btnView: {
+        position: 'absolute',
+        bottom: 10,
+        right: 10,
+    },
+    btnIcon: {
+        width: ScaleSize(110),
+        height: ScaleSize(110),
         resizeMode: 'contain',
     },
 });

@@ -178,7 +178,7 @@ export default class Shop extends Component {
                         style={styles.listContent}
                         initialRefresh={false}
                         ref={this._captureRef}
-                        data={this.state.listData}
+                        data={listData}
                         removeClippedSubviews={false}
                         renderItem={this._renderListItem}
                         keyExtractor={this._keyExtractor}

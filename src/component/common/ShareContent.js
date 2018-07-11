@@ -9,7 +9,7 @@
 
 import React from 'react'
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Image } from 'react-native';
-import Images from '../../asset/index';
+import Images from '../../config/ImageManager';
 import { fontSize, scaleSize } from '../../util/Tool';
 
 import Theme from '../../config/Theme'
@@ -57,10 +57,11 @@ export default class ShareContent extends React.PureComponent {
     };
     
     render() {
+        const {moduleTitle} = this.props;
         return (
             <View style={styles.container}>
                 <View style={styles.contentTitleView}>
-                    <Text style={styles.contentTitle}>分享APP</Text>
+                    <Text style={styles.contentTitle}>{moduleTitle || '分享APP'}</Text>
                 </View>
                 {this._renderContent(ShareSource, 'share')}
                 <HorizontalLine style={styles.separator} />

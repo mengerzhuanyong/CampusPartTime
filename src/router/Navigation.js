@@ -25,6 +25,8 @@ import Login from '../page/login/login'
 import Register from '../page/login/register'
 import RecoverPwd from '../page/login/recoverPwd'
 
+import AutoGetWork from '../page/work/autoGetWork'
+
 import MineAccount from '../page/mine/mineAccount'
 import MineIntegritySystem from '../page/mine/mineIntegritySystem'
 import MinePoints from '../page/mine/minePoints'
@@ -35,6 +37,9 @@ import MineSettingPassWord from '../page/mine/mineSettingPassWord'
 import MineCredits from '../page/account/mineCredits'
 import MineWorkPoints from '../page/account/mineWorkPoints'
 import MinePartTimeIncome from '../page/account/minePartTimeIncome'
+import MineRepayment from '../page/account/mineRepayment'
+import MineWithDraw from '../page/account/mineWithDraw'
+
 import MineOrder from '../page/order/mineOrder'
 import OrderDetail from '../page/order/orderDetail'
 
@@ -57,6 +62,7 @@ const Nav = createStackNavigator(configRoute({
     Login: {screen: Login},
     Register: {screen: Register},
     RecoverPwd: {screen: RecoverPwd},
+    AutoGetWork: {screen: AutoGetWork},
     MineAccount: {screen: MineAccount},
     MineIntegritySystem: {screen: MineIntegritySystem},
     MinePoints: {screen: MinePoints},
@@ -66,6 +72,8 @@ const Nav = createStackNavigator(configRoute({
     MineCredits: {screen: MineCredits},
     MineWorkPoints: {screen: MineWorkPoints},
     MinePartTimeIncome: {screen: MinePartTimeIncome},
+    MineRepayment: {screen: MineRepayment},
+    MineWithDraw: {screen: MineWithDraw},
     MineOrder: {screen: MineOrder},
     OrderDetail: {screen: OrderDetail},
     Setting: {screen: Setting},
@@ -78,8 +86,8 @@ const Nav = createStackNavigator(configRoute({
     VideoPage: {screen: VideoPage},
     Chat: {screen: Chat},
 }), {
-    // initialRouteName: 'SystemMessage',
-    initialRouteName: 'Tab',
+    initialRouteName: 'AutoGetWork',
+    // initialRouteName: 'Tab',
     cardStyle: {
         shadowOpacity: 0,
         shadowRadius: 0,
