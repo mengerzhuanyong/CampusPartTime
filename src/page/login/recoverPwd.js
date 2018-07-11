@@ -20,7 +20,7 @@ import {Button} from 'teaset'
 
 import NavigationBar from '../../component/common/NavigationBar'
 import Container from '../../component/common/Container'
-import SendSMS from '../../component/common/sendSMS'
+import SendSMS from '../../component/common/SendSMS'
 import {HorizontalLine, VerticalLine} from '../../component/common/commonLine'
 
 export default class RecoverPwd extends PureComponent {
@@ -67,9 +67,9 @@ export default class RecoverPwd extends PureComponent {
                         <SendSMS
                             mobile={'mobile'}
                             type={'register'}
+                            style={styles.getCodeView}
                             lineStyle={styles.verLine}
-                            btnViewStyle={styles.getCodeView}
-                            btnStyle={styles.getCodeCon}
+                            titleStyle={styles.getCodeCon}
                             {...this.props}
                         />
                     </View>

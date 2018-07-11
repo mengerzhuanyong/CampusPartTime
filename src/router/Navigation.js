@@ -30,6 +30,7 @@ import MineIntegritySystem from '../page/mine/mineIntegritySystem'
 import MinePoints from '../page/mine/minePoints'
 import MineProfile from '../page/mine/mineProfile'
 import MineWorkSpace from '../page/mine/mineWorkSpace'
+import MineSettingPassWord from '../page/mine/mineSettingPassWord'
 
 import MineCredits from '../page/account/mineCredits'
 import MineWorkPoints from '../page/account/mineWorkPoints'
@@ -44,6 +45,7 @@ import EmergencyContact from '../page/certification/emergencyContact'
 
 import Setting from '../page/system/setting'
 import ShareApp from '../page/system/shareApp'
+import SystemMessage from '../page/system/systemMessage'
 
 
 import VideoPage from '../page/common/videoPage';
@@ -60,6 +62,7 @@ const Nav = createStackNavigator(configRoute({
     MinePoints: {screen: MinePoints},
     MineProfile: {screen: MineProfile},
     MineWorkSpace: {screen: MineWorkSpace},
+    MineSettingPassWord: {screen: MineSettingPassWord},
     MineCredits: {screen: MineCredits},
     MineWorkPoints: {screen: MineWorkPoints},
     MinePartTimeIncome: {screen: MinePartTimeIncome},
@@ -67,6 +70,7 @@ const Nav = createStackNavigator(configRoute({
     OrderDetail: {screen: OrderDetail},
     Setting: {screen: Setting},
     ShareApp: {screen: ShareApp},
+    SystemMessage: {screen: SystemMessage},
     CertificationIDCard: {screen: CertificationIDCard},
     CertificationMobile: {screen: CertificationMobile},
     CertificationStudent: {screen: CertificationStudent},
@@ -74,8 +78,8 @@ const Nav = createStackNavigator(configRoute({
     VideoPage: {screen: VideoPage},
     Chat: {screen: Chat},
 }), {
-    initialRouteName: 'OrderDetail',
-    // initialRouteName: 'Login',
+    // initialRouteName: 'SystemMessage',
+    initialRouteName: 'Tab',
     cardStyle: {
         shadowOpacity: 0,
         shadowRadius: 0,

@@ -1,5 +1,5 @@
 /**
- * 校园空兼 - 
+ * 校园空兼 - AlertManager
  * https://menger.me
  * @大梦
  */
@@ -15,7 +15,7 @@ import Theme from './Theme'
 
 class AlertManager {
 
-    static popViewRefs = []
+    static popViewRefs = [];
 
     // // params = {
     //     title: '温馨提示asdasd',
@@ -28,7 +28,7 @@ class AlertManager {
     //     ]
     // }
     static show(params) {
-        this.popViewRefs = bouncer(this.popViewRefs.slice()) // 过滤
+        this.popViewRefs = bouncer(this.popViewRefs.slice()); // 过滤
         if (this.popViewRefs.length === 0) {
             Overlay.show(
                 <Overlay.PopView
@@ -46,7 +46,7 @@ class AlertManager {
 
     // component 为组件
     static showComponent(component) {
-        this.popViewRefs = bouncer(this.popViewRefs.slice()) // 过滤
+        this.popViewRefs = bouncer(this.popViewRefs.slice()); // 过滤
         if (this.popViewRefs.length === 0) {
             Overlay.show(
                 <Overlay.PopView
@@ -63,9 +63,9 @@ class AlertManager {
     }
 
     static hide() {
-        this.popViewRefs = bouncer(this.popViewRefs.slice()) // 过滤
+        this.popViewRefs = bouncer(this.popViewRefs.slice()); // 过滤
         if (this.popViewRefs.length > 0) {
-            const lastRef = this.popViewRefs.pop()
+            const lastRef = this.popViewRefs.pop();
             lastRef.close()
         }
     }

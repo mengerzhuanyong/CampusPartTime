@@ -36,11 +36,11 @@ class CusNavigationBar extends PureComponent {
                 title={
                     <Text style={styles.navTitle}>{title}</Text>
                 }
-                background={backgroundImage &&
+                background={backgroundImage !== null ?
                     <ImageBackground
                         style={styles.navBackImage}
                         source={Images.img_bg_navbar}
-                    />
+                    /> : null
                 }
                 rightView={null}
                 leftView={

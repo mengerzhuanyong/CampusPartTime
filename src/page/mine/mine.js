@@ -37,6 +37,7 @@ import PayManager from '../../config/PayManager'
 import Stepper from '../../component/common/Stepper'
 import {QRscanner} from 'react-native-qr-scanner'
 import {HorizontalLine, VerticalLine} from '../../component/common/commonLine'
+import ActionsManager from "../../config/ActionsManager";
 
 
 @inject('testStore111111')
@@ -72,6 +73,16 @@ export default class Mine extends Component {
         );
     };
 
+    onShare = () => {
+        const params = {
+            type: 'link',
+            url: 'https://bbs.hupu.com/22838911.html?share_from=kqapp',
+            title: '这是我见过最惨烈的打架了…当然也是最浮夸的演技',
+            text: '大清早的看得我笑出了猪叫',
+        };
+        ActionsManager.showShareModule(params);
+    };
+
     render() {
         let {loading} = this.state;
         return (
@@ -81,6 +92,7 @@ export default class Mine extends Component {
                     style={styles.navigationBarStyle}
                     statusBarStyle={'default'}
                     leftView={null}
+                    backgroundImage={null}
                 />
                 <ImageBackground
                     style={styles.contentTopView}
@@ -132,6 +144,7 @@ export default class Mine extends Component {
                             detail={''}
                             accessory={<Image source={Images.icon_arrow_right} style={[Theme.contentRightIcon, {}]} />}
                             onPress={() => this.onPushToNextPage('我的积分', 'MinePoints', {})}
+                            bottomSeparator={'none'}
                         />
                     </View>
                     <View style={styles.contentItemView}>
@@ -160,7 +173,8 @@ export default class Mine extends Component {
                             icon={<Image source={Images.icon_share} style={[Theme.contentTitleIcon, {}]} />}
                             detail={''}
                             accessory={<Image source={Images.icon_arrow_right} style={[Theme.contentRightIcon, {}]} />}
-                            onPress={() => this.onPushToNextPage('分享APP', 'ShareApp', {})}
+                            onPress={this.onShare}
+                            bottomSeparator={'none'}
                         />
                     </View>
                     <View style={[styles.contentItemView, styles.lastContentItemView]}>
@@ -172,6 +186,7 @@ export default class Mine extends Component {
                             detail={''}
                             accessory={<Image source={Images.icon_arrow_right} style={[Theme.contentRightIcon, {}]} />}
                             onPress={() => this.onPushToNextPage('设置', 'Setting', {})}
+                            bottomSeparator={'none'}
                         />
                     </View>
                 </View>

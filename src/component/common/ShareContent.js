@@ -1,9 +1,10 @@
 /**
- * 校园空兼 - 
+ * 校园空兼 - ShareContent
  * https://menger.me
  * @大梦
  */
- 
+
+
 'use strict';
 
 import React from 'react'
@@ -12,50 +13,61 @@ import Images from '../../asset/index';
 import { fontSize, scaleSize } from '../../util/Tool';
 
 import Theme from '../../config/Theme'
+import {HorizontalLine} from "./commonLine";
 
 const ShareSource = [
-    { actionTitle: '微信好友', actionImage: Images.icon_tabbar_home_cur, type: 1 },
-    { actionTitle: '朋友圈', actionImage: Images.icon_tabbar_home_cur, type: 2 },
-    { actionTitle: 'QQ', actionImage: Images.icon_tabbar_home_cur, type: 3 },
-    { actionTitle: '微博', actionImage: Images.icon_tabbar_home_cur, type: 4 },
-]
-const OtherSource = [
-    { actionTitle: '复制', actionImage: Images.icon_tabbar_home_cur, type: 5 },
-]
-class ShareContent extends React.PureComponent {
+    {actionTitle: '微信好友', actionImage: Images.icon_wechat, type: 1},
+    {actionTitle: '朋友圈', actionImage: Images.icon_wechat, type: 2},
+    {actionTitle: 'QQ', actionImage: Images.icon_qq, type: 3},
+];
 
-    _onPressAcion = (type) => {
-        const { onPress } = this.props
-        onPress && onPress(type)
-        ActionsManager.hide()
-    }
+const OtherSource = [
+    {actionTitle: '复制', actionImage: Images.icon_tabbar_home_cur, type: 5},
+];
+
+export default class ShareContent extends React.PureComponent {
+
+    _onPressAction = (type) => {
+        const {onPress} = this.props;
+        onPress && onPress(type);
+        ActionsManager.hide();
+    };
+
     _onPressCancel = () => {
-        ActionsManager.hide()
-    }
+        ActionsManager.hide();
+    };
 
     _renderContent = (dataSource, key) => {
         return (
-            <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+            <View style={styles.shareContent}>
                 {dataSource.map((item, index) => {
                     return (
-                        <View key={`${key}_${index}`} style={styles.actionContainer}>
-                            <TouchableOpacity style={styles.actionBack} onPress={() => this._onPressAcion(item.type)}>
-                                <Image style={styles.actionImage} source={item.actionImage} />
-                            </TouchableOpacity>
+                        <TouchableOpacity
+                            key={`${key}_${index}`}
+                            style={styles.actionContainer}
+                            onPress={() => this._onPressAction(item.type)}
+                        >
+                            <Image style={styles.actionImage} source={item.actionImage}/>
                             <Text style={styles.actionText}>{item.actionTitle}</Text>
-                        </View>
+                        </TouchableOpacity>
                     )
                 })}
-            </ScrollView>
+            </View>
         )
-    }
+    };
+    
     render() {
         return (
             <View style={styles.container}>
+                <View style={styles.contentTitleView}>
+                    <Text style={styles.contentTitle}>分享APP</Text>
+                </View>
                 {this._renderContent(ShareSource, 'share')}
-                <View style={styles.separator} />
-                {this._renderContent(OtherSource, 'other')}
-                <TouchableOpacity style={styles.cancelButton} onPress={this._onPressCancel}>
+                <HorizontalLine style={styles.separator} />
+                <TouchableOpacity
+                    style={styles.cancelButton}
+                    onPress={this._onPressCancel}
+                >
                     <Text style={styles.cancelText}>取消</Text>
                 </TouchableOpacity>
             </View>
@@ -65,29 +77,42 @@ class ShareContent extends React.PureComponent {
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: Theme.shareBackColor,
+        borderTopLeftRadius: 5,
+        borderTopRightRadius: 5,
+        height: scaleSize(400),
+        backgroundColor: '#fff',
         paddingBottom: Theme.isIPhoneX ? Theme.fitIPhoneXBottom : 0,
     },
-    actionContainer: {
-        justifyContent: 'center',
+    contentTitleView: {
+        height: 45,
         alignItems: 'center',
-        marginLeft: 17,
-        marginTop: 12,
-        marginBottom: 12,
+        justifyContent: 'center',
     },
-    actionBack: {
-        width: Theme.shareActionWidth,
-        height: Theme.shareActionHeight,
-        borderRadius: Theme.shareActionRadius,
-        justifyContent: 'center',
+    contentTitle: {
+        color: '#333',
+        fontSize: fontSize(14),
+    },
+    shareContent: {
+        flex: 1,
+        paddingVertical: 30,
+        flexDirection: 'row',
         alignItems: 'center',
-        backgroundColor: '#F8F8FF',
+        justifyContent: 'space-around',
+    },
+    actionContainer: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    actionImage: {
+        width: scaleSize(100),
+        height: scaleSize(100),
+        resizeMode: 'contain',
     },
     actionText: {
-        marginTop: 7,
-        // marginBottom: ShareTheme.shareActionMargin,
-        color: Theme.shareActionTextColor,
-        fontSize: fontSize(11),
+        marginTop: 8,
+        color: '#555',
+        fontSize: fontSize(12),
     },
     separator: {
         height: StyleSheet.hairlineWidth,
@@ -100,14 +125,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     cancelText: {
+        color: '#333',
         fontSize: fontSize(14),
-        color: Theme.shareCancelTextColor
     },
-    actionImage: {
-        width: scaleSize(80),
-        height: scaleSize(80),
-        // backgroundColor: 'red',
-    }
 });
-
-export default ShareContent;

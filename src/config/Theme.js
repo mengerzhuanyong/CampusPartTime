@@ -77,6 +77,10 @@ const CusTheme = {
     headerLeftView: globalStyles.headerLeftView,
     headerRightView: globalStyles.headerRightView,
     headerIcon: globalStyles.headerIcon,
+    headerBtnName: {
+        color: '#fff',
+        fontSize: fontSize(13),
+    },
     // 弹窗提示组件的样式
     alertWidth: 260,
     alertMinHeight: 52,
@@ -111,6 +115,9 @@ const CusTheme = {
     // 设置toastManager的初始化配置，有些样式请去上方teaset里配置，目前因为时间原因先用teaset自带的组件，后续将自定义组件。
     toastOptions: {
         position: 'center',
+        contentStyle: {
+            backgroundColor: '#123',
+        },
     },
     containerBackgroundImage: {
         flex: 1,

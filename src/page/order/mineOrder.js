@@ -54,7 +54,6 @@ export default class MineOrder extends React.Component {
             <View style={styles.container}>
                 <NavigationBar
                     title={pageTitle}
-                    backgroundImage={true}
                 />
                 <SegmentedControlTab
                     values={['换购订单', '积分订单']}

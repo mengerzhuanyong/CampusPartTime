@@ -32,8 +32,8 @@ export default class SendSMS extends PureComponent {
     static defaultProps = {
         type: 'public',
         mobile: '',
-        btnViewStyle: null,
-        btnStyle: null,
+        style: null,
+        titleStyle: null,
         lineStyle: null,
     };
 
@@ -50,11 +50,11 @@ export default class SendSMS extends PureComponent {
     sendSMS = (mobile, type) => {
         // console.log(mobile);
         if (!mobile) {
-            toastShort('手机号不能为空', 'center');
+            ToastManager.show('手机号不能为空', 'center');
             return false;
         }
         if (!checkPhone(mobile)) {
-            toastShort('phone', 'center');
+            ToastManager.show('phone', 'center');
             return;
         }
         let url = NetApi.sendSMS;
@@ -70,14 +70,14 @@ export default class SendSMS extends PureComponent {
             .then( result => {
                 if (result && result.code === 1) {
                     this.countDownTimer();
-                    toastShort('验证码已发送，请注意查收！', 'center');
+                    ToastManager.show('验证码已发送，请注意查收！', 'center');
                 }else{
-                    toastShort(result.msg, 'center');
+                    ToastManager.show(result.msg, 'center');
                 }
                 // console.log('验证码', result);
             })
             .catch( error => {
-                toastShort('服务器请求失败，请稍后重试！', 'center');
+                ToastManager.show('服务器请求失败，请稍后重试！', 'center');
                 // console.log('登录出错', error);
             })
     };
@@ -100,33 +100,33 @@ export default class SendSMS extends PureComponent {
     };
 
     render(){
-        let {type, btnViewStyle, btnStyle, lineStyle} = this.props;
+        let {type, style, titleStyle, lineStyle} = this.props;
         let {mobile, seconds, codeAlreadySend} = this.state;
         if (!codeAlreadySend) {
             return (
                 <TouchableOpacity
-                    style={[styles.btnGetCodeView, btnViewStyle]}
+                    style={[styles.btnViewStyle, style]}
                     onPress={() => this.sendSMS(mobile, type)}
                 >
                     <VerticalLine lineStyle={[styles.verLine, lineStyle]}/>
-                    <Text style={[styles.btnGetCodeCon, btnStyle]}>获取验证码</Text>
+                    <Text style={[styles.titleStyle, titleStyle]}>获取验证码</Text>
                 </TouchableOpacity>
             );
         } else if (seconds === 0) {
             return (
                 <TouchableOpacity
-                    style={[styles.btnGetCodeView, btnViewStyle]}
+                    style={[styles.btnViewStyle, style]}
                     onPress={() => this.sendSMS(mobile, type)}
                 >
                     <VerticalLine lineStyle={[styles.verLine, lineStyle]}/>
-                    <Text style={[styles.btnGetCodeCon, btnStyle]}>重新获取</Text>
+                    <Text style={[styles.titleStyle, titleStyle]}>重新获取</Text>
                 </TouchableOpacity>
             );
         } else {
             return (
-                <View style={[styles.btnGetCodeView, btnViewStyle]}>
+                <View style={[styles.btnViewStyle, style]}>
                     <VerticalLine lineStyle={[styles.verLine, lineStyle]}/>
-                    <Text style={[styles.btnGetCodeCon, btnStyle]}>剩余{seconds}秒</Text>
+                    <Text style={[styles.titleStyle, titleStyle]}>剩余{seconds}秒</Text>
                 </View>
             );
         }
@@ -134,13 +134,13 @@ export default class SendSMS extends PureComponent {
 }
 
 const styles = StyleSheet.create({
-    btnGetCodeView: {
+    btnViewStyle: {
         // width: 70,
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
     },
-    btnGetCodeCon: {
+    titleStyle: {
         color: '#fff',
         fontSize: FontSize(11),
     },

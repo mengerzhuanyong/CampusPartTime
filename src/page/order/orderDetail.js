@@ -55,7 +55,6 @@ export default class OrderDetail extends Component {
             <View style={styles.container}>
                 <NavigationBar
                     title={pageTitle}
-                    backgroundImage={true}
                 />
                 <ScrollView style={styles.content}>
                     <View style={[styles.contentItemView, styles.orderGoodsInfoView]}>

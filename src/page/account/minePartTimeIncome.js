@@ -136,7 +136,6 @@ export default class MinePartTimeIncome extends Component {
             <View style={styles.container}>
                 <NavigationBar
                     title={pageTitle}
-                    backgroundImage={true}
                 />
                 <View style={styles.content}>
                     <FlatListView
@@ -173,10 +172,10 @@ const styles = StyleSheet.create({
         backgroundColor: '#eee',
     },
     contentTopView: {
-        paddingTop: 70,
+        paddingTop: ScaleSize(150),
         width: SCREEN_WIDTH,
         alignItems: 'center',
-        height: ScaleSize(460),
+        height: ScaleSize(510),
     },
     creditsDialView: {
         alignItems: 'center',

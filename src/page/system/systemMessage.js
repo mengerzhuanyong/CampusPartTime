@@ -1,8 +1,9 @@
 /**
- * 校园空兼 - Shop
+ * 校园空兼 - SystemMessage
  * https://menger.me
  * @大梦
  */
+
 
 'use strict';
 
@@ -39,11 +40,10 @@ import {QRscanner} from 'react-native-qr-scanner'
 import {Carousel, ListRow} from 'teaset'
 import {HorizontalLine} from '../../component/common/commonLine'
 import GoodsItem from "../../component/item/goodsItem";
+import MessageItem from "../../component/item/messageItem";
 
 
-@inject('testStore111111')
-@observer
-export default class Shop extends Component {
+export default class SystemMessage extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -99,6 +99,31 @@ export default class Shop extends Component {
         return navigation;
     };
 
+    renderHeaderRightView = () => {
+        return (
+            <TouchableOpacity
+                style={[Theme.headerButtonView, styles.headerRightView]}
+                onPress={this.deleteConfirm}
+            >
+                <Text style={Theme.headerBtnName}>清空</Text>
+            </TouchableOpacity>
+        )
+    };
+
+    deleteConfirm = () => {
+        const params = {
+            title: '温馨提示',
+            detail: '消息清空后将不可恢复，您确定要清空所有消息吗？',
+            style: styles.alertContainer,
+            actionStyle: styles.actionStyle,
+            actions: [
+                { title: '确定', titleStyle: styles.titleStyleCur, btnStyle: [styles.btnStyle, styles.btnStyleCur], onPress: () => alert('确定') },
+                { title: '取消', titleStyle: styles.titleStyle, btnStyle: styles.btnStyle, onPress: () => alert('取消') },
+            ]
+        };
+        AlertManager.show(params);
+    };
+
     _captureRef = (v) => {
         this.flatList = v;
     };
@@ -134,58 +159,48 @@ export default class Shop extends Component {
         return <HorizontalLine style={styles.horLine} />;
     };
 
-    _renderHeaderComponent = () => {
+    _renderEmptyComponent = () => {
         return (
-
-            <View style={styles.headerComponentView}>
-                <View style={styles.navContentView}>
-                    {this.renderNavigationContentView()}
-                </View>
-                <ListRow
-                    style={styles.contentTitleView}
-                    title={'热门换购'}
-                    titleStyle={Theme.contentTitle}
-                    icon={<Image source={Images.icon_shop_package} style={[Theme.contentTitleIcon, {tintColor: '#ed3126'}]} />}
-                    detail={'更多 >>'}
-                    accessory={'none'}
-                    onPress={() => alert('Press!')}
+            <View style={Theme.emptyComponentView}>
+                <Image
+                    style={[Theme.listEmptyTipsImg, styles.listEmptyTipsImg]}
+                    source={Images.img_bg_empty_message}
                 />
+                <Text style={Theme.emptyText}>暂无消息通知</Text>
             </View>
         );
     };
 
     _renderListItem = (info) => {
         return (
-            <GoodsItem />
+            <MessageItem />
         );
     };
 
     render() {
         let {loading, listData} = this.state;
+        // listData=[];
+        let {params} = this.props.navigation.state;
+        let pageTitle = params && params.pageTitle ? params.pageTitle : '消息';
         return (
             <View style={styles.container}>
                 <NavigationBar
-                    title={this.renderNavigationBarView()}
-                    style={{
-                        backgroundColor: '#fff',
-                    }}
-                    statusBarStyle={'default'}
-                    leftView={null}
-                    backgroundImage={null}
+                    title={pageTitle}
+                    rightView={this.renderHeaderRightView()}
                 />
                 <View style={styles.content}>
                     <FlatListView
                         style={styles.listContent}
                         initialRefresh={false}
                         ref={this._captureRef}
-                        data={this.state.listData}
+                        data={listData}
                         removeClippedSubviews={false}
                         renderItem={this._renderListItem}
                         keyExtractor={this._keyExtractor}
                         onEndReached={this._onEndReached}
                         onRefresh={this._onRefresh}
-                        ItemSeparatorComponent={this._renderSeparator}
-                        ListHeaderComponent={this._renderHeaderComponent}
+                        // ItemSeparatorComponent={this._renderSeparator}
+                        ListEmptyComponent={this._renderEmptyComponent}
                     />
                 </View>
             </View>
@@ -242,8 +257,12 @@ const styles = StyleSheet.create({
         color: Theme.themeColor,
     },
     headerRightView: {
-        right: 15,
+        top: -22,
+        right: 10,
         position: 'absolute',
+        alignItems: 'center',
+        justifyContent: 'center',
+        // backgroundColor: '#123',
     },
     leftViewBar: {
         color: '#fff',
@@ -285,6 +304,36 @@ const styles = StyleSheet.create({
     // 列表区
     listContent: {
         flex: 1,
-        backgroundColor: '#fff',
+        backgroundColor: '#eee',
+    },
+    listEmptyTipsImg: {
+        marginTop: 50,
+        marginBottom: 10,
+        width: SCREEN_WIDTH / 2.2,
+    },
+    alertContainer: {
+        paddingVertical: 15,
+        paddingHorizontal: 10,
+        width: SCREEN_WIDTH - 50,
+        // backgroundColor: '#123'
+    },
+    actionStyle: {
+        borderWidth: 0,
+        borderColor: '#fff',
+    },
+    btnStyle: {
+        margin: 10,
+        borderRadius: 3,
+        borderColor: '#ddd',
+        borderWidth: Theme.minPixel,
+    },
+    btnStyleCur: {
+        backgroundColor: Theme.themeColor,
+    },
+    titleStyle: {
+        color: '#333',
+    },
+    titleStyleCur: {
+        color: '#fff',
     },
 });

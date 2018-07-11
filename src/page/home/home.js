@@ -126,6 +126,7 @@ export default class Home extends Component {
                     }}
                     statusBarStyle={'default'}
                     leftView={null}
+                    backgroundImage={null}
                 />
                 {!loading ? (
                     <ScrollView

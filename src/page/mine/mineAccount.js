@@ -60,7 +60,7 @@ export default class MineAccount extends Component {
                         style={styles.contentTitleView}
                         titleStyle={Theme.contentTitle}
                         accessory={<Image source={Images.icon_arrow_right} style={[Theme.contentRightIcon, {}]} />}
-                        onPress={() => this.onPushToNextPage('信用额度', 'MineIntegritySystem', {})}
+                        onPress={() => this.onPushToNextPage('信用额度', 'MineCredits', {})}
                     />
                     <ListRow
                         title={'工分明细'}
@@ -68,7 +68,7 @@ export default class MineAccount extends Component {
                         style={styles.contentTitleView}
                         titleStyle={Theme.contentTitle}
                         accessory={<Image source={Images.icon_arrow_right} style={[Theme.contentRightIcon, {}]} />}
-                        onPress={() => this.onPushToNextPage('工分明细', 'MineIntegritySystem', {})}
+                        onPress={() => this.onPushToNextPage('工分明细', 'MineWorkPoints', {})}
                     />
                     <ListRow
                         title={'兼职收入明细'}
@@ -76,7 +76,7 @@ export default class MineAccount extends Component {
                         style={styles.contentTitleView}
                         titleStyle={Theme.contentTitle}
                         accessory={<Image source={Images.icon_arrow_right} style={[Theme.contentRightIcon, {}]} />}
-                        onPress={() => this.onPushToNextPage('兼职收入明细', 'MineIntegritySystem', {})}
+                        onPress={() => this.onPushToNextPage('兼职收入明细', 'MinePartTimeIncome', {})}
                     />
                     <ListRow
                         title={'我的订单'}
@@ -84,7 +84,7 @@ export default class MineAccount extends Component {
                         style={styles.contentTitleView}
                         titleStyle={Theme.contentTitle}
                         accessory={<Image source={Images.icon_arrow_right} style={[Theme.contentRightIcon, {}]} />}
-                        onPress={() => this.onPushToNextPage('我的订单', 'MineIntegritySystem', {})}
+                        onPress={() => this.onPushToNextPage('我的订单', 'MineOrder', {})}
                     />
                     <ListRow
                         title={'提前还款'}

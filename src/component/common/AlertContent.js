@@ -38,7 +38,7 @@ class AlertContent extends React.PureComponent {
     };
     _onPress = (params) => {
         setTimeout(() => {
-            if (params != undefined && params) {
+            if (params !== undefined && params) {
                 params()
             }
         }, 300); // 防止两个alert同时触发
@@ -46,17 +46,17 @@ class AlertContent extends React.PureComponent {
     };
 
     separator = (index) => {
-        const { actions } = this.props
+        const {actions} = this.props;
         let separator;
         if (actions.length === 1) {
             separator = null
         } else {
             separator = actions.length - 1 === index ? null : styles.separator
         }
-        return separator
-    }
+        return separator;
+    };
     _renderTitleComponent = () => {
-        const { title, titleStyle } = this.props
+        const {title, titleStyle} = this.props;
         let titleComponent;
         if (React.isValidElement(title)) {
             titleComponent = title
@@ -68,7 +68,7 @@ class AlertContent extends React.PureComponent {
         return titleComponent
     };
     _renderDetailComponent = () => {
-        const { detail, detailStyle } = this.props
+        const {detail, detailStyle} = this.props;
         let detailComponent;
         if (React.isValidElement(detail)) {
             detailComponent = detail
@@ -80,19 +80,20 @@ class AlertContent extends React.PureComponent {
         return detailComponent
     };
     render() {
-        const { actions } = this.props
+        const {style, actions, actionStyle, btnStyle} = this.props;
         return (
-            <View style={styles.container}>
+            <View style={[styles.container, style]}>
                 {this._renderTitleComponent()}
                 {this._renderDetailComponent()}
-                <View style={styles.actionContainer}>
+                <View style={[styles.actionContainer , actionStyle]}>
                     {actions.map((item, index) => {
                         return (
                             <TouchableHighlight
-                                underlayColor={'#eee'}
-                                style={[styles.action, this.separator(index)]}
                                 key={`action_${index}`}
-                                onPress={() => this._onPress(item.onPress)}>
+                                underlayColor={'#eee'}
+                                style={[styles.action, this.separator(index), item.btnStyle]}
+                                onPress={() => this._onPress(item.onPress)}
+                            >
                                 <Text style={[styles.actionText, item.titleStyle]}>
                                     {item.title}
                                 </Text>
@@ -104,35 +105,33 @@ class AlertContent extends React.PureComponent {
         );
     }
 }
+
 const styles = StyleSheet.create({
     container: {
         width: Theme.alertWidth,
         minHeight: Theme.alertMinHeight,
         alignItems: 'center',
         backgroundColor: '#fff',
-        borderRadius: 10,
+        borderRadius: 5,
         overflow: 'hidden',
     },
     title: {
-        marginTop: 20,
-        maxWidth: Theme.alertTitleMaxWidth,
+        color: '#333',
+        fontWeight: '600',
         textAlign: 'center',
-        fontSize: fontSize(16),
-        fontWeight: 'bold',
-        color: '#000',
-        // backgroundColor: 'red',
+        fontSize: fontSize(15),
+        maxWidth: Theme.alertTitleMaxWidth,
     },
     detail: {
-        marginTop: 12,
-        maxWidth: Theme.alertDetailMaxWidth,
+        color: '#555',
+        marginVertical: 20,
         textAlign: 'center',
         fontSize: fontSize(13),
-        lineHeight: scaleSize(40),
-        color: '#000',
-        // backgroundColor: 'blue',
+        // minHeight: scaleSize(80),
+        lineHeight: scaleSize(44),
+        maxWidth: Theme.alertDetailMaxWidth,
     },
     actionContainer: {
-        marginTop: 15,
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
@@ -143,8 +142,8 @@ const styles = StyleSheet.create({
     },
     action: {
         flex: 1,
-        justifyContent: 'center',
         alignItems: 'center',
+        justifyContent: 'center',
         height: Theme.alertActionHeight,
     },
     actionText: {

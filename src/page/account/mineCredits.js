@@ -12,6 +12,7 @@ import {
     View,
     Image,
     Alert,
+    Easing,
     Animated,
     TextInput,
     ScrollView,
@@ -28,7 +29,20 @@ export default class MineCredits extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {};
+        this.state = {
+            rotateValue: new Animated.Value(0),
+            setRotateValue: 0,
+        };
+    }
+
+    componentDidMount() {
+        let TIMES = 1;
+        // this.state.rotateValue.setValue(1);
+        Animated.timing(this.state.rotateValue, {
+            toValue: 360 * TIMES,
+            duration: 1000 * TIMES,
+            easing: Easing.linear
+        }).start(); // 开始spring动画
     }
 
     onPushToNextPage = (pageTitle, component, params = {}) => {
@@ -39,6 +53,7 @@ export default class MineCredits extends Component {
     };
 
     render() {
+        let {rotateValue, setRotateValue} = this.state;
         let {params} = this.props.navigation.state;
         let pageTitle = params && params.pageTitle ? params.pageTitle : '信用额度';
         return (
@@ -48,6 +63,7 @@ export default class MineCredits extends Component {
                     style={{
                         backgroundColor: 'transparent'
                     }}
+                    // backgroundImage={true}
                 />
                 <ScrollView style={styles.content}>
                     <ImageBackground
@@ -61,7 +77,23 @@ export default class MineCredits extends Component {
                             resizeMode={'contain'}
                         >
                             <View style={[styles.contentTopItemView, styles.creditsDialHandView]}>
-                                <Image source={Images.img_hand} style={styles.creditsDialHand}/>
+                                <Animated.Image
+                                    style = {[
+                                        styles.creditsDialHand,
+                                        {transform:[
+                                            {translateY: ScaleSize(222)/2},
+                                            {
+                                                rotateZ: this.state.rotateValue.interpolate({
+                                                    inputRange: [0, 360],
+                                                    outputRange: ['-126deg', `${setRotateValue}deg`,]
+                                                })
+                                            },
+                                            {translateY: -ScaleSize(222)/2}
+                                        ]}
+                                    ]}
+                                    source = {Images.img_hand}
+                                    resizeMode = "contain"
+                                />
                             </View>
                             <View style={[styles.contentTopItemView, styles.creditsInfoView]}>
                                 <Text style={styles.creditsInfoValue}>9999</Text>
@@ -106,10 +138,10 @@ const styles = StyleSheet.create({
         marginTop: -64,
     },
     contentTopView: {
-        paddingTop: 70,
+        paddingTop: ScaleSize(150),
         width: SCREEN_WIDTH,
         alignItems: 'center',
-        height: ScaleSize(680),
+        height: ScaleSize(720),
     },
     creditsDialView: {
         alignItems: 'center',
@@ -123,6 +155,7 @@ const styles = StyleSheet.create({
     creditsDialHand: {
         height: ScaleSize(310),
         resizeMode: 'contain',
+        // transform: [{rotateZ:'-145deg'}]
     },
     creditsInfoView: {
         // marginTop: 5,

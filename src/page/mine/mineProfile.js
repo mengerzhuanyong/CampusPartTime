@@ -120,10 +120,10 @@ const styles = StyleSheet.create({
         marginTop: -64,
     },
     contentTopView: {
-        paddingTop: 64,
+        paddingTop: ScaleSize(150),
         width: SCREEN_WIDTH,
         alignItems: 'center',
-        height: ScaleSize(470),
+        height: ScaleSize(510),
     },
     contentTopItemView: {
         // flexDirection: 'row',

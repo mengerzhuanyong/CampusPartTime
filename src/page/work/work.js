@@ -213,6 +213,7 @@ export default class Work extends Component {
                     }}
                     statusBarStyle={'default'}
                     leftView={null}
+                    backgroundImage={null}
                 />
                 <FlatListView
                     style={styles.listContent}
