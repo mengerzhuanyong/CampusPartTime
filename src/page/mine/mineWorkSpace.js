@@ -6,30 +6,75 @@
 
 'use strict';
 
-import React, { Component } from 'react'
-import { ScrollView, StyleSheet, Text, View } from 'react-native'
+import React, { Component } from 'react';
+import {
+    Text,
+    View,
+    Image,
+    Alert,
+    Animated,
+    TextInput,
+    ScrollView,
+    StyleSheet,
+    ImageBackground,
+    TouchableOpacity,
+    TouchableWithoutFeedback,
+} from 'react-native';
 import NavigationBar from '../../component/common/NavigationBar'
-import DropDownMenu from '../../component/common/DropdownMenu';
-import Container from '../../component/common/Container';
+import SegmentedView from '../../component/segmentedView'
+import LRComponent from '../login/LRComponent'
+import SpinnerLoading from '../../component/common/SpinnerLoading';
+import dismissKeyboard from 'dismissKeyboard' // 键盘miss的方法
+import { observer, inject } from 'mobx-react';
+import SegmentedControlTab from '../../component/common/SegmentedControlTab'
 
-export default class MineWorkSpace extends Component {
+import MineOrderList from '../order/mineOrderList'
+import MineWorkList from "../work/mineWorkList";
+
+export default class MineWorkSpace extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {};
+        this.state = {
+            listData: [1,2,3,4],
+        };
     }
 
+    onPushToNextPage = (pageTitle, component, params = {}) => {
+        RouteHelper.navigate(component, {
+            pageTitle: pageTitle,
+            ...params
+        })
+    };
+
     render() {
+        let {loading, listData} = this.state;
         let {params} = this.props.navigation.state;
-        let pageTitle = params && params.pageTitle ? params.pageTitle : '设置';
+        let pageTitle = params && params.pageTitle ? params.pageTitle : '工作台';
         return (
             <View style={styles.container}>
                 <NavigationBar
                     title={pageTitle}
                 />
-                <View style={Theme.flexCenter}>
-                    <Text style={Theme.defaultFont}>敬请期待</Text>
-                </View>
+                <SegmentedControlTab
+                    values={['已报名工作(4)', '正在进行工作(2)']}
+                    tabStyle={styles.tab}
+                    showSeparator={true}
+                    separatorStyle={styles.separatorStyle}
+                    activeTabStyle={styles.activeTabStyle}
+                    tabTextStyle={styles.tabTextStyle}
+                    activeTabTextStyle={styles.activeTabTextStyle}
+                    tabsContainerStyle={styles.tabContainer}
+                    onTabPress={(index) => {
+                        console.log(index);
+                    }}
+                />
+                <MineWorkList
+                    title={'待收货'}
+                    style={styles.navBarItemView}
+                    titleStyle={styles.sheetTitle}
+                    activeTitleStyle={styles.sheetActiveTitle}
+                />
             </View>
         );
     }
@@ -38,24 +83,53 @@ export default class MineWorkSpace extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        backgroundColor: '#eee',
     },
-    content: {
-        flex: 1,
-        marginTop: 100,
-        alignItems: 'center',
-        justifyContent: 'center',
+    tabContainer: {
+        borderWidth: 0,
+        height: ScaleSize(120),
+        borderBottomWidth: Theme.minPixel,
     },
-    contentText: {
-        fontSize: 16,
-        color: '#555',
+    tab: {
+        borderWidth: 0,
+        borderColor: '#fff',
+        borderBottomWidth: 1,
     },
-    dropDownMenuView: {
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: '#f60',
+    separatorStyle: {
+        backgroundColor: '#ccc',
     },
-    dropDownMenuContext: {
-        color: '#fff'
+    activeTabStyle: {
+        borderBottomWidth: 1,
+        backgroundColor: '#fff',
+        borderColor: Theme.themeColor,
+    },
+    tabTextStyle: {
+        color: '#999',
+        // borderWidth: 0,
+        fontSize: FontSize(15),
+    },
+    activeTabTextStyle: {
+        color: Theme.themeColor,
+    },
+
+
+    segmentedView: {
+    },
+    segmentedBar: {
+        borderBottomWidth: 1,
+        borderColor: '#ddd',
+        height: ScaleSize(90),
+    },
+    sheetActiveTitle: {
+        color: Theme.themeColor,
+        fontSize: FontSize(14),
+    },
+    sheetTitle: {
+        color: '#999',
+        fontSize: FontSize(14),
+    },
+    navBarItemView: {
+        width: SCREEN_WIDTH,
+        backgroundColor: '#123',
     },
 });

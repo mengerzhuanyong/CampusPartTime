@@ -35,6 +35,11 @@ export default class MinePartTimeIncome extends Component {
         this.page = 0;
     }
 
+    componentWillUnmount(){
+        let timers = [this.timer1, this.timer2];
+        ClearTimer(timers);
+    }
+
     onPushToNextPage = (pageTitle, component, params = {}) => {
         RouteHelper.navigate(component, {
             pageTitle: pageTitle,
@@ -52,23 +57,22 @@ export default class MinePartTimeIncome extends Component {
 
     // 上拉加载
     _onEndReached = () => {
-        setTimeout(() => {
+        this.timer1 = setTimeout(() => {
             let dataTemp = this.state.listData;
             let allLoad = false;
             //模拟数据加载完毕,即page > 0,
-            if (this.page < 3) {
+            if (this.page < 2) {
                 this.setState({ data: dataTemp.concat(this.state.listData) });
             }
             // allLoad 当全部加载完毕后可以设置此属性，默认为false
             this.flatList.stopEndReached({ allLoad: this.page === 2 });
             this.page++;
-            console.log(this.page);
         }, 2000);
     };
 
     // 下拉刷新
     _onRefresh = () => {
-        setTimeout(() => {
+        this.timer2 = setTimeout(() => {
             // 调用停止刷新
             this.flatList.stopRefresh()
         }, 2000);

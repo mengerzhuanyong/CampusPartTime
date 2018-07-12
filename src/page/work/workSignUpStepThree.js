@@ -1,5 +1,5 @@
 /**
- * 校园空兼 - AutoGetWork
+ * 校园空兼 - WorkSignUpStepThree
  * https://menger.me
  * @大梦
  */
@@ -28,7 +28,7 @@ import FlatListView from '../../component/common/FlatListView'
 import {ListRow, Button} from 'teaset'
 import {HorizontalLine} from "../../component/common/commonLine";
 
-export default class AutoGetWork extends Component {
+export default class WorkSignUpStepThree extends Component {
 
     constructor(props) {
         super(props);
@@ -48,6 +48,7 @@ export default class AutoGetWork extends Component {
                 {id: 4, title: '外设', icon: Images.icon_nav_mouse,},
                 {id: 5, title: '单反', icon: Images.icon_nav_camera,},
             ],
+            customerMobile: '800-820-8820',
         };
         this.page = 0;
     }
@@ -122,14 +123,14 @@ export default class AutoGetWork extends Component {
 
     _renderHeaderComponent = () => {
         return (
-
             <View style={styles.headerComponentView}>
-                <View style={styles.contentItemView}>
-                    <View style={styles.contentTitleView}>
-                        <Text style={styles.contentTitle}>什么是平台分配工作？</Text>
-                    </View>
-                    <View style={styles.contentConView}>
-                        <Text style={styles.contentConText}>兼职，是指职工同时从事一个以上的职业或职务。各国法律一般并不禁止职工兼职，但有的情况下，企业、单位并不特别赞成本企业单位职工兼职。</Text>
+                <View style={[styles.contentItemView, styles.contentSignStepView]}>
+                    <Image source={Images.img_bg_step3} style={Theme.signUpStepImg} />
+                    <View style={styles.contentSignStepConView}>
+                        <Text style={[styles.contentSignStepContext, styles.contentSignStepContextCur]}>选择时间</Text>
+                        <Text style={[styles.contentSignStepContext, styles.contentSignStepContextCur]}>确认信息</Text>
+                        <Text style={[styles.contentSignStepContext, styles.contentSignStepContextCur]}>报名审核</Text>
+                        <Text style={styles.contentSignStepContext}>完成工作</Text>
                     </View>
                 </View>
                 <View style={[styles.contentItemView, styles.lastContentItemView]}>
@@ -165,34 +166,48 @@ export default class AutoGetWork extends Component {
     };
 
     render() {
-        let {loading, listData} = this.state;
+        let {loading, listData, customerMobile} = this.state;
         let {params} = this.props.navigation.state;
-        let pageTitle = params && params.pageTitle ? params.pageTitle : '平台分配工作';
+        let pageTitle = params && params.pageTitle ? params.pageTitle : '报名审核';
         return (
             <View style={styles.container}>
                 <NavigationBar
                     title={pageTitle}
                 />
                 <View style={styles.content}>
-                    <FlatListView
-                        style={styles.listContent}
-                        initialRefresh={false}
-                        ref={this._captureRef}
-                        data={listData}
-                        removeClippedSubviews={false}
-                        renderItem={this._renderListItem}
-                        keyExtractor={this._keyExtractor}
-                        onEndReached={this._onEndReached}
-                        onRefresh={this._onRefresh}
-                        ItemSeparatorComponent={this._renderSeparator}
-                        ListHeaderComponent={this._renderHeaderComponent}
+                    <View style={[styles.contentItemView, styles.contentSignStepView]}>
+                        <Image source={Images.img_bg_step3} style={Theme.signUpStepImg} />
+                        <View style={styles.contentSignStepConView}>
+                            <Text style={[styles.contentSignStepContext, styles.contentSignStepContextCur]}>选择时间</Text>
+                            <Text style={[styles.contentSignStepContext, styles.contentSignStepContextCur]}>确认信息</Text>
+                            <Text style={[styles.contentSignStepContext, styles.contentSignStepContextCur]}>报名审核</Text>
+                            <Text style={styles.contentSignStepContext}>完成工作</Text>
+                        </View>
+                    </View>
+                    <View style={[styles.contentItemView, styles.contentContextView]}>
+                        <Text style={styles.contentTitle}>您的报名已被受理，请等待工作人员与您联系，您也可拨打服务热线咨询审核情况</Text>
+                        <TouchableOpacity
+                            style={styles.mobileView}
+                            onPress={() => this.makeCall(customerMobile)}
+                        >
+                            <Text style={[styles.contentTitle, styles.mobileValue]}>{customerMobile}</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+                <View style={styles.multiBtnView}>
+                    <Button
+                        title={'拨打电话'}
+                        style={[Theme.btnView, styles.btnView]}
+                        titleStyle={[Theme.btnName, styles.btnName]}
+                        onPress={() => this.onPushToNextPage('完成工作', 'WorkSignUpStepFour')}
+                    />
+                    <Button
+                        title={'取消报名'}
+                        style={[Theme.btnView, styles.btnView]}
+                        titleStyle={[Theme.btnName, styles.btnName]}
+                        onPress={() => this.onPushToNextPage('确认信息', 'WorkSignUpStepTwo')}
                     />
                 </View>
-                <Button
-                    title={'提交'}
-                    style={[Theme.btnView, styles.btnView]}
-                    titleStyle={[Theme.btnName, styles.btnName]}
-                />
             </View>
         );
     }
@@ -205,12 +220,37 @@ const styles = StyleSheet.create({
     content: {
         flex: 1,
     },
+    contentSignStepView: {
+        paddingHorizontal: 0,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    contentSignStepConView: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+    },
+    contentSignStepContext: {
+        flex: 1,
+        color: '#999',
+        textAlign: 'center',
+        fontSize: FontSize(13),
+    },
+    contentSignStepContextCur: {
+        flex: 1,
+        color: Theme.themeColor,
+        textAlign: 'center',
+        fontSize: FontSize(13),
+    },
 
     contentItemView: {
         marginTop: 10,
         paddingVertical: 10,
         paddingHorizontal: 15,
         backgroundColor: '#fff',
+    },
+    lastContentItemView: {
+        marginBottom: 10,
     },
     contentTitleView: {
         // height: 60,
@@ -221,6 +261,8 @@ const styles = StyleSheet.create({
     },
     contentTitle: {
         color: '#333',
+        lineHeight: FontSize(22),
+        textAlign: 'center',
         fontSize: FontSize(14),
     },
     contentTitleCur: {
@@ -235,38 +277,27 @@ const styles = StyleSheet.create({
         textAlign: 'justify',
         fontSize: FontSize(13),
     },
+    contentContextView: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: 'transparent',
+    },
+    mobileView: {
+        marginTop: 10,
+    },
+    mobileValue: {
+        fontSize: FontSize(20),
+        color: Theme.themeColor,
+    },
 
-    timeItemView: {
-        paddingVertical: 10,
-        paddingHorizontal: 15,
+    multiBtnView: {
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
-        backgroundColor: '#fff',
     },
-    timeItemTitleView: {},
-    timeItemTitle: {
-        color: '#333',
-        fontSize: FontSize(14),
-    },
-    timeItemDetailView: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    timeItemDetailTips: {
-        marginHorizontal: 10,
-    },
-    timeBtnView: {
-        // width: ScaleSize(140),
-        borderColor: '#eee',
-    },
-    timeBtnName: {
-        color: '#555',
-        fontSize: FontSize(14),
-    },
-
     btnView: {
+        flex: 1,
         marginTop: 10,
         marginBottom: 20,
         marginHorizontal: 15,

@@ -63,6 +63,11 @@ export default class Work extends Component {
         console.log(result);
     }
 
+    componentWillUnmount(){
+        let timers = [this.timer1, this.timer2];
+        ClearTimer(timers);
+    }
+
     onPushToNextPage = (pageTitle, component, params = {}) => {
         RouteHelper.navigate(component, {
             pageTitle: pageTitle,
@@ -99,7 +104,7 @@ export default class Work extends Component {
 
     // 上拉加载
     _onEndReached = () => {
-        setTimeout(() => {
+        this.timer1 = setTimeout(() => {
             let dataTemp = this.state.listData;
             let allLoad = false;
             //模拟数据加载完毕,即page > 0,
@@ -114,7 +119,7 @@ export default class Work extends Component {
 
     // 下拉刷新
     _onRefresh = () => {
-        setTimeout(() => {
+        this.timer2 = setTimeout(() => {
             // 调用停止刷新
             this.flatList.stopRefresh()
         }, 2000);
@@ -162,10 +167,8 @@ export default class Work extends Component {
 
                     </Carousel>
                     <TouchableOpacity
-                        onPress={() => {
-                            RouteHelper.navigate('SysNotify')
-                        }}
                         style={styles.noticeContainer}
+                        onPress={() => this.onPushToNextPage('消息', 'SystemMessage')}
                     >
                         <Image
                             style={styles.noticeIcon}
@@ -204,7 +207,9 @@ export default class Work extends Component {
 
     _renderListItem = ({item}) => {
         return (
-            <JobItem />
+            <JobItem
+                onPress={() => this.onPushToNextPage('兼职详情', 'WorkDetail')}
+            />
         );
     };
 

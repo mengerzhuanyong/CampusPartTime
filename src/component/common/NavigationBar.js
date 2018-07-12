@@ -29,7 +29,7 @@ class CusNavigationBar extends PureComponent {
         }
     }
     render() {
-        const { style, backgroundImage, title, ...others } = this.props;
+        const { style, backgroundImage, leftIconStyle, title, ...others } = this.props;
         return (
             <NavigationBar
                 style={[styles.navBarStyle, style]}
@@ -51,7 +51,7 @@ class CusNavigationBar extends PureComponent {
                     >
                         <Image
                             source={Images.icon_nav_left}
-                            style={styles.leftImage}
+                            style={[styles.leftImage, leftIconStyle]}
                         />
                     </TouchableOpacity>
                 }

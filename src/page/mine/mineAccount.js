@@ -22,6 +22,7 @@ import {
 } from 'react-native'
 import NavigationBar from '../../component/common/NavigationBar'
 import {Button, Carousel, ListRow} from 'teaset'
+import MineRepayment from "../account/mineRepayment";
 
 export default class MineAccount extends Component {
 
@@ -93,7 +94,7 @@ export default class MineAccount extends Component {
                         titleStyle={Theme.contentTitle}
                         accessory={<Image source={Images.icon_arrow_right} style={[Theme.contentRightIcon, {}]} />}
                         bottomSeparator={'none'}
-                        onPress={() => this.onPushToNextPage('提前还款', 'MineIntegritySystem', {})}
+                        onPress={() => this.onPushToNextPage('提前还款', 'MineRepayment', {})}
                     />
                 </ScrollView>
             </View>

@@ -239,13 +239,24 @@ const sec_to_time_day = (seconds) => {
 }
 /**
  * 过滤掉false, null, 0, "", undefined, and NaN
- * @param {*} arr 
+ * @param {*} arr
  */
 const bouncer = (arr) => {
     return arr.filter((val) => {
         return !(!val || val === "");
     })
-}
+};
+
+const clearTimer = (array) => {
+    for (let i = 0; i < array.length; i++) {
+        let timer = array[i];
+        if (timer === 'undefined' || timer === '' || !timer) {
+            return;
+        }
+        console.log(timer);
+        return clearTimeout(timer);
+    }
+};
 
 export {
     scaleSize,
@@ -261,5 +272,6 @@ export {
     sec_to_time,
     bouncer,
     isNumber,
-    sec_to_time_day
+    sec_to_time_day,
+    clearTimer,
 }

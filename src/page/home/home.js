@@ -204,7 +204,7 @@ export default class Home extends Component {
                                     icon={<Image source={Images.icon_shop_package} style={[Theme.contentTitleIcon, {tintColor: '#ed3126'}]} />}
                                     detail={'更多 >>'}
                                     accessory={'none'}
-                                    onPress={() => alert('Press!')}
+                                    onPress={() => this.onPushToNextPage('热门换购', 'GoodsList')}
                                 />
                                 <View style={[styles.contentItemConView, styles.contentExchangeShopView]}>
                                     <ScrollView style={styles.listRowContent} horizontal={true}>
@@ -223,7 +223,7 @@ export default class Home extends Component {
                                     icon={<Image source={Images.icon_category} style={[Theme.contentTitleIcon, {tintColor: '#2f91eb'}]} />}
                                     detail={'更多 >>'}
                                     accessory={'none'}
-                                    onPress={() => alert('Press!')}
+                                    onPress={() => this.onPushToNextPage('热门工作推荐', 'Work')}
                                 />
                                 <View style={styles.contentItemConView}>
                                     {this.renderListView(2, [1,2,3])}
@@ -237,7 +237,7 @@ export default class Home extends Component {
                                     icon={<Image source={Images.icon_points} style={[Theme.contentTitleIcon, {tintColor: '#ffb04a'}]} />}
                                     detail={'更多 >>'}
                                     accessory={'none'}
-                                    onPress={() => alert('Press!')}
+                                    onPress={() => this.onPushToNextPage('积分兑换热榜', 'GoodsList')}
                                 />
                                 <View style={[styles.contentItemConView, styles.contentExchangeShopView]}>
                                     <ScrollView style={styles.listRowContent} horizontal={true}>

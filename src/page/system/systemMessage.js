@@ -69,6 +69,11 @@ export default class SystemMessage extends Component {
     componentDidMount() {
     }
 
+    componentWillUnmount(){
+        let timers = [this.timer1, this.timer2];
+        ClearTimer(timers);
+    }
+
     renderNavigationBarView = () => {
         return (
             <View style={styles.headerView}>
@@ -134,7 +139,7 @@ export default class SystemMessage extends Component {
 
     // 上拉加载
     _onEndReached = () => {
-        setTimeout(() => {
+        this.timer1 = setTimeout(() => {
             let dataTemp = this.state.listData;
             let allLoad = false;
             //模拟数据加载完毕,即page > 0,
@@ -149,7 +154,7 @@ export default class SystemMessage extends Component {
 
     // 下拉刷新
     _onRefresh = () => {
-        setTimeout(() => {
+        this.timer2 = setTimeout(() => {
             // 调用停止刷新
             this.flatList.stopRefresh()
         }, 2000);

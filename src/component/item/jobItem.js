@@ -34,8 +34,12 @@ export default class JobItem extends PureComponent {
     };
 
     render() {
+        let {onPress} = this.props;
         return (
-            <TouchableOpacity style={styles.jobItemView}>
+            <TouchableOpacity
+                style={styles.jobItemView}
+                onPress={onPress}
+            >
                 <View style={styles.jobItemPicView}>
                     <Image
                         style={styles.jobItemPic}
@@ -118,6 +122,8 @@ const styles = StyleSheet.create({
     },
     jobInfoTitle: {
         color: '#333',
+        marginRight: 10,
+        marginBottom: 5,
         fontSize: FontSize(14),
     },
     jobInfoIcon: {
@@ -126,7 +132,7 @@ const styles = StyleSheet.create({
         resizeMode: 'contain',
     },
     jobInfoTagsView: {
-        marginLeft: 10,
+        marginBottom: 5,
         flexDirection: 'row',
         alignItems: 'center',
     },

@@ -205,6 +205,10 @@ const CusTheme = {
         tintColor: '#999',
         resizeMode: 'contain',
     },
+    signUpStepImg: {
+        width: width - 60,
+        resizeMode: 'contain',
+    },
 };
 
 export default CusTheme;

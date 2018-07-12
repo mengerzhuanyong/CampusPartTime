@@ -1,17 +1,17 @@
 /**
- * 校园空兼 -
+ * 校园空兼 - MineJobItem
  * https://menger.me
  * @大梦
  */
 
 'use strict';
 
-import React, { Component } from 'react';
+import React, { Component, PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import {View, Text, ViewPropTypes, StyleSheet, TouchableOpacity, Image} from 'react-native';
+import {View, Text, ViewPropTypes, StyleSheet, Image, TouchableOpacity} from 'react-native';
 import {scaleSize} from "../../util/Tool";
 
-export default class GoodsItem extends React.PureComponent {
+export default class MineJobItem extends PureComponent {
 
     constructor(props) {
         super(props);
@@ -35,111 +35,99 @@ export default class GoodsItem extends React.PureComponent {
 
     render() {
         return (
-            <TouchableOpacity style={styles.goodsItemView}>
-                <View style={styles.goodsItemPicView}>
+            <TouchableOpacity style={styles.jobItemView}>
+                <View style={styles.jobItemPicView}>
                     <Image
-                        style={styles.goodsItemPic}
+                        style={styles.jobItemPic}
                         resizeMode={'cover'}
-                        source={Images.img_goods1}
+                        source={Images.img_jobs1}
                     />
                 </View>
-                <View style={styles.goodsInfoView}>
-                    <View style={[styles.goodsInfoItemView, styles.goodsInfoTitleView]}>
-                        <Text style={styles.goodsInfoTitle} numberOfLines={2}>iphone X  64G 黑色</Text>
-                        <View style={styles.goodsInfoTagsView}>
-                            <View style={styles.goodsInfoTagItemView}>
-                                <Text style={styles.goodsInfoTagItemName}>急招</Text>
+                <View style={styles.jobInfoView}>
+                    <View style={[styles.jobInfoItemView, styles.jobInfoTitleView]}>
+                        <Text style={styles.jobInfoTitle}>花盘传单派发</Text>
+                        <View style={styles.jobInfoTagsView}>
+                            <View style={styles.jobInfoTagItemView}>
+                                <Text style={styles.jobInfoTagItemName}>急招</Text>
                             </View>
-                            <View style={[styles.goodsInfoTagItemView, styles.goodsInfoTagIconView]}>
-                                <Image source={Images.icon_hot} style={[styles.goodsInfoIcon]} />
+                            <View style={[styles.jobInfoTagItemView, styles.jobInfoTagIconView]}>
+                                <Image source={Images.icon_hot} style={[styles.jobInfoTagIcon]} />
                             </View>
                         </View>
                     </View>
-                    <View style={[styles.goodsInfoItemView, styles.marginVerticalView]}>
-                        <View style={styles.goodsInfoLeftView}>
-                            <Text style={styles.goodsInfoPriceSymbol}>¥</Text>
-                            <Text style={styles.goodsInfoPrice}>8999.00</Text>
-                        </View>
-                    </View>
-                    <View style={styles.goodsInfoItemView}>
-                        <View style={styles.goodsInfoLeftView}>
-                            <Text style={styles.goodsInfoContext}>折算工分：</Text>
-                            <Text style={styles.goodsInfoContext}>7120</Text>
+                    <View style={[styles.jobInfoItemView, styles.marginVerticalView]} />
+                    <View style={styles.jobInfoItemView}>
+                        <View style={styles.jobInfoLeftView}>
+                            <Image source={Images.icon_calendar} style={[styles.jobInfoTagIcon]} />
+                            <Text style={styles.jobInfoContext}>2018.04.04</Text>
                         </View>
                     </View>
                 </View>
-                {/*<View style={styles.contentRightIconView}>*/}
-                    {/*<Image source={Images.icon_arrow_right_list} style={styles.arrowIcon}/>*/}
-                {/*</View>*/}
+                <View style={styles.contentRightIconView}>
+                    <Image source={Images.icon_arrow_right_list} style={styles.arrowIcon}/>
+                </View>
             </TouchableOpacity>
         );
     }
 }
 
-
 const styles = StyleSheet.create({
-    goodsItemView: {
-        marginVertical: 10,
-        paddingVertical: 5,
-        paddingHorizontal: 15,
+
+    jobItemView: {
+        paddingLeft: 15,
+        marginVertical: 15,
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
     },
-    goodsItemPicView: {
-        width: scaleSize(300),
-        height: scaleSize(200),
+    jobItemPicView: {
+        width: 80,
+        height: 70,
         marginRight: 10,
         borderRadius: 5,
         overflow: 'hidden',
         backgroundColor: '#f60',
     },
-    goodsItemPic: {
-        width: scaleSize(300),
-        height: scaleSize(200),
+    jobItemPic: {
+        width: 80,
+        height: 70,
         resizeMode: 'contain',
     },
-    goodsInfoView: {
+    jobInfoView: {
         flex: 1,
-        // height: 100,
-        overflow: 'hidden',
-        justifyContent: 'space-between',
-        // backgroundColor: '#f44'
     },
     marginVerticalView: {
         marginVertical: 5,
     },
-    goodsInfoItemView: {
+    jobInfoItemView: {
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
     },
-    goodsInfoTitleView: {
+    jobInfoTitleView: {
         flexWrap: 'wrap',
-        marginVertical: 2,
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'flex-start',
         // backgroundColor: '#123',
     },
-    goodsInfoTitle: {
+    jobInfoTitle: {
         color: '#333',
-        lineHeight: 20,
         marginRight: 10,
         marginBottom: 5,
         fontSize: FontSize(14),
     },
-    goodsInfoIcon: {
+    jobInfoTagIcon: {
         width: scaleSize(28),
         height: scaleSize(28),
         resizeMode: 'contain',
     },
-    goodsInfoTagsView: {
+    jobInfoTagsView: {
         marginBottom: 5,
         flexDirection: 'row',
         alignItems: 'center',
     },
-    goodsInfoTagItemView: {
+    jobInfoTagItemView: {
         marginRight: 3,
         borderRadius: 2,
         paddingVertical: 2,
@@ -147,36 +135,30 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         borderWidth: Theme.minPixel,
-        borderColor: Theme.themeColor,
     },
-    goodsInfoTagIconView: {
+    jobInfoTagIconView: {
         borderWidth: 0,
         padding: 0,
     },
-    goodsInfoTagItemName: {
+    jobInfoTagItemName: {
         color: Theme.themeColor,
         fontSize: FontSize(10),
     },
-    goodsInfoLeftView: {
+    jobInfoLeftView: {
         flexDirection: 'row',
         alignItems: 'center',
     },
-    goodsInfoRightView: {
+    jobInfoRightView: {
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'flex-end',
         // backgroundColor: '#f60',
     },
-    goodsInfoPriceSymbol: {
-        marginRight: 5,
-        color: '#ed3126',
-        fontSize: FontSize(12),
-    },
-    goodsInfoPrice: {
+    jobInfoPrice: {
         color: '#ed3126',
         fontSize: FontSize(15),
     },
-    goodsInfoContext: {
+    jobInfoContext: {
         color: '#999',
         marginLeft: 5,
         fontSize: FontSize(12),
@@ -184,6 +166,7 @@ const styles = StyleSheet.create({
     contentRightIconView: {
         width: scaleSize(35),
         alignItems: 'flex-end',
+        // backgroundColor: '#123',
     },
     arrowIcon: {
         height: scaleSize(40),

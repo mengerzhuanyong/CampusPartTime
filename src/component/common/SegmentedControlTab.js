@@ -4,6 +4,7 @@
  * @大梦
  */
 
+
 'use strict';
 
 import React from 'react'
@@ -15,6 +16,8 @@ import {
     Text
 } from 'react-native';
 import PropTypes from 'prop-types'
+import {VerticalLine} from "./commonLine";
+import {scaleSize} from "../../util/Tool";
 
 class SegmentedControlTab extends React.PureComponent {
 
@@ -65,7 +68,7 @@ class SegmentedControlTab extends React.PureComponent {
     };
 
     render() {
-        const {multiple, selectedIndex, selectedIndices, values, badges, tabsContainerStyle, onTabPress, tabStyle, ...others} = this.props;
+        const {multiple, selectedIndex, selectedIndices, values, badges, tabsContainerStyle, onTabPress, tabStyle, showSeparator, ...others} = this.props;
         const firstTabStyle = [];
         const lastTabStyle = [];
         const currentIndex = !selectedIndex ? this.state.selectedIndex : selectedIndex;
@@ -85,6 +88,7 @@ class SegmentedControlTab extends React.PureComponent {
                                 onTabPress={this._handleTabPress}
                                 firstTabStyle={index === 0 ? [{borderLeftWidth: 0}] : {}}
                                 tabStyle={[tabStyle, index !== 0 && index !== values.length - 1 ? {} : {}]}
+                                showSeparator={index !== 0 && showSeparator}
                                 {...others}
                             />
                         );
@@ -109,7 +113,7 @@ class TabOption extends React.PureComponent {
             tabStyle, activeTabStyle,
             tabTextStyle, activeTabTextStyle,
             tabBadgeContainerStyle, activeTabBadgeContainerStyle,
-            tabBadgeStyle, activeTabBadgeStyle,
+            tabBadgeStyle, activeTabBadgeStyle, separatorStyle, showSeparator
         } = this.props;
         return (
             <TouchableOpacity
@@ -122,6 +126,7 @@ class TabOption extends React.PureComponent {
                 onPress={this._onPress}
                 activeOpacity={1}
             >
+                {showSeparator ? <VerticalLine lineStyle={[styles.separatorStyle, separatorStyle]}/> : null}
                 <View style={{flexDirection: "row"}}>
                     <Text
                         style={[
@@ -167,17 +172,24 @@ const styles = StyleSheet.create({
         overflow: 'hidden',
     },
     tabStyle: {
-        paddingVertical: 5,
         flex: 1,
-        justifyContent: 'center',
+        flexDirection: 'row',
+        paddingVertical: 5,
         alignItems: 'center',
-        borderColor: Theme.themeColor,
+        justifyContent: 'center',
+        // borderColor: Theme.themeColor,
         backgroundColor: 'white',
-        borderLeftWidth: 1,
+        // borderLeftWidth: 1,
     },
     activeTabStyle: {
         backgroundColor: Theme.themeColor,
-        paddingRight: 0.5,
+        // paddingRight: 0.5,
+    },
+    separatorStyle: {
+        left: -0.5,
+        height: 20,
+        position: 'absolute',
+        backgroundColor: '#ddd',
     },
     tabTextStyle: {
         color: Theme.themeColor

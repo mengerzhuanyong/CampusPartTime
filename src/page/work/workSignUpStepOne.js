@@ -1,5 +1,5 @@
 /**
- * 校园空兼 - AutoGetWork
+ * 校园空兼 - WorkSignUpStepOne
  * https://menger.me
  * @大梦
  */
@@ -28,7 +28,7 @@ import FlatListView from '../../component/common/FlatListView'
 import {ListRow, Button} from 'teaset'
 import {HorizontalLine} from "../../component/common/commonLine";
 
-export default class AutoGetWork extends Component {
+export default class WorkSignUpStepOne extends Component {
 
     constructor(props) {
         super(props);
@@ -122,14 +122,14 @@ export default class AutoGetWork extends Component {
 
     _renderHeaderComponent = () => {
         return (
-
             <View style={styles.headerComponentView}>
-                <View style={styles.contentItemView}>
-                    <View style={styles.contentTitleView}>
-                        <Text style={styles.contentTitle}>什么是平台分配工作？</Text>
-                    </View>
-                    <View style={styles.contentConView}>
-                        <Text style={styles.contentConText}>兼职，是指职工同时从事一个以上的职业或职务。各国法律一般并不禁止职工兼职，但有的情况下，企业、单位并不特别赞成本企业单位职工兼职。</Text>
+                <View style={[styles.contentItemView, styles.contentSignStepView]}>
+                    <Image source={Images.img_bg_step1} style={Theme.signUpStepImg} />
+                    <View style={styles.contentSignStepConView}>
+                        <Text style={[styles.contentSignStepContext, styles.contentSignStepContextCur]}>选择时间</Text>
+                        <Text style={styles.contentSignStepContext}>确认信息</Text>
+                        <Text style={styles.contentSignStepContext}>报名审核</Text>
+                        <Text style={styles.contentSignStepContext}>完成工作</Text>
                     </View>
                 </View>
                 <View style={[styles.contentItemView, styles.lastContentItemView]}>
@@ -145,19 +145,14 @@ export default class AutoGetWork extends Component {
         return (
             <View style={[styles.timeItemView]}>
                 <View style={[styles.timeItemTitleView]}>
+                    <Image source={Images.icon_check} style={styles.timeItemIcon} />
                     <Text style={[styles.timeItemTitle]}>2018.06.10 周日</Text>
                 </View>
                 <View style={[styles.timeItemDetailView]}>
                     <Button
-                        title={'12:00'}
-                        style={[styles.timeBtnView]}
-                        titleStyle={[styles.timeBtnName]}
-                    />
-                    <Text style={[styles.timeItemTitle, styles.timeItemDetailTips]}>至</Text>
-                    <Button
-                        title={'16:00'}
-                        style={[styles.timeBtnView]}
-                        titleStyle={[styles.timeBtnName]}
+                        title={'选择'}
+                        style={[styles.timeBtnView, styles.timeBtnViewCur]}
+                        titleStyle={[styles.timeBtnName, styles.timeBtnNameCur]}
                     />
                 </View>
             </View>
@@ -167,7 +162,7 @@ export default class AutoGetWork extends Component {
     render() {
         let {loading, listData} = this.state;
         let {params} = this.props.navigation.state;
-        let pageTitle = params && params.pageTitle ? params.pageTitle : '平台分配工作';
+        let pageTitle = params && params.pageTitle ? params.pageTitle : '选择时间';
         return (
             <View style={styles.container}>
                 <NavigationBar
@@ -189,9 +184,10 @@ export default class AutoGetWork extends Component {
                     />
                 </View>
                 <Button
-                    title={'提交'}
+                    title={'下一步'}
                     style={[Theme.btnView, styles.btnView]}
                     titleStyle={[Theme.btnName, styles.btnName]}
+                    onPress={() => this.onPushToNextPage('确认信息', 'WorkSignUpStepTwo')}
                 />
             </View>
         );
@@ -205,12 +201,37 @@ const styles = StyleSheet.create({
     content: {
         flex: 1,
     },
+    contentSignStepView: {
+        paddingHorizontal: 0,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    contentSignStepConView: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+    },
+    contentSignStepContext: {
+        flex: 1,
+        color: '#999',
+        textAlign: 'center',
+        fontSize: FontSize(13),
+    },
+    contentSignStepContextCur: {
+        flex: 1,
+        color: Theme.themeColor,
+        textAlign: 'center',
+        fontSize: FontSize(13),
+    },
 
     contentItemView: {
         marginTop: 10,
         paddingVertical: 10,
         paddingHorizontal: 15,
         backgroundColor: '#fff',
+    },
+    lastContentItemView: {
+        marginBottom: 10,
     },
     contentTitleView: {
         // height: 60,
@@ -244,10 +265,19 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         backgroundColor: '#fff',
     },
-    timeItemTitleView: {},
+    timeItemTitleView: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    timeItemIcon: {
+        width: ScaleSize(46),
+        height: ScaleSize(46),
+        resizeMode: 'contain',
+        marginRight: 10,
+    },
     timeItemTitle: {
         color: '#333',
-        fontSize: FontSize(14),
+        fontSize: FontSize(15),
     },
     timeItemDetailView: {
         flexDirection: 'row',
@@ -259,11 +289,17 @@ const styles = StyleSheet.create({
     },
     timeBtnView: {
         // width: ScaleSize(140),
-        borderColor: '#eee',
+        borderColor: Theme.themeColor,
+    },
+    timeBtnViewCur: {
+        backgroundColor: Theme.themeColor,
     },
     timeBtnName: {
-        color: '#555',
+        color: Theme.themeColor,
         fontSize: FontSize(14),
+    },
+    timeBtnNameCur: {
+        color: '#fff',
     },
 
     btnView: {

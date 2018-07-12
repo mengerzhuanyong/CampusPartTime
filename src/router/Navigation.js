@@ -1,9 +1,10 @@
 /**
- * 校园空兼 - 
+ * 校园空兼 -
  * https://menger.me
  * @大梦
  */
- 
+
+
 'use strict';
 
 import React from 'react'
@@ -26,6 +27,10 @@ import Register from '../page/login/register'
 import RecoverPwd from '../page/login/recoverPwd'
 
 import AutoGetWork from '../page/work/autoGetWork'
+import WorkSignUpStepOne from '../page/work/workSignUpStepOne'
+import WorkSignUpStepTwo from '../page/work/workSignUpStepTwo'
+import WorkSignUpStepThree from '../page/work/workSignUpStepThree'
+import WorkSignUpStepFour from '../page/work/workSignUpStepFour'
 
 import MineAccount from '../page/mine/mineAccount'
 import MineIntegritySystem from '../page/mine/mineIntegritySystem'
@@ -48,6 +53,9 @@ import CertificationMobile from '../page/certification/certificationMobile'
 import CertificationStudent from '../page/certification/certificationStudent'
 import EmergencyContact from '../page/certification/emergencyContact'
 
+import MineWorkDetail from "../page/work/mineWorkDetail";
+import WorkAbnormalAppeal from "../page/work/workAbnormalAppeal";
+
 import Setting from '../page/system/setting'
 import ShareApp from '../page/system/shareApp'
 import SystemMessage from '../page/system/systemMessage'
@@ -55,38 +63,62 @@ import SystemMessage from '../page/system/systemMessage'
 
 import VideoPage from '../page/common/videoPage';
 import Chat from '../page/common/chat';
+import WorkPunchCard from "../page/work/workPunchCard";
+import Search from "../page/common/search";
+import GoodsList from "../page/shop/goodsList";
+import WorkDetail from "../page/work/workDetail";
 
 const Nav = createStackNavigator(configRoute({
     Tab: {screen: TabNavigation},
     CommonWebPage: {screen: CommonWebPage},
+
     Login: {screen: Login},
     Register: {screen: Register},
     RecoverPwd: {screen: RecoverPwd},
+
+    Search: {screen: Search},
+
+    GoodsList: {screen: GoodsList},
+
     AutoGetWork: {screen: AutoGetWork},
+    WorkDetail: {screen: WorkDetail},
+    WorkSignUpStepOne: {screen: WorkSignUpStepOne},
+    WorkSignUpStepTwo: {screen: WorkSignUpStepTwo},
+    WorkSignUpStepThree: {screen: WorkSignUpStepThree},
+    WorkSignUpStepFour: {screen: WorkSignUpStepFour},
+
     MineAccount: {screen: MineAccount},
     MineIntegritySystem: {screen: MineIntegritySystem},
     MinePoints: {screen: MinePoints},
     MineProfile: {screen: MineProfile},
     MineWorkSpace: {screen: MineWorkSpace},
+    MineWorkDetail: {screen: MineWorkDetail},
+    WorkPunchCard: {screen: WorkPunchCard},
+    WorkAbnormalAppeal: {screen: WorkAbnormalAppeal},
     MineSettingPassWord: {screen: MineSettingPassWord},
     MineCredits: {screen: MineCredits},
     MineWorkPoints: {screen: MineWorkPoints},
     MinePartTimeIncome: {screen: MinePartTimeIncome},
     MineRepayment: {screen: MineRepayment},
     MineWithDraw: {screen: MineWithDraw},
+
     MineOrder: {screen: MineOrder},
     OrderDetail: {screen: OrderDetail},
+
     Setting: {screen: Setting},
     ShareApp: {screen: ShareApp},
     SystemMessage: {screen: SystemMessage},
+
     CertificationIDCard: {screen: CertificationIDCard},
     CertificationMobile: {screen: CertificationMobile},
     CertificationStudent: {screen: CertificationStudent},
     EmergencyContact: {screen: EmergencyContact},
+
     VideoPage: {screen: VideoPage},
     Chat: {screen: Chat},
+
 }), {
-    initialRouteName: 'AutoGetWork',
+    initialRouteName: 'WorkSignUpStepOne',
     // initialRouteName: 'Tab',
     cardStyle: {
         shadowOpacity: 0,

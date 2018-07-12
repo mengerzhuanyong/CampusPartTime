@@ -1,5 +1,5 @@
 /**
- * 校园空兼 - Shop
+ * 校园空兼 - GoodsList
  * https://menger.me
  * @大梦
  */
@@ -43,7 +43,7 @@ import GoodsItem from "../../component/item/goodsItem";
 
 @inject('testStore111111')
 @observer
-export default class Shop extends Component {
+export default class GoodsList extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -71,6 +71,7 @@ export default class Shop extends Component {
 
     componentWillUnmount(){
         let timers = [this.timer1, this.timer2];
+        console.log(global.ClearTimer);
         ClearTimer(timers);
     }
 
@@ -105,7 +106,6 @@ export default class Shop extends Component {
                 <TouchableOpacity
                     key={item.id}
                     style={styles.navItemView}
-                    onPress={() => this.onPushToNextPage(item.title, 'GoodsList')}
                 >
                     <Image source={item.icon} style={styles.navIcon}/>
                     <Text style={styles.navTitle}>{item.title}</Text>
@@ -164,7 +164,7 @@ export default class Shop extends Component {
                     icon={<Image source={Images.icon_shop_package} style={[Theme.contentTitleIcon, {tintColor: '#ed3126'}]} />}
                     detail={'更多 >>'}
                     accessory={'none'}
-                    onPress={() => this.onPushToNextPage('热门换购', 'GoodsList')}
+                    onPress={() => alert('Press!')}
                 />
             </View>
         );
@@ -179,16 +179,12 @@ export default class Shop extends Component {
     render() {
         let {loading, listData} = this.state;
         // listData = [];
+        let {params} = this.props.navigation.state;
+        let pageTitle = params && params.pageTitle ? params.pageTitle : '商品';
         return (
             <View style={styles.container}>
                 <NavigationBar
-                    title={this.renderNavigationBarView()}
-                    style={{
-                        backgroundColor: '#fff',
-                    }}
-                    statusBarStyle={'default'}
-                    leftView={null}
-                    backgroundImage={null}
+                    title={pageTitle}
                 />
                 <View style={styles.content}>
                     <FlatListView
@@ -202,7 +198,7 @@ export default class Shop extends Component {
                         onEndReached={this._onEndReached}
                         onRefresh={this._onRefresh}
                         ItemSeparatorComponent={this._renderSeparator}
-                        ListHeaderComponent={this._renderHeaderComponent}
+                        // ListHeaderComponent={this._renderHeaderComponent}
                     />
                 </View>
             </View>

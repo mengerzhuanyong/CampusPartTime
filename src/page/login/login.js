@@ -49,6 +49,7 @@ export default class Login extends PureComponent {
                     title={'登录'}
                     style={styles.navigationBarStyle}
                     leftView={null}
+                    backgroundImage={null}
                     rightViewOnPress={this.renderHeaderRightView}
                 />
                 <View style={styles.loginContent}>

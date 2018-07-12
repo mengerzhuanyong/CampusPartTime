@@ -4,11 +4,15 @@
  * @大梦
  */
 
+
 'use strict';
 
 // 项目中的图片可以通过Images.xxx 获取
 import { Platform, Text } from 'react-native'
-import { scaleSize, fontSize, isMobile, checkMobile, checkPassword, isEmpty, containsChinese } from '../util/Tool'
+import {
+    scaleSize, fontSize, isMobile, checkMobile, checkPassword, isEmpty, containsChinese,
+    clearTimer
+} from '../util/Tool'
 import Theme from './Theme'
 import Images from './ImageManager'
 import { addCustomProps } from '../util/addCustomProps'
@@ -114,3 +118,6 @@ global.FontSize = fontSize;
 
 // 屏幕适配
 global.ScaleSize = scaleSize;
+
+// 清楚定时器
+global.ClearTimer = clearTimer;

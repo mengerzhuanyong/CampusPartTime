@@ -32,6 +32,7 @@ export default class RecoverPwd extends PureComponent {
                 <NavigationBar
                     title={'忘记密码'}
                     style={styles.navigationBarStyle}
+                    backgroundImage={null}
                     rightViewOnPress={this.renderHeaderRightView}
                 />
                 <View style={styles.loginContent}>

@@ -1,5 +1,5 @@
 /**
- * 校园空兼 - MineOrderList
+ * 校园空兼 - MineWorkList
  * https://menger.me
  * @大梦
  */
@@ -26,8 +26,9 @@ import {checkMobile, checkPassword} from '../../util/Tool';
 import GoodsItem from '../../component/item/goodsItem'
 import {HorizontalLine, VerticalLine} from "../../component/common/commonLine";
 import OrderItem from "../../component/item/orderItem";
+import MineJobItem from "../../component/item/mineJobItem";
 
-export default class MineOrderList extends PureComponent {
+export default class MineWorkList extends PureComponent {
     constructor(props) {
         super(props);
         this.state = {
@@ -52,6 +53,18 @@ export default class MineOrderList extends PureComponent {
 
     componentDidMount() {
     }
+
+    componentWillUnmount(){
+        let timers = [this.timer1, this.timer2];
+        ClearTimer(timers);
+    }
+
+    onPushToNextPage = (pageTitle, component, params = {}) => {
+        RouteHelper.navigate(component, {
+            pageTitle: pageTitle,
+            ...params
+        })
+    };
 
     componentWillUnmount(){
         let timers = [this.timer1, this.timer2];
@@ -130,20 +143,20 @@ export default class MineOrderList extends PureComponent {
                     style={Theme.listEmptyTipsImg}
                     source={Images.img_bg_empty_order}
                 />
-                <Text style={Theme.emptyText}>亲！您还没有相关的订单哦</Text>
-                {/*<Button*/}
-                    {/*title={'去看看'}*/}
-                    {/*style={styles.btnView}*/}
-                    {/*titleStyle={styles.btnName}*/}
-                    {/*onPress={() => this.onPushToNextPage('', 'Work')}*/}
-                {/*/>*/}
+                <Text style={Theme.emptyText}>亲！您还没有参加过兼职哦</Text>
+                <Button
+                    title={'去看看'}
+                    style={[Theme.btnView, styles.btnView]}
+                    titleStyle={[Theme.btnName, styles.btnName]}
+                    onPress={() => this.onPushToNextPage('', 'Work')}
+                />
             </View>
         );
     };
 
     _renderListItem = (info) => {
         return (
-            <OrderItem />
+            <MineJobItem />
         );
     };
 
@@ -182,5 +195,15 @@ const styles = StyleSheet.create({
         paddingHorizontal: 10,
         width: SCREEN_WIDTH,
         backgroundColor: '#fff',
+    },
+    btnView: {
+        height: 45,
+        marginTop: 20,
+        borderWidth: 0,
+        width: SCREEN_WIDTH / 2,
+        backgroundColor: Theme.themeColor,
+    },
+    btnName: {
+        color: '#fff',
     },
 });
