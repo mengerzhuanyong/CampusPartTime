@@ -40,8 +40,6 @@ import {Carousel, ListRow} from 'teaset';
 import JobItem from "../../component/item/jobItem";
 
 
-@inject('testStore111111')
-@observer
 export default class Home extends Component {
     constructor(props) {
         super(props);

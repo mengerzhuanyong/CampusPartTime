@@ -1,7 +1,5 @@
-import testStore from './testStore'
-import testStore11 from './testStore1'
+import AppStore from './appStore'
 
 export default {
-    testStore111111: new testStore(),
-    testStore1122222: new testStore11(),
+    appStore: new AppStore()
 };

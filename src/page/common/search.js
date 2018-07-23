@@ -42,8 +42,6 @@ import JobItem from "../../component/item/jobItem";
 
 
 
-@inject('testStore111111')
-@observer
 export default class Work extends Component {
     constructor(props) {
         super(props);

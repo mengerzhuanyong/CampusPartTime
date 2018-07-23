@@ -15,9 +15,6 @@ import {
 } from '../util/Tool'
 import Theme from './Theme'
 import Images from './ImageManager'
-import { addCustomProps } from '../util/addCustomProps'
-import JShareModule from 'jshare-react-native';
-import XPay from 'react-native-puti-pay';
 import AsyncStorage from '../util/AsyncStorage'
 import Services from '../util/Services'
 import MenuManager from './MenuManager'
@@ -25,7 +22,7 @@ import ToastManager from './ToastManager'
 import ActionsManager from './ActionsManager'
 import AlertManager from './AlertManager';
 import InteractionManager from './InteractionManager';
-import RouteHelper from '../router/RouteHelper'
+import RouteHelper from '../router/RouterHelper'
 import ServicesApi from './ServicesApi'
 import Constant from './Constant'
 import moment from 'moment'
@@ -33,20 +30,6 @@ import 'moment/locale/zh-cn'
 
 // 本地化
 moment.locale('zh-cn');
-
-if (Platform.OS === 'ios') {
-    // 启动极光分享 ios需要
-    JShareModule.setup();
-}
-
-// debug模式
-JShareModule.setDebug({enable: __DEV__});
-
-// 设置微信ID
-XPay.setWxId(Constant.WECHAT_APPID);
-
-// 设置支付宝URL Schemes
-XPay.setAlipayScheme(Constant.ALIPAY_SCHME);
 
 // 发布版屏蔽日志打印
 if (!__DEV__) {

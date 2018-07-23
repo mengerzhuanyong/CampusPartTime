@@ -41,8 +41,6 @@ import {HorizontalLine} from '../../component/common/commonLine'
 import GoodsItem from "../../component/item/goodsItem";
 
 
-@inject('testStore111111')
-@observer
 export default class GoodsDetail extends Component {
     constructor(props) {
         super(props);

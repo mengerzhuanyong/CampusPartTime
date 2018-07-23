@@ -40,8 +40,6 @@ import {HorizontalLine, VerticalLine} from '../../component/common/commonLine'
 import ActionsManager from "../../config/ActionsManager";
 
 
-@inject('testStore111111')
-@observer
 export default class Mine extends Component {
     constructor(props) {
         super(props);

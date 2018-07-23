@@ -5,20 +5,18 @@
  */
  
 'use strict';
-
-import React, { Component } from 'react'
-import { Platform, } from 'react-native'
+import React from 'react'
 import './src/config/Global'
 import { Provider } from 'mobx-react'
 import stores from './src/store/index'
-import Navigation from './src/router/Navigation'
+import Index from './src'
 
-class App extends Component {
+class App extends React.PureComponent {
 
     render() {
         return (
             <Provider {...stores}>
-                <Navigation />
+                <Index />
             </Provider>
         );
     }
