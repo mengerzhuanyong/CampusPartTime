@@ -9,7 +9,7 @@
 
 import React from 'react'
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Image } from 'react-native';
-import Images from '../../config/ImageManager';
+import Images from '../../config/manager/ImageManager';
 import { fontSize, scaleSize } from '../../util/Tool';
 
 import Theme from '../../config/Theme'

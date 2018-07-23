@@ -33,7 +33,7 @@ import Countdown from '../../component/common/Countdown';
 import {action} from 'mobx';
 import SyanImagePicker from 'react-native-syan-image-picker';
 import ImagePicker from 'react-native-image-picker';
-import PayManager from '../../config/PayManager'
+import PayManager from '../../config/manager/PayManager'
 import Stepper from '../../component/common/Stepper'
 import {QRscanner} from 'react-native-qr-scanner'
 import {HorizontalLine, VerticalLine} from '../../component/common/commonLine'
@@ -58,7 +58,7 @@ export default class MineWithDraw extends Component {
     }
 
     onPushToNextPage = (pageTitle, component, params = {}) => {
-        RouteHelper.navigate(component, {
+        RouterHelper.navigate(component, {
             pageTitle: pageTitle,
             ...params
         })

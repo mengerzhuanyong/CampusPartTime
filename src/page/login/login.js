@@ -25,20 +25,20 @@ import {HorizontalLine, VerticalLine} from '../../component/common/commonLine'
 export default class Login extends PureComponent {
 
     _guestLogin = () => {
-        // RouteHelper.reset('Tab');
-        RouteHelper.navigate('Tab');
+        // RouterHelper.reset('Tab');
+        RouterHelper.navigate('Tab');
     };
 
     _onNavigateRecoverPwd = () => {
-        RouteHelper.navigate('RecoverPwd');
+        RouterHelper.navigate('RecoverPwd');
     };
 
     _onNavigateRegister = () => {
-        RouteHelper.navigate('Register');
+        RouterHelper.navigate('Register');
     };
 
     _doLogin = () => {
-        RouteHelper.navigate('Tab');
+        RouterHelper.navigate('Tab');
     };
 
     render() {

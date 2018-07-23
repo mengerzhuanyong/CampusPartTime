@@ -1,3 +1,9 @@
+/**
+ * 校园空兼 - Navigation
+ * https://menger.me
+ * @大梦
+ */
+
 'use strict';
 import React from 'react'
 import { StackNavigator } from './RouterConfig'

@@ -1,6 +1,6 @@
 
 import { Toast } from 'teaset';
-import Theme from './Theme';
+import Theme from '../Theme';
 
 class ToastManager {
 

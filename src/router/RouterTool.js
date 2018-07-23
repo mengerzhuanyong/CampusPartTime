@@ -1,3 +1,9 @@
+/**
+ * 校园空兼 - RouterTool
+ * https://menger.me
+ * @大梦
+ */
+
 'use strict';
 import React from 'react'
 import {Image, StyleSheet} from 'react-native'

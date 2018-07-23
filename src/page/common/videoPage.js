@@ -60,7 +60,7 @@ export default class VideoPage extends React.PureComponent {
         //     ]
         // }
         // AlertManager.show(params)
-        // RouteHelper.navigate('test')
+        // RouterHelper.navigate('test')
         this.props.navigation.navigate('test')
     }
     _orientationDidChange = (orientation) => {

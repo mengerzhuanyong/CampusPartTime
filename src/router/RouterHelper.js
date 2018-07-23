@@ -1,3 +1,9 @@
+/**
+ * 校园空兼 - RouterHelper
+ * https://menger.me
+ * @大梦
+ */
+
 'use strict';
 import { StackActions, NavigationActions } from 'react-navigation'
 

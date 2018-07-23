@@ -8,10 +8,10 @@
 
 import React from 'react'
 import { View, Text } from 'react-native';
-import AlertContent from '../component/common/AlertContent';
-import { bouncer } from '../util/Tool';
+import AlertContent from '../../component/common/AlertContent';
+import { bouncer } from '../../util/Tool';
 import { Overlay } from 'teaset';
-import Theme from './Theme'
+import Theme from '../Theme'
 
 class AlertManager {
 

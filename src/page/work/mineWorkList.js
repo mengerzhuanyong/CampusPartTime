@@ -60,7 +60,7 @@ export default class MineWorkList extends PureComponent {
     }
 
     onPushToNextPage = (pageTitle, component, params = {}) => {
-        RouteHelper.navigate(component, {
+        RouterHelper.navigate(component, {
             pageTitle: pageTitle,
             ...params
         })

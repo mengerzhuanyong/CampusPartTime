@@ -14,19 +14,19 @@ import {
     clearTimer
 } from '../util/Tool'
 import Theme from './Theme'
-import Images from './ImageManager'
-import AsyncStorage from '../util/AsyncStorage'
+import Images from './manager/ImageManager'
 import Services from '../util/Services'
-import MenuManager from './MenuManager'
-import ToastManager from './ToastManager'
-import ActionsManager from './ActionsManager'
-import AlertManager from './AlertManager';
-import InteractionManager from './InteractionManager';
-import RouteHelper from '../router/RouterHelper'
+import MenuManager from './manager/MenuManager'
+import ToastManager from './manager/ToastManager'
+import ActionsManager from './manager/ActionsManager'
+import AlertManager from './manager/AlertManager';
+import InteractionManager from './manager/InteractionManager';
+import RouterHelper from '../router/RouterHelper'
 import ServicesApi from './ServicesApi'
 import Constant from './Constant'
 import moment from 'moment'
 import 'moment/locale/zh-cn'
+import StorageManager from "./manager/StorageManager"
 
 // 本地化
 moment.locale('zh-cn');
@@ -61,7 +61,7 @@ global.SCREEN_HEIGHT = Theme.screen_height;
 global.Images = Images;
 
 // 存储
-global.Storage = AsyncStorage;
+global.StorageManager = StorageManager;
 
 // 网络请求
 global.Services = Services;
@@ -76,7 +76,7 @@ global.Constant = Constant;
 global.Moment = moment;
 
 // 路由管理
-global.RouteHelper = RouteHelper;
+global.RouterHelper = RouterHelper;
 
 // 菜单管理
 global.MenuManager = MenuManager;

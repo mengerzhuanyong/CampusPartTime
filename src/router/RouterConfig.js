@@ -1,8 +1,19 @@
+/**
+ * 校园空兼 - RouterConfig
+ * https://menger.me
+ * @大梦
+ */
+
 'use strict';
 
 import {createStackNavigator, createBottomTabNavigator} from 'react-navigation'
 import StackViewStyleInterpolator from 'react-navigation/src/views/StackView/StackViewStyleInterpolator'
 import {configRouter, tabOptions} from './RouterTool'
+
+import Work from "../page/work/work"
+import Home from "../page/home/home"
+import Mine from "../page/mine/mine"
+import Shop from "../page/shop/shop"
 
 import CommonWebPage from '../page/common/commonWebPage'
 
@@ -37,25 +48,21 @@ import CertificationMobile from '../page/certification/certificationMobile'
 import CertificationStudent from '../page/certification/certificationStudent'
 import EmergencyContact from '../page/certification/emergencyContact'
 
-import MineWorkDetail from "../page/work/mineWorkDetail";
-import WorkAbnormalAppeal from "../page/work/workAbnormalAppeal";
+import MineWorkDetail from "../page/work/mineWorkDetail"
+import WorkAbnormalAppeal from "../page/work/workAbnormalAppeal"
 
 import Setting from '../page/system/setting'
 import ShareApp from '../page/system/shareApp'
 import SystemMessage from '../page/system/systemMessage'
 
 
-import VideoPage from '../page/common/videoPage';
-import Chat from '../page/common/chat';
-import WorkPunchCard from "../page/work/workPunchCard";
-import Search from "../page/common/search";
-import GoodsList from "../page/shop/goodsList";
-import GoodsDetail from "../page/shop/goodsDetail";
-import WorkDetail from "../page/work/workDetail";
-import Work from "../page/work/work";
-import Home from "../page/home/home";
-import Mine from "../page/mine/mine";
-import Shop from "../page/shop/shop";
+import VideoPage from '../page/common/videoPage'
+import Chat from '../page/common/chat'
+import WorkPunchCard from "../page/work/workPunchCard"
+import Search from "../page/common/search"
+import GoodsList from "../page/shop/goodsList"
+import GoodsDetail from "../page/shop/goodsDetail"
+import WorkDetail from "../page/work/workDetail"
 
 const TabNavigator = createBottomTabNavigator({
     Home: {
@@ -91,7 +98,7 @@ const TabNavigator = createBottomTabNavigator({
         })
     },
 }, {
-    initialRouteName: 'Mine',
+    initialRouteName: 'Home',
     tabBarOptions: {
         showIcon: true,
         indicatorStyle: {height: 0},

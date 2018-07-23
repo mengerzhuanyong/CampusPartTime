@@ -14,10 +14,10 @@
 import React from 'react'
 import {View, Text} from 'react-native';
 import {ActionSheet, Overlay, Label} from 'teaset';
-import {fontSize, bouncer} from '../util/Tool';
-import AreaContent from '../component/common/AreaContent';
-import ShareContent from '../component/common/ShareContent';
-import Theme from './Theme';
+import {fontSize, bouncer} from '../../util/Tool';
+import AreaContent from '../../component/common/AreaContent';
+import ShareContent from '../../component/common/ShareContent';
+import Theme from '../Theme';
 import JShareModule from 'jshare-react-native'
 
 class ActionsManager {

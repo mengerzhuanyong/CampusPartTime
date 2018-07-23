@@ -33,7 +33,7 @@ import Countdown from '../../component/common/Countdown'
 import {action} from 'mobx';
 import SyanImagePicker from 'react-native-syan-image-picker'
 import ImagePicker from 'react-native-image-picker';
-import PayManager from '../../config/PayManager'
+import PayManager from '../../config/manager/PayManager'
 import Stepper from '../../component/common/Stepper'
 import {QRscanner} from 'react-native-qr-scanner'
 import {Carousel, ListRow} from 'teaset'
@@ -67,7 +67,7 @@ export default class Work extends Component {
     }
 
     onPushToNextPage = (pageTitle, component, params = {}) => {
-        RouteHelper.navigate(component, {
+        RouterHelper.navigate(component, {
             pageTitle: pageTitle,
             ...params
         })
@@ -78,7 +78,7 @@ export default class Work extends Component {
             <View style={styles.headerView}>
                 <TouchableOpacity
                     style={styles.headerLeftView}
-                    onPress={() => RouteHelper.goBack()}
+                    onPress={() => RouterHelper.goBack()}
                 >
                     <Image source={Images.icon_nav_left} style={styles.headerLeftIcon} />
                 </TouchableOpacity>

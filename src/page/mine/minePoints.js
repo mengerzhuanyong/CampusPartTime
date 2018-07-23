@@ -24,7 +24,7 @@ import NavigationBar from '../../component/common/NavigationBar'
 import {Button, Carousel, ListRow} from 'teaset'
 import {HorizontalLine, VerticalLine} from '../../component/common/commonLine'
 import FlatListView from '../../component/common/FlatListView'
-import ActionsManager from "../../config/ActionsManager";
+import ActionsManager from "../../config/manager/ActionsManager";
 
 export default class MinePoints extends Component {
 
@@ -41,7 +41,7 @@ export default class MinePoints extends Component {
     }
 
     onPushToNextPage = (pageTitle, component, params = {}) => {
-        RouteHelper.navigate(component, {
+        RouterHelper.navigate(component, {
             pageTitle: pageTitle,
             ...params
         })

@@ -1,4 +1,10 @@
-'use strict';
+/**
+ * 校园空兼 - AppStore
+ * https://menger.me
+ * @大梦
+ */
+
+ 'use strict';
 import { observable, action, computed, runInAction } from 'mobx'
 import BaseStore from './baseStore'
 

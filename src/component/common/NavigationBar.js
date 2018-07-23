@@ -25,7 +25,7 @@ class CusNavigationBar extends PureComponent {
         if (this.props.backOnPress) {
             this.props.backOnPress({ event: p, backButton: this.leftView })
         } else {
-            RouteHelper.goBack()
+            RouterHelper.goBack()
         }
     }
     render() {

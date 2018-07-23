@@ -1,4 +1,10 @@
-'use strict';
+/**
+ * 校园空兼 - BaseStore
+ * https://menger.me
+ * @大梦
+ */
+
+ 'use strict';
 import { action, observable, runInAction, configure } from 'mobx'
 
 configure({ enforceActions: true });

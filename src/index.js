@@ -1,6 +1,7 @@
-/*
- * @author: jiasong 
- * @creation time: 2018-07-05 11:08:40
+/**
+ * 校园空兼 - Index
+ * https://menger.me
+ * @大梦
  */
 
 'use strict';
@@ -15,7 +16,7 @@ import Navigation from './router/Navigation'
 import { getDeviceInfo } from './util/Tool'
 import { observer, inject } from 'mobx-react'
 
-@inject('appStore')
+@inject('appStore', 'loginStore')
 @observer
 export default class Index extends React.Component {
 
@@ -24,7 +25,6 @@ export default class Index extends React.Component {
     }
 
     componentDidMount() {
-        SplashScreen.hide();
         this._initSetting(); // 初始化设置，先调用
         this._handleLoginState(); // 处理登陆状态
         this._addNetworkListener(); // 网络状态
@@ -59,6 +59,30 @@ export default class Index extends React.Component {
 
     _handleLoginState = async () => {
         SplashScreen.hide();
+        const { loginStore } = this.props
+        const { role, token } = loginStore.userInfo
+        const localRes = await StorageManager.load(Constant.USER_INFO_KEY)
+        if (localRes.code === 1) {
+            if (localRes.data.token === undefined || localRes.data.token === '') {
+                // 未登录
+            } else {
+                // 已经登录
+                if (localRes.data.role == 0) {
+                    loginStore.saveUserInfo(localRes.data)
+                    // 登陆后未选择身份，跳到身份界面
+                    RouterHelper.reset('ModifyInfo', { isFirst: true })
+                } else {
+                    // 已经选择身份后，进行处理
+                    const loginRes = await loginStore.gotoLogin(Constant.TOKEN_LOGIN, { token: localRes.data.token })
+                    console.log('loginRes', loginRes.data)
+                    if (loginRes.code === 1) {
+                        RouterHelper.reset('Tab')
+                    }
+                }
+            }
+        } else {
+            // 第一次安装app
+        }
     };
 
     _addNetworkListener = () => {

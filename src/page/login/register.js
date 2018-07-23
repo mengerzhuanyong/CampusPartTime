@@ -24,7 +24,7 @@ import {HorizontalLine, VerticalLine} from '../../component/common/commonLine'
 export default class Register extends PureComponent {
 
     _onNavigateBack = () => {
-        RouteHelper.goBack();
+        RouterHelper.goBack();
     };
 
     render() {
