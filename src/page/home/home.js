@@ -333,7 +333,7 @@ const styles = StyleSheet.create({
     },
     headBackCarousel: {
         width: headBackImageW,
-        height: headBackImageW * 0.485,
+        height: headBackImageW * 0.452,
         marginTop: ScaleSize(12),
         marginLeft: ScaleSize(14),
         borderRadius: ScaleSize(10),
@@ -341,7 +341,7 @@ const styles = StyleSheet.create({
     },
     headBackImage: {
         width: headBackImageW,
-        height: headBackImageW * 0.485,
+        height: headBackImageW * 0.452,
     },
 
     contentItemView: {

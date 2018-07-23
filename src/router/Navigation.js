@@ -66,6 +66,7 @@ import Chat from '../page/common/chat';
 import WorkPunchCard from "../page/work/workPunchCard";
 import Search from "../page/common/search";
 import GoodsList from "../page/shop/goodsList";
+import GoodsDetail from "../page/shop/goodsDetail";
 import WorkDetail from "../page/work/workDetail";
 
 const Nav = createStackNavigator(configRoute({
@@ -79,6 +80,7 @@ const Nav = createStackNavigator(configRoute({
     Search: {screen: Search},
 
     GoodsList: {screen: GoodsList},
+    GoodsDetail: {screen: GoodsDetail},
 
     AutoGetWork: {screen: AutoGetWork},
     WorkDetail: {screen: WorkDetail},
@@ -118,7 +120,7 @@ const Nav = createStackNavigator(configRoute({
     Chat: {screen: Chat},
 
 }), {
-    initialRouteName: 'WorkSignUpStepOne',
+    initialRouteName: 'GoodsDetail',
     // initialRouteName: 'Tab',
     cardStyle: {
         shadowOpacity: 0,

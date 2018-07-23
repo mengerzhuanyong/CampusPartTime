@@ -34,6 +34,10 @@ export default class CommonWebPage extends PureComponent {
         }, 1000);
     }
 
+    componentWillUnmount(){
+        this.timer&&clearTimeout(this.timer);
+    }
+
     render() {
         let {loading} = this.state;
         let {params} = this.props.navigation.state;
