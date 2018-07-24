@@ -24,7 +24,10 @@ import {
 
 import NavigationBar from '../../component/common/NavigationBar'
 import {ListRow, Button} from 'teaset'
+import {observer, inject} from "mobx-react";
 
+@inject('loginStore')
+@observer
 export default class Setting extends Component {
 
     constructor(props) {
@@ -61,6 +64,30 @@ export default class Setting extends Component {
             .catch((err)=>{
                 // console.log('An error occurred', err)
             });
+    };
+
+    _exitLogin = async () => {
+        const {loginStore} = this.props;
+        loginStore.cleanUserInfo();
+        RouterHelper.reset('Login');
+    };
+
+    _onPressExit = () => {
+        const params = {
+            title: '温馨提示',
+            detail: '是否退出登陆？',
+            actions: [
+                {
+                    title: '取消',
+                    onPress: () => {},
+                },
+                {
+                    title: '确定',
+                    onPress: this._exitLogin,
+                }
+            ]
+        };
+        AlertManager.show(params);
     };
 
     render() {
@@ -129,6 +156,7 @@ export default class Setting extends Component {
                     </View>
                     <Button
                         title={'退出登录'}
+                        onPress={this._onPressExit}
                         style={[Theme.btnView, styles.btnView]}
                         titleStyle={[Theme.btnName, styles.btnName]}
                     />

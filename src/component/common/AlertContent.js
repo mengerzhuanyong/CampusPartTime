@@ -114,12 +114,13 @@ class AlertContent extends React.PureComponent {
 
 const styles = StyleSheet.create({
     container: {
-        width: Theme.alertWidth,
-        minHeight: Theme.alertMinHeight,
-        alignItems: 'center',
-        backgroundColor: '#fff',
+        paddingTop: 20,
         borderRadius: 5,
         overflow: 'hidden',
+        alignItems: 'center',
+        backgroundColor: '#fff',
+        width: Theme.alertWidth,
+        minHeight: Theme.alertMinHeight,
     },
     closeView: {
         position: 'absolute',

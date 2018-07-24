@@ -66,7 +66,7 @@ export default class MineWorkSpace extends React.Component {
                     activeTabTextStyle={styles.activeTabTextStyle}
                     tabsContainerStyle={styles.tabContainer}
                     onTabPress={(index) => {
-                        console.log(index);
+                        // console.log(index);
                     }}
                 />
                 <MineWorkList

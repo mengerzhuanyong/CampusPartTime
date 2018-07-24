@@ -104,7 +104,7 @@ class ActionsManager {
             }
             params = {type, platform, url, title, text, imageUrl: 'Images.icon_setting'};
             JShareModule.share(params, (success) => {
-                console.log(success);
+                // console.log(success);
                 switch (success.state) {
                     case 'success':
                         ToastManager.show('分享成功!');
@@ -124,7 +124,7 @@ class ActionsManager {
                 }
 
             }, (error) => {
-                console.log(error);
+                // console.log(error);
                 ToastManager.show('未安装客户端，分享失败');
             });
         })

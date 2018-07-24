@@ -47,14 +47,14 @@ export const createNavigationContainer = (OldComponent) => {
 
         componentWillUnmount() {
             requestAnimationFrame(() => {
-                console.log('componentWillUnmount');
+                // console.log('componentWillUnmount');
                 RouterHelper.remove(this.props.navigation);
                 this.subscriptions.forEach(sub => sub.remove());
             })
         };
 
         _handleNavigation = () => {
-            console.log('_handleNavigation');
+            // console.log('_handleNavigation');
             RouterHelper.addStack(this.props.navigation);
             this.subscriptions = [
                 this.props.navigation.addListener('willBlur', (payload) => {

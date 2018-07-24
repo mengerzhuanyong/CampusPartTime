@@ -18,10 +18,10 @@ const _settings = {
         json: 'application/json, text/javascript'
     },
     contentType: 'application/x-www-form-urlencoded; charset=UTF-8'
-}
+};
 
 // 匹配所有资源类型
-const _allType = '*/' + '*'
+const _allType = '*/' + '*';
 const _objToString = Object.prototype.toString;
 const _fnToString = Function.prototype.toString;
 /**
@@ -30,7 +30,8 @@ const _fnToString = Function.prototype.toString;
  */
 const classOf = (obj, className) => {
     return _objToString.call(obj) === '[object ' + className + ']';
-}
+};
+
 /**
  * [isPlainObject 检测对象是否是纯粹的由Object创建的对象]
  * 1. 排除Null和非Object类型的对象
@@ -38,7 +39,7 @@ const classOf = (obj, className) => {
  * 3. 排除不是由Object构造函数创建的对象(这也包括了宿主对象)
  */
 const isPlainObject = (obj) => {
-    let constructor, proto
+    let constructor, proto;
     // IE7/8里的宿主对象是Object类型，而且它们的toString也是Object类型
     if (!obj || !classOf(obj, 'Object') || typeof obj.toString !== 'function') {
         return false;
@@ -53,14 +54,14 @@ const isPlainObject = (obj) => {
     constructor = proto ? proto.constructor : obj.constructor;
     // IE7里的宿主对象的constructor是undefined
     return typeof constructor === 'function' && _fnToString.call(constructor) === _fnToString.call(Object);
-}
+};
 
 /**
  * [isArray 检测是否是数组类型]
  */
 const isArray = (obj) => {
     return classOf(obj, 'Array');
-}
+};
 
 /**
  * [extend 将一个或多个对象的属性复制到另一个指定的对象上]
@@ -117,67 +118,70 @@ const configSettings = (settings) => {
     newSettings.headers.Accept = accept ? (accept + ', ' + _allType + '; q=0.01') : _allType;
     options.method = newSettings.method;
     options.headers = newSettings.headers;
-    return { newSettings, options }
-}
+    return {newSettings, options}
+};
 
 /**
-     * [request 包装fetch]
-     * @param  settings
-     * @return promise
-     */
+ * [request 包装fetch]
+ * @param  settings
+ * @return promise
+ */
 const request = (settings) => {
-    const { newSettings, options } = configSettings(settings)
-    console.log('请求参数--->', settings)
+    const {newSettings, options} = configSettings(settings);
+    console.log('请求地址--->', newSettings.url);
+    console.log('请求参数--->', options);
     return fetch(newSettings.url, options).then((res) => {
         const status = res.status;
         if (res.ok && status >= 200 && status < 300 || status === 304) {
             const dataType = newSettings.dataType || res.headers.get('Content-Type');
             if (dataType.match(/json/)) {
-                const resJson = res.json()
-                console.log('请求成功--->', resJson)
-                return Promise.resolve(resJson)
+                const resJson = res.json();
+                console.log('请求成功--->', resJson);
+                return Promise.resolve(resJson);
             } else {
                 return Promise.resolve(res.text());
             }
         } else {
             const error = status + ' ' + (res.statusText || '');
-            console.log('请求失败--->', error)
+            console.log('请求失败--->', error);
             return Promise.reject(error || 'error');
         }
-    })
-}
+    });
+};
 
 const requestBlob = (settings) => {
-    const { newSettings, options } = configSettings(settings)
-    console.log('上传参数--->', newSettings.url)
+    const {newSettings, options} = configSettings(settings);
+    console.log('请求地址--->', newSettings.url);
+    console.log('请求参数--->', options);
     return FetchBlob.fetch(options.method, newSettings.url, {}, FetchBlob.wrap(newSettings.path))
         .uploadProgress((written, total) => {
-            console.log('uploaded', written / total)
-            newSettings.uploadProgress && newSettings.uploadProgress(written / total)
+            console.log('uploaded', written / total);
+            newSettings.uploadProgress && newSettings.uploadProgress(written / total);
         }).then((res) => {
-            const resJson = res.json()
-            console.log('上传成功--->', resJson)
-            return Promise.resolve(resJson)
+            const resJson = res.json();
+            console.log('上传成功--->', resJson);
+            return Promise.resolve(resJson);
         }).catch((error) => {
-            console.log('上传失败--->', error)
-            return Promise.reject(error)
+            console.log('上传失败--->', error);
+            return Promise.reject(error);
         })
-}
+};
 
 /**
-     * [get 快捷方法]
-     * @param  {[type]} url   [description]
-     * @param  {[type]} query [description]
-     * @return promise
-     */
+ * [get 快捷方法]
+ * @param  {[type]} url   [description]
+ * @param  {[type]} query [description]
+ * @return promise
+ */
 const get = (url, query) => {
+    url = ServicesApi.BASE_HOST + url;
     const setting = {
         url: url,
         method: 'GET',
         query: query
-    }
+    };
     return request(setting);
-}
+};
 
 /**
  * [post 快捷方法]
@@ -186,13 +190,14 @@ const get = (url, query) => {
  * @return promise
  */
 const post = (url, data) => {
+    url = ServicesApi.BASE_HOST + url;
     const setting = {
         url: url,
         method: 'POST',
-        data: { token: global.token, ...data }
-    }
+        data: {token: global.token, ...data}
+    };
     return request(setting);
-}
+};
 
 /**
  * [upload 快捷方法]
@@ -203,14 +208,15 @@ const post = (url, data) => {
  * @return promise
  */
 const upload = (url, path, query) => {
+    url = ServicesApi.BASE_HOST + url;
     const setting = {
         url: url,
         method: 'POST',
         path: path,
-        query: { token: global.token, ...query },
+        query: {token: global.token, ...query},
         uploadProgress: null,
-    }
+    };
     return requestBlob(setting);
-}
+};
 
 export default { configSettings, get, post, upload } 

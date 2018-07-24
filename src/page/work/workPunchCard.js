@@ -59,7 +59,7 @@ export default class WorkPunchCard extends Component {
     };
 
     onRead = (res) => {
-        console.log(res);
+        // console.log(res);
     };
 
     render() {

@@ -166,7 +166,8 @@ const StackNavigator = createStackNavigator(configRouter({
     VideoPage: {screen: VideoPage},
     Chat: {screen: Chat},
 }), {
-    initialRouteName: 'Tab',
+    // initialRouteName: 'Tab',
+    initialRouteName: 'Login',
     cardStyle: {
         shadowOpacity: 0,
         shadowRadius: 0,

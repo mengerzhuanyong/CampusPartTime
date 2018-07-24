@@ -3,10 +3,10 @@
  * https://menger.me
  * @大梦
  */
- 
+
 'use strict';
 
-import React, {PureComponent} from 'react'
+import React, {Component} from 'react'
 import {
     View,
     Text,
@@ -15,14 +15,58 @@ import {
     StyleSheet,
 } from 'react-native'
 
-import { Button } from 'teaset';
-import NavigationBar from '../../component/common/NavigationBar'
-import Container from '../../component/common/Container';
-import SegmentedView from '../../component/segmentedView'
-import LRComponent from './LRComponent'
-import {HorizontalLine, VerticalLine} from '../../component/common/commonLine'
+import {observer, inject} from 'mobx-react'
+import {Button} from 'teaset'
 
-export default class Login extends PureComponent {
+import NavigationBar from '../../component/common/NavigationBar'
+import Container from '../../component/common/Container'
+
+import {HorizontalLine, VerticalLine} from '../../component/common/commonLine'
+import {checkMobile} from "../../util/Tool";
+
+@inject('loginStore')
+@observer
+export default class Login extends Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            open: false
+        };
+        this.inputData = {
+            mobile: '15066886007',
+            password: '123123',
+        }
+    }
+
+    _onChangeUserName = (text) => {
+        this.inputData['mobile'] = text;
+    };
+    _onChangePassword = (text) => {
+        this.inputData['password'] = text;
+    };
+
+    _doLogin = async () => {
+        const {loginStore} = this.props;
+        const mobile = this.inputData['mobile'];
+        const password = this.inputData['password'];
+        if (!checkMobile(mobile)) {
+            ToastManager.show('您输入的手机号错误，请检查后重新输入！');
+            return;
+        } else if (password === '') {
+            ToastManager.show('您输入的密码错误，请检查后重新输入！');
+            return;
+        }
+        let url = ServicesApi.login;
+        let data = {mobile, password};
+        const result = await loginStore.doLogin(url, data);
+        // console.log('result---->>', result);
+        if (result.code === 1) {
+            RouterHelper.reset('Tab');
+        } else {
+            ToastManager.show(result.msg);
+        }
+    };
 
     _guestLogin = () => {
         // RouterHelper.reset('Tab');
@@ -37,14 +81,10 @@ export default class Login extends PureComponent {
         RouterHelper.navigate('Register');
     };
 
-    _doLogin = () => {
-        RouterHelper.navigate('Tab');
-    };
-
     render() {
         return (
             <Container style={styles.container}>
-                <Image source={Images.img_bg_login} style={Theme.containerBackgroundImage} />
+                <Image source={Images.img_bg_login} style={Theme.containerBackgroundImage}/>
                 <NavigationBar
                     title={'登录'}
                     style={styles.navigationBarStyle}
@@ -54,7 +94,7 @@ export default class Login extends PureComponent {
                 />
                 <View style={styles.loginContent}>
                     <View style={styles.inputItemView}>
-                        <Image source={Images.icon_user_sign} style={styles.inputIcon} />
+                        <Image source={Images.icon_user_sign} style={styles.inputIcon}/>
                         <TextInput
                             style={styles.inputItem}
                             ref={v => this.input = v}
@@ -64,12 +104,12 @@ export default class Login extends PureComponent {
                             placeholderTextColor={'#fff'}
                             returnKeyType={'done'}
                             clearButtonMode='while-editing'
-                            onChangeText={this._onChangeLogin}
+                            onChangeText={this._onChangeUserName}
                         />
                     </View>
-                    <HorizontalLine lineStyle={styles.verLine} />
+                    <HorizontalLine lineStyle={styles.verLine}/>
                     <View style={styles.inputItemView}>
-                        <Image source={Images.icon_lock} style={styles.inputIcon} />
+                        <Image source={Images.icon_lock} style={styles.inputIcon}/>
                         <TextInput
                             style={styles.inputItem}
                             ref={v => this.input = v}
@@ -80,10 +120,10 @@ export default class Login extends PureComponent {
                             placeholderTextColor={'#fff'}
                             returnKeyType={'done'}
                             clearButtonMode='while-editing'
-                            onChangeText={this._onChangeLogin}
+                            onChangeText={this._onChangePassword}
                         />
                     </View>
-                    <HorizontalLine lineStyle={styles.verLine} />
+                    <HorizontalLine lineStyle={styles.verLine}/>
                     <Button
                         onPress={this._doLogin}
                         style={[styles.btnItem, styles.signBtnItem]}
@@ -163,8 +203,7 @@ const styles = StyleSheet.create({
     signBtnItemTitle: {
         color: '#fff',
     },
-    registerBtnItemTitle: {
-    },
+    registerBtnItemTitle: {},
     otherBtnView: {
         height: 50,
         flexDirection: 'row',

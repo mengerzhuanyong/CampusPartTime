@@ -58,7 +58,7 @@ export default class Work extends Component {
             id: 1,
         };
         let result = await Services.post(url, data, true, 'index');
-        console.log(result);
+        // console.log(result);
     }
 
     componentWillUnmount(){

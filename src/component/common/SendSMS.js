@@ -3,7 +3,7 @@
  * https://menger.me
  * @大梦
  */
- 
+
 'use strict';
 
 import React, {PureComponent} from 'react'
@@ -15,6 +15,7 @@ import {
 } from 'react-native'
 
 import {VerticalLine} from './commonLine'
+import {checkMobile} from "../../util/Tool";
 
 export default class SendSMS extends PureComponent {
 
@@ -37,7 +38,7 @@ export default class SendSMS extends PureComponent {
         lineStyle: null,
     };
 
-    componentWillReceiveProps(nextProps){
+    componentWillReceiveProps(nextProps) {
         this.setState({
             mobile: nextProps.mobile
         })
@@ -46,6 +47,27 @@ export default class SendSMS extends PureComponent {
     componentWillUnmount() {
         // this.timerInterval && clearInterval(this.timerInterval);
     }
+
+    getVerificationCode = async (mobile, type) => {
+        type = type === 'register' ? 1 : 2;
+        if (checkMobile(mobile)) {
+            let result = await Services.post(ServicesApi.getVerificationCode, {mobile, type});
+            if (result.code === 1) {
+                this.countDownTimer();
+                ToastManager.show('验证码已发送，请注意查收！', 'center');
+            } else {
+                ToastManager.show(result.msg);
+            }
+        } else {
+            AlertManager.show({
+                title: '温馨提示',
+                detail: '请检查手机号输入是否正确',
+                actions: [
+                    {title: '确定'},
+                ]
+            })
+        }
+    };
 
     sendSMS = (mobile, type) => {
         // console.log(mobile);
@@ -67,23 +89,23 @@ export default class SendSMS extends PureComponent {
         // console.log(url, data);
         // return;
         this.netRequest.fetchPost(url, data)
-            .then( result => {
+            .then(result => {
                 if (result && result.code === 1) {
                     this.countDownTimer();
                     ToastManager.show('验证码已发送，请注意查收！', 'center');
-                }else{
+                } else {
                     ToastManager.show(result.msg, 'center');
                 }
                 // console.log('验证码', result);
             })
-            .catch( error => {
+            .catch(error => {
                 ToastManager.show('服务器请求失败，请稍后重试！', 'center');
                 // console.log('登录出错', error);
             })
     };
 
     // 验证码倒计时
-    countDownTimer(){
+    countDownTimer() {
         this.setState({
             codeAlreadySend: true,
             seconds: 60,
@@ -92,21 +114,20 @@ export default class SendSMS extends PureComponent {
             if (this.state.seconds === 0) {
                 return clearInterval(this.timerInterval);
             }
-
             this.setState({
                 seconds: this.state.seconds - 1
             });
-        }, 1000)
+        }, 1000);
     };
 
-    render(){
+    render() {
         let {type, style, titleStyle, lineStyle} = this.props;
         let {mobile, seconds, codeAlreadySend} = this.state;
         if (!codeAlreadySend) {
             return (
                 <TouchableOpacity
                     style={[styles.btnViewStyle, style]}
-                    onPress={() => this.sendSMS(mobile, type)}
+                    onPress={() => this.getVerificationCode(mobile, type)}
                 >
                     <VerticalLine lineStyle={[styles.verLine, lineStyle]}/>
                     <Text style={[styles.titleStyle, titleStyle]}>获取验证码</Text>
@@ -116,7 +137,7 @@ export default class SendSMS extends PureComponent {
             return (
                 <TouchableOpacity
                     style={[styles.btnViewStyle, style]}
-                    onPress={() => this.sendSMS(mobile, type)}
+                    onPress={() => this.getVerificationCode(mobile, type)}
                 >
                     <VerticalLine lineStyle={[styles.verLine, lineStyle]}/>
                     <Text style={[styles.titleStyle, titleStyle]}>重新获取</Text>

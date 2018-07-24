@@ -63,7 +63,7 @@ export default class MineOrder extends React.Component {
                     activeTabTextStyle={styles.activeTabTextStyle}
                     tabsContainerStyle={styles.tabContainer}
                     onTabPress={(index) => {
-                        console.log(index);
+                        // console.log(index);
                     }}
                 />
                 <SegmentedView

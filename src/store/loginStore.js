@@ -19,33 +19,31 @@ class LoginStore extends BaseStore {
     @observable userInfo;
 
     @action
-    gotoLogin = async (url, data) => {
+    doLogin = async (url, data) => {
         this.loading = true;
         const result = await Services.post(url, data);
-        const dataSource = result[0];
-        console.log('dataSource', dataSource);
+        // console.log('result', result);
         runInAction(() => {
             this.loading = false;
-            if (dataSource.code === 1) {
-                this.saveUserInfo(dataSource.data)
+            if (result.code === 1) {
+                this.saveUserInfo(result.data)
             }
         });
-        return dataSource;
+        return result;
     };
 
     @action
     exitLogin = async (url, data) => {
         this.loading = true;
         const result = await Services.post(url, data);
-        const dataSource = result[0];
-        console.log('dataSource', dataSource);
+        // console.log('result', result);
         runInAction(() => {
             this.loading = false;
-            if (dataSource.code === 1) {
+            if (result.code === 1) {
                 this.cleanUserInfo();
             }
         });
-        return dataSource;
+        return result;
     };
 
     @action

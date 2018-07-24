@@ -69,7 +69,7 @@ export default class GoodsDetail extends Component {
 
     componentWillUnmount(){
         let timers = [this.timer1, this.timer2];
-        console.log(global.ClearTimer);
+        // console.log(global.ClearTimer);
         ClearTimer(timers);
     }
 

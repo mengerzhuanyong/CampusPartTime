@@ -4,6 +4,7 @@
  * @大梦
  */
 
+
 'use strict';
 
 import React, {Component} from 'react'
@@ -38,8 +39,10 @@ import Stepper from '../../component/common/Stepper'
 import {QRscanner} from 'react-native-qr-scanner'
 import {Carousel, ListRow} from 'teaset';
 import JobItem from "../../component/item/jobItem";
+import HomeGoodsItem from "../../component/item/homeGoodsItem";
 
-
+@inject('homeStore', 'loginStore')
+@observer
 export default class Home extends Component {
     constructor(props) {
         super(props);
@@ -50,7 +53,15 @@ export default class Home extends Component {
     }
 
     componentDidMount() {
+        this.requestDataSource();
     }
+
+    componentWillUnmount() {}
+
+    requestDataSource = async () => {
+        const {homeStore, loginStore} = this.props;
+        let data = await homeStore.requestDataSource(ServicesApi.index, {});
+    };
 
     onPushToNextPage = (pageTitle, component, params = {}) => {
         RouterHelper.navigate(component, {
@@ -85,39 +96,26 @@ export default class Home extends Component {
         let listView = null;
         if (type === 1) {
             listView = data.map((item, index) => {
-                let itemView = <TouchableOpacity style={styles.goodsItemView} key={index}>
-                    <ImageBackground
-                        style={styles.goodsItemPic}
-                        resizeMode={'cover'}
-                        source={Images.img_goods1}
-                    >
-                        <View style={styles.goodsInfoView}>
-                            <Text style={styles.goodsTitle}>iPhone X</Text>
-                            <Image source={Images.icon_shop_package} style={[Theme.contentTitleIcon]} />
-                        </View>
-                    </ImageBackground>
-                </TouchableOpacity>;
-                return itemView;
+                return <HomeGoodsItem
+                    key={'goods'+index}
+                    {...this.props}
+                />;
             });
         }
         if (type === 2) {
             listView = data.map((item, index) => {
-                return <JobItem key={index} {...this.props}/>;
+                return <JobItem
+                    key={'job'+index}
+                    {...this.props}
+                />;
             });
         }
         if (type === 3) {
             listView = data.map((item, index) => {
-                let itemView = <TouchableOpacity style={styles.goodsItemView} key={index}>
-                    <ImageBackground
-                        style={styles.goodsItemPic}
-                        resizeMode={'cover'}
-                        source={Images.img_banner}
-                    >
-                        <Text>1111</Text>
-                        <Image source={Images.icon_shop_package} style={[Theme.contentTitleIcon]} />
-                    </ImageBackground>
-                </TouchableOpacity>;
-                return itemView;
+                return <HomeGoodsItem
+                    key={'goods'+index}
+                    {...this.props}
+                />;
             });
         }
         return listView;
@@ -125,6 +123,8 @@ export default class Home extends Component {
 
     render() {
         let {loading} = this.state;
+        let {homeStore} = this.props;
+        let {hot_goods, hot_jobs, hot_point_goods} = homeStore.getDataSource;
         return (
             <Container fitIPhoneX={false} keyboardShouldPersistTaps={true}>
                 <NavigationBar
@@ -206,14 +206,14 @@ export default class Home extends Component {
                                 />
                                 <View style={[styles.contentItemConView, styles.contentExchangeShopView]}>
                                     <ScrollView style={styles.listRowContent} horizontal={true}>
-                                        {this.renderListView(1, [1,2,3])}
+                                        {this.renderListView(1, hot_goods)}
                                     </ScrollView>
                                     <View style={styles.contentRightIconView}>
                                         <Image source={Images.icon_arrow_right_list} style={styles.arrowIcon}/>
                                     </View>
                                 </View>
                             </View>
-                            <View style={styles.contentItemView}>
+                            {hot_jobs && hot_jobs.length > 1 && <View style={styles.contentItemView}>
                                 <ListRow
                                     style={styles.contentTitleView}
                                     title={'热门工作推荐'}
@@ -224,9 +224,9 @@ export default class Home extends Component {
                                     onPress={() => this.onPushToNextPage('热门工作推荐', 'Work')}
                                 />
                                 <View style={styles.contentItemConView}>
-                                    {this.renderListView(2, [1,2,3])}
+                                    {this.renderListView(2, hot_jobs)}
                                 </View>
-                            </View>
+                            </View>}
                             <View style={styles.contentItemView}>
                                 <ListRow
                                     style={styles.contentTitleView}
@@ -239,7 +239,7 @@ export default class Home extends Component {
                                 />
                                 <View style={[styles.contentItemConView, styles.contentExchangeShopView]}>
                                     <ScrollView style={styles.listRowContent} horizontal={true}>
-                                        {this.renderListView(1, [1,2,3])}
+                                        {this.renderListView(1, hot_point_goods)}
                                     </ScrollView>
                                     <View style={styles.contentRightIconView}>
                                         <Image source={Images.icon_arrow_right_list} style={styles.arrowIcon}/>
@@ -364,30 +364,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-between',
     },
-    goodsItemView: {
-        marginRight: 10,
-        borderRadius: 5,
-        overflow: 'hidden',
-        width: (SCREEN_WIDTH - 50) / 2,
-        height: (SCREEN_WIDTH - 150) / 2,
-        // backgroundColor: '#123',
-    },
-    goodsItemPic: {
-        justifyContent: 'flex-end',
-        width: (SCREEN_WIDTH - 40) / 2,
-        height: (SCREEN_WIDTH - 150) / 2,
-    },
-    goodsInfoView: {
-        marginBottom: 10,
-        paddingHorizontal: 8,
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-    },
-    goodsTitle: {
-        color: '#fff',
-        fontSize: FontSize(13),
-    },
+
 
     contentRightIconView: {
         width: ScaleSize(35),

@@ -263,7 +263,7 @@ const clearTimer = (array) => {
         if (timer === 'undefined' || timer === '' || !timer) {
             return;
         }
-        console.log(timer);
+        // console.log(timer);
         return clearTimeout(timer);
     }
 };

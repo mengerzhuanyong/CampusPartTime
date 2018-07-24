@@ -87,7 +87,7 @@ export default class MineIntegritySystem extends Component {
                         activeTabTextStyle={styles.activeTabTextStyle}
                         tabsContainerStyle={styles.tabContainer}
                         onTabPress={(index) => {
-                            console.log(index);
+                            // console.log(index);
                         }}
                     />
                     <View style={styles.pointsTableContent}>
