@@ -2,6 +2,9 @@
 import queryString from 'query-string';
 import FetchBlob from 'react-native-fetch-blob';
 
+const loggerTrueColor = 'color: #1ba01b';
+const loggerFalseColor = 'color: #f00';
+
 // 默认选项配置
 const _settings = {
     url: '',
@@ -128,25 +131,26 @@ const configSettings = (settings) => {
  */
 const request = (settings) => {
     const {newSettings, options} = configSettings(settings);
-    console.log('请求地址--->', newSettings.url);
-    console.log('请求参数--->', options);
-    return fetch(newSettings.url, options).then((res) => {
-        const status = res.status;
-        if (res.ok && status >= 200 && status < 300 || status === 304) {
-            const dataType = newSettings.dataType || res.headers.get('Content-Type');
-            if (dataType.match(/json/)) {
-                const resJson = res.json();
-                console.log('请求成功--->', resJson);
-                return Promise.resolve(resJson);
+    return fetch(newSettings.url, options)
+        .then((res) => {
+            console.log('请求接口——>>', newSettings.url);
+            console.log('请求参数——>>', options);
+            const status = res.status;
+            if (res.ok && status >= 200 && status < 300 || status === 304) {
+                const dataType = newSettings.dataType || res.headers.get('Content-Type');
+                if (dataType.match(/json/)) {
+                    const resJson = res.json();
+                    console.log('请求成功——>>', resJson);
+                    return Promise.resolve(resJson);
+                } else {
+                    return Promise.resolve(res.text());
+                }
             } else {
-                return Promise.resolve(res.text());
+                const error = status + ' ' + (res.statusText || '');
+                console.log('请求失败——>>', error);
+                return Promise.reject(error || 'error');
             }
-        } else {
-            const error = status + ' ' + (res.statusText || '');
-            console.log('请求失败--->', error);
-            return Promise.reject(error || 'error');
-        }
-    });
+        });
 };
 
 const requestBlob = (settings) => {
@@ -157,11 +161,13 @@ const requestBlob = (settings) => {
         .uploadProgress((written, total) => {
             console.log('uploaded', written / total);
             newSettings.uploadProgress && newSettings.uploadProgress(written / total);
-        }).then((res) => {
+        })
+        .then((res) => {
             const resJson = res.json();
             console.log('上传成功--->', resJson);
             return Promise.resolve(resJson);
-        }).catch((error) => {
+        })
+        .catch((error) => {
             console.log('上传失败--->', error);
             return Promise.reject(error);
         })

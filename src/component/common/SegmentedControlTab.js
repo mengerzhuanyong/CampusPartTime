@@ -168,7 +168,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         flexDirection: 'row',
         borderWidth: 1,
-        borderColor: Theme.themeColor,
+        borderColor: CusTheme.themeColor,
         overflow: 'hidden',
     },
     tabStyle: {
@@ -177,12 +177,12 @@ const styles = StyleSheet.create({
         paddingVertical: 5,
         alignItems: 'center',
         justifyContent: 'center',
-        // borderColor: Theme.themeColor,
+        // borderColor: CusTheme.themeColor,
         backgroundColor: 'white',
         // borderLeftWidth: 1,
     },
     activeTabStyle: {
-        backgroundColor: Theme.themeColor,
+        backgroundColor: CusTheme.themeColor,
         // paddingRight: 0.5,
     },
     separatorStyle: {
@@ -192,7 +192,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#ddd',
     },
     tabTextStyle: {
-        color: Theme.themeColor
+        color: CusTheme.themeColor
     },
     activeTabTextStyle: {
         color: 'white'

@@ -334,7 +334,7 @@ const styles = StyleSheet.create({
         marginRight: 15,
     },
     contentDetail: {
-        color: Theme.themeColor,
+        color: CusTheme.themeColor,
         fontSize: FontSize(13),
     },
     detailInfoItemView: {
@@ -378,10 +378,10 @@ const styles = StyleSheet.create({
         margin: 10,
         borderRadius: 3,
         borderColor: '#ddd',
-        borderWidth: Theme.minPixel,
+        borderWidth: CusTheme.minPixel,
     },
     btnStyleCur: {
-        backgroundColor: Theme.themeColor,
+        backgroundColor: CusTheme.themeColor,
     },
     titleStyle: {
         color: '#333',

@@ -61,7 +61,7 @@ export default class GoodsList extends Component {
                 {id: 5, title: '单反', icon: Images.icon_nav_camera,},
             ],
         };
-        this.page = 0;
+        this.page = 1;
     }
 
     componentDidMount() {
@@ -87,8 +87,8 @@ export default class GoodsList extends Component {
                     style={styles.headerTitleView}
                     onPress={() => this.onPushToNextPage('搜索', 'Search')}
                 >
-                    <Image source={Images.icon_search} style={[Theme.headerIcon, styles.headerSearchIcon]} />
-                    <Text style={[Theme.headerIconTitle, styles.headerSearchTitle]}>搜索商品</Text>
+                    <Image source={Images.icon_search} style={[CusTheme.headerIcon, styles.headerSearchIcon]} />
+                    <Text style={[CusTheme.headerIconTitle, styles.headerSearchTitle]}>搜索商品</Text>
                 </TouchableOpacity>
             </View>
         );
@@ -158,8 +158,8 @@ export default class GoodsList extends Component {
                 <ListRow
                     style={styles.contentTitleView}
                     title={'热门换购'}
-                    titleStyle={Theme.contentTitle}
-                    icon={<Image source={Images.icon_shop_package} style={[Theme.contentTitleIcon, {tintColor: '#ed3126'}]} />}
+                    titleStyle={CusTheme.contentTitle}
+                    icon={<Image source={Images.icon_shop_package} style={[CusTheme.contentTitleIcon, {tintColor: '#ed3126'}]} />}
                     detail={'更多 >>'}
                     accessory={'none'}
                     onPress={() => alert('Press!')}
@@ -235,7 +235,7 @@ const styles = StyleSheet.create({
         borderColor: '#d2d2d2',
         justifyContent: 'center',
         // backgroundColor: '#f60',
-        borderWidth: Theme.minPixel,
+        borderWidth: CusTheme.minPixel,
     },
     headerSearchIcon: {
         marginRight: 10,
@@ -250,7 +250,7 @@ const styles = StyleSheet.create({
     },
     headerIconTitle: {
         fontSize: FontSize(11),
-        color: Theme.themeColor,
+        color: CusTheme.themeColor,
     },
     headerRightView: {
         right: 15,

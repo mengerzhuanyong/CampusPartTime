@@ -11,7 +11,7 @@ import { View, Text } from 'react-native';
 import AlertContent from '../../component/common/AlertContent';
 import { bouncer } from '../../util/Tool';
 import { Overlay } from 'teaset';
-import Theme from '../Theme'
+import CusTheme from '../Theme'
 
 class AlertManager {
 
@@ -33,7 +33,7 @@ class AlertManager {
             Overlay.show(
                 <Overlay.PopView
                     ref={v => this.popViewRefs.push(v)}
-                    style={Theme.centerStyle}
+                    style={CusTheme.centerStyle}
                     type={'zoomOut'}
                     modal={false}
                     onCloseRequest={() => this.hide()}
@@ -51,7 +51,7 @@ class AlertManager {
             Overlay.show(
                 <Overlay.PopView
                     ref={v => this.popViewRefs.push(v)}
-                    style={Theme.centerStyle}
+                    style={CusTheme.centerStyle}
                     type={'zoomOut'}
                     modal={false}
                     onCloseRequest={() => this.hide()}

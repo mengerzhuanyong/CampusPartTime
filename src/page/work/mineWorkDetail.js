@@ -50,10 +50,10 @@ export default class MineWorkDetail extends Component {
     renderHeaderRightView = () => {
         return (
             <TouchableOpacity
-                style={[Theme.headerButtonView, styles.headerRightView]}
+                style={[CusTheme.headerButtonView, styles.headerRightView]}
                 onPress={() => this.onPushToNextPage('异常申诉', 'WorkAbnormalAppeal', {})}
             >
-                <Text style={Theme.headerBtnName}>异常申诉</Text>
+                <Text style={CusTheme.headerBtnName}>异常申诉</Text>
             </TouchableOpacity>
         )
     };
@@ -93,8 +93,8 @@ export default class MineWorkDetail extends Component {
                     </View>
                     <Button
                         title={'打卡'}
-                        style={[Theme.btnView, styles.btnView]}
-                        titleStyle={[Theme.btnName, styles.btnName]}
+                        style={[CusTheme.btnView, styles.btnView]}
+                        titleStyle={[CusTheme.btnName, styles.btnName]}
                         onPress={() => this.onPushToNextPage('', 'WorkPunchCard')}
                     />
                 </ScrollView>
@@ -151,7 +151,7 @@ const styles = StyleSheet.create({
     },
     orderGoodsTitle: {
         fontSize: FontSize(16),
-        color: Theme.themeColor,
+        color: CusTheme.themeColor,
     },
     orderGoodsPrices: {
         color: '#ed3126',

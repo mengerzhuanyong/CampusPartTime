@@ -10,11 +10,20 @@ module.exports = {
     BASE_HOST: 'http://xykj.3todo.com/api/',
     // BASE_HOST: 'http://waimaobang.nididake.com/api/',
 
+    // 人才列表
+    RESUME: '/member_list',
+    // 职位列表
+    POSITION: '/position_list',
+    // 配置项
+    OPTIONS: '/options',
+
     // 首页信息
     index: 'index',
-
+    // 获取资源
+    getResource: 'get_resource',
     // 获取验证码
     getVerificationCode: 'send_sms',
+
     // 登录
     login: 'login',
     // 注册
@@ -22,14 +31,14 @@ module.exports = {
     // 忘记密码
     retrievePassword: '忘记密码',
 
-    // 获取公告
-    notice: 'notice',
     // 工作首页
     jobs: 'jobs/index',
+
     // 换购首页
-    shopping_mall: 'shopping_mall/index',
+    shoppingMall: 'shopping_mall/index',
     // 分类选项获取
-    categories: 'categories',
+    getCategory: 'categories',
+
     // 会员中心首页
     my_index: 'my_index',
     // 工作搜索主页

@@ -40,7 +40,8 @@ import {Carousel, ListRow} from 'teaset'
 import {HorizontalLine} from '../../component/common/commonLine'
 import GoodsItem from "../../component/item/goodsItem";
 
-
+@inject('loginStore', 'shopStore')
+@observer
 export default class Shop extends Component {
     constructor(props) {
         super(props);
@@ -61,7 +62,8 @@ export default class Shop extends Component {
                 {id: 5, title: '单反', icon: Images.icon_nav_camera,},
             ],
         };
-        this.page = 0;
+        this.page = 1;
+        this.pageSize = 10;
     }
 
     componentDidMount() {
@@ -86,8 +88,8 @@ export default class Shop extends Component {
                     style={styles.headerTitleView}
                     onPress={() => this.onPushToNextPage('搜索', 'Search')}
                 >
-                    <Image source={Images.icon_search} style={[Theme.headerIcon, styles.headerSearchIcon]} />
-                    <Text style={[Theme.headerIconTitle, styles.headerSearchTitle]}>搜索商品</Text>
+                    <Image source={Images.icon_search} style={[CusTheme.headerIcon, styles.headerSearchIcon]} />
+                    <Text style={[CusTheme.headerIconTitle, styles.headerSearchTitle]}>搜索商品</Text>
                 </TouchableOpacity>
             </View>
         );
@@ -113,35 +115,55 @@ export default class Shop extends Component {
         return navigation;
     };
 
+    loadNetData = () => {
+        InteractionManager.runAfterInteractions(() => {
+            this.getResource();
+            this.requestDataSource(this.page);
+        })
+    };
+
+    getResource = async () => {
+        let {type} = this.state;
+        const {resourceStore} = this.props;
+        let data = await resourceStore.requestDataSource(ServicesApi.getResource, {type});
+        // console.warn(data);
+    };
+
     _captureRef = (v) => {
-        this.flatList = v;
+        this.flatListRef = v;
     };
 
     _keyExtractor = (item, index) => {
         return `z_${index}`
     };
 
-    // 上拉加载
-    _onEndReached = () => {
-        this.timer1 = setTimeout(() => {
-            let dataTemp = this.state.listData;
-            let allLoad = false;
-            //模拟数据加载完毕,即page > 0,
-            if (this.page < 2) {
-                this.setState({ data: dataTemp.concat(this.state.listData) });
-            }
-            // allLoad 当全部加载完毕后可以设置此属性，默认为false
-            this.flatList.stopEndReached({ allLoad: this.page === 2 });
-            this.page++;
-        }, 2000);
+    requestDataSource = async (page) => {
+        const {shopStore} = this.props;
+        let data = {
+            page,
+            category_id: 0,
+            page_size: this.pageSize,
+        };
+
+        let result = await shopStore.requestDataSource(ServicesApi.shoppingMall, data);
+        let endStatus = false;
+        if (result && result.code === 1) {
+            endStatus = result.data.list_data.length < data.page_size;
+        } else {
+            endStatus = true;
+        }
+        this.flatListRef && this.flatListRef.stopRefresh();
+        this.flatListRef && this.flatListRef.stopEndReached({allLoad: endStatus});
     };
 
-    // 下拉刷新
-    _onRefresh = () => {
-        this.timer2 = setTimeout(() => {
-            // 调用停止刷新
-            this.flatList.stopRefresh()
-        }, 2000);
+    _onRefresh = (stopRefresh) => {
+        this.page = 1;
+        this.requestDataSource(this.page);
+    };
+
+    _onEndReached = (stopEndReached) => {
+        this.page++;
+        this.requestDataSource(this.page);
     };
 
     _renderSeparator = () => {
@@ -158,8 +180,8 @@ export default class Shop extends Component {
                 <ListRow
                     style={styles.contentTitleView}
                     title={'热门换购'}
-                    titleStyle={Theme.contentTitle}
-                    icon={<Image source={Images.icon_shop_package} style={[Theme.contentTitleIcon, {tintColor: '#ed3126'}]} />}
+                    titleStyle={CusTheme.contentTitle}
+                    icon={<Image source={Images.icon_shop_package} style={[CusTheme.contentTitleIcon, {tintColor: '#ed3126'}]} />}
                     detail={'更多 >>'}
                     accessory={'none'}
                     onPress={() => this.onPushToNextPage('热门换购', 'GoodsList')}
@@ -168,15 +190,18 @@ export default class Shop extends Component {
         );
     };
 
-    _renderListItem = (info) => {
+    _renderListItem = ({item}) => {
         return (
-            <GoodsItem />
+            <GoodsItem
+                item={item}
+                onPress={() => this.onPushToNextPage('商品详情', 'GoodsDetail', {item})}
+                {...this.props}
+            />
         );
     };
 
     render() {
-        let {loading, listData} = this.state;
-        // listData = [];
+        const {shopStore} = this.props;
         return (
             <View style={styles.container}>
                 <NavigationBar
@@ -193,7 +218,7 @@ export default class Shop extends Component {
                         style={styles.listContent}
                         initialRefresh={false}
                         ref={this._captureRef}
-                        data={listData}
+                        data={shopStore.dataSource}
                         removeClippedSubviews={false}
                         renderItem={this._renderListItem}
                         keyExtractor={this._keyExtractor}
@@ -239,7 +264,7 @@ const styles = StyleSheet.create({
         borderColor: '#d2d2d2',
         justifyContent: 'center',
         // backgroundColor: '#f60',
-        borderWidth: Theme.minPixel,
+        borderWidth: CusTheme.minPixel,
     },
     headerSearchIcon: {
         marginRight: 10,
@@ -254,7 +279,7 @@ const styles = StyleSheet.create({
     },
     headerIconTitle: {
         fontSize: FontSize(11),
-        color: Theme.themeColor,
+        color: CusTheme.themeColor,
     },
     headerRightView: {
         right: 15,

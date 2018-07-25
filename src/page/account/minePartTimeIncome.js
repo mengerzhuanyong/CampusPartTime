@@ -32,7 +32,7 @@ export default class MinePartTimeIncome extends Component {
         this.state = {
             listData: [],
         };
-        this.page = 0;
+        this.page = 1;
     }
 
     componentWillUnmount(){
@@ -84,16 +84,16 @@ export default class MinePartTimeIncome extends Component {
 
     _renderEmptyComponent = () => {
         return (
-            <View style={Theme.emptyComponentView}>
+            <View style={CusTheme.emptyComponentView}>
                 <Image
-                    style={Theme.listEmptyTipsImg}
+                    style={CusTheme.listEmptyTipsImg}
                     source={Images.img_bg_empty_account}
                 />
-                <Text style={Theme.emptyText}>您还没有过兼职哦, 快去看看有哪些兼职吧</Text>
+                <Text style={CusTheme.emptyText}>您还没有过兼职哦, 快去看看有哪些兼职吧</Text>
                 <Button
                     title={'去看看'}
-                    style={[Theme.btnView, styles.btnView]}
-                    titleStyle={[Theme.btnName, styles.btnName]}
+                    style={[CusTheme.btnView, styles.btnView]}
+                    titleStyle={[CusTheme.btnName, styles.btnName]}
                     onPress={() => this.onPushToNextPage('', 'Work')}
                 />
             </View>
@@ -335,7 +335,7 @@ const styles = StyleSheet.create({
         marginTop: 20,
         borderWidth: 0,
         width: SCREEN_WIDTH / 2,
-        backgroundColor: Theme.themeColor,
+        backgroundColor: CusTheme.themeColor,
     },
     btnName: {
         color: '#fff',

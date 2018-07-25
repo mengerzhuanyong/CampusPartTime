@@ -63,7 +63,7 @@ export default class SystemMessage extends Component {
                 {id: 5, title: '单反', icon: Images.icon_nav_camera,},
             ],
         };
-        this.page = 0;
+        this.page = 1;
     }
 
     componentDidMount() {
@@ -78,8 +78,8 @@ export default class SystemMessage extends Component {
         return (
             <View style={styles.headerView}>
                 <TouchableOpacity style={styles.headerTitleView}>
-                    <Image source={Images.icon_search} style={[Theme.headerIcon, styles.headerSearchIcon]} />
-                    <Text style={[Theme.headerIconTitle, styles.headerSearchTitle]}>搜索商品</Text>
+                    <Image source={Images.icon_search} style={[CusTheme.headerIcon, styles.headerSearchIcon]} />
+                    <Text style={[CusTheme.headerIconTitle, styles.headerSearchTitle]}>搜索商品</Text>
                 </TouchableOpacity>
             </View>
         );
@@ -107,10 +107,10 @@ export default class SystemMessage extends Component {
     renderHeaderRightView = () => {
         return (
             <TouchableOpacity
-                style={[Theme.headerButtonView, styles.headerRightView]}
+                style={[CusTheme.headerButtonView, styles.headerRightView]}
                 onPress={this.deleteConfirm}
             >
-                <Text style={Theme.headerBtnName}>清空</Text>
+                <Text style={CusTheme.headerBtnName}>清空</Text>
             </TouchableOpacity>
         )
     };
@@ -166,12 +166,12 @@ export default class SystemMessage extends Component {
 
     _renderEmptyComponent = () => {
         return (
-            <View style={Theme.emptyComponentView}>
+            <View style={CusTheme.emptyComponentView}>
                 <Image
-                    style={[Theme.listEmptyTipsImg, styles.listEmptyTipsImg]}
+                    style={[CusTheme.listEmptyTipsImg, styles.listEmptyTipsImg]}
                     source={Images.img_bg_empty_message}
                 />
-                <Text style={Theme.emptyText}>暂无消息通知</Text>
+                <Text style={CusTheme.emptyText}>暂无消息通知</Text>
             </View>
         );
     };
@@ -244,7 +244,7 @@ const styles = StyleSheet.create({
         borderColor: '#d2d2d2',
         justifyContent: 'center',
         // backgroundColor: '#f60',
-        borderWidth: Theme.minPixel,
+        borderWidth: CusTheme.minPixel,
     },
     headerSearchIcon: {
         marginRight: 10,
@@ -259,7 +259,7 @@ const styles = StyleSheet.create({
     },
     headerIconTitle: {
         fontSize: FontSize(11),
-        color: Theme.themeColor,
+        color: CusTheme.themeColor,
     },
     headerRightView: {
         top: -22,
@@ -332,10 +332,10 @@ const styles = StyleSheet.create({
         margin: 10,
         borderRadius: 3,
         borderColor: '#ddd',
-        borderWidth: Theme.minPixel,
+        borderWidth: CusTheme.minPixel,
     },
     btnStyleCur: {
-        backgroundColor: Theme.themeColor,
+        backgroundColor: CusTheme.themeColor,
     },
     titleStyle: {
         color: '#333',

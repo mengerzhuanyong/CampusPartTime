@@ -39,26 +39,24 @@ import {QRscanner} from 'react-native-qr-scanner'
 import {Carousel, ListRow} from 'teaset'
 import {HorizontalLine, VerticalLine} from '../../component/common/commonLine'
 import JobItem from "../../component/item/jobItem";
+import BannerComponent from "../../component/common/BannerComponent";
+import HotNewsComponent from "../../component/common/HotNewsComponent";
 
 
-
+@inject('loginStore', 'workStore', 'resourceStore')
+@observer
 export default class Work extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            loading: false,
-            listData: [1,2,3],
+            type: 2,
         };
-        this.page = 0
+        this.page = 1;
+        this.pageSize = 10;
     }
 
-    async componentDidMount() {
-        let url = ServicesApi.index;
-        let data = {
-            id: 1,
-        };
-        let result = await Services.post(url, data, true, 'index');
-        // console.log(result);
+    componentDidMount() {
+        this.loadNetData();
     }
 
     componentWillUnmount(){
@@ -77,50 +75,72 @@ export default class Work extends Component {
         return (
             <View style={styles.headerView}>
                 <TouchableOpacity style={styles.headerLeftView}>
-                    <Image source={Images.icon_place} style={Theme.headerIcon} />
-                    <Text style={[Theme.headerIconTitle, styles.headerIconTitle]}>黄岛区</Text>
+                    <Image source={Images.icon_place} style={CusTheme.headerIcon} />
+                    <Text style={[CusTheme.headerIconTitle, styles.headerIconTitle]}>黄岛区</Text>
                 </TouchableOpacity>
-                <Text style={[Theme.headerTitle, styles.headerTitle]}>工作</Text>
+                <Text style={[CusTheme.headerTitle, styles.headerTitle]}>工作</Text>
                 <TouchableOpacity
                     style={styles.headerRightView}
                     onPress={() => this.onPushToNextPage('消息', 'SystemMessage')}
                 >
-                    <Image source={Images.icon_message} style={Theme.headerIcon}/>
-                    <View style={Theme.pointView} />
+                    <Image source={Images.icon_message} style={CusTheme.headerIcon}/>
+                    <View style={CusTheme.pointView} />
                 </TouchableOpacity>
             </View>
         );
     };
 
+    loadNetData = () => {
+        InteractionManager.runAfterInteractions(() => {
+            this.getResource();
+            this.requestDataSource(this.page);
+        })
+    };
+
+    getResource = async () => {
+        let {type} = this.state;
+        const {resourceStore} = this.props;
+        let data = await resourceStore.requestDataSource(ServicesApi.getResource, {type});
+        // console.warn(data);
+    };
+
     _captureRef = (v) => {
-        this.flatList = v;
+        this.flatListRef = v;
     };
 
     _keyExtractor = (item, index) => {
         return `z_${index}`
     };
 
-    // 上拉加载
-    _onEndReached = () => {
-        this.timer1 = setTimeout(() => {
-            let dataTemp = this.state.listData;
-            let allLoad = false;
-            //模拟数据加载完毕,即page > 0,
-            if (this.page < 2) {
-                this.setState({ data: dataTemp.concat(this.state.listData) });
-            }
-            // allLoad 当全部加载完毕后可以设置此属性，默认为false
-            this.flatList.stopEndReached({ allLoad: this.page === 2 });
-            this.page++;
-        }, 2000);
+    requestDataSource = async (page) => {
+        const {workStore} = this.props;
+        let data = {
+            page,
+            sort: 2,
+            position: 0,
+            sort_column: 1,
+            page_size: this.pageSize,
+        };
+
+        let result = await workStore.requestDataSource(ServicesApi.jobs, data);
+        let endStatus = false;
+        if (result && result.code === 1) {
+            endStatus = result.data.list_data.length < data.page_size;
+        } else {
+            endStatus = true;
+        }
+        this.flatListRef && this.flatListRef.stopRefresh();
+        this.flatListRef && this.flatListRef.stopEndReached({allLoad: endStatus});
     };
 
-    // 下拉刷新
-    _onRefresh = () => {
-        this.timer2 = setTimeout(() => {
-            // 调用停止刷新
-            this.flatList.stopRefresh()
-        }, 2000);
+    _onRefresh = (stopRefresh) => {
+        this.page = 1;
+        this.requestDataSource(this.page);
+    };
+
+    _onEndReached = (stopEndReached) => {
+        this.page++;
+        this.requestDataSource(this.page);
     };
 
     _renderSeparator = () => {
@@ -128,75 +148,29 @@ export default class Work extends Component {
     };
 
     _renderHeaderComponent = () => {
+        let {resourceStore} = this.props;
+        let {banner_data, notice_data} = resourceStore.getDataSource;
         return (
             <View style={styles.listHeaderComponent}>
-                <ScrollView style={styles.contentTopView}>
-                    <Carousel
-                        style={styles.headBackCarousel}
-                        control={
-                            <Carousel.Control
-                                style={styles.carouselControlView}
-                                dot={<View style={styles.carouselControl}/>}
-                                activeDot={<View style={[styles.carouselControl, styles.carouselControlCur]}/>}
-                            />
-                        }
-                    >
-                        <TouchableWithoutFeedback>
-                            <ImageBackground
-                                style={styles.headBackImage}
-                                resizeMode={'contain'}
-                                source={Images.img_banner}
-                            />
-                        </TouchableWithoutFeedback>
-                        <TouchableWithoutFeedback>
-                            <ImageBackground
-                                style={styles.headBackImage}
-                                resizeMode={'contain'}
-                                source={Images.img_banner}
-                            />
-                        </TouchableWithoutFeedback>
-                        <TouchableWithoutFeedback>
-                            <ImageBackground
-                                style={styles.headBackImage}
-                                resizeMode={'contain'}
-                                source={Images.img_banner}
-                            />
-                        </TouchableWithoutFeedback>
-
-                    </Carousel>
-                    <TouchableOpacity
-                        style={styles.noticeContainer}
-                        onPress={() => this.onPushToNextPage('消息', 'SystemMessage')}
-                    >
-                        <Image
-                            style={styles.noticeIcon}
-                            source={Images.icon_bell}
-                        />
-                        <Carousel
-                            style={styles.noticeContainer}
-                            control={false}
-                            horizontal={false}
-                            interval={5000}
-                        >
-                            <Text style={styles.noticeContext}>通知公告：校园空兼APP正式内测啦！</Text>
-                            <Text style={styles.noticeContext}>通知公告：校园空兼APP正式内测啦！</Text>
-                        </Carousel>
-                    </TouchableOpacity>
-                </ScrollView>
+                <BannerComponent
+                    bannerData={banner_data}
+                />
+                <HotNewsComponent
+                    noticeData={notice_data}
+                />
                 <View style={styles.listSortBtnView}>
                     <TouchableOpacity style={styles.sortBtnItemView}>
                         <Text style={styles.sortBtnItemName}>全部职位</Text>
-                        <Image source={Images.icon_arrow_down} style={styles.sortBtnIcon} />
                     </TouchableOpacity>
                     <VerticalLine lineStyle={styles.sortVerLine} />
                     <TouchableOpacity style={styles.sortBtnItemView}>
-                        <Text style={styles.sortBtnItemName}>全部职位</Text>
-                        <Image source={Images.icon_arrow_down} style={styles.sortBtnIcon} />
+                        <Text style={styles.sortBtnItemName}>按剩余人数排序</Text>
+                        <Image source={Images.icon_sort} style={styles.sortBtnIcon} />
                     </TouchableOpacity>
                     <VerticalLine lineStyle={styles.sortVerLine} />
                     <TouchableOpacity style={styles.sortBtnItemView}>
-                        <Text style={styles.sortBtnItemName}>全部职位</Text>
-                        <Image source={Images.icon_arrow_down} style={styles.sortBtnIcon} />
+                        <Text style={styles.sortBtnItemName}>按工分排序</Text>
+                        <Image source={Images.icon_sort} style={styles.sortBtnIcon} />
                     </TouchableOpacity>
                 </View>
             </View>
@@ -206,7 +180,9 @@ export default class Work extends Component {
     _renderListItem = ({item}) => {
         return (
             <JobItem
-                onPress={() => this.onPushToNextPage('兼职详情', 'WorkDetail')}
+                item={item}
+                onPress={() => this.onPushToNextPage('兼职详情', 'WorkDetail', {item})}
+                {...this.props}
             />
         );
     };
@@ -216,7 +192,7 @@ export default class Work extends Component {
     };
 
     render() {
-        let {loading, listData} = this.state;
+        const {workStore} = this.props;
         return (
             <View style={styles.container}>
                 <NavigationBar
@@ -233,7 +209,7 @@ export default class Work extends Component {
                     initialRefresh={false}
                     ref={this._captureRef}
                     removeClippedSubviews={false}
-                    data={this.state.listData}
+                    data={workStore.dataSource}
                     renderItem={this._renderListItem}
                     keyExtractor={this._keyExtractor}
                     onEndReached={this._onEndReached}
@@ -251,8 +227,6 @@ export default class Work extends Component {
         );
     }
 }
-
-const headBackImageW = SCREEN_WIDTH - ScaleSize(14) * 2;
 
 const styles = StyleSheet.create({
     container: {
@@ -280,7 +254,7 @@ const styles = StyleSheet.create({
     },
     headerIconTitle: {
         fontSize: FontSize(11),
-        color: Theme.themeColor,
+        color: CusTheme.themeColor,
     },
     headerRightView: {
         right: 15,
@@ -296,90 +270,52 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#fff',
     },
-    listHeaderComponent: {},
+    listHeaderComponent: {
+        backgroundColor: '#f8f8f8',
+    },
     horLine: {
         marginVertical: 5,
         backgroundColor: '#d9d9d9',
     },
-    noticeContainer: {
-        flex: 1,
-        height: ScaleSize(35),
-        marginLeft: ScaleSize(20),
-        marginVertical: ScaleSize(20),
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    carouselControlView: {
-        marginBottom: 10,
-        alignItems: 'flex-end',
-    },
-    carouselControl: {
-        width: ScaleSize(25),
-        height: ScaleSize(10),
-        marginRight: 5,
-        borderRadius: ScaleSize(8),
-        backgroundColor: "rgba(255, 255, 255, 0.5)",
-    },
-    carouselControlCur: {
-        backgroundColor: '#fff',
-    },
-    noticeIcon: {
-        width: ScaleSize(30),
-        height: ScaleSize(30),
-        resizeMode: 'contain',
-    },
-    noticeContext: {
-        color: '#f4954e',
-        fontSize: FontSize(12),
-    },
-    contentTopView: {
-        backgroundColor: '#fff',
-    },
-    headBackCarousel: {
-        width: headBackImageW,
-        height: headBackImageW * 0.452,
-        marginTop: ScaleSize(12),
-        marginLeft: ScaleSize(14),
-        borderRadius: ScaleSize(10),
-        overflow: 'hidden',
-    },
-    headBackImage: {
-        width: headBackImageW,
-        height: headBackImageW * 0.452,
-    },
 
     listSortBtnView: {
-        marginVertical: 10,
-        // padding: 15,
+        flex: 1,
+        marginTop: 10,
         flexDirection: 'row',
         alignItems: 'center',
-        borderTopColor: '#eee',
-        borderBottomColor: '#d9d9d9',
+        height: ScaleSize(90),
+        paddingHorizontal: 15,
+        borderColor: '#eef0f2',
         backgroundColor: '#fff',
         justifyContent: 'space-between',
-        borderTopWidth: 10,
-        borderBottomWidth: Theme.minPixel,
+        borderBottomWidth: CusTheme.minPixel,
     },
     sortVerLine: {
         height: 20,
         backgroundColor: '#d9d9d9',
     },
     sortBtnItemView: {
-        flex: 1,
+        // flex: 1,
         height: 55,
-        // backgroundColor: '#123',
+        paddingHorizontal: 5,
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
+        // backgroundColor: '#f60',
     },
     sortBtnItemName: {
         color: '#666',
         fontSize: FontSize(12),
     },
+    imageContainer: {
+        alignItems: 'center',
+        width: ScaleSize(25),
+        height: ScaleSize(25),
+        justifyContent: 'center',
+    },
     sortBtnIcon: {
         marginLeft: 5,
-        height: ScaleSize(30),
+        height: ScaleSize(25),
         resizeMode: 'contain',
     },
     btnView: {

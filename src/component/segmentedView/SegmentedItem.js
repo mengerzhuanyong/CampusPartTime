@@ -10,7 +10,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { View, Text, ViewPropTypes } from 'react-native';
-import { Theme, Badge } from 'teaset';
+import {Theme, Badge } from 'teaset';
 
 class SegmentedItem extends React.PureComponent {
 

@@ -111,14 +111,14 @@ const styles = StyleSheet.create({
         paddingHorizontal: 4,
         alignItems: 'center',
         justifyContent: 'center',
-        borderWidth: Theme.minPixel,
+        borderWidth: CusTheme.minPixel,
     },
     messageInfoTagIconView: {
         borderWidth: 0,
         padding: 0,
     },
     messageInfoTagItemName: {
-        color: Theme.themeColor,
+        color: CusTheme.themeColor,
         fontSize: FontSize(10),
     },
     messageInfoLeftView: {

@@ -71,36 +71,36 @@ export default class MineProfile extends Component {
                             style={styles.contentTitleView}
                             title={'身份证认证'}
                             detail={'未认证'}
-                            titleStyle={Theme.contentTitle}
-                            icon={<Image source={Images.icon_user_card} style={[Theme.contentTitleIcon, {}]} />}
-                            accessory={<Image source={Images.icon_arrow_right} style={[Theme.contentRightIcon, {}]} />}
+                            titleStyle={CusTheme.contentTitle}
+                            icon={<Image source={Images.icon_user_card} style={[CusTheme.contentTitleIcon, {}]} />}
+                            accessory={<Image source={Images.icon_arrow_right} style={[CusTheme.contentRightIcon, {}]} />}
                             onPress={() => this.onPushToNextPage('身份证认证', 'CertificationIDCard', {})}
                         />
                         <ListRow
                             style={styles.contentTitleView}
                             title={'学籍资料认证'}
                             detail={'未认证'}
-                            titleStyle={Theme.contentTitle}
-                            icon={<Image source={Images.icon_school_roll} style={[Theme.contentTitleIcon, {}]} />}
-                            accessory={<Image source={Images.icon_arrow_right} style={[Theme.contentRightIcon, {}]} />}
+                            titleStyle={CusTheme.contentTitle}
+                            icon={<Image source={Images.icon_school_roll} style={[CusTheme.contentTitleIcon, {}]} />}
+                            accessory={<Image source={Images.icon_arrow_right} style={[CusTheme.contentRightIcon, {}]} />}
                             onPress={() => this.onPushToNextPage('学籍资料认证', 'CommonWebPage', {url: stu_cer_uri, style: styles.webViewStyle})}
                         />
                         <ListRow
                             style={styles.contentTitleView}
                             title={'绑定紧急联系人'}
                             detail={'未认证'}
-                            titleStyle={Theme.contentTitle}
-                            icon={<Image source={Images.icon_user_contact} style={[Theme.contentTitleIcon, {}]} />}
-                            accessory={<Image source={Images.icon_arrow_right} style={[Theme.contentRightIcon, {}]} />}
+                            titleStyle={CusTheme.contentTitle}
+                            icon={<Image source={Images.icon_user_contact} style={[CusTheme.contentTitleIcon, {}]} />}
+                            accessory={<Image source={Images.icon_arrow_right} style={[CusTheme.contentRightIcon, {}]} />}
                             onPress={() => this.onPushToNextPage('绑定紧急联系人', 'EmergencyContact', {})}
                         />
                         <ListRow
                             style={styles.contentTitleView}
                             title={'手机号实名认证'}
                             detail={'未认证'}
-                            titleStyle={Theme.contentTitle}
-                            icon={<Image source={Images.icon_mobile} style={[Theme.contentTitleIcon, {}]} />}
-                            accessory={<Image source={Images.icon_arrow_right} style={[Theme.contentRightIcon, {}]} />}
+                            titleStyle={CusTheme.contentTitle}
+                            icon={<Image source={Images.icon_mobile} style={[CusTheme.contentTitleIcon, {}]} />}
+                            accessory={<Image source={Images.icon_arrow_right} style={[CusTheme.contentRightIcon, {}]} />}
                             bottomSeparator={'none'}
                             onPress={() => this.onPushToNextPage('手机号实名认证', 'CertificationMobile', {})}
                         />

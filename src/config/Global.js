@@ -13,7 +13,7 @@ import {
     scaleSize, fontSize, isMobile, checkMobile, checkPassword, isEmpty, containsChinese,
     clearTimer
 } from '../util/Tool'
-import Theme from './Theme'
+import CusTheme from './Theme'
 import Images from './manager/ImageManager'
 import Services from '../util/Services'
 import MenuManager from './manager/MenuManager'
@@ -52,10 +52,10 @@ global.__IOS__ = (Platform.OS === 'ios');
 global.__ANDROID__ = (Platform.OS === 'android');
 
 // 获取屏幕宽度
-global.SCREEN_WIDTH = Theme.screen_width;
+global.SCREEN_WIDTH = CusTheme.screen_width;
 
 // 获取屏幕高度
-global.SCREEN_HEIGHT = Theme.screen_height;
+global.SCREEN_HEIGHT = CusTheme.screen_height;
 
 // 图片加载
 global.Images = Images;
@@ -94,7 +94,7 @@ global.AlertManager = AlertManager;
 global.InteractionManager = InteractionManager;
 
 // 全局的主题和控件的配置以及样式
-global.Theme = Theme;
+global.CusTheme = CusTheme;
 
 // 适配字体
 global.FontSize = fontSize;

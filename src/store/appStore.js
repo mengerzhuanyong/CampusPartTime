@@ -9,7 +9,7 @@ import { observable, action, computed, runInAction } from 'mobx'
 import BaseStore from './baseStore'
 
 // app状态和信息
-class AppStore extends BaseStore {
+export default class AppStore extends BaseStore {
 
     constructor(params) {
         super(params);
@@ -31,5 +31,3 @@ class AppStore extends BaseStore {
     }
 
 }
-
-export default AppStore;

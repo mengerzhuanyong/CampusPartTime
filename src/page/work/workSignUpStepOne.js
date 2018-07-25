@@ -49,7 +49,7 @@ export default class WorkSignUpStepOne extends Component {
                 {id: 5, title: '单反', icon: Images.icon_nav_camera,},
             ],
         };
-        this.page = 0;
+        this.page = 1;
     }
 
     componentWillUnmount(){
@@ -124,7 +124,7 @@ export default class WorkSignUpStepOne extends Component {
         return (
             <View style={styles.headerComponentView}>
                 <View style={[styles.contentItemView, styles.contentSignStepView]}>
-                    <Image source={Images.img_bg_step1} style={Theme.signUpStepImg} />
+                    <Image source={Images.img_bg_step1} style={CusTheme.signUpStepImg} />
                     <View style={styles.contentSignStepConView}>
                         <Text style={[styles.contentSignStepContext, styles.contentSignStepContextCur]}>选择时间</Text>
                         <Text style={styles.contentSignStepContext}>确认信息</Text>
@@ -185,8 +185,8 @@ export default class WorkSignUpStepOne extends Component {
                 </View>
                 <Button
                     title={'下一步'}
-                    style={[Theme.btnView, styles.btnView]}
-                    titleStyle={[Theme.btnName, styles.btnName]}
+                    style={[CusTheme.btnView, styles.btnView]}
+                    titleStyle={[CusTheme.btnName, styles.btnName]}
                     onPress={() => this.onPushToNextPage('确认信息', 'WorkSignUpStepTwo')}
                 />
             </View>
@@ -219,7 +219,7 @@ const styles = StyleSheet.create({
     },
     contentSignStepContextCur: {
         flex: 1,
-        color: Theme.themeColor,
+        color: CusTheme.themeColor,
         textAlign: 'center',
         fontSize: FontSize(13),
     },
@@ -289,13 +289,13 @@ const styles = StyleSheet.create({
     },
     timeBtnView: {
         // width: ScaleSize(140),
-        borderColor: Theme.themeColor,
+        borderColor: CusTheme.themeColor,
     },
     timeBtnViewCur: {
-        backgroundColor: Theme.themeColor,
+        backgroundColor: CusTheme.themeColor,
     },
     timeBtnName: {
-        color: Theme.themeColor,
+        color: CusTheme.themeColor,
         fontSize: FontSize(14),
     },
     timeBtnNameCur: {

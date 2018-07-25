@@ -64,6 +64,8 @@
 		C63CAE5B01464C8998F71CA1 /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BC65910B1BAF4FF9BA6E0D71 /* UserNotifications.framework */; };
 		C728F6B359C1488995C19D69 /* libRCTVideo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EBBEE3EAD02A49309C7E5751 /* libRCTVideo.a */; };
 		D602991D1EF54CEE8B52E936 /* libRCTJCoreModule.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 54C825F82529422492FDCCE7 /* libRCTJCoreModule.a */; };
+		D9E80DE6210782EB000553B5 /* assets in Resources */ = {isa = PBXBuildFile; fileRef = D9E80DE4210782EB000553B5 /* assets */; };
+		D9E80DE7210782EB000553B5 /* main.jsbundle in Resources */ = {isa = PBXBuildFile; fileRef = D9E80DE5210782EB000553B5 /* main.jsbundle */; };
 		F00E715C45BF4949BA3CA05E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2AFB1C1BCDC5449BBBCB57AA /* Foundation.framework */; };
 		FAF8C07286D54DB385E785FE /* libRNBackgroundTimer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 05BB8AF927BF4364B83E37A4 /* libRNBackgroundTimer.a */; };
 /* End PBXBuildFile section */
@@ -499,7 +501,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		008F07F21AC5B25A0029DE68 /* main.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
 		00C302A71ABCB8CE00DB3ED1 /* RCTActionSheet.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTActionSheet.xcodeproj; path = "../node_modules/react-native/Libraries/ActionSheetIOS/RCTActionSheet.xcodeproj"; sourceTree = "<group>"; };
 		00C302B51ABCB90400DB3ED1 /* RCTGeolocation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTGeolocation.xcodeproj; path = "../node_modules/react-native/Libraries/Geolocation/RCTGeolocation.xcodeproj"; sourceTree = "<group>"; };
 		00C302BB1ABCB91800DB3ED1 /* RCTImage.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTImage.xcodeproj; path = "../node_modules/react-native/Libraries/Image/RCTImage.xcodeproj"; sourceTree = "<group>"; };
@@ -581,6 +582,8 @@
 		CC5DD770DA1A4827B472E181 /* libRNShakeEvent.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNShakeEvent.a; sourceTree = "<group>"; };
 		CCB4BE8D396249B4BA528655 /* libReactNativePermissions.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libReactNativePermissions.a; sourceTree = "<group>"; };
 		D663A82CA9444A66B334EE24 /* libRNImagePicker.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNImagePicker.a; sourceTree = "<group>"; };
+		D9E80DE4210782EB000553B5 /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; path = assets; sourceTree = "<group>"; };
+		D9E80DE5210782EB000553B5 /* main.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
 		DB0EBAA5731141D7A6E337B2 /* RCTJCoreModule.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RCTJCoreModule.xcodeproj; path = "../node_modules/jcore-react-native/ios/RCTJCoreModule.xcodeproj"; sourceTree = "<group>"; };
 		DFD3392B025E41FBBF75BD85 /* libRCTJShareModule.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRCTJShareModule.a; sourceTree = "<group>"; };
 		E84D6F08B89140639F37461C /* CFNetwork.framework */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
@@ -736,8 +739,9 @@
 		13B07FAE1A68108700A75B9A /* CampusPartTime */ = {
 			isa = PBXGroup;
 			children = (
+				D9E80DE4210782EB000553B5 /* assets */,
+				D9E80DE5210782EB000553B5 /* main.jsbundle */,
 				7A13B741208825F900AA758D /* CampusPartTime.entitlements */,
-				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
@@ -1716,10 +1720,12 @@
 			files = (
 				7AB008CA20BF981B00C04FC2 /* AlipaySDK.bundle in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
+				D9E80DE6210782EB000553B5 /* assets in Resources */,
 				7AB0080320BF915F00C04FC2 /* TZImagePickerController.bundle in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
 				7AB008D220BF981B00C04FC2 /* README.txt in Resources */,
 				7A13B73D208825CF00AA758D /* RCTJShareConfig.plist in Resources */,
+				D9E80DE7210782EB000553B5 /* main.jsbundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

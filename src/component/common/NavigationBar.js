@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
     navBarStyle: {
         zIndex: 999,
         position: 'relative',
-        backgroundColor: Theme.themeColor,
+        backgroundColor: CusTheme.themeColor,
     },
     navBackImage: {
         flex: 1,

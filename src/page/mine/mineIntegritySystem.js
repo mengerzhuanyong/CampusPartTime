@@ -204,7 +204,7 @@ const styles = StyleSheet.create({
         borderWidth: 0,
     },
     activeTabStyle: {
-        backgroundColor: Theme.themeColor,
+        backgroundColor: CusTheme.themeColor,
     },
     tabTextStyle: {
         color: '#999',
@@ -222,7 +222,7 @@ const styles = StyleSheet.create({
         height: ScaleSize(90),
     },
     sheetActiveTitle: {
-        color: Theme.themeColor,
+        color: CusTheme.themeColor,
         fontSize: FontSize(14),
     },
     sheetTitle: {
@@ -251,10 +251,10 @@ const styles = StyleSheet.create({
         margin: 10,
         borderRadius: 3,
         borderColor: '#ddd',
-        borderWidth: Theme.minPixel,
+        borderWidth: CusTheme.minPixel,
     },
     btnStyleCur: {
-        backgroundColor: Theme.themeColor,
+        backgroundColor: CusTheme.themeColor,
     },
     titleStyle: {
         color: '#333',

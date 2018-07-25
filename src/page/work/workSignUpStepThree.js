@@ -50,7 +50,7 @@ export default class WorkSignUpStepThree extends Component {
             ],
             customerMobile: '800-820-8820',
         };
-        this.page = 0;
+        this.page = 1;
     }
 
     componentWillUnmount(){
@@ -125,7 +125,7 @@ export default class WorkSignUpStepThree extends Component {
         return (
             <View style={styles.headerComponentView}>
                 <View style={[styles.contentItemView, styles.contentSignStepView]}>
-                    <Image source={Images.img_bg_step3} style={Theme.signUpStepImg} />
+                    <Image source={Images.img_bg_step3} style={CusTheme.signUpStepImg} />
                     <View style={styles.contentSignStepConView}>
                         <Text style={[styles.contentSignStepContext, styles.contentSignStepContextCur]}>选择时间</Text>
                         <Text style={[styles.contentSignStepContext, styles.contentSignStepContextCur]}>确认信息</Text>
@@ -176,7 +176,7 @@ export default class WorkSignUpStepThree extends Component {
                 />
                 <View style={styles.content}>
                     <View style={[styles.contentItemView, styles.contentSignStepView]}>
-                        <Image source={Images.img_bg_step3} style={Theme.signUpStepImg} />
+                        <Image source={Images.img_bg_step3} style={CusTheme.signUpStepImg} />
                         <View style={styles.contentSignStepConView}>
                             <Text style={[styles.contentSignStepContext, styles.contentSignStepContextCur]}>选择时间</Text>
                             <Text style={[styles.contentSignStepContext, styles.contentSignStepContextCur]}>确认信息</Text>
@@ -197,14 +197,14 @@ export default class WorkSignUpStepThree extends Component {
                 <View style={styles.multiBtnView}>
                     <Button
                         title={'拨打电话'}
-                        style={[Theme.btnView, styles.btnView]}
-                        titleStyle={[Theme.btnName, styles.btnName]}
+                        style={[CusTheme.btnView, styles.btnView]}
+                        titleStyle={[CusTheme.btnName, styles.btnName]}
                         onPress={() => this.onPushToNextPage('完成工作', 'WorkSignUpStepFour')}
                     />
                     <Button
                         title={'取消报名'}
-                        style={[Theme.btnView, styles.btnView]}
-                        titleStyle={[Theme.btnName, styles.btnName]}
+                        style={[CusTheme.btnView, styles.btnView]}
+                        titleStyle={[CusTheme.btnName, styles.btnName]}
                         onPress={() => this.onPushToNextPage('确认信息', 'WorkSignUpStepTwo')}
                     />
                 </View>
@@ -238,7 +238,7 @@ const styles = StyleSheet.create({
     },
     contentSignStepContextCur: {
         flex: 1,
-        color: Theme.themeColor,
+        color: CusTheme.themeColor,
         textAlign: 'center',
         fontSize: FontSize(13),
     },
@@ -288,7 +288,7 @@ const styles = StyleSheet.create({
     },
     mobileValue: {
         fontSize: FontSize(20),
-        color: Theme.themeColor,
+        color: CusTheme.themeColor,
     },
 
     multiBtnView: {

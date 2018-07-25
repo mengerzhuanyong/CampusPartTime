@@ -17,7 +17,7 @@ import {ActionSheet, Overlay, Label} from 'teaset';
 import {fontSize, bouncer} from '../../util/Tool';
 import AreaContent from '../../component/common/AreaContent';
 import ShareContent from '../../component/common/ShareContent';
-import Theme from '../Theme';
+import CusTheme from '../Theme';
 import JShareModule from 'jshare-react-native'
 
 class ActionsManager {
@@ -53,7 +53,7 @@ class ActionsManager {
                     side={'bottom'}
                     modal={false}
                     rootTransform={'none'}
-                    containerStyle={Theme.bgTransparentStyle}
+                    containerStyle={CusTheme.bgTransparentStyle}
                     onCloseRequest={() => this.hide()}
                 >
                     <ShareContent moduleTitle={moduleTitle} onPress={func}/>
@@ -71,7 +71,7 @@ class ActionsManager {
                     side={'bottom'}
                     modal={false}
                     rootTransform={'none'}
-                    containerStyle={Theme.bgTransparentStyle}
+                    containerStyle={CusTheme.bgTransparentStyle}
                     onCloseRequest={() => this.hide()}
                 >
                     <AreaContent onPress={func}/>

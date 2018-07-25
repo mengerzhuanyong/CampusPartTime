@@ -67,8 +67,8 @@ export default class Mine extends Component {
                     style={styles.headerRightView}
                     onPress={() => this.onPushToNextPage('消息', 'SystemMessage')}
                 >
-                    <Image source={Images.icon_message} style={[Theme.headerIcon, {tintColor: '#fff'}]}/>
-                    <View style={Theme.pointView} />
+                    <Image source={Images.icon_message} style={[CusTheme.headerIcon, {tintColor: '#fff'}]}/>
+                    <View style={CusTheme.pointView} />
                 </TouchableOpacity>
             </View>
         );
@@ -122,28 +122,28 @@ export default class Mine extends Component {
                         <ListRow
                             style={styles.contentTitleView}
                             title={'我的资料'}
-                            titleStyle={Theme.contentTitle}
-                            icon={<Image source={Images.icon_files} style={[Theme.contentTitleIcon, {}]} />}
+                            titleStyle={CusTheme.contentTitle}
+                            icon={<Image source={Images.icon_files} style={[CusTheme.contentTitleIcon, {}]} />}
                             detail={''}
-                            accessory={<Image source={Images.icon_arrow_right} style={[Theme.contentRightIcon, {}]} />}
+                            accessory={<Image source={Images.icon_arrow_right} style={[CusTheme.contentRightIcon, {}]} />}
                             onPress={() => this.onPushToNextPage('我的资料', 'MineProfile', {})}
                         />
                         <ListRow
                             style={styles.contentTitleView}
                             title={'我的账户'}
-                            titleStyle={Theme.contentTitle}
-                            icon={<Image source={Images.icon_cloud} style={[Theme.contentTitleIcon, {}]} />}
+                            titleStyle={CusTheme.contentTitle}
+                            icon={<Image source={Images.icon_cloud} style={[CusTheme.contentTitleIcon, {}]} />}
                             detail={''}
-                            accessory={<Image source={Images.icon_arrow_right} style={[Theme.contentRightIcon, {}]} />}
+                            accessory={<Image source={Images.icon_arrow_right} style={[CusTheme.contentRightIcon, {}]} />}
                             onPress={() => this.onPushToNextPage('我的账户', 'MineAccount', {})}
                         />
                         <ListRow
                             style={styles.contentTitleView}
                             title={'我的积分'}
-                            titleStyle={Theme.contentTitle}
-                            icon={<Image source={Images.icon_points} style={[Theme.contentTitleIcon, {}]} />}
+                            titleStyle={CusTheme.contentTitle}
+                            icon={<Image source={Images.icon_points} style={[CusTheme.contentTitleIcon, {}]} />}
                             detail={''}
-                            accessory={<Image source={Images.icon_arrow_right} style={[Theme.contentRightIcon, {}]} />}
+                            accessory={<Image source={Images.icon_arrow_right} style={[CusTheme.contentRightIcon, {}]} />}
                             onPress={() => this.onPushToNextPage('我的积分', 'MinePoints', {})}
                             bottomSeparator={'none'}
                         />
@@ -152,28 +152,28 @@ export default class Mine extends Component {
                         <ListRow
                             style={styles.contentTitleView}
                             title={'诚信体系'}
-                            titleStyle={Theme.contentTitle}
-                            icon={<Image source={Images.icon_medal} style={[Theme.contentTitleIcon, {}]} />}
+                            titleStyle={CusTheme.contentTitle}
+                            icon={<Image source={Images.icon_medal} style={[CusTheme.contentTitleIcon, {}]} />}
                             detail={''}
-                            accessory={<Image source={Images.icon_arrow_right} style={[Theme.contentRightIcon, {}]} />}
+                            accessory={<Image source={Images.icon_arrow_right} style={[CusTheme.contentRightIcon, {}]} />}
                             onPress={() => this.onPushToNextPage('诚信体系', 'MineIntegritySystem', {})}
                         />
                         <ListRow
                             style={styles.contentTitleView}
                             title={'工作台'}
-                            titleStyle={Theme.contentTitle}
-                            icon={<Image source={Images.icon_work_space} style={[Theme.contentTitleIcon, {}]} />}
+                            titleStyle={CusTheme.contentTitle}
+                            icon={<Image source={Images.icon_work_space} style={[CusTheme.contentTitleIcon, {}]} />}
                             detail={''}
-                            accessory={<Image source={Images.icon_arrow_right} style={[Theme.contentRightIcon, {}]} />}
+                            accessory={<Image source={Images.icon_arrow_right} style={[CusTheme.contentRightIcon, {}]} />}
                             onPress={() => this.onPushToNextPage('工作台', 'MineWorkSpace', {})}
                         />
                         <ListRow
                             style={styles.contentTitleView}
                             title={'分享APP'}
-                            titleStyle={Theme.contentTitle}
-                            icon={<Image source={Images.icon_share} style={[Theme.contentTitleIcon, {}]} />}
+                            titleStyle={CusTheme.contentTitle}
+                            icon={<Image source={Images.icon_share} style={[CusTheme.contentTitleIcon, {}]} />}
                             detail={''}
-                            accessory={<Image source={Images.icon_arrow_right} style={[Theme.contentRightIcon, {}]} />}
+                            accessory={<Image source={Images.icon_arrow_right} style={[CusTheme.contentRightIcon, {}]} />}
                             onPress={this.onShare}
                             bottomSeparator={'none'}
                         />
@@ -182,10 +182,10 @@ export default class Mine extends Component {
                         <ListRow
                             style={styles.contentTitleView}
                             title={'设置'}
-                            titleStyle={Theme.contentTitle}
-                            icon={<Image source={Images.icon_setting} style={[Theme.contentTitleIcon, {}]} />}
+                            titleStyle={CusTheme.contentTitle}
+                            icon={<Image source={Images.icon_setting} style={[CusTheme.contentTitleIcon, {}]} />}
                             detail={''}
-                            accessory={<Image source={Images.icon_arrow_right} style={[Theme.contentRightIcon, {}]} />}
+                            accessory={<Image source={Images.icon_arrow_right} style={[CusTheme.contentRightIcon, {}]} />}
                             onPress={() => this.onPushToNextPage('设置', 'Setting', {})}
                             bottomSeparator={'none'}
                         />
@@ -225,7 +225,7 @@ const styles = StyleSheet.create({
     },
     headerIconTitle: {
         fontSize: FontSize(11),
-        color: Theme.themeColor,
+        color: CusTheme.themeColor,
     },
     headerRightView: {
         right: 15,

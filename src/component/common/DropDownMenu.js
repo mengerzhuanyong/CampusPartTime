@@ -29,14 +29,14 @@ class DropDownMenu extends PureComponent {
 
     changeBar = (activeIndex) => {
         if (activeIndex === -1) {
-            this.close();
+            this._onClose();
         } else {
             this.setState({ visible: true, activeIndex })
         }
     };
 
     _onClose = () => {
-        this.close()
+        this.close();
         this.props.onClose && this.props.onClose()
     };
 
@@ -119,11 +119,10 @@ class MenuBar extends PureComponent {
 
     render() {
         const { titleArray, visible } = this.props;
-         // console.log('MenuBar');
         return (
             <View style={styles.barContainer}>
                 {titleArray.map((item, index) => {
-                    let color = this.state.activeIndex === index ? '#1c67ff' : '#2e2e2e'
+                    let color = this.state.activeIndex === index ? '#1c67ff' : '#2e2e2e';
                     return (
                         <TouchableOpacity
                             key={index}
@@ -275,7 +274,7 @@ const styles = StyleSheet.create({
     },
     contentContainer: {
         position: 'absolute',
-        top: ScaleSize(60), // 距离的顶部便宜
+        top: ScaleSize(90), // 距离的顶部便宜
         right: 0,
         left: 0,
         bottom: 0,
@@ -290,13 +289,15 @@ const styles = StyleSheet.create({
         backgroundColor: 'rgba(0, 0, 0, 0.5)',
     },
     barContainer: {
-        height: ScaleSize(60),
-        backgroundColor: '#fff',
+        // flex: 1,
         flexDirection: 'row',
-        justifyContent: 'space-around',
         alignItems: 'center',
-        borderBottomWidth: StyleSheet.hairlineWidth,
+        height: ScaleSize(90),
+        paddingHorizontal: 15,
         borderColor: '#eef0f2',
+        backgroundColor: '#fff',
+        justifyContent: 'space-between',
+        borderBottomWidth: CusTheme.minPixel,
     },
     bar: {
         flexDirection: 'row',

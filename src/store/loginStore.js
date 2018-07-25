@@ -9,7 +9,7 @@
 import { observable, action, computed, runInAction } from 'mobx'
 import BaseStore from './baseStore'
 
-class LoginStore extends BaseStore {
+export default class LoginStore extends BaseStore {
 
     constructor(params) {
         super(params);
@@ -61,5 +61,3 @@ class LoginStore extends BaseStore {
     }
 
 }
-
-export default LoginStore;

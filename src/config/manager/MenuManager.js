@@ -1,6 +1,6 @@
 import { Menu } from 'teaset';
 import { fontSize } from '../../util/Tool'
-import Theme from '../Theme'
+import CusTheme from '../Theme'
 
 /**
  * const params = {
@@ -22,7 +22,7 @@ class MenuManager {
         const offsetY = params.offsetY === undefined ? 0 : params.offsetY
         const actions = params.actions
         view.measure((x, y, width, height, pageX, pageY) => {
-            Menu.show({ x: pageX + offsetX, y: pageY + offsetY, width, height }, actions, Theme.menuOptions);
+            Menu.show({ x: pageX + offsetX, y: pageY + offsetY, width, height }, actions, CusTheme.menuOptions);
         });
     }
 

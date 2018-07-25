@@ -8,7 +8,7 @@
 import { observable, action, computed, runInAction, toJS } from 'mobx'
 import BaseStore from './baseStore'
 
-class HomeStore extends BaseStore {
+export default class HomeStore extends BaseStore {
 
     constructor(params) {
         super(params);
@@ -25,7 +25,7 @@ class HomeStore extends BaseStore {
     @action
     requestDataSource = async (url, data) => {
         this.loading = true;
-        const result = await Services.post(url, data);
+        const result = await this.postRequest(url, data);
         if (result.code === 1) {
             runInAction(() => {
                 this.loading = false;
@@ -35,5 +35,3 @@ class HomeStore extends BaseStore {
         return result;
     };
 }
-
-export default HomeStore;

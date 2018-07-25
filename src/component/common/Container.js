@@ -48,8 +48,8 @@ class Container extends React.PureComponent {
         let iphoneXStyle;
         if (fitIPhoneX) {
             iphoneXStyle = fitIPhoneXType === 'padding' ? {
-                paddingBottom: Theme.isIPhoneX ? Theme.fitIPhoneXBottom : 0
-            } : { marginBottom: Theme.isIPhoneX ? Theme.fitIPhoneXBottom : 0 }
+                paddingBottom: CusTheme.isIPhoneX ? CusTheme.fitIPhoneXBottom : 0
+            } : { marginBottom: CusTheme.isIPhoneX ? CusTheme.fitIPhoneXBottom : 0 }
         } else {
             iphoneXStyle = {}
         }
@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
         flex: 1,
         // flexGrow: 1,
         // flexShrink: 1,
-        backgroundColor: Theme.pageBackgroundColor,
+        backgroundColor: CusTheme.pageBackgroundColor,
     },
 });
 

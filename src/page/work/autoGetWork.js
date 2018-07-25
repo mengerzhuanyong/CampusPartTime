@@ -49,7 +49,7 @@ export default class AutoGetWork extends Component {
                 {id: 5, title: '单反', icon: Images.icon_nav_camera,},
             ],
         };
-        this.page = 0;
+        this.page = 1;
     }
 
     componentWillUnmount(){
@@ -190,8 +190,8 @@ export default class AutoGetWork extends Component {
                 </View>
                 <Button
                     title={'提交'}
-                    style={[Theme.btnView, styles.btnView]}
-                    titleStyle={[Theme.btnName, styles.btnName]}
+                    style={[CusTheme.btnView, styles.btnView]}
+                    titleStyle={[CusTheme.btnName, styles.btnName]}
                 />
             </View>
         );

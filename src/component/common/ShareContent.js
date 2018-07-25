@@ -12,7 +12,7 @@ import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Image } from 'rea
 import Images from '../../config/manager/ImageManager';
 import { fontSize, scaleSize } from '../../util/Tool';
 
-import Theme from '../../config/Theme'
+import CusTheme from '../../config/Theme'
 import {HorizontalLine} from "./commonLine";
 
 const ShareSource = [
@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
         borderTopRightRadius: 5,
         height: scaleSize(400),
         backgroundColor: '#fff',
-        paddingBottom: Theme.isIPhoneX ? Theme.fitIPhoneXBottom : 0,
+        paddingBottom: CusTheme.isIPhoneX ? CusTheme.fitIPhoneXBottom : 0,
     },
     contentTitleView: {
         height: 45,
@@ -120,8 +120,8 @@ const styles = StyleSheet.create({
         backgroundColor: '#cdcdcd',
     },
     cancelButton: {
-        height: Theme.shareCancelActionHeight,
-        backgroundColor: Theme.shareCancelBackColor,
+        height: CusTheme.shareCancelActionHeight,
+        backgroundColor: CusTheme.shareCancelBackColor,
         justifyContent: 'center',
         alignItems: 'center',
     },

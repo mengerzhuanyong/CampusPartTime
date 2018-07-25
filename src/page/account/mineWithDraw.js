@@ -121,14 +121,14 @@ export default class MineWithDraw extends Component {
                                 }}
                             />
                             {money !== '' && <TouchableOpacity
-                                style = {Theme.inputBtnView}
+                                style = {CusTheme.inputBtnView}
                                 onPress = {() => {
                                     this.setState({
                                         money: '',
                                     })
                                 }}
                             >
-                                <Image source={Images.icon_close} style={Theme.inputBtnIcon} />
+                                <Image source={Images.icon_close} style={CusTheme.inputBtnIcon} />
                             </TouchableOpacity>}
                         </View>
                         <HorizontalLine lineStyle={styles.horLine} />
@@ -153,8 +153,8 @@ export default class MineWithDraw extends Component {
                     </View>
                     <Button
                         title={'提现'}
-                        style={[Theme.btnView, styles.btnView]}
-                        titleStyle={[Theme.btnName, styles.btnName]}
+                        style={[CusTheme.btnView, styles.btnView]}
+                        titleStyle={[CusTheme.btnName, styles.btnName]}
                     />
                 </ScrollView>
             </View>
@@ -216,7 +216,7 @@ const styles = StyleSheet.create({
         width: ScaleSize(40),
         height: ScaleSize(40),
         resizeMode: 'contain',
-        tintColor: Theme.themeColor,
+        tintColor: CusTheme.themeColor,
     },
 
     mineMiddleContainer: {
@@ -253,7 +253,7 @@ const styles = StyleSheet.create({
     },
     leftTitle: {},
     rightTitle: {
-        color: Theme.themeColor,
+        color: CusTheme.themeColor,
     },
     btnView: {
         margin: 30,

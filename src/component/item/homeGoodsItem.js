@@ -47,7 +47,7 @@ export default class HomeGoodsItem extends PureComponent {
                 >
                     <View style={styles.goodsInfoView}>
                         <Text style={styles.goodsTitle}>iPhone X</Text>
-                        <Image source={Images.icon_shop_package} style={[Theme.contentTitleIcon]} />
+                        <Image source={Images.icon_shop_package} style={[CusTheme.contentTitleIcon]} />
                     </View>
                 </ImageBackground>
             </TouchableOpacity>

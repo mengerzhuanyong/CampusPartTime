@@ -134,14 +134,14 @@ const styles = StyleSheet.create({
         paddingHorizontal: 4,
         alignItems: 'center',
         justifyContent: 'center',
-        borderWidth: Theme.minPixel,
+        borderWidth: CusTheme.minPixel,
     },
     jobInfoTagIconView: {
         borderWidth: 0,
         padding: 0,
     },
     jobInfoTagItemName: {
-        color: Theme.themeColor,
+        color: CusTheme.themeColor,
         fontSize: FontSize(10),
     },
     jobInfoLeftView: {

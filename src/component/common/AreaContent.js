@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
 import { Wheel, Button } from 'teaset';
 import { fontSize } from '../../util/Tool'
-import Theme from '../../config/Theme'
+import CusTheme from '../../config/Theme'
 
 class AreaContent extends React.PureComponent {
 
@@ -116,7 +116,7 @@ class AreaContent extends React.PureComponent {
 const styles = StyleSheet.create({
     container: {
         backgroundColor: '#fff',
-        paddingBottom: Theme.isIPhoneX ? Theme.fitIPhoneXBottom : 0,
+        paddingBottom: CusTheme.isIPhoneX ? CusTheme.fitIPhoneXBottom : 0,
     },
     wheelContainer: {
         flexDirection: 'row',
@@ -126,7 +126,7 @@ const styles = StyleSheet.create({
     },
     wheelStyle: {
         height: 180,
-        width: Theme.screen_width / 3,
+        width: CusTheme.screen_width / 3,
     },
     itemStyle: {
         textAlign: "center",
@@ -141,7 +141,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 30,
     },
     actionText: {
-        color: Theme.areaActionTitleColor,
+        color: CusTheme.areaActionTitleColor,
         fontSize: fontSize(14),
     }
 });

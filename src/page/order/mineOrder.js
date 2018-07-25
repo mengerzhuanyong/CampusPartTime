@@ -70,7 +70,7 @@ export default class MineOrder extends React.Component {
                     ref={v => this.segmentedView = v}
                     style={styles.segmentedView}
                     barStyle={styles.segmentedBar}
-                    indicatorLineColor={Theme.themeColor}
+                    indicatorLineColor={CusTheme.themeColor}
                     indicatorPositionPadding={ScaleSize(-4)}
                     scrollEnabled={true}
                     lazy={false}
@@ -123,7 +123,7 @@ const styles = StyleSheet.create({
         borderWidth: 0,
     },
     activeTabStyle: {
-        backgroundColor: Theme.themeColor,
+        backgroundColor: CusTheme.themeColor,
     },
     tabTextStyle: {
         color: '#999',
@@ -141,7 +141,7 @@ const styles = StyleSheet.create({
         height: ScaleSize(90),
     },
     sheetActiveTitle: {
-        color: Theme.themeColor,
+        color: CusTheme.themeColor,
         fontSize: FontSize(14),
     },
     sheetTitle: {

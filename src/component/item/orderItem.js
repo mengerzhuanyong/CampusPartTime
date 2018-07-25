@@ -120,10 +120,10 @@ const styles = StyleSheet.create({
     },
     orderBtnItem: {
         paddingHorizontal: 5,
-        borderColor: Theme.themeColor,
+        borderColor: CusTheme.themeColor,
     },
     orderBtnItemName: {
         fontSize: FontSize(11),
-        color: Theme.themeColor,
+        color: CusTheme.themeColor,
     },
 });

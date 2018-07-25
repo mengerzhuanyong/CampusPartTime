@@ -49,7 +49,7 @@ export default class WorkSignUpStepFour extends Component {
                 {id: 5, title: '单反', icon: Images.icon_nav_camera,},
             ],
         };
-        this.page = 0;
+        this.page = 1;
     }
 
     componentWillUnmount(){
@@ -124,7 +124,7 @@ export default class WorkSignUpStepFour extends Component {
         return (
             <View style={styles.headerComponentView}>
                 <View style={[styles.contentItemView, styles.contentSignStepView]}>
-                    <Image source={Images.img_bg_step4} style={Theme.signUpStepImg} />
+                    <Image source={Images.img_bg_step4} style={CusTheme.signUpStepImg} />
                     <View style={styles.contentSignStepConView}>
                         <Text style={[styles.contentSignStepContext, styles.contentSignStepContextCur]}>选择时间</Text>
                         <Text style={[styles.contentSignStepContext, styles.contentSignStepContextCur]}>确认信息</Text>
@@ -175,7 +175,7 @@ export default class WorkSignUpStepFour extends Component {
                 />
                 <ScrollView style={styles.content}>
                     <View style={[styles.contentItemView, styles.contentSignStepView]}>
-                        <Image source={Images.img_bg_step4} style={Theme.signUpStepImg} />
+                        <Image source={Images.img_bg_step4} style={CusTheme.signUpStepImg} />
                         <View style={styles.contentSignStepConView}>
                             <Text style={[styles.contentSignStepContext, styles.contentSignStepContextCur]}>选择时间</Text>
                             <Text style={[styles.contentSignStepContext, styles.contentSignStepContextCur]}>确认信息</Text>
@@ -214,8 +214,8 @@ export default class WorkSignUpStepFour extends Component {
                 </ScrollView>
                 <Button
                     title={'返回首页'}
-                    style={[Theme.btnView, styles.btnView]}
-                    titleStyle={[Theme.btnName, styles.btnName]}
+                    style={[CusTheme.btnView, styles.btnView]}
+                    titleStyle={[CusTheme.btnName, styles.btnName]}
                     onPress={() => this.onPushToNextPage('首页', 'Home')}
                 />
             </View>
@@ -248,7 +248,7 @@ const styles = StyleSheet.create({
     },
     contentSignStepContextCur: {
         flex: 1,
-        color: Theme.themeColor,
+        color: CusTheme.themeColor,
         textAlign: 'center',
         fontSize: FontSize(13),
     },

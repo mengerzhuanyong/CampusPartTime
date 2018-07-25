@@ -104,33 +104,33 @@ export default class Setting extends Component {
                         <ListRow
                             style={styles.contentTitleView}
                             title={'修改密码'}
-                            titleStyle={Theme.contentTitle}
+                            titleStyle={CusTheme.contentTitle}
                             detail={''}
-                            accessory={<Image source={Images.icon_arrow_right} style={[Theme.contentRightIcon, {}]} />}
+                            accessory={<Image source={Images.icon_arrow_right} style={[CusTheme.contentRightIcon, {}]} />}
                             onPress={() => this.onPushToNextPage('修改密码', 'MineSettingPassWord', {})}
                         />
                         <ListRow
                             style={styles.contentTitleView}
                             title={'关于我们'}
-                            titleStyle={Theme.contentTitle}
+                            titleStyle={CusTheme.contentTitle}
                             detail={''}
-                            accessory={<Image source={Images.icon_arrow_right} style={[Theme.contentRightIcon, {}]} />}
+                            accessory={<Image source={Images.icon_arrow_right} style={[CusTheme.contentRightIcon, {}]} />}
                             onPress={() => this.onPushToNextPage('关于我们', 'CommonWebPage', {})}
                         />
                         <ListRow
                             style={styles.contentTitleView}
                             title={'帮助中心'}
-                            titleStyle={Theme.contentTitle}
+                            titleStyle={CusTheme.contentTitle}
                             detail={''}
-                            accessory={<Image source={Images.icon_arrow_right} style={[Theme.contentRightIcon, {}]} />}
+                            accessory={<Image source={Images.icon_arrow_right} style={[CusTheme.contentRightIcon, {}]} />}
                             onPress={() => this.onPushToNextPage('帮助中心', 'CommonWebPage', {})}
                         />
                         <ListRow
                             style={styles.contentTitleView}
                             title={'联系客服'}
-                            titleStyle={Theme.contentTitle}
+                            titleStyle={CusTheme.contentTitle}
                             detail={customerMobile}
-                            accessory={<Image source={Images.icon_arrow_right} style={[Theme.contentRightIcon, {}]} />}
+                            accessory={<Image source={Images.icon_arrow_right} style={[CusTheme.contentRightIcon, {}]} />}
                             onPress={() => this.makeCall(customerMobile)}
                             bottomSeparator={'none'}
                         />
@@ -139,17 +139,17 @@ export default class Setting extends Component {
                         <ListRow
                             style={styles.contentTitleView}
                             title={'清理缓存'}
-                            titleStyle={Theme.contentTitle}
+                            titleStyle={CusTheme.contentTitle}
                             detail={cacheSize}
-                            accessory={<Image source={Images.icon_arrow_right} style={[Theme.contentRightIcon, {}]} />}
+                            accessory={<Image source={Images.icon_arrow_right} style={[CusTheme.contentRightIcon, {}]} />}
                             onPress={this.clearCache}
                         />
                         <ListRow
                             style={styles.contentTitleView}
                             title={'检查更新'}
-                            titleStyle={Theme.contentTitle}
+                            titleStyle={CusTheme.contentTitle}
                             detail={'当前版本：1.0.0'}
-                            accessory={<Image source={Images.icon_arrow_right} style={[Theme.contentRightIcon, {}]} />}
+                            accessory={<Image source={Images.icon_arrow_right} style={[CusTheme.contentRightIcon, {}]} />}
                             onPress={() => this.onPushToNextPage('检查更新', 'ShareApp', {})}
                             bottomSeparator={'none'}
                         />
@@ -157,8 +157,8 @@ export default class Setting extends Component {
                     <Button
                         title={'退出登录'}
                         onPress={this._onPressExit}
-                        style={[Theme.btnView, styles.btnView]}
-                        titleStyle={[Theme.btnName, styles.btnName]}
+                        style={[CusTheme.btnView, styles.btnView]}
+                        titleStyle={[CusTheme.btnName, styles.btnName]}
                     />
                 </ScrollView>
             </View>
@@ -195,7 +195,7 @@ const styles = StyleSheet.create({
     },
     headerIconTitle: {
         fontSize: FontSize(11),
-        color: Theme.themeColor,
+        color: CusTheme.themeColor,
     },
     headerRightView: {
         right: 15,

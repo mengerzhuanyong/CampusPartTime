@@ -1,13 +1,13 @@
 
 import { Toast } from 'teaset';
-import Theme from '../Theme';
+import CusTheme from '../Theme';
 
 class ToastManager {
 
     static show = (text) => {
         Toast.show({
             text: text,
-            option: Theme.toastOptions
+            option: CusTheme.toastOptions
         });
     }
 

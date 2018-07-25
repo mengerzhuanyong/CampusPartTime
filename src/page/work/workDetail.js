@@ -50,10 +50,10 @@ export default class WorkDetail extends Component {
     renderHeaderRightView = () => {
         return (
             <TouchableOpacity
-                style={[Theme.headerButtonView, styles.headerRightView]}
+                style={[CusTheme.headerButtonView, styles.headerRightView]}
                 onPress={() => this.onPushToNextPage('异常申诉', 'WorkAbnormalAppeal', {})}
             >
-                <Text style={Theme.headerBtnName}>异常申诉</Text>
+                <Text style={CusTheme.headerBtnName}>异常申诉</Text>
             </TouchableOpacity>
         )
     };
@@ -110,8 +110,8 @@ export default class WorkDetail extends Component {
                 </ScrollView>
                 <Button
                     title={'报名'}
-                    style={[Theme.btnView, styles.btnView]}
-                    titleStyle={[Theme.btnName, styles.btnName]}
+                    style={[CusTheme.btnView, styles.btnView]}
+                    titleStyle={[CusTheme.btnName, styles.btnName]}
                     onPress={() => this.onPushToNextPage('选择时间', 'WorkSignUpStepOne')}
                 />
             </View>
@@ -220,14 +220,14 @@ const styles = StyleSheet.create({
         paddingHorizontal: 4,
         alignItems: 'center',
         justifyContent: 'center',
-        borderWidth: Theme.minPixel,
+        borderWidth: CusTheme.minPixel,
     },
     jobInfoTagIconView: {
         borderWidth: 0,
         padding: 0,
     },
     jobInfoTagItemName: {
-        color: Theme.themeColor,
+        color: CusTheme.themeColor,
         fontSize: FontSize(10),
     },
     jobInfoTagIcon: {

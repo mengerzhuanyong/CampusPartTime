@@ -4,12 +4,14 @@
  * @大梦
  */
 
+
 'use strict';
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {View, Text, ViewPropTypes, StyleSheet, TouchableOpacity, Image} from 'react-native';
 import {scaleSize} from "../../util/Tool";
+import GoodsTagComponent from "../shop/goodsTagComponent";
 
 export default class GoodsItem extends React.PureComponent {
 
@@ -30,41 +32,48 @@ export default class GoodsItem extends React.PureComponent {
 
     static defaultProps = {
         ...View.defaultProps,
-        active: false,
+        item: {
+            id: '',
+            tags: [],
+            name: '',
+            price: '',
+            address: '',
+            work_point: '',
+            sign_count: '',
+            total_count: '',
+            illustration: '',
+        },
     };
 
     render() {
+        let {item} = this.props;
         return (
             <TouchableOpacity style={styles.goodsItemView}>
                 <View style={styles.goodsItemPicView}>
                     <Image
                         style={styles.goodsItemPic}
                         resizeMode={'cover'}
-                        source={Images.img_goods1}
+                        source={item.illustration ? {uri: item.illustration} : Images.img_goods1}
                     />
                 </View>
                 <View style={styles.goodsInfoView}>
                     <View style={[styles.goodsInfoItemView, styles.goodsInfoTitleView]}>
-                        <Text style={styles.goodsInfoTitle} numberOfLines={2}>iphone X  64G 黑色</Text>
-                        <View style={styles.goodsInfoTagsView}>
-                            <View style={styles.goodsInfoTagItemView}>
-                                <Text style={styles.goodsInfoTagItemName}>急招</Text>
-                            </View>
-                            <View style={[styles.goodsInfoTagItemView, styles.goodsInfoTagIconView]}>
-                                <Image source={Images.icon_hot} style={[styles.goodsInfoIcon]} />
-                            </View>
-                        </View>
+                        <Text style={styles.goodsInfoTitle} numberOfLines={2}>{item.name}</Text>
+                        <GoodsTagComponent
+                            tagsData={item.tags}
+                            {...this.props}
+                        />
                     </View>
                     <View style={[styles.goodsInfoItemView, styles.marginVerticalView]}>
                         <View style={styles.goodsInfoLeftView}>
                             <Text style={styles.goodsInfoPriceSymbol}>¥</Text>
-                            <Text style={styles.goodsInfoPrice}>8999.00</Text>
+                            <Text style={styles.goodsInfoPrice}>{item.price}</Text>
                         </View>
                     </View>
                     <View style={styles.goodsInfoItemView}>
                         <View style={styles.goodsInfoLeftView}>
                             <Text style={styles.goodsInfoContext}>折算工分：</Text>
-                            <Text style={styles.goodsInfoContext}>7120</Text>
+                            <Text style={styles.goodsInfoContext}>{item.work_point}</Text>
                         </View>
                     </View>
                 </View>
@@ -146,15 +155,15 @@ const styles = StyleSheet.create({
         paddingHorizontal: 4,
         alignItems: 'center',
         justifyContent: 'center',
-        borderWidth: Theme.minPixel,
-        borderColor: Theme.themeColor,
+        borderWidth: CusTheme.minPixel,
+        borderColor: CusTheme.themeColor,
     },
     goodsInfoTagIconView: {
         borderWidth: 0,
         padding: 0,
     },
     goodsInfoTagItemName: {
-        color: Theme.themeColor,
+        color: CusTheme.themeColor,
         fontSize: FontSize(10),
     },
     goodsInfoLeftView: {

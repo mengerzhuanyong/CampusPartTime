@@ -104,7 +104,7 @@ export default class Register extends Component {
         let {mobile, password, re_password, code} = this.inputData;
         return (
             <Container style={styles.container}>
-                <Image source={Images.img_bg_login} style={Theme.containerBackgroundImage} />
+                <Image source={Images.img_bg_login} style={CusTheme.containerBackgroundImage} />
                 <NavigationBar
                     title={'注册'}
                     style={styles.navigationBarStyle}
@@ -216,7 +216,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff'
     },
     navigationBarStyle: {
-        borderBottomWidth: Theme.minPixel,
+        borderBottomWidth: CusTheme.minPixel,
         borderBottomColor: '#fff',
         backgroundColor: 'transparent',
     },
@@ -248,7 +248,7 @@ const styles = StyleSheet.create({
     btnItem: {
         height: 50,
         borderRadius: 25,
-        borderWidth: Theme.minPixel,
+        borderWidth: CusTheme.minPixel,
         borderColor: '#fff',
     },
     signBtnItem: {
@@ -262,7 +262,7 @@ const styles = StyleSheet.create({
         marginTop: 30,
     },
     btnItemTitle: {
-        color: Theme.themeColor,
+        color: CusTheme.themeColor,
         fontSize: FontSize(14),
     },
     signBtnItemTitle: {

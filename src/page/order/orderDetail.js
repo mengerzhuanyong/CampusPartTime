@@ -80,8 +80,8 @@ export default class OrderDetail extends Component {
                     </View>
                     <Button
                         title={'申请退换货'}
-                        style={[Theme.btnView, styles.btnView]}
-                        titleStyle={[Theme.btnName, styles.btnName]}
+                        style={[CusTheme.btnView, styles.btnView]}
+                        titleStyle={[CusTheme.btnName, styles.btnName]}
                         onPress={() => this.onPushToNextPage('', 'Work')}
                     />
                 </ScrollView>

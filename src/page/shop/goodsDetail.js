@@ -61,7 +61,7 @@ export default class GoodsDetail extends Component {
                 {id: 5, title: '单反', icon: Images.icon_nav_camera,},
             ],
         };
-        this.page = 0;
+        this.page = 1;
     }
 
     componentDidMount() {
@@ -87,8 +87,8 @@ export default class GoodsDetail extends Component {
                     style={styles.headerTitleView}
                     onPress={() => this.onPushToNextPage('搜索', 'Search')}
                 >
-                    <Image source={Images.icon_search} style={[Theme.headerIcon, styles.headerSearchIcon]} />
-                    <Text style={[Theme.headerIconTitle, styles.headerSearchTitle]}>搜索商品</Text>
+                    <Image source={Images.icon_search} style={[CusTheme.headerIcon, styles.headerSearchIcon]} />
+                    <Text style={[CusTheme.headerIconTitle, styles.headerSearchTitle]}>搜索商品</Text>
                 </TouchableOpacity>
             </View>
         );
@@ -158,8 +158,8 @@ export default class GoodsDetail extends Component {
                 <ListRow
                     style={styles.contentTitleView}
                     title={'热门换购'}
-                    titleStyle={Theme.contentTitle}
-                    icon={<Image source={Images.icon_shop_package} style={[Theme.contentTitleIcon, {tintColor: '#ed3126'}]} />}
+                    titleStyle={CusTheme.contentTitle}
+                    icon={<Image source={Images.icon_shop_package} style={[CusTheme.contentTitleIcon, {tintColor: '#ed3126'}]} />}
                     detail={'更多 >>'}
                     accessory={'none'}
                     onPress={() => alert('Press!')}
@@ -266,14 +266,14 @@ export default class GoodsDetail extends Component {
                     <View style={styles.multiBtnView}>
                         <Button
                             title={'余额换购'}
-                            style={[Theme.btnView, styles.btnView]}
-                            titleStyle={[Theme.btnName, styles.btnName]}
+                            style={[CusTheme.btnView, styles.btnView]}
+                            titleStyle={[CusTheme.btnName, styles.btnName]}
                             onPress={() => this.onPushToNextPage('', 'WorkPunchCard')}
                         />
                         <Button
                             title={'工分换购'}
-                            style={[Theme.btnView, styles.btnView]}
-                            titleStyle={[Theme.btnName, styles.btnName]}
+                            style={[CusTheme.btnView, styles.btnView]}
+                            titleStyle={[CusTheme.btnName, styles.btnName]}
                             onPress={() => this.onPushToNextPage('', 'WorkPunchCard')}
                         />
                     </View>
@@ -424,15 +424,15 @@ const styles = StyleSheet.create({
         paddingHorizontal: 4,
         alignItems: 'center',
         justifyContent: 'center',
-        borderWidth: Theme.minPixel,
-        borderColor: Theme.themeColor,
+        borderWidth: CusTheme.minPixel,
+        borderColor: CusTheme.themeColor,
     },
     goodsInfoTagIconView: {
         borderWidth: 0,
         padding: 0,
     },
     goodsInfoTagItemName: {
-        color: Theme.themeColor,
+        color: CusTheme.themeColor,
         fontSize: FontSize(10),
     },
     goodsInfoPriceView: {

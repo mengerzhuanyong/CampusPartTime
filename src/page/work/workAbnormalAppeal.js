@@ -49,10 +49,10 @@ export default class WorkAbnormalAppeal extends Component {
     renderHeaderRightView = () => {
         return (
             <TouchableOpacity
-                style={[Theme.headerButtonView, styles.headerRightView]}
+                style={[CusTheme.headerButtonView, styles.headerRightView]}
                 onPress={() => this.onPushToNextPage('异常申诉', 'WorkAbnormalAppeal', {})}
             >
-                <Text style={Theme.headerBtnName}>异常申诉</Text>
+                <Text style={CusTheme.headerBtnName}>异常申诉</Text>
             </TouchableOpacity>
         )
     };
@@ -129,7 +129,7 @@ export default class WorkAbnormalAppeal extends Component {
                                 </View>
                                 <Image
                                     source={Images.img_goods1}
-                                    style={[Theme.uploadIcon, styles.uploadItemImage]}
+                                    style={[CusTheme.uploadIcon, styles.uploadItemImage]}
                                 />
                             </TouchableOpacity>
                             <TouchableOpacity
@@ -143,8 +143,8 @@ export default class WorkAbnormalAppeal extends Component {
                     </View>
                     <Button
                         title={'提交'}
-                        style={[Theme.btnView, styles.btnView]}
-                        titleStyle={[Theme.btnName, styles.btnName]}
+                        style={[CusTheme.btnView, styles.btnView]}
+                        titleStyle={[CusTheme.btnName, styles.btnName]}
                         onPress={this.submitFoo}
                     />
                 </ScrollView>

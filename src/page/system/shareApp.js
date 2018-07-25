@@ -9,7 +9,7 @@
 import React, { Component } from 'react'
 import { ScrollView, StyleSheet, Text, View } from 'react-native'
 import NavigationBar from '../../component/common/NavigationBar'
-import DropDownMenu from '../../component/common/DropdownMenu';
+import DropDownMenu from '../../component/common/DropDownMenu';
 import Container from '../../component/common/Container';
 
 export default class ShareApp extends Component {
@@ -27,8 +27,8 @@ export default class ShareApp extends Component {
                 <NavigationBar
                     title={pageTitle}
                 />
-                <View style={Theme.flexCenter}>
-                    <Text style={Theme.defaultFont}>敬请期待</Text>
+                <View style={CusTheme.flexCenter}>
+                    <Text style={CusTheme.defaultFont}>敬请期待</Text>
                 </View>
             </View>
         );

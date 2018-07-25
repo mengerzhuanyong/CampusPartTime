@@ -18,7 +18,7 @@ import {
 } from 'react-native'
 import {Button} from 'teaset'
 import NavigationBar from '../../component/common/NavigationBar'
-import DropDownMenu from '../../component/common/DropdownMenu';
+import DropDownMenu from '../../component/common/DropDownMenu';
 import Container from '../../component/common/Container';
 
 export default class EmergencyContact extends Component {
@@ -210,7 +210,7 @@ const styles = StyleSheet.create({
         height: 45,
         marginVertical: 40,
         borderWidth: 0,
-        backgroundColor: Theme.themeColor,
+        backgroundColor: CusTheme.themeColor,
     },
     submitBtnName: {
         color: '#fff',

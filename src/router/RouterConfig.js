@@ -98,11 +98,11 @@ const TabNavigator = createBottomTabNavigator({
         })
     },
 }, {
-    initialRouteName: 'Home',
+    initialRouteName: 'Work',
     tabBarOptions: {
         showIcon: true,
         indicatorStyle: {height: 0},
-        activeTintColor: Theme.themeColor,
+        activeTintColor: CusTheme.themeColor,
         style: {
             backgroundColor: "#fff"
         },
@@ -171,7 +171,7 @@ const StackNavigator = createStackNavigator(configRouter({
     cardStyle: {
         shadowOpacity: 0,
         shadowRadius: 0,
-        backgroundColor: Theme.pageBackgroundColor,
+        backgroundColor: CusTheme.pageBackgroundColor,
     },
     navigationOptions: {
         header: null,

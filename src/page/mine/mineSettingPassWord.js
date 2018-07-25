@@ -107,8 +107,8 @@ export default class MineSettingPassWord extends Component {
                     </View>
                     <Button
                         title={'重置密码'}
-                        style={[Theme.btnView, styles.btnView]}
-                        titleStyle={[Theme.btnName, styles.btnName]}
+                        style={[CusTheme.btnView, styles.btnView]}
+                        titleStyle={[CusTheme.btnName, styles.btnName]}
                     />
                 </View>
             </View>

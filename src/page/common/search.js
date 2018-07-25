@@ -102,7 +102,7 @@ export default class Work extends Component {
                     style={styles.headerRightView}
                     onPress={() => this.onPushToNextPage('消息', 'SystemMessage')}
                 >
-                    <Text style={[Theme.headerBtnName, styles.headerBtnName]}>搜索</Text>
+                    <Text style={[CusTheme.headerBtnName, styles.headerBtnName]}>搜索</Text>
                 </TouchableOpacity>
             </View>
         );
@@ -217,7 +217,7 @@ export default class Work extends Component {
                             <View style={styles.searchTipsTitleView}>
                                 <Text style={styles.searchTipsTitle}>搜索历史</Text>
                                 <TouchableOpacity style={styles.searchTipsTitleRightView}>
-                                    <Image source={Images.icon_trash} style={[Theme.contentRightIcon, styles.searchTipsIcon]} />
+                                    <Image source={Images.icon_trash} style={[CusTheme.contentRightIcon, styles.searchTipsIcon]} />
                                 </TouchableOpacity>
                             </View>
                             <View style={styles.searchTipsContent}>
@@ -306,7 +306,7 @@ const styles = StyleSheet.create({
         marginLeft: 35,
         marginRight: 50,
         paddingHorizontal: 15,
-        borderWidth: Theme.minPixel,
+        borderWidth: CusTheme.minPixel,
         borderColor: '#ddd',
         flexDirection: 'row',
         alignItems: 'center',
@@ -333,7 +333,7 @@ const styles = StyleSheet.create({
     },
     headerIconTitle: {
         fontSize: FontSize(11),
-        color: Theme.themeColor,
+        color: CusTheme.themeColor,
     },
     headerRightView: {
         right: 15,
@@ -452,7 +452,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         justifyContent: 'space-between',
         borderTopWidth: 10,
-        borderBottomWidth: Theme.minPixel,
+        borderBottomWidth: CusTheme.minPixel,
     },
     sortVerLine: {
         height: 20,

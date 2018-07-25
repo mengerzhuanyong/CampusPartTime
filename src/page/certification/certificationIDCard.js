@@ -168,7 +168,7 @@ const styles = StyleSheet.create({
         height: 45,
         marginVertical: 40,
         borderWidth: 0,
-        backgroundColor: Theme.themeColor,
+        backgroundColor: CusTheme.themeColor,
     },
     submitBtnName: {
         color: '#fff',

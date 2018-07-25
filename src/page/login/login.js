@@ -84,7 +84,7 @@ export default class Login extends Component {
     render() {
         return (
             <Container style={styles.container}>
-                <Image source={Images.img_bg_login} style={Theme.containerBackgroundImage}/>
+                <Image source={Images.img_bg_login} style={CusTheme.containerBackgroundImage}/>
                 <NavigationBar
                     title={'登录'}
                     style={styles.navigationBarStyle}
@@ -197,7 +197,7 @@ const styles = StyleSheet.create({
     },
     registerBtnItem: {},
     btnItemTitle: {
-        color: Theme.themeColor,
+        color: CusTheme.themeColor,
         fontSize: FontSize(14),
     },
     signBtnItemTitle: {

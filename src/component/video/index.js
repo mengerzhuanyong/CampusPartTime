@@ -1,7 +1,7 @@
 
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, Dimensions } from 'react-native';
-import { Theme } from 'teaset';
+import {Theme} from 'teaset';
 import PropTypes from 'prop-types'
 import Orientation from 'react-native-orientation';
 import VideoPlayer from './VideoPlayer';

@@ -9,7 +9,7 @@
 import React, { Component } from 'react'
 import { ScrollView, StyleSheet, Text, View } from 'react-native'
 import NavigationBar from '../../component/common/NavigationBar'
-import DropDownMenu from '../../component/common/DropdownMenu';
+import DropDownMenu from '../../component/common/DropDownMenu';
 import Container from '../../component/common/Container';
 
 export default class CertificationStudent extends Component {
@@ -28,7 +28,7 @@ export default class CertificationStudent extends Component {
                     title={pageTitle}
                 />
                 <View style={styles.content}>
-                    <Text style={Theme.defaultFont}>敬请期待</Text>
+                    <Text style={CusTheme.defaultFont}>敬请期待</Text>
                 </View>
             </View>
         );

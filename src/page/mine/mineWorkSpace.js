@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
     tabContainer: {
         borderWidth: 0,
         height: ScaleSize(120),
-        borderBottomWidth: Theme.minPixel,
+        borderBottomWidth: CusTheme.minPixel,
     },
     tab: {
         borderWidth: 0,
@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
     activeTabStyle: {
         borderBottomWidth: 1,
         backgroundColor: '#fff',
-        borderColor: Theme.themeColor,
+        borderColor: CusTheme.themeColor,
     },
     tabTextStyle: {
         color: '#999',
@@ -109,7 +109,7 @@ const styles = StyleSheet.create({
         fontSize: FontSize(15),
     },
     activeTabTextStyle: {
-        color: Theme.themeColor,
+        color: CusTheme.themeColor,
     },
 
 
@@ -121,7 +121,7 @@ const styles = StyleSheet.create({
         height: ScaleSize(90),
     },
     sheetActiveTitle: {
-        color: Theme.themeColor,
+        color: CusTheme.themeColor,
         fontSize: FontSize(14),
     },
     sheetTitle: {

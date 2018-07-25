@@ -48,7 +48,7 @@ export default class MineWorkList extends PureComponent {
                 {id: 5, title: '单反', icon: Images.icon_nav_camera,},
             ],
         };
-        this.page = 0;
+        this.page = 1;
     }
 
     componentDidMount() {
@@ -75,8 +75,8 @@ export default class MineWorkList extends PureComponent {
         return (
             <View style={styles.headerView}>
                 <TouchableOpacity style={styles.headerTitleView}>
-                    <Image source={Images.icon_search} style={[Theme.headerIcon, styles.headerSearchIcon]} />
-                    <Text style={[Theme.headerIconTitle, styles.headerSearchTitle]}>搜索商品</Text>
+                    <Image source={Images.icon_search} style={[CusTheme.headerIcon, styles.headerSearchIcon]} />
+                    <Text style={[CusTheme.headerIconTitle, styles.headerSearchTitle]}>搜索商品</Text>
                 </TouchableOpacity>
             </View>
         );
@@ -138,16 +138,16 @@ export default class MineWorkList extends PureComponent {
 
     _renderEmptyComponent = () => {
         return (
-            <View style={Theme.emptyComponentView}>
+            <View style={CusTheme.emptyComponentView}>
                 <Image
-                    style={Theme.listEmptyTipsImg}
+                    style={CusTheme.listEmptyTipsImg}
                     source={Images.img_bg_empty_order}
                 />
-                <Text style={Theme.emptyText}>亲！您还没有参加过兼职哦</Text>
+                <Text style={CusTheme.emptyText}>亲！您还没有参加过兼职哦</Text>
                 <Button
                     title={'去看看'}
-                    style={[Theme.btnView, styles.btnView]}
-                    titleStyle={[Theme.btnName, styles.btnName]}
+                    style={[CusTheme.btnView, styles.btnView]}
+                    titleStyle={[CusTheme.btnName, styles.btnName]}
                     onPress={() => this.onPushToNextPage('', 'Work')}
                 />
             </View>
@@ -201,7 +201,7 @@ const styles = StyleSheet.create({
         marginTop: 20,
         borderWidth: 0,
         width: SCREEN_WIDTH / 2,
-        backgroundColor: Theme.themeColor,
+        backgroundColor: CusTheme.themeColor,
     },
     btnName: {
         color: '#fff',

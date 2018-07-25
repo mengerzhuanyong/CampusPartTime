@@ -9,6 +9,7 @@ import {
     View,
     StyleSheet,
 } from 'react-native'
+import CusTheme from '../../config/Theme'
 
 export class VerticalLine extends PureComponent {
 
@@ -40,11 +41,11 @@ export class HorizontalLine extends PureComponent {
 
 const styles = StyleSheet.create({
     verLine: {
-        width: 1,
+        width: CusTheme.minPixel,
         backgroundColor: '#f5f5f5'
     },
     horLine: {
-        height: 1,
+        height: CusTheme.minPixel,
         backgroundColor: '#f5f5f5'
     },
 });

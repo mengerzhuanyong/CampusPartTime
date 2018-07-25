@@ -117,8 +117,8 @@ export default class MineCredits extends Component {
                             style={styles.contentTitleView}
                             title={'芝麻信用认证'}
                             detail={'未认证'}
-                            titleStyle={Theme.contentTitle}
-                            accessory={<Image source={Images.icon_arrow_right} style={[Theme.contentRightIcon, {}]} />}
+                            titleStyle={CusTheme.contentTitle}
+                            accessory={<Image source={Images.icon_arrow_right} style={[CusTheme.contentRightIcon, {}]} />}
                             bottomSeparator={'none'}
                             onPress={() => this.onPushToNextPage('芝麻信用认证', 'CertificationMobile', {})}
                         />

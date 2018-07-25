@@ -1,6 +1,5 @@
-// SegmentedBar.js
 /**
- * 校园空兼 - 
+ * 校园空兼 - SegmentedBar
  * https://menger.me
  * @大梦
  */
@@ -11,7 +10,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { View, ScrollView, TouchableOpacity, Animated, ViewPropTypes } from 'react-native';
 
-import { Theme } from 'teaset';
+import {Theme} from 'teaset';
 import SegmentedItem from './SegmentedItem';
 
 class SegmentedBar extends React.PureComponent {

@@ -11,7 +11,7 @@ import React from 'react'
 import { View, Text, StyleSheet, TouchableHighlight, Image, TouchableOpacity } from 'react-native';
 import PropTypes from 'prop-types'
 import { fontSize, scaleSize, isEmpty } from '../../util/Tool';
-import Theme from '../../config/Theme';
+import CusTheme from '../../config/Theme';
 
 
 class AlertContent extends React.PureComponent {
@@ -119,8 +119,8 @@ const styles = StyleSheet.create({
         overflow: 'hidden',
         alignItems: 'center',
         backgroundColor: '#fff',
-        width: Theme.alertWidth,
-        minHeight: Theme.alertMinHeight,
+        width: CusTheme.alertWidth,
+        minHeight: CusTheme.alertMinHeight,
     },
     closeView: {
         position: 'absolute',
@@ -140,7 +140,7 @@ const styles = StyleSheet.create({
         fontWeight: '600',
         textAlign: 'center',
         fontSize: fontSize(15),
-        maxWidth: Theme.alertTitleMaxWidth,
+        maxWidth: CusTheme.alertTitleMaxWidth,
     },
     detail: {
         color: '#555',
@@ -149,30 +149,30 @@ const styles = StyleSheet.create({
         fontSize: fontSize(13),
         // minHeight: scaleSize(80),
         lineHeight: scaleSize(44),
-        maxWidth: Theme.alertDetailMaxWidth,
+        maxWidth: CusTheme.alertDetailMaxWidth,
     },
     actionContainer: {
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-        width: Theme.alertWidth,
-        height: Theme.alertActionHeight,
+        width: CusTheme.alertWidth,
+        height: CusTheme.alertActionHeight,
         borderTopWidth: StyleSheet.hairlineWidth,
-        borderColor: Theme.alertSeparatorColor,
+        borderColor: CusTheme.alertSeparatorColor,
     },
     action: {
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
-        height: Theme.alertActionHeight,
+        height: CusTheme.alertActionHeight,
     },
     actionText: {
-        color: Theme.alertActionColor,
+        color: CusTheme.alertActionColor,
         fontSize: fontSize(14),
     },
     separator: {
         borderRightWidth: StyleSheet.hairlineWidth,
-        borderRightColor: Theme.alertSeparatorColor,
+        borderRightColor: CusTheme.alertSeparatorColor,
     },
 });
 

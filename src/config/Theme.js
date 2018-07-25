@@ -1,5 +1,5 @@
-import { Dimensions, Platform, Text, StyleSheet, PixelRatio } from 'react-native'
-import { Theme } from 'teaset'
+import { Dimensions, Platform, Text, StyleSheet, PixelRatio, StatusBar } from 'react-native'
+import {Theme} from 'teaset'
 import { fontSize, scaleSize } from '../util/Tool';
 
 //  更改三个文件控件字体大小随系统改变的属性,如果想更改其它第三方的默认属性也可以这样改
@@ -58,7 +58,9 @@ const globalStyles = StyleSheet.create({
 
 const themeColor = '#1ab588';
 
-const CusTheme = {
+const DefaultTheme = {
+
+    
     isIPhoneX: Theme.isIPhoneX,
     fitIPhoneXTop: 44,
     fitIPhoneXBottom: 34,
@@ -209,6 +211,38 @@ const CusTheme = {
         width: width - 60,
         resizeMode: 'contain',
     },
+};
+
+const CusTheme = {
+
+    get statusBarHeight() {
+        if (Platform.OS === 'ios') {
+            if (DefaultTheme.isIPhoneX) {
+                return DefaultTheme.fitIPhoneXTop
+            } else {
+                return 20
+            }
+        } else if (Platform.OS === 'android') {
+            if (Platform.Version > 20) {
+                return StatusBar.currentHeight
+            }
+            return 0;
+        }
+        return 0
+    },
+    get screenWidth() {
+        return Dimensions.get('screen').width
+    },
+    get screenHeight() {
+        return Dimensions.get('screen').height
+    },
+    get screenInset() {
+        return Theme.screenInset
+    },
+    get isLandscape() {
+        return Dimensions.get('screen').width > Dimensions.get('screen').height
+    },
+    ...DefaultTheme,
 };
 
 export default CusTheme;

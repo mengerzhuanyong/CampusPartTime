@@ -76,6 +76,13 @@ export const createNavigationContainer = (OldComponent) => {
             this._oldComponentRef = v
         };
 
+        onPushToNextPage = (pageTitle, component, params = {}) => {
+            RouterHelper.navigate(component, {
+                pageTitle: pageTitle,
+                ...params
+            })
+        };
+
         render() {
             return (
                 <OldComponent

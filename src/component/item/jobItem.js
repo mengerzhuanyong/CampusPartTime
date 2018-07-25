@@ -4,12 +4,14 @@
  * @大梦
  */
 
+
 'use strict';
 
 import React, { Component, PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import {View, Text, ViewPropTypes, StyleSheet, Image, TouchableOpacity} from 'react-native';
 import {scaleSize} from "../../util/Tool";
+import JobTagComponent from "../job/jobTagComponent";
 
 export default class JobItem extends PureComponent {
 
@@ -30,11 +32,21 @@ export default class JobItem extends PureComponent {
 
     static defaultProps = {
         ...View.defaultProps,
-        active: false,
+        item: {
+            id: '',
+            tags: [],
+            name: '',
+            price: '',
+            address: '',
+            work_point: '',
+            sign_count: '',
+            total_count: '',
+            illustration: '',
+        }
     };
 
     render() {
-        let {onPress} = this.props;
+        let {onPress, item} = this.props;
         return (
             <TouchableOpacity
                 style={styles.jobItemView}
@@ -44,35 +56,34 @@ export default class JobItem extends PureComponent {
                     <Image
                         style={styles.jobItemPic}
                         resizeMode={'cover'}
-                        source={Images.img_jobs1}
+                        source={item.illustration ? {uri: item.illustration} : Images.img_jobs1}
                     />
                 </View>
                 <View style={styles.jobInfoView}>
                     <View style={[styles.jobInfoItemView, styles.jobInfoTitleView]}>
-                        <Text style={styles.jobInfoTitle}>花海地产新盘传单派发</Text>
-                        <View style={styles.jobInfoTagsView}>
-                            <View style={styles.jobInfoTagItemView}>
-                                <Text style={styles.jobInfoTagItemName}>急招</Text>
-                            </View>
-                            <View style={[styles.jobInfoTagItemView, styles.jobInfoTagIconView]}>
-                                <Image source={Images.icon_hot} style={[styles.jobInfoIcon]} />
-                            </View>
-                        </View>
+                        <Text style={styles.jobInfoTitle}>{item.name}</Text>
+                        <JobTagComponent
+                            tagsData={item.tags}
+                            {...this.props}
+                        />
                     </View>
                     <View style={[styles.jobInfoItemView, styles.marginVerticalView]}>
-                        <View style={styles.jobInfoLeftView} />
+                        <View style={styles.jobInfoLeftView}>
+                            <Image source={Images.icon_place} style={[styles.jobInfoIcon]} />
+                            <Text style={styles.jobInfoContext}>{item.address}</Text>
+                        </View>
                         <View style={styles.jobInfoRightView}>
-                            <Text style={styles.jobInfoPrice}>12元/h</Text>
+                            <Text style={styles.jobInfoPrice}>{item.price}</Text>
                         </View>
                     </View>
                     <View style={styles.jobInfoItemView}>
                         <View style={styles.jobInfoLeftView}>
                             <Image source={Images.icon_user} style={[styles.jobInfoIcon]} />
                             <Text style={styles.jobInfoContext}>报名人数</Text>
-                            <Text style={styles.jobInfoContext}>7/20</Text>
+                            <Text style={styles.jobInfoContext}>{item.sign_count}/{item.total_count}</Text>
                         </View>
                         <View style={styles.jobInfoRightView}>
-                            <Text style={styles.jobInfoContext}>0.8工分/h</Text>
+                            <Text style={styles.jobInfoContext}>{item.work_point}</Text>
                         </View>
                     </View>
                 </View>
@@ -143,14 +154,14 @@ const styles = StyleSheet.create({
         paddingHorizontal: 4,
         alignItems: 'center',
         justifyContent: 'center',
-        borderWidth: Theme.minPixel,
+        borderWidth: CusTheme.minPixel,
     },
     jobInfoTagIconView: {
         borderWidth: 0,
         padding: 0,
     },
     jobInfoTagItemName: {
-        color: Theme.themeColor,
+        color: CusTheme.themeColor,
         fontSize: FontSize(10),
     },
     jobInfoLeftView: {

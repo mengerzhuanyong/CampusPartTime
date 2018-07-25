@@ -5,18 +5,12 @@
  * @大梦
  */
  
-'use strict';/**
- * 校园空兼 - 
- * https://menger.me
- * @大梦
- */
- 
 'use strict';
 
 import React from 'react'
 import PropTypes from 'prop-types';
 import { StyleSheet, View, Text, TouchableOpacity, ViewPropTypes, TextInput } from 'react-native';
-import { Theme } from 'teaset';
+import {Theme} from 'teaset';
 import { isNumber } from '../../util/Tool';
 
 class Stepper extends React.PureComponent {
