@@ -187,10 +187,6 @@ export default class Work extends Component {
         );
     };
 
-    _renderSeparator = () => {
-        return <HorizontalLine lineStyle={styles.horLine} />
-    };
-
     render() {
         const {workStore} = this.props;
         return (
