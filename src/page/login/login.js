@@ -62,14 +62,14 @@ export default class Login extends Component {
         const result = await loginStore.doLogin(url, data);
         // console.log('result---->>', result);
         if (result.code === 1) {
-            RouterHelper.reset('Tab');
+            RouterHelper.reset('', 'Tab');
         } else {
             ToastManager.show(result.msg);
         }
     };
 
     _guestLogin = () => {
-        // RouterHelper.reset('Tab');
+        // RouterHelper.reset('', 'Tab');
         RouterHelper.navigate('Tab');
     };
 
@@ -87,15 +87,16 @@ export default class Login extends Component {
                 <Image source={Images.img_bg_login} style={CusTheme.containerBackgroundImage}/>
                 <NavigationBar
                     title={'登录'}
-                    style={styles.navigationBarStyle}
                     leftView={null}
                     backgroundImage={null}
+                    style={styles.navigationBarStyle}
                     rightViewOnPress={this.renderHeaderRightView}
                 />
                 <View style={styles.loginContent}>
                     <View style={styles.inputItemView}>
                         <Image source={Images.icon_user_sign} style={styles.inputIcon}/>
                         <TextInput
+                            maxLength={11}
                             style={styles.inputItem}
                             ref={v => this.input = v}
                             keyboardType={'numeric'}
@@ -111,9 +112,10 @@ export default class Login extends Component {
                     <View style={styles.inputItemView}>
                         <Image source={Images.icon_lock} style={styles.inputIcon}/>
                         <TextInput
+                            // maxLength={12}
                             style={styles.inputItem}
                             ref={v => this.input = v}
-                            keyboardType={'numeric'}
+                            // keyboardType={'numeric'}
                             underlineColorAndroid={'rgba(0, 0, 0, 0)'}
                             placeholder={'请输入密码'}
                             secureTextEntry={true}

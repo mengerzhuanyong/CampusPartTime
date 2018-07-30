@@ -65,9 +65,9 @@ class FlatListView extends React.PureComponent {
         } else {
             this._currentEndReachedStatus = EndReachedStatus.WAITING_LOADING
         }
-        this._currentContentSize = { contentWidth: 0, contentHeight: 0 }
-        this._currentListSize = { width: 0, height: 0 }
-        this._currentContentOffset = { x: 0, y: 0 }
+        this._currentContentSize = {contentWidth: 0, contentHeight: 0};
+        this._currentListSize = {width: 0, height: 0};
+        this._currentContentOffset = {x: 0, y: 0};
     }
 
     setNativeProps(props) {
@@ -77,22 +77,22 @@ class FlatListView extends React.PureComponent {
     };
     scrollToOffset = (option = { offset: 0, animated: true }) => {
         if (this._flatListRef) {
-            this._flatListRef.scrollToOffset(option)
+            this._flatListRef.scrollToOffset(option);
         }
     };
     scrollToIndex = (option = { animated: true, index: 0, viewOffset: 0, viewPosition: 0 }) => {
         if (this._flatListRef) {
-            this._flatListRef.scrollToIndex(option)
+            this._flatListRef.scrollToIndex(option);
         }
     };
     scrollToItem = (option = { animated: true, item: 0, viewPosition: 0 }) => {
         if (this._flatListRef) {
-            this._flatListRef.scrollToItem(option)
+            this._flatListRef.scrollToItem(option);
         }
     };
     scrollToEnd = (option = { animated: true }) => {
         if (this._flatListRef) {
-            this._flatListRef.scrollToEnd(option)
+            this._flatListRef.scrollToEnd(option);
         }
     };
     flashScrollIndicators = () => {
@@ -114,20 +114,20 @@ class FlatListView extends React.PureComponent {
     };
     get flatListResponder() {
         if (this._flatListRef) {
-            return this._flatListRef
+            return this._flatListRef;
         }
         return null
     };
     get contentSize() {
-        return this._currentContentSize
+        return this._currentContentSize;
     };
     get contentOffset() {
-        return this._currentContentOffset
+        return this._currentContentOffset;
     };
     _onRefresh = () => {
         this.startRefresh();
          // console.log('_onRefreshzzzz')
-        this.props.onRefresh && this.props.onRefresh(this.stopRefresh)
+        this.props.onRefresh && this.props.onRefresh(this.stopRefresh);
     };
 
     _renderRefreshControl = () => {
@@ -152,7 +152,7 @@ class FlatListView extends React.PureComponent {
         if (!this.state.isRefreshing) {
              // console.log('startRefresh')
             if (this._currentEndReachedStatus === EndReachedStatus.ALL_LOADED) {
-                this._currentEndReachedStatus = EndReachedStatus.WAITING_LOADING
+                this._currentEndReachedStatus = EndReachedStatus.WAITING_LOADING;
             }
             this.setState({ isRefreshing: true });
         }
@@ -177,7 +177,7 @@ class FlatListView extends React.PureComponent {
             return;
         }
         if (this._currentEndReachedStatus === EndReachedStatus.FIRST_LOADED) {
-            this._currentEndReachedStatus = EndReachedStatus.WAITING_LOADING
+            this._currentEndReachedStatus = EndReachedStatus.WAITING_LOADING;
             return;
         }
         if (data.length === 0) {
@@ -249,18 +249,18 @@ class FlatListView extends React.PureComponent {
         )
     };
     _onContentSizeChange = (contentWidth, contentHeight) => {
-        const { onContentSizeChange } = this.props
-        this._currentContentSize = { contentWidth, contentHeight }
-        onContentSizeChange && onContentSizeChange(contentWidth, contentHeight)
+        const {onContentSizeChange} = this.props;
+        this._currentContentSize = {contentWidth, contentHeight};
+        onContentSizeChange && onContentSizeChange(contentWidth, contentHeight);
     };
     _onScroll = (event) => {
-        const { onScroll } = this.props
-        this._currentContentOffset = event.nativeEvent.contentOffset
-        onScroll && onScroll(event)
+        const {onScroll} = this.props;
+        this._currentContentOffset = event.nativeEvent.contentOffset;
+        onScroll && onScroll(event);
     };
     _onLayout = (event) => {
-        const { onLayout } = this.props
-        if (event.nativeEvent.layout.height != 0 && event.nativeEvent.layout.width != 0) {
+        const {onLayout} = this.props;
+        if (event.nativeEvent.layout.height !== 0 && event.nativeEvent.layout.width !== 0) {
             this._currentListSize = { width: event.nativeEvent.layout.width, height: event.nativeEvent.layout.height }
         }
         onLayout && onLayout(event)

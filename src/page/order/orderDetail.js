@@ -40,13 +40,6 @@ export default class OrderDetail extends Component {
         };
     }
 
-    onPushToNextPage = (pageTitle, component, params = {}) => {
-        RouterHelper.navigate(component, {
-            pageTitle: pageTitle,
-            ...params
-        })
-    };
-
     render() {
         let {loading, listData} = this.state;
         let {params} = this.props.navigation.state;
@@ -82,7 +75,7 @@ export default class OrderDetail extends Component {
                         title={'申请退换货'}
                         style={[CusTheme.btnView, styles.btnView]}
                         titleStyle={[CusTheme.btnName, styles.btnName]}
-                        onPress={() => this.onPushToNextPage('', 'Work')}
+                        onPress={() => RouterHelper.navigate('', 'Work')}
                     />
                 </ScrollView>
             </View>

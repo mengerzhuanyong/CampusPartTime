@@ -40,18 +40,11 @@ export default class WorkDetail extends Component {
         };
     }
 
-    onPushToNextPage = (pageTitle, component, params = {}) => {
-        RouterHelper.navigate(component, {
-            pageTitle: pageTitle,
-            ...params
-        })
-    };
-
     renderHeaderRightView = () => {
         return (
             <TouchableOpacity
                 style={[CusTheme.headerButtonView, styles.headerRightView]}
-                onPress={() => this.onPushToNextPage('异常申诉', 'WorkAbnormalAppeal', {})}
+                onPress={() => RouterHelper.navigate('异常申诉', 'WorkAbnormalAppeal', {})}
             >
                 <Text style={CusTheme.headerBtnName}>异常申诉</Text>
             </TouchableOpacity>
@@ -112,7 +105,7 @@ export default class WorkDetail extends Component {
                     title={'报名'}
                     style={[CusTheme.btnView, styles.btnView]}
                     titleStyle={[CusTheme.btnName, styles.btnName]}
-                    onPress={() => this.onPushToNextPage('选择时间', 'WorkSignUpStepOne')}
+                    onPress={() => RouterHelper.navigate('选择时间', 'WorkSignUpStepOne')}
                 />
             </View>
         );

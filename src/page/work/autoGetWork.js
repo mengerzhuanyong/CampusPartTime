@@ -57,13 +57,6 @@ export default class AutoGetWork extends Component {
         ClearTimer(timers);
     }
 
-    onPushToNextPage = (pageTitle, component, params = {}) => {
-        RouterHelper.navigate(component, {
-            pageTitle: pageTitle,
-            ...params
-        })
-    };
-
     clearCache = () => {
         this.setState({
             cacheSize: '',

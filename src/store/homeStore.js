@@ -5,6 +5,7 @@
  */
 
 'use strict';
+
 import { observable, action, computed, runInAction, toJS } from 'mobx'
 import BaseStore from './baseStore'
 
@@ -30,7 +31,7 @@ export default class HomeStore extends BaseStore {
             runInAction(() => {
                 this.loading = false;
                 this.dataSource = result.data;
-            })
+            });
         }
         return result;
     };

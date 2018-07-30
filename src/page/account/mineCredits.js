@@ -45,13 +45,6 @@ export default class MineCredits extends Component {
         }).start(); // 开始spring动画
     }
 
-    onPushToNextPage = (pageTitle, component, params = {}) => {
-        RouterHelper.navigate(component, {
-            pageTitle: pageTitle,
-            ...params
-        })
-    };
-
     render() {
         let {rotateValue, setRotateValue} = this.state;
         let {params} = this.props.navigation.state;
@@ -120,7 +113,7 @@ export default class MineCredits extends Component {
                             titleStyle={CusTheme.contentTitle}
                             accessory={<Image source={Images.icon_arrow_right} style={[CusTheme.contentRightIcon, {}]} />}
                             bottomSeparator={'none'}
-                            onPress={() => this.onPushToNextPage('芝麻信用认证', 'CertificationMobile', {})}
+                            onPress={() => RouterHelper.navigate('芝麻信用认证', 'CertificationMobile', {})}
                         />
                     </View>
                 </ScrollView>

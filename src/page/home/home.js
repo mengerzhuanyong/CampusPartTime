@@ -62,13 +62,6 @@ export default class Home extends Component {
 
     componentWillUnmount() {}
 
-    onPushToNextPage = (pageTitle, component, params = {}) => {
-        RouterHelper.navigate(component, {
-            pageTitle: pageTitle,
-            ...params
-        })
-    };
-
     loadNetData = () => {
         this.requestDataSource();
         this.getResource();
@@ -96,7 +89,7 @@ export default class Home extends Component {
                 <Text style={[CusTheme.headerTitle, styles.headerTitle]}>首页</Text>
                 <TouchableOpacity
                     style={styles.headerRightView}
-                    onPress={() => this.onPushToNextPage('消息', 'SystemMessage')}
+                    onPress={() => RouterHelper.navigate('消息', 'SystemMessage')}
                 >
                     <Image source={Images.icon_message} style={CusTheme.headerIcon}/>
                     <View style={CusTheme.pointView} />
@@ -114,7 +107,7 @@ export default class Home extends Component {
             listView = data.map((item, index) => {
                 return <HomeGoodsItem
                     item={item}
-                    onPress={() => this.onPushToNextPage(item.name, '', {item})}
+                    onPress={() => RouterHelper.navigate(item.name, '', {item})}
                     key={'goods'+index}
                     {...this.props}
                 />;
@@ -124,7 +117,7 @@ export default class Home extends Component {
             listView = data.map((item, index) => {
                 return <JobItem
                     item={item}
-                    onPress={() => this.onPushToNextPage('兼职详情', 'WorkDetail', {item})}
+                    onPress={() => RouterHelper.navigate('兼职详情', 'WorkDetail', {item})}
                     key={'job'+index}
                     {...this.props}
                 />;
@@ -134,7 +127,7 @@ export default class Home extends Component {
             listView = data.map((item, index) => {
                 return <HomeGoodsItem
                     item={item}
-                    onPress={() => this.onPushToNextPage(item.name, '', {item})}
+                    onPress={() => RouterHelper.navigate(item.name, '', {item})}
                     key={'goods'+index}
                     {...this.props}
                 />;
@@ -191,7 +184,7 @@ export default class Home extends Component {
                                 icon={<Image source={Images.icon_shop_package} style={[CusTheme.contentTitleIcon, {tintColor: '#ed3126'}]} />}
                                 detail={'更多 >>'}
                                 accessory={'none'}
-                                onPress={() => this.onPushToNextPage('热门换购', 'Shop')}
+                                onPress={() => RouterHelper.navigate('热门换购', 'Shop')}
                             />
                             <View style={[styles.contentItemConView, styles.contentExchangeShopView]}>
                                 <ScrollView style={styles.listRowContent} horizontal={true}>
@@ -210,7 +203,7 @@ export default class Home extends Component {
                                 icon={<Image source={Images.icon_category} style={[CusTheme.contentTitleIcon, {tintColor: '#2f91eb'}]} />}
                                 detail={'更多 >>'}
                                 accessory={'none'}
-                                onPress={() => this.onPushToNextPage('热门工作推荐', 'Work')}
+                                onPress={() => RouterHelper.navigate('热门工作推荐', 'Work')}
                             />
                             <View style={styles.contentItemConView}>
                                 {this.renderListView(2, hot_jobs)}
@@ -224,7 +217,7 @@ export default class Home extends Component {
                                 icon={<Image source={Images.icon_points} style={[CusTheme.contentTitleIcon, {tintColor: '#ffb04a'}]} />}
                                 detail={'更多 >>'}
                                 accessory={'none'}
-                                onPress={() => this.onPushToNextPage('积分兑换热榜', 'GoodsList')}
+                                onPress={() => RouterHelper.navigate('积分兑换热榜', 'GoodsList')}
                             />
                             <View style={[styles.contentItemConView, styles.contentExchangeShopView]}>
                                 <ScrollView style={styles.listRowContent} horizontal={true}>

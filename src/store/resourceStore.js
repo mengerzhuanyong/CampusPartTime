@@ -5,6 +5,7 @@
  */
 
 'use strict';
+
 import { observable, action, computed, runInAction, toJS } from 'mobx'
 import BaseStore from './baseStore'
 

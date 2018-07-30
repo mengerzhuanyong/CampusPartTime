@@ -5,6 +5,7 @@
  */
 
  'use strict';
+
 import { observable, action, computed, runInAction } from 'mobx'
 import BaseStore from './baseStore'
 
@@ -22,7 +23,7 @@ export default class AppStore extends BaseStore {
 
     @action
     changeNetworkState = (type) => {
-        this.networkState = type
+        this.networkState = type;
     };
 
     @action

@@ -64,15 +64,15 @@ export default class Index extends React.Component {
         if (localRes.code === 1) {
             if (localRes.data.token === undefined || localRes.data.token === '') {
                 // 未登录
-                RouterHelper.reset('Login');
+                RouterHelper.reset('', 'Login');
             } else {
                 // 已经登录
                 loginStore.saveUserInfo(localRes.data);
-                RouterHelper.reset('Tab');
+                RouterHelper.reset('', 'Tab');
             }
         } else {
             // 第一次安装app
-            // RouterHelper.reset('Login');
+            // RouterHelper.reset('', 'Login');
         }
         SplashScreen.hide();
     };

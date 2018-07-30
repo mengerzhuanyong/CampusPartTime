@@ -40,18 +40,11 @@ export default class MineWorkDetail extends Component {
         };
     }
 
-    onPushToNextPage = (pageTitle, component, params = {}) => {
-        RouterHelper.navigate(component, {
-            pageTitle: pageTitle,
-            ...params
-        })
-    };
-
     renderHeaderRightView = () => {
         return (
             <TouchableOpacity
                 style={[CusTheme.headerButtonView, styles.headerRightView]}
-                onPress={() => this.onPushToNextPage('异常申诉', 'WorkAbnormalAppeal', {})}
+                onPress={() => RouterHelper.navigate('异常申诉', 'WorkAbnormalAppeal', {})}
             >
                 <Text style={CusTheme.headerBtnName}>异常申诉</Text>
             </TouchableOpacity>
@@ -95,7 +88,7 @@ export default class MineWorkDetail extends Component {
                         title={'打卡'}
                         style={[CusTheme.btnView, styles.btnView]}
                         titleStyle={[CusTheme.btnName, styles.btnName]}
-                        onPress={() => this.onPushToNextPage('', 'WorkPunchCard')}
+                        onPress={() => RouterHelper.navigate('', 'WorkPunchCard')}
                     />
                 </ScrollView>
             </View>

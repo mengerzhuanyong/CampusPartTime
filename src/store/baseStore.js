@@ -5,6 +5,7 @@
  */
 
 'use strict';
+
 import { action, observable, configure } from 'mobx'
 
 configure({ enforceActions: true });
@@ -20,9 +21,9 @@ export default class BaseStore {
     @observable error;
 
     @action
-    getRequest = async (url, query) => {
-        const result = await Services.get(url, query);
-        console.log('result', result);
+    getRequest = async (url, print = false) => {
+        const result = await Services.get(url, print);
+        // console.log('result', result);
         if (result && result.code !== 1) {
             ToastManager.show(result.msg);
         }
@@ -30,9 +31,9 @@ export default class BaseStore {
     };
 
     @action
-    postRequest = async (url, data) => {
-        const result = await Services.post(url, data);
-        console.log('result', result);
+    postRequest = async (url, data, print = false) => {
+        const result = await Services.post(url, data, print);
+        // console.log('result', result);
         if (result && result.code !== 1) {
             ToastManager.show(result.msg);
         }

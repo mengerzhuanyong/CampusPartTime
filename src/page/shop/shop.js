@@ -67,6 +67,7 @@ export default class Shop extends Component {
     }
 
     componentDidMount() {
+        this.loadNetData();
     }
 
     componentWillUnmount(){
@@ -74,19 +75,12 @@ export default class Shop extends Component {
         ClearTimer(timers);
     }
 
-    onPushToNextPage = (pageTitle, component, params = {}) => {
-        RouterHelper.navigate(component, {
-            pageTitle: pageTitle,
-            ...params
-        })
-    };
-
     renderNavigationBarView = () => {
         return (
             <View style={styles.headerView}>
                 <TouchableOpacity
                     style={styles.headerTitleView}
-                    onPress={() => this.onPushToNextPage('搜索', 'Search')}
+                    onPress={() => RouterHelper.navigate('搜索', 'Search')}
                 >
                     <Image source={Images.icon_search} style={[CusTheme.headerIcon, styles.headerSearchIcon]} />
                     <Text style={[CusTheme.headerIconTitle, styles.headerSearchTitle]}>搜索商品</Text>
@@ -105,7 +99,7 @@ export default class Shop extends Component {
                 <TouchableOpacity
                     key={item.id}
                     style={styles.navItemView}
-                    onPress={() => this.onPushToNextPage(item.title, 'GoodsList')}
+                    onPress={() => RouterHelper.navigate(item.title, 'GoodsList')}
                 >
                     <Image source={item.icon} style={styles.navIcon}/>
                     <Text style={styles.navTitle}>{item.title}</Text>
@@ -117,7 +111,7 @@ export default class Shop extends Component {
 
     loadNetData = () => {
         InteractionManager.runAfterInteractions(() => {
-            this.getResource();
+            // this.getResource();
             this.requestDataSource(this.page);
         })
     };
@@ -184,7 +178,7 @@ export default class Shop extends Component {
                     icon={<Image source={Images.icon_shop_package} style={[CusTheme.contentTitleIcon, {tintColor: '#ed3126'}]} />}
                     detail={'更多 >>'}
                     accessory={'none'}
-                    onPress={() => this.onPushToNextPage('热门换购', 'GoodsList')}
+                    onPress={() => RouterHelper.navigate('热门换购', 'GoodsList')}
                 />
             </View>
         );
@@ -194,7 +188,7 @@ export default class Shop extends Component {
         return (
             <GoodsItem
                 item={item}
-                onPress={() => this.onPushToNextPage('商品详情', 'GoodsDetail', {item})}
+                onPress={() => RouterHelper.navigate('商品详情', 'GoodsDetail', {item})}
                 {...this.props}
             />
         );

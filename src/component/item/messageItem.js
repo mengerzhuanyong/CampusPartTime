@@ -30,9 +30,17 @@ export default class MessageItem extends PureComponent {
     static defaultProps = {
         ...View.defaultProps,
         active: false,
+        item: {
+            id: '',
+            link: '',
+            name: '',
+            is_read: 1,
+            content: '',
+        }
     };
 
     render() {
+        let {item} = this.props;
         return (
             <View style={styles.messageItemView}>
                 <View style={styles.messageItemPicView}>
@@ -43,7 +51,7 @@ export default class MessageItem extends PureComponent {
                     />
                 </View>
                 <View style={styles.messageInfoView}>
-                    <Text style={styles.messageInfoTitle}>校园空兼APP推广限时送积分啦，你还在等什么？快来邀请小伙伴计加入吧！</Text>
+                    <Text style={styles.messageInfoTitle}>{item.content}</Text>
                 </View>
             </View>
         );

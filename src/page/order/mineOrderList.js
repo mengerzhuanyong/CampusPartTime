@@ -135,7 +135,7 @@ export default class MineOrderList extends PureComponent {
                     {/*title={'去看看'}*/}
                     {/*style={styles.btnView}*/}
                     {/*titleStyle={styles.btnName}*/}
-                    {/*onPress={() => this.onPushToNextPage('', 'Work')}*/}
+                    {/*onPress={() => RouterHelper.navigate('', 'Work')}*/}
                 {/*/>*/}
             </View>
         );

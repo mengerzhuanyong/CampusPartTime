@@ -30,13 +30,6 @@ export default class MineProfile extends Component {
         };
     }
 
-    onPushToNextPage = (pageTitle, component, params = {}) => {
-        RouterHelper.navigate(component, {
-            pageTitle: pageTitle,
-            ...params
-        })
-    };
-
     render() {
         let {stu_cer_uri} = this.state;
         let {params} = this.props.navigation.state;
@@ -74,7 +67,7 @@ export default class MineProfile extends Component {
                             titleStyle={CusTheme.contentTitle}
                             icon={<Image source={Images.icon_user_card} style={[CusTheme.contentTitleIcon, {}]} />}
                             accessory={<Image source={Images.icon_arrow_right} style={[CusTheme.contentRightIcon, {}]} />}
-                            onPress={() => this.onPushToNextPage('身份证认证', 'CertificationIDCard', {})}
+                            onPress={() => RouterHelper.navigate('身份证认证', 'CertificationIDCard', {})}
                         />
                         <ListRow
                             style={styles.contentTitleView}
@@ -83,7 +76,7 @@ export default class MineProfile extends Component {
                             titleStyle={CusTheme.contentTitle}
                             icon={<Image source={Images.icon_school_roll} style={[CusTheme.contentTitleIcon, {}]} />}
                             accessory={<Image source={Images.icon_arrow_right} style={[CusTheme.contentRightIcon, {}]} />}
-                            onPress={() => this.onPushToNextPage('学籍资料认证', 'CommonWebPage', {url: stu_cer_uri, style: styles.webViewStyle})}
+                            onPress={() => RouterHelper.navigate('学籍资料认证', 'CommonWebPage', {url: stu_cer_uri, style: styles.webViewStyle})}
                         />
                         <ListRow
                             style={styles.contentTitleView}
@@ -92,7 +85,7 @@ export default class MineProfile extends Component {
                             titleStyle={CusTheme.contentTitle}
                             icon={<Image source={Images.icon_user_contact} style={[CusTheme.contentTitleIcon, {}]} />}
                             accessory={<Image source={Images.icon_arrow_right} style={[CusTheme.contentRightIcon, {}]} />}
-                            onPress={() => this.onPushToNextPage('绑定紧急联系人', 'EmergencyContact', {})}
+                            onPress={() => RouterHelper.navigate('绑定紧急联系人', 'EmergencyContact', {})}
                         />
                         <ListRow
                             style={styles.contentTitleView}
@@ -102,7 +95,7 @@ export default class MineProfile extends Component {
                             icon={<Image source={Images.icon_mobile} style={[CusTheme.contentTitleIcon, {}]} />}
                             accessory={<Image source={Images.icon_arrow_right} style={[CusTheme.contentRightIcon, {}]} />}
                             bottomSeparator={'none'}
-                            onPress={() => this.onPushToNextPage('手机号实名认证', 'CertificationMobile', {})}
+                            onPress={() => RouterHelper.navigate('手机号实名认证', 'CertificationMobile', {})}
                         />
                     </View>
                 </ScrollView>

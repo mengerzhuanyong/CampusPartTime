@@ -41,8 +41,10 @@ import {Carousel, ListRow} from 'teaset'
 import {HorizontalLine} from '../../component/common/commonLine'
 import GoodsItem from "../../component/item/goodsItem";
 import MessageItem from "../../component/item/messageItem";
+import SpinnerLoading from "../../component/common/SpinnerLoading";
 
-
+@inject('loginStore', 'systemStore')
+@observer
 export default class SystemMessage extends Component {
     constructor(props) {
         super(props);
@@ -64,9 +66,11 @@ export default class SystemMessage extends Component {
             ],
         };
         this.page = 1;
+        this.pageSize = 10;
     }
 
     componentDidMount() {
+        this.loadNetData();
     }
 
     componentWillUnmount(){
@@ -122,42 +126,72 @@ export default class SystemMessage extends Component {
             style: styles.alertContainer,
             actionStyle: styles.actionStyle,
             actions: [
-                { title: '确定', titleStyle: styles.titleStyleCur, btnStyle: [styles.btnStyle, styles.btnStyleCur], onPress: () => alert('确定') },
-                { title: '取消', titleStyle: styles.titleStyle, btnStyle: styles.btnStyle, onPress: () => alert('取消') },
+                {
+                    title: '确定',
+                    titleStyle: styles.titleStyleCur,
+                    btnStyle: [styles.btnStyle, styles.btnStyleCur],
+                    onPress: () => this.emptyMessage(),
+                }, {
+                    title: '取消',
+                    titleStyle: styles.titleStyle,
+                    btnStyle: styles.btnStyle,
+                    onPress: () => {}
+                },
             ]
         };
         AlertManager.show(params);
     };
 
+    loadNetData = () => {
+        InteractionManager.runAfterInteractions(() => {
+            this.requestDataSource(this.page);
+        })
+    };
+
+    emptyMessage = async (page) => {
+        const {systemStore} = this.props;
+        let result = await systemStore.emptyMessage(ServicesApi.emptyMessage, {});
+        if (result && result.code === 1) {
+            this.loadNetData();
+        } else {
+            Toast.toastShort(result.msg);
+        }
+    };
+
     _captureRef = (v) => {
-        this.flatList = v;
+        this.flatListRef = v;
     };
 
     _keyExtractor = (item, index) => {
         return `z_${index}`
     };
 
-    // 上拉加载
-    _onEndReached = () => {
-        this.timer1 = setTimeout(() => {
-            let dataTemp = this.state.listData;
-            let allLoad = false;
-            //模拟数据加载完毕,即page > 0,
-            if (this.page < 2) {
-                this.setState({ data: dataTemp.concat(this.state.listData) });
-            }
-            // allLoad 当全部加载完毕后可以设置此属性，默认为false
-            this.flatList.stopEndReached({ allLoad: this.page === 2 });
-            this.page++;
-        }, 2000);
+    requestDataSource = async (page) => {
+        const {systemStore} = this.props;
+        let data = {
+            page,
+            page_size: this.pageSize,
+        };
+
+        let result = await systemStore.requestDataSource(ServicesApi.systemMessage, data);
+        let endStatus = false;
+        if (result && result.code === 1) {
+            endStatus = result.data.list_data.length < data.page_size;
+        } else {
+            endStatus = true;
+        }
+        this.flatListRef && this.flatListRef.stopRefresh();
+        this.flatListRef && this.flatListRef.stopEndReached({allLoad: endStatus});
     };
 
-    // 下拉刷新
-    _onRefresh = () => {
-        this.timer2 = setTimeout(() => {
-            // 调用停止刷新
-            this.flatList.stopRefresh()
-        }, 2000);
+    _onRefresh = (stopRefresh) => {
+        this.page = 1;
+        this.requestDataSource(this.page);
+    };
+
+    _onEndReached = (stopEndReached) => {
+        this.page++;
+        this.requestDataSource(this.page);
     };
 
     _renderSeparator = () => {
@@ -176,15 +210,18 @@ export default class SystemMessage extends Component {
         );
     };
 
-    _renderListItem = (info) => {
+    _renderListItem = ({item}) => {
         return (
-            <MessageItem />
+            <MessageItem
+                item={item}
+                {...this.props}
+            />
         );
     };
 
     render() {
         let {loading, listData} = this.state;
-        // listData=[];
+        const {systemStore} = this.props;
         let {params} = this.props.navigation.state;
         let pageTitle = params && params.pageTitle ? params.pageTitle : '消息';
         return (
@@ -194,19 +231,23 @@ export default class SystemMessage extends Component {
                     rightView={this.renderHeaderRightView()}
                 />
                 <View style={styles.content}>
-                    <FlatListView
-                        style={styles.listContent}
-                        initialRefresh={false}
-                        ref={this._captureRef}
-                        data={listData}
-                        removeClippedSubviews={false}
-                        renderItem={this._renderListItem}
-                        keyExtractor={this._keyExtractor}
-                        onEndReached={this._onEndReached}
-                        onRefresh={this._onRefresh}
-                        // ItemSeparatorComponent={this._renderSeparator}
-                        ListEmptyComponent={this._renderEmptyComponent}
-                    />
+                    {systemStore.loading && systemStore.dataSource.length === 0 ?
+                        <SpinnerLoading isVisible={systemStore.loading} />
+                        :
+                        <FlatListView
+                            style={styles.listContent}
+                            initialRefresh={false}
+                            ref={this._captureRef}
+                            data={systemStore.dataSource}
+                            removeClippedSubviews={false}
+                            renderItem={this._renderListItem}
+                            keyExtractor={this._keyExtractor}
+                            onEndReached={this._onEndReached}
+                            onRefresh={this._onRefresh}
+                            ItemSeparatorComponent={this._renderSeparator}
+                            ListHeaderComponent={this._renderHeaderComponent}
+                        />
+                    }
                 </View>
             </View>
         );

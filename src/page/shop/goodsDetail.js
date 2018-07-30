@@ -73,19 +73,12 @@ export default class GoodsDetail extends Component {
         ClearTimer(timers);
     }
 
-    onPushToNextPage = (pageTitle, component, params = {}) => {
-        RouterHelper.navigate(component, {
-            pageTitle: pageTitle,
-            ...params
-        })
-    };
-
     renderNavigationBarView = () => {
         return (
             <View style={styles.headerView}>
                 <TouchableOpacity
                     style={styles.headerTitleView}
-                    onPress={() => this.onPushToNextPage('搜索', 'Search')}
+                    onPress={() => RouterHelper.navigate('搜索', 'Search')}
                 >
                     <Image source={Images.icon_search} style={[CusTheme.headerIcon, styles.headerSearchIcon]} />
                     <Text style={[CusTheme.headerIconTitle, styles.headerSearchTitle]}>搜索商品</Text>
@@ -268,13 +261,13 @@ export default class GoodsDetail extends Component {
                             title={'余额换购'}
                             style={[CusTheme.btnView, styles.btnView]}
                             titleStyle={[CusTheme.btnName, styles.btnName]}
-                            onPress={() => this.onPushToNextPage('', 'WorkPunchCard')}
+                            onPress={() => RouterHelper.navigate('', 'WorkPunchCard')}
                         />
                         <Button
                             title={'工分换购'}
                             style={[CusTheme.btnView, styles.btnView]}
                             titleStyle={[CusTheme.btnName, styles.btnName]}
-                            onPress={() => this.onPushToNextPage('', 'WorkPunchCard')}
+                            onPress={() => RouterHelper.navigate('', 'WorkPunchCard')}
                         />
                     </View>
                 </ScrollView>

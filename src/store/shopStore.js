@@ -1,3 +1,11 @@
+/**
+ * 校园空兼 - ShopStore
+ * https://menger.me
+ * @大梦
+ */
+
+'use strict';
+
 import { observable, action, computed, runInAction, toJS } from 'mobx'
 import BaseStore from './baseStore'
 
@@ -19,7 +27,7 @@ export default class ShopStore extends BaseStore {
     requestDataSource = async (url, data) => {
         this.loading = true;
         const result = await this.postRequest(url, data);
-        if (result.code == 1) {
+        if (result.code === 1) {
             runInAction(() => {
                 this.loading = false;
                 if (data.page === 1) {

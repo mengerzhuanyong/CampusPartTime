@@ -40,13 +40,6 @@ export default class MineWorkSpace extends React.Component {
         };
     }
 
-    onPushToNextPage = (pageTitle, component, params = {}) => {
-        RouterHelper.navigate(component, {
-            pageTitle: pageTitle,
-            ...params
-        })
-    };
-
     render() {
         let {loading, listData} = this.state;
         let {params} = this.props.navigation.state;

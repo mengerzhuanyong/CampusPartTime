@@ -1,3 +1,11 @@
+/**
+ * 校园空兼 - WorkStore
+ * https://menger.me
+ * @大梦
+ */
+
+'use strict';
+
 import { observable, action, computed, runInAction, toJS } from 'mobx'
 import BaseStore from './baseStore'
 
@@ -18,8 +26,8 @@ export default class WorkStore extends BaseStore {
     @action
     requestDataSource = async (url, data) => {
         this.loading = true;
-        const result = await this.postRequest(url, data);
-        if (result.code == 1) {
+        const result = await this.postRequest(url, data, true);
+        if (result.code === 1) {
             runInAction(() => {
                 this.loading = false;
                 if (data.page === 1) {

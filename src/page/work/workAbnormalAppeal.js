@@ -39,18 +39,11 @@ export default class WorkAbnormalAppeal extends Component {
         };
     }
 
-    onPushToNextPage = (pageTitle, component, params = {}) => {
-        RouterHelper.navigate(component, {
-            pageTitle: pageTitle,
-            ...params
-        })
-    };
-
     renderHeaderRightView = () => {
         return (
             <TouchableOpacity
                 style={[CusTheme.headerButtonView, styles.headerRightView]}
-                onPress={() => this.onPushToNextPage('异常申诉', 'WorkAbnormalAppeal', {})}
+                onPress={() => RouterHelper.navigate('异常申诉', 'WorkAbnormalAppeal', {})}
             >
                 <Text style={CusTheme.headerBtnName}>异常申诉</Text>
             </TouchableOpacity>

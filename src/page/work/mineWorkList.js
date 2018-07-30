@@ -59,13 +59,6 @@ export default class MineWorkList extends PureComponent {
         ClearTimer(timers);
     }
 
-    onPushToNextPage = (pageTitle, component, params = {}) => {
-        RouterHelper.navigate(component, {
-            pageTitle: pageTitle,
-            ...params
-        })
-    };
-
     componentWillUnmount(){
         let timers = [this.timer1, this.timer2];
         ClearTimer(timers);
@@ -148,7 +141,7 @@ export default class MineWorkList extends PureComponent {
                     title={'去看看'}
                     style={[CusTheme.btnView, styles.btnView]}
                     titleStyle={[CusTheme.btnName, styles.btnName]}
-                    onPress={() => this.onPushToNextPage('', 'Work')}
+                    onPress={() => RouterHelper.navigate('', 'Work')}
                 />
             </View>
         );

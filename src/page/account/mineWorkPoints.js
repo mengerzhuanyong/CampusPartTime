@@ -34,13 +34,6 @@ export default class MineWorkPoints extends Component {
         };
     }
 
-    onPushToNextPage = (pageTitle, component, params = {}) => {
-        RouterHelper.navigate(component, {
-            pageTitle: pageTitle,
-            ...params
-        })
-    };
-
     componentWillUnmount(){
         let timers = [this.timer1, this.timer2];
         ClearTimer(timers);

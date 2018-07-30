@@ -40,13 +40,6 @@ export default class MinePartTimeIncome extends Component {
         ClearTimer(timers);
     }
 
-    onPushToNextPage = (pageTitle, component, params = {}) => {
-        RouterHelper.navigate(component, {
-            pageTitle: pageTitle,
-            ...params
-        })
-    };
-
     _captureRef = (v) => {
         this.flatList = v;
     };
@@ -94,7 +87,7 @@ export default class MinePartTimeIncome extends Component {
                     title={'去看看'}
                     style={[CusTheme.btnView, styles.btnView]}
                     titleStyle={[CusTheme.btnName, styles.btnName]}
-                    onPress={() => this.onPushToNextPage('', 'Work')}
+                    onPress={() => RouterHelper.navigate('', 'Work')}
                 />
             </View>
         );

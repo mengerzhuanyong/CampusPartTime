@@ -57,13 +57,6 @@ export default class MineWithDraw extends Component {
     componentWillUnmount(){
     }
 
-    onPushToNextPage = (pageTitle, component, params = {}) => {
-        RouterHelper.navigate(component, {
-            pageTitle: pageTitle,
-            ...params
-        })
-    };
-
     submitWithdraw = () => {
 
     };

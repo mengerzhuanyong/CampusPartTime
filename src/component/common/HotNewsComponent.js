@@ -52,13 +52,6 @@ export default class HotNewsComponent extends Component {
         this.timer && clearTimeout(this.timer);
     }
 
-    onPushToNextPage = (pageTitle, component, params = {}) => {
-        RouterHelper.navigate(component, {
-            pageTitle: pageTitle,
-            ...params
-        })
-    };
-
     renderNotice = (row) => {
             if (row.length <= 0) {
                 return null;
@@ -69,7 +62,7 @@ export default class HotNewsComponent extends Component {
                         style={styles.noticeItemView}
                         key={"notice_" + index}
                         activeOpacity={1}
-                        onPress={() => this.onPushToNextPage('消息', 'SystemMessage')}
+                        onPress={() => RouterHelper.navigate('消息', 'SystemMessage')}
                     >
                         <Text style={styles.noticeContext}>{item.content}</Text>
                     </TouchableOpacity>

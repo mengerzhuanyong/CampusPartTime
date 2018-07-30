@@ -66,13 +66,6 @@ export default class Work extends Component {
         ClearTimer(timers);
     }
 
-    onPushToNextPage = (pageTitle, component, params = {}) => {
-        RouterHelper.navigate(component, {
-            pageTitle: pageTitle,
-            ...params
-        })
-    };
-
     renderNavigationBarView = () => {
         return (
             <View style={styles.headerView}>
@@ -100,7 +93,7 @@ export default class Work extends Component {
                 </View>
                 <TouchableOpacity
                     style={styles.headerRightView}
-                    onPress={() => this.onPushToNextPage('消息', 'SystemMessage')}
+                    onPress={() => RouterHelper.navigate('消息', 'SystemMessage')}
                 >
                     <Text style={[CusTheme.headerBtnName, styles.headerBtnName]}>搜索</Text>
                 </TouchableOpacity>

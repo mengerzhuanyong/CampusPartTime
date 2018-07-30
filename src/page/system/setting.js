@@ -38,13 +38,6 @@ export default class Setting extends Component {
         };
     }
 
-    onPushToNextPage = (pageTitle, component, params = {}) => {
-        RouterHelper.navigate(component, {
-            pageTitle: pageTitle,
-            ...params
-        })
-    };
-
     clearCache = () => {
         this.setState({
             cacheSize: '',
@@ -69,7 +62,7 @@ export default class Setting extends Component {
     _exitLogin = async () => {
         const {loginStore} = this.props;
         loginStore.cleanUserInfo();
-        RouterHelper.reset('Login');
+        RouterHelper.reset('', 'Login');
     };
 
     _onPressExit = () => {
@@ -107,7 +100,7 @@ export default class Setting extends Component {
                             titleStyle={CusTheme.contentTitle}
                             detail={''}
                             accessory={<Image source={Images.icon_arrow_right} style={[CusTheme.contentRightIcon, {}]} />}
-                            onPress={() => this.onPushToNextPage('修改密码', 'MineSettingPassWord', {})}
+                            onPress={() => RouterHelper.navigate('修改密码', 'MineSettingPassWord', {})}
                         />
                         <ListRow
                             style={styles.contentTitleView}
@@ -115,7 +108,7 @@ export default class Setting extends Component {
                             titleStyle={CusTheme.contentTitle}
                             detail={''}
                             accessory={<Image source={Images.icon_arrow_right} style={[CusTheme.contentRightIcon, {}]} />}
-                            onPress={() => this.onPushToNextPage('关于我们', 'CommonWebPage', {})}
+                            onPress={() => RouterHelper.navigate('关于我们', 'CommonWebPage', {})}
                         />
                         <ListRow
                             style={styles.contentTitleView}
@@ -123,7 +116,7 @@ export default class Setting extends Component {
                             titleStyle={CusTheme.contentTitle}
                             detail={''}
                             accessory={<Image source={Images.icon_arrow_right} style={[CusTheme.contentRightIcon, {}]} />}
-                            onPress={() => this.onPushToNextPage('帮助中心', 'CommonWebPage', {})}
+                            onPress={() => RouterHelper.navigate('帮助中心', 'CommonWebPage', {})}
                         />
                         <ListRow
                             style={styles.contentTitleView}
@@ -150,7 +143,7 @@ export default class Setting extends Component {
                             titleStyle={CusTheme.contentTitle}
                             detail={'当前版本：1.0.0'}
                             accessory={<Image source={Images.icon_arrow_right} style={[CusTheme.contentRightIcon, {}]} />}
-                            onPress={() => this.onPushToNextPage('检查更新', 'ShareApp', {})}
+                            onPress={() => RouterHelper.navigate('检查更新', 'ShareApp', {})}
                             bottomSeparator={'none'}
                         />
                     </View>

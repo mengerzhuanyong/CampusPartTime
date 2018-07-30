@@ -45,13 +45,6 @@ export default class Register extends Component {
         RouterHelper.goBack();
     };
 
-    onPushToNextPage = (pageTitle, component, params = {}) => {
-        RouterHelper.navigate(component, {
-            pageTitle: pageTitle,
-            ...params
-        })
-    };
-
     _doRegister = async () => {
         const {loginStore} = this.props;
         let {agree} = this.state;
@@ -85,7 +78,7 @@ export default class Register extends Component {
         const result = await loginStore.doLogin(url, data);
         // console.log('result---->>', result);
         if (result.code === 1) {
-            RouterHelper.reset('Tab');
+            RouterHelper.reset('', 'Tab');
         } else {
             ToastManager.show(result.msg);
         }
@@ -187,7 +180,7 @@ export default class Register extends Component {
                             <Text style={styles.protocolTitle}>我以阅读并同意</Text>
                             <TouchableOpacity
                                 style={styles.protocolIconView}
-                                onPress={() => this.onPushToNextPage('用户协议', 'CommonWebPage')}
+                                onPress={() => RouterHelper.navigate('用户协议', 'CommonWebPage')}
                             >
                                 <Text style={styles.protocolCon}>《校园空兼用户协议》</Text>
                             </TouchableOpacity>

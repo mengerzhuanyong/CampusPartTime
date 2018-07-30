@@ -7,7 +7,8 @@
 
 module.exports = {
     // 主域名
-    BASE_HOST: 'http://xykj.3todo.com/api/',
+    BASE_HOST: 'http://www.xiaoyuankj.com/api/',
+    // BASE_HOST: 'http://xykj.3todo.com/api/',
     // BASE_HOST: 'http://waimaobang.nididake.com/api/',
 
     // 人才列表
@@ -40,7 +41,7 @@ module.exports = {
     getCategory: 'categories',
 
     // 会员中心首页
-    my_index: 'my_index',
+    mine: 'my_index',
     // 工作搜索主页
     job_search_form: 'job_search_form',
     // 工作搜索结果页
@@ -103,10 +104,6 @@ module.exports = {
     share_get_point: 'share_get_point',
     // 重置密码
     reset_password: 'reset_password',
-    // 我的消息
-    my_news: 'my_news',
-    // 清空消息
-    clean_news: 'clean_news',
     // 积分商品详情
     point_goods_details: 'point_goods_details',
     // 积分商品购买页面
@@ -115,4 +112,9 @@ module.exports = {
     id_verify_photo: 'id_verify_photo',
     // 我的工作报名详情
     my_job_application_details: 'my_job_application_details',
+
+    // 我的消息
+    systemMessage: 'my_news',
+    // 清空消息
+    emptyMessage: 'clean_news',
 };

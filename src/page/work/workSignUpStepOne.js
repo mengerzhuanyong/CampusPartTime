@@ -57,13 +57,6 @@ export default class WorkSignUpStepOne extends Component {
         ClearTimer(timers);
     }
 
-    onPushToNextPage = (pageTitle, component, params = {}) => {
-        RouterHelper.navigate(component, {
-            pageTitle: pageTitle,
-            ...params
-        })
-    };
-
     clearCache = () => {
         this.setState({
             cacheSize: '',
@@ -187,7 +180,7 @@ export default class WorkSignUpStepOne extends Component {
                     title={'下一步'}
                     style={[CusTheme.btnView, styles.btnView]}
                     titleStyle={[CusTheme.btnName, styles.btnName]}
-                    onPress={() => this.onPushToNextPage('确认信息', 'WorkSignUpStepTwo')}
+                    onPress={() => RouterHelper.navigate('确认信息', 'WorkSignUpStepTwo')}
                 />
             </View>
         );

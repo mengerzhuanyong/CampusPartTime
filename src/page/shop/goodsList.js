@@ -73,19 +73,12 @@ export default class GoodsList extends Component {
         ClearTimer(timers);
     }
 
-    onPushToNextPage = (pageTitle, component, params = {}) => {
-        RouterHelper.navigate(component, {
-            pageTitle: pageTitle,
-            ...params
-        })
-    };
-
     renderNavigationBarView = () => {
         return (
             <View style={styles.headerView}>
                 <TouchableOpacity
                     style={styles.headerTitleView}
-                    onPress={() => this.onPushToNextPage('搜索', 'Search')}
+                    onPress={() => RouterHelper.navigate('搜索', 'Search')}
                 >
                     <Image source={Images.icon_search} style={[CusTheme.headerIcon, styles.headerSearchIcon]} />
                     <Text style={[CusTheme.headerIconTitle, styles.headerSearchTitle]}>搜索商品</Text>

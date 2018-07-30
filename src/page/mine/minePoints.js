@@ -40,13 +40,6 @@ export default class MinePoints extends Component {
         ClearTimer(timers);
     }
 
-    onPushToNextPage = (pageTitle, component, params = {}) => {
-        RouterHelper.navigate(component, {
-            pageTitle: pageTitle,
-            ...params
-        })
-    };
-
     onShare = () => {
         const params = {
             moduleTitle: '分享赚积分',
@@ -131,7 +124,7 @@ export default class MinePoints extends Component {
                     />
                     <Button
                         title={'积分商城'}
-                        onPress={() => this.onPushToNextPage('积分商城', 'PointShop', {})}
+                        onPress={() => RouterHelper.navigate('积分商城', 'PointShop', {})}
                         style={styles.btnView}
                         titleStyle={styles.btnNameStyle}
                     />

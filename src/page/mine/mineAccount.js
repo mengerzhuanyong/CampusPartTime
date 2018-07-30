@@ -31,13 +31,6 @@ export default class MineAccount extends Component {
         this.state = {};
     }
 
-    onPushToNextPage = (pageTitle, component, params = {}) => {
-        RouterHelper.navigate(component, {
-            pageTitle: pageTitle,
-            ...params
-        })
-    };
-
     render() {
         let {params} = this.props.navigation.state;
         let pageTitle = params && params.pageTitle ? params.pageTitle : '设置';
@@ -53,7 +46,7 @@ export default class MineAccount extends Component {
                         style={styles.contentTitleView}
                         titleStyle={CusTheme.contentTitle}
                         accessory={<Image source={Images.icon_arrow_right} style={[CusTheme.contentRightIcon, {}]} />}
-                        onPress={() => this.onPushToNextPage('我的余额', 'MineIntegritySystem', {})}
+                        onPress={() => RouterHelper.navigate('我的余额', 'MineIntegritySystem', {})}
                     />
                     <ListRow
                         title={'信用额度'}
@@ -61,7 +54,7 @@ export default class MineAccount extends Component {
                         style={styles.contentTitleView}
                         titleStyle={CusTheme.contentTitle}
                         accessory={<Image source={Images.icon_arrow_right} style={[CusTheme.contentRightIcon, {}]} />}
-                        onPress={() => this.onPushToNextPage('信用额度', 'MineCredits', {})}
+                        onPress={() => RouterHelper.navigate('信用额度', 'MineCredits', {})}
                     />
                     <ListRow
                         title={'工分明细'}
@@ -69,7 +62,7 @@ export default class MineAccount extends Component {
                         style={styles.contentTitleView}
                         titleStyle={CusTheme.contentTitle}
                         accessory={<Image source={Images.icon_arrow_right} style={[CusTheme.contentRightIcon, {}]} />}
-                        onPress={() => this.onPushToNextPage('工分明细', 'MineWorkPoints', {})}
+                        onPress={() => RouterHelper.navigate('工分明细', 'MineWorkPoints', {})}
                     />
                     <ListRow
                         title={'兼职收入明细'}
@@ -77,7 +70,7 @@ export default class MineAccount extends Component {
                         style={styles.contentTitleView}
                         titleStyle={CusTheme.contentTitle}
                         accessory={<Image source={Images.icon_arrow_right} style={[CusTheme.contentRightIcon, {}]} />}
-                        onPress={() => this.onPushToNextPage('兼职收入明细', 'MinePartTimeIncome', {})}
+                        onPress={() => RouterHelper.navigate('兼职收入明细', 'MinePartTimeIncome', {})}
                     />
                     <ListRow
                         title={'我的订单'}
@@ -85,7 +78,7 @@ export default class MineAccount extends Component {
                         style={styles.contentTitleView}
                         titleStyle={CusTheme.contentTitle}
                         accessory={<Image source={Images.icon_arrow_right} style={[CusTheme.contentRightIcon, {}]} />}
-                        onPress={() => this.onPushToNextPage('我的订单', 'MineOrder', {})}
+                        onPress={() => RouterHelper.navigate('我的订单', 'MineOrder', {})}
                     />
                     <ListRow
                         title={'提前还款'}
@@ -94,7 +87,7 @@ export default class MineAccount extends Component {
                         titleStyle={CusTheme.contentTitle}
                         accessory={<Image source={Images.icon_arrow_right} style={[CusTheme.contentRightIcon, {}]} />}
                         bottomSeparator={'none'}
-                        onPress={() => this.onPushToNextPage('提前还款', 'MineRepayment', {})}
+                        onPress={() => RouterHelper.navigate('提前还款', 'MineRepayment', {})}
                     />
                 </ScrollView>
             </View>

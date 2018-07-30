@@ -52,13 +52,6 @@ export default class BannerComponent extends Component {
         this.timer && clearTimeout(this.timer);
     }
 
-    onPushToNextPage = (pageTitle, component, params = {}) => {
-        RouterHelper.navigate(component, {
-            pageTitle: pageTitle,
-            ...params
-        })
-    };
-
     renderBanner = (row) => {
         if (this.state.swiperShow) {
             if (row.length <= 0) {
@@ -71,7 +64,7 @@ export default class BannerComponent extends Component {
                         key={"banner_" + index}
                         activeOpacity={1}
                         onPress={() => {
-                            item.link && this.onPushToNextPage(item.title, 'CommonWebPage', {url: item.link});
+                            item.link && RouterHelper.navigate(item.title, 'CommonWebPage', {url: item.link});
                         }}
                     >
                         <ImageBackground

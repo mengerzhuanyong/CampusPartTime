@@ -4,6 +4,7 @@
  * @大梦
  */
 
+
 'use strict';
 
 import React, {Component} from 'react'
@@ -22,53 +23,43 @@ import {
 } from 'react-native'
 
 import NavigationBar from '../../component/common/NavigationBar'
-import SegmentedView from '../../component/segmentedView/index'
-import ImageView from '../../component/common/ImageView'
 import {inject, observer} from 'mobx-react'
 import {Button, Carousel, ListRow} from 'teaset'
-import FlatListView from '../../component/common/FlatListView'
-import AreaContent from '../../component/common/AreaContent'
-import Container from '../../component/common/Container';
-import Countdown from '../../component/common/Countdown';
-import {action} from 'mobx';
-import SyanImagePicker from 'react-native-syan-image-picker';
-import ImagePicker from 'react-native-image-picker';
-import PayManager from '../../config/manager/PayManager'
-import Stepper from '../../component/common/Stepper'
-import {QRscanner} from 'react-native-qr-scanner'
 import {HorizontalLine, VerticalLine} from '../../component/common/commonLine'
 import ActionsManager from "../../config/manager/ActionsManager";
+import SpinnerLoading from "../../component/common/SpinnerLoading";
 
 
+@inject('loginStore', 'mineStore')
+@observer
 export default class Mine extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            loading: false,
+            loading: false
         };
         this.page = 0
     }
 
     componentDidMount() {
+        this.requestDataSource();
     }
 
-    onPushToNextPage = (pageTitle, component, params = {}) => {
-        RouterHelper.navigate(component, {
-            pageTitle: pageTitle,
-            ...params
-        })
+    requestDataSource = async () => {
+        const {mineStore} = this.props;
+        let data = await mineStore.requestDataSource(ServicesApi.mine);
     };
 
-    renderNavigationBarView = () => {
+    renderNavigationBarView = (status) => {
         return (
             <View style={styles.headerView}>
                 <View style={styles.headerLeftView} />
                 <TouchableOpacity
                     style={styles.headerRightView}
-                    onPress={() => this.onPushToNextPage('消息', 'SystemMessage')}
+                    onPress={() => RouterHelper.navigate('消息', 'SystemMessage')}
                 >
                     <Image source={Images.icon_message} style={[CusTheme.headerIcon, {tintColor: '#fff'}]}/>
-                    <View style={CusTheme.pointView} />
+                    {status === 1 && <View style={CusTheme.pointView} />}
                 </TouchableOpacity>
             </View>
         );
@@ -86,12 +77,18 @@ export default class Mine extends Component {
 
     render() {
         let {loading} = this.state;
+        let {mineStore} = this.props;
+        let {dataSource} = mineStore;
+
+        if (mineStore.loading) {
+            return <SpinnerLoading isVisible={mineStore.loading}/>
+        }
         return (
             <ScrollView style={styles.container}>
                 <NavigationBar
-                    title={this.renderNavigationBarView()}
+                    title={this.renderNavigationBarView(dataSource.has_message)}
                     style={styles.navigationBarStyle}
-                    statusBarStyle={'default'}
+                    statusBarStyle={'light-content'}
                     leftView={null}
                     backgroundImage={null}
                 />
@@ -104,16 +101,16 @@ export default class Mine extends Component {
                         <Image source={Images.img_avatar_default} style={styles.userAvatar}/>
                     </View>
                     <View style={[styles.contentTopItemView, styles.userNameView]}>
-                        <Text style={styles.userName}>大梦</Text>
+                        <Text style={styles.userName}>{dataSource.nickname}</Text>
                         <View style={styles.signInView}>
-                            <Text style={styles.signInTips}>签到 +20</Text>
+                            <Text style={styles.signInTips}>签到 +{dataSource.sign_point}</Text>
                             <Image source={Images.icon_points_symbol} style={styles.pointsIcon}/>
                         </View>
                     </View>
                     <View style={[styles.contentTopItemView, styles.userAccountView]}>
-                        <Text style={styles.userAccountInfo}>剩余工分: {'732工分'}</Text>
+                        <Text style={styles.userAccountInfo}>剩余工分: {dataSource.work_point}</Text>
                         <VerticalLine lineStyle={styles.verLine} />
-                        <Text style={styles.userAccountInfo}>我的余额: {'2350元'}</Text>
+                        <Text style={styles.userAccountInfo}>我的余额: {dataSource.balance}</Text>
                     </View>
                 </ImageBackground>
 
@@ -126,7 +123,7 @@ export default class Mine extends Component {
                             icon={<Image source={Images.icon_files} style={[CusTheme.contentTitleIcon, {}]} />}
                             detail={''}
                             accessory={<Image source={Images.icon_arrow_right} style={[CusTheme.contentRightIcon, {}]} />}
-                            onPress={() => this.onPushToNextPage('我的资料', 'MineProfile', {})}
+                            onPress={() => RouterHelper.navigate('我的资料', 'MineProfile', {})}
                         />
                         <ListRow
                             style={styles.contentTitleView}
@@ -135,7 +132,7 @@ export default class Mine extends Component {
                             icon={<Image source={Images.icon_cloud} style={[CusTheme.contentTitleIcon, {}]} />}
                             detail={''}
                             accessory={<Image source={Images.icon_arrow_right} style={[CusTheme.contentRightIcon, {}]} />}
-                            onPress={() => this.onPushToNextPage('我的账户', 'MineAccount', {})}
+                            onPress={() => RouterHelper.navigate('我的账户', 'MineAccount', {})}
                         />
                         <ListRow
                             style={styles.contentTitleView}
@@ -144,7 +141,7 @@ export default class Mine extends Component {
                             icon={<Image source={Images.icon_points} style={[CusTheme.contentTitleIcon, {}]} />}
                             detail={''}
                             accessory={<Image source={Images.icon_arrow_right} style={[CusTheme.contentRightIcon, {}]} />}
-                            onPress={() => this.onPushToNextPage('我的积分', 'MinePoints', {})}
+                            onPress={() => RouterHelper.navigate('我的积分', 'MinePoints', {})}
                             bottomSeparator={'none'}
                         />
                     </View>
@@ -156,7 +153,7 @@ export default class Mine extends Component {
                             icon={<Image source={Images.icon_medal} style={[CusTheme.contentTitleIcon, {}]} />}
                             detail={''}
                             accessory={<Image source={Images.icon_arrow_right} style={[CusTheme.contentRightIcon, {}]} />}
-                            onPress={() => this.onPushToNextPage('诚信体系', 'MineIntegritySystem', {})}
+                            onPress={() => RouterHelper.navigate('诚信体系', 'MineIntegritySystem', {})}
                         />
                         <ListRow
                             style={styles.contentTitleView}
@@ -165,7 +162,7 @@ export default class Mine extends Component {
                             icon={<Image source={Images.icon_work_space} style={[CusTheme.contentTitleIcon, {}]} />}
                             detail={''}
                             accessory={<Image source={Images.icon_arrow_right} style={[CusTheme.contentRightIcon, {}]} />}
-                            onPress={() => this.onPushToNextPage('工作台', 'MineWorkSpace', {})}
+                            onPress={() => RouterHelper.navigate('工作台', 'MineWorkSpace', {})}
                         />
                         <ListRow
                             style={styles.contentTitleView}
@@ -186,7 +183,7 @@ export default class Mine extends Component {
                             icon={<Image source={Images.icon_setting} style={[CusTheme.contentTitleIcon, {}]} />}
                             detail={''}
                             accessory={<Image source={Images.icon_arrow_right} style={[CusTheme.contentRightIcon, {}]} />}
-                            onPress={() => this.onPushToNextPage('设置', 'Setting', {})}
+                            onPress={() => RouterHelper.navigate('设置', 'Setting', {})}
                             bottomSeparator={'none'}
                         />
                     </View>

@@ -211,7 +211,7 @@ export default class Work extends Component {
                 <Text style={[CusTheme.headerTitle, styles.headerTitle]}>工作</Text>
                 <TouchableOpacity
                     style={styles.headerRightView}
-                    onPress={() => this.onPushToNextPage('消息', 'SystemMessage')}
+                    onPress={() => RouterHelper.navigate('消息', 'SystemMessage')}
                 >
                     <Image source={Images.icon_message} style={CusTheme.headerIcon}/>
                     <View style={CusTheme.pointView}/>

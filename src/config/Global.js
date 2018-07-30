@@ -15,9 +15,11 @@ import {
 } from '../util/Tool'
 import CusTheme from './Theme'
 import Images from './manager/ImageManager'
-import Services from '../util/Services'
+// import Services from '../util/Services'
+import Services from '../util/utilRequest'
 import MenuManager from './manager/MenuManager'
 import ToastManager from './manager/ToastManager'
+import * as Toast from '../util/utilToast'
 import ActionsManager from './manager/ActionsManager'
 import AlertManager from './manager/AlertManager';
 import InteractionManager from './manager/InteractionManager';
@@ -64,7 +66,7 @@ global.Images = Images;
 global.StorageManager = StorageManager;
 
 // 网络请求
-global.Services = Services;
+global.Services = new Services();
 
 // 网络接口
 global.ServicesApi = ServicesApi;
@@ -83,6 +85,9 @@ global.MenuManager = MenuManager;
 
 // 轻提示
 global.ToastManager = ToastManager;
+
+// 轻提示
+global.Toast = Toast;
 
 // 操作管理
 global.ActionsManager = ActionsManager;
