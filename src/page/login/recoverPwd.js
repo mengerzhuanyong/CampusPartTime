@@ -16,14 +16,66 @@ import {
     TouchableOpacity,
 } from 'react-native'
 
+import {observer, inject} from 'mobx-react'
 import {Button} from 'teaset'
 
 import NavigationBar from '../../component/common/NavigationBar'
 import Container from '../../component/common/Container'
 import SendSMS from '../../component/common/SendSMS'
 import {HorizontalLine, VerticalLine} from '../../component/common/commonLine'
+import {checkMobile} from "../../util/Tool";
 
+@inject('loginStore')
+@observer
 export default class RecoverPwd extends PureComponent {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            open: false,
+            mobile: '15066886007',
+            code: '123123',
+            password: '123123',
+            re_password: '123123',
+        };
+    }
+
+    componentWillUnmount() {
+        const timers = [this.timer];
+        ClearTimer(timers)
+    }
+
+    onSubmitFoo = async () => {
+        const {loginStore} = this.props;
+        const {mobile, code, password, re_password} = this.state;
+        if (!checkMobile(mobile)) {
+            ToastManager.show('您输入的手机号错误，请检查后重新输入！');
+            return;
+        }
+        if (code === '') {
+            ToastManager.show('请输入手机验证码');
+            return;
+        }
+        if (password === '') {
+            ToastManager.show('请输入新密码');
+            return;
+        }
+        if (re_password === '') {
+            ToastManager.show('请再次输入密码');
+            return;
+        }
+        let url = ServicesApi.retrievePassword;
+        let data = {mobile, code, password, re_password};
+        const result = await loginStore.recoverPassword(url, data);
+        // console.log('result---->>', result);
+        ToastManager.show(result.msg);
+        if (result.code === 1) {
+            this.timer = setTimeout(() => {
+                RouterHelper.reset('', 'Tab');
+            }, 1000);
+        }
+    };
+
 
     render() {
         return (
@@ -47,7 +99,7 @@ export default class RecoverPwd extends PureComponent {
                             placeholderTextColor={'#fff'}
                             returnKeyType={'done'}
                             clearButtonMode='while-editing'
-                            onChangeText={this._onChangeLogin}
+                            onChangeText={(text) => this.setState({mobile: text})}
                         />
                     </View>
                     <HorizontalLine lineStyle={styles.horLine}/>
@@ -63,7 +115,7 @@ export default class RecoverPwd extends PureComponent {
                             placeholderTextColor={'#fff'}
                             returnKeyType={'done'}
                             clearButtonMode='while-editing'
-                            onChangeText={this._onChangeLogin}
+                            onChangeText={(text) => this.setState({code: text})}
                         />
                         <SendSMS
                             mobile={'mobile'}
@@ -87,7 +139,7 @@ export default class RecoverPwd extends PureComponent {
                             placeholderTextColor={'#fff'}
                             returnKeyType={'done'}
                             clearButtonMode='while-editing'
-                            onChangeText={this._onChangeLogin}
+                            onChangeText={(text) => this.setState({password: text})}
                         />
                     </View>
                     <HorizontalLine lineStyle={styles.horLine}/>
@@ -103,12 +155,12 @@ export default class RecoverPwd extends PureComponent {
                             placeholderTextColor={'#fff'}
                             returnKeyType={'done'}
                             clearButtonMode='while-editing'
-                            onChangeText={this._onChangeLogin}
+                            onChangeText={(text) => this.setState({re_password: text})}
                         />
                     </View>
                     <HorizontalLine lineStyle={styles.horLine}/>
                     <Button
-                        onPress={this._onPress}
+                        onPress={this.onSubmitFoo}
                         style={[styles.btnItem, styles.registerBtnItem]}
                         titleStyle={[styles.btnItemTitle, styles.registerBtnItemTitle]}
                         title={'立即找回'}

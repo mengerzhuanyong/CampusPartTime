@@ -14,13 +14,19 @@ export default class ShopStore extends BaseStore {
     constructor(params) {
         super(params);
         this.dataSource = [];
+        this.goodsDetail = {};
     }
 
     @observable dataSource;
+    @observable goodsDetail;
 
     @computed
     get getDataSource() {
         return toJS(this.dataSource);
+    }
+    @computed
+    get getGoodsDetail() {
+        return toJS(this.goodsDetail);
     }
 
     @action
@@ -42,6 +48,24 @@ export default class ShopStore extends BaseStore {
             runInAction(() => {
                 this.loading = false;
                 this.dataSource = [];
+            })
+        }
+        return result;
+    };
+
+    @action
+    requestGoodsDetail = async (url, data) => {
+        this.loading = true;
+        const result = await this.postRequest(url, data);
+        if (result.code === 1) {
+            runInAction(() => {
+                this.loading = false;
+                this.goodsDetail = result.data;
+            })
+        } else {
+            runInAction(() => {
+                this.loading = false;
+                this.goodsDetail = {};
             })
         }
         return result;

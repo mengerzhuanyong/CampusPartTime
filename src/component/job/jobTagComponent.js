@@ -21,6 +21,7 @@ export default class JobTagComponent extends PureComponent {
     static propTypes = {
         ...ViewPropTypes,
         title: PropTypes.oneOfType([PropTypes.element, PropTypes.string, PropTypes.number]),
+        style: View.propTypes.style,
         titleStyle: Text.propTypes.style,
         activeTitleStyle: Text.propTypes.style,
         active: PropTypes.bool,
@@ -72,9 +73,9 @@ export default class JobTagComponent extends PureComponent {
     };
 
     render() {
-        let {tagsData} = this.props;
+        let {tagsData, style} = this.props;
         return (
-            <View style={[styles.jobInfoTagsView,]}>
+            <View style={[styles.jobInfoTagsView, style]}>
                 {this.renderJobTagsView(tagsData)}
             </View>
         );

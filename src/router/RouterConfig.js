@@ -7,7 +7,7 @@
 'use strict';
 
 import {createStackNavigator, createBottomTabNavigator} from 'react-navigation'
-import StackViewStyleInterpolator from 'react-navigation/src/views/StackView/StackViewStyleInterpolator'
+import StackViewStyleInterpolator from 'react-navigation-stack/dist/views/StackView/StackViewStyleInterpolator'
 import {configRouter, tabOptions} from './RouterTool'
 
 import Work from "../page/work/work"

@@ -10,7 +10,6 @@
 import React, { Component, PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import {View, Text, ViewPropTypes, StyleSheet, Image, TouchableOpacity} from 'react-native';
-import {scaleSize} from "../../util/Tool";
 import JobTagComponent from "../job/jobTagComponent";
 
 export default class JobItem extends PureComponent {
@@ -95,6 +94,7 @@ export default class JobItem extends PureComponent {
 const styles = StyleSheet.create({
 
     jobItemView: {
+        paddingVertical: 10,
         paddingHorizontal: 15,
         marginVertical: 8,
         flexDirection: 'row',
@@ -138,8 +138,8 @@ const styles = StyleSheet.create({
         fontSize: FontSize(14),
     },
     jobInfoIcon: {
-        width: scaleSize(28),
-        height: scaleSize(28),
+        width: ScaleSize(28),
+        height: ScaleSize(28),
         resizeMode: 'contain',
     },
     jobInfoTagsView: {
@@ -165,10 +165,12 @@ const styles = StyleSheet.create({
         fontSize: FontSize(10),
     },
     jobInfoLeftView: {
+        flex: 1,
         flexDirection: 'row',
         alignItems: 'center',
     },
     jobInfoRightView: {
+        width: ScaleSize(180),
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'flex-end',

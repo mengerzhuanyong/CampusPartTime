@@ -7,7 +7,7 @@
 
 'use strict';
 
-import React, { Component } from 'react'
+import React, {Component} from 'react'
 import {
     Animated,
     ScrollView,
@@ -27,7 +27,11 @@ import NavigationBar from '../../component/common/NavigationBar'
 import FlatListView from '../../component/common/FlatListView'
 import {ListRow, Button} from 'teaset'
 import {HorizontalLine} from "../../component/common/commonLine";
+import {inject, observer} from "mobx-react/index";
+import RouterHelper from "../../router/RouterHelper";
 
+@inject('loginStore', 'workStore', 'resourceStore')
+@observer
 export default class WorkSignUpStepThree extends Component {
 
     constructor(props) {
@@ -53,7 +57,7 @@ export default class WorkSignUpStepThree extends Component {
         this.page = 1;
     }
 
-    componentWillUnmount(){
+    componentWillUnmount() {
         let timers = [this.timer1, this.timer2];
         ClearTimer(timers);
     }
@@ -64,8 +68,10 @@ export default class WorkSignUpStepThree extends Component {
         });
     };
 
-    makeCall = (mobile) => {
-        let url = 'tel: ' + mobile;
+    makeCall = () => {
+        const {workStore} = this.props;
+        let {server_mobile} = workStore;
+        let url = 'tel: ' + server_mobile;
         Linking.canOpenURL(url)
             .then(supported => {
                 if (!supported) {
@@ -74,7 +80,7 @@ export default class WorkSignUpStepThree extends Component {
                     return Linking.openURL(url);
                 }
             })
-            .catch((err)=>{
+            .catch((err) => {
                 // console.log('An error occurred', err)
             });
     };
@@ -94,12 +100,12 @@ export default class WorkSignUpStepThree extends Component {
             let allLoad = false;
             //模拟数据加载完毕,即page > 0,
             if (this.page < 2) {
-                this.setState({ data: dataTemp.concat(this.state.listData) });
+                this.setState({data: dataTemp.concat(this.state.listData)});
             }
             // allLoad 当全部加载完毕后可以设置此属性，默认为false
-            this.flatList.stopEndReached({ allLoad: this.page === 2 });
+            this.flatList.stopEndReached({allLoad: this.page === 2});
             this.page++;
-        }, 2000);
+        }, 500);
     };
 
     // 下拉刷新
@@ -107,18 +113,18 @@ export default class WorkSignUpStepThree extends Component {
         this.timer2 = setTimeout(() => {
             // 调用停止刷新
             this.flatList.stopRefresh()
-        }, 2000);
+        }, 500);
     };
 
     _renderSeparator = () => {
-        return <HorizontalLine style={styles.horLine} />;
+        return <HorizontalLine style={styles.horLine}/>;
     };
 
     _renderHeaderComponent = () => {
         return (
             <View style={styles.headerComponentView}>
                 <View style={[styles.contentItemView, styles.contentSignStepView]}>
-                    <Image source={Images.img_bg_step3} style={CusTheme.signUpStepImg} />
+                    <Image source={Images.img_bg_step3} style={CusTheme.signUpStepImg}/>
                     <View style={styles.contentSignStepConView}>
                         <Text style={[styles.contentSignStepContext, styles.contentSignStepContextCur]}>选择时间</Text>
                         <Text style={[styles.contentSignStepContext, styles.contentSignStepContextCur]}>确认信息</Text>
@@ -158,8 +164,26 @@ export default class WorkSignUpStepThree extends Component {
         );
     };
 
+    onCancelApply = async () => {
+        const {onCancelApply, sign_id} = this.props.workStore;
+        let url = ServicesApi.job_application_cancel;
+        let data = {
+            sign_id,
+        };
+        let result = await onCancelApply(url, data);
+        if (result.code === 1) {
+            RouterHelper.goBack('WorkDetail');
+        }
+    };
+
+    confirm = () => {
+        RouterHelper.goBack('WorkDetail');
+    };
+
     render() {
         let {loading, listData, customerMobile} = this.state;
+        const {workStore} = this.props;
+        let {server_mobile, sign_status, remark} = workStore;
         let {params} = this.props.navigation.state;
         let pageTitle = params && params.pageTitle ? params.pageTitle : '报名审核';
         return (
@@ -169,7 +193,7 @@ export default class WorkSignUpStepThree extends Component {
                 />
                 <View style={styles.content}>
                     <View style={[styles.contentItemView, styles.contentSignStepView]}>
-                        <Image source={Images.img_bg_step3} style={CusTheme.signUpStepImg} />
+                        <Image source={Images.img_bg_step3} style={CusTheme.signUpStepImg}/>
                         <View style={styles.contentSignStepConView}>
                             <Text style={[styles.contentSignStepContext, styles.contentSignStepContextCur]}>选择时间</Text>
                             <Text style={[styles.contentSignStepContext, styles.contentSignStepContextCur]}>确认信息</Text>
@@ -178,27 +202,28 @@ export default class WorkSignUpStepThree extends Component {
                         </View>
                     </View>
                     <View style={[styles.contentItemView, styles.contentContextView]}>
-                        <Text style={styles.contentTitle}>您的报名已被受理，请等待工作人员与您联系，您也可拨打服务热线咨询审核情况</Text>
+                        <Text style={styles.contentTitle}>您的报名已被受理，请等待工作人员与您联系，您也可点击拨打服务热线咨询审核情况</Text>
                         <TouchableOpacity
                             style={styles.mobileView}
-                            onPress={() => this.makeCall(customerMobile)}
+                            onPress={this.makeCall}
                         >
-                            <Text style={[styles.contentTitle, styles.mobileValue]}>{customerMobile}</Text>
+                            <Text style={[styles.mobileTitle,]}>立即拨打：</Text>
+                            <Text style={[styles.mobileTitle, styles.mobileValue]}>{server_mobile}</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
                 <View style={styles.multiBtnView}>
                     <Button
-                        title={'拨打电话'}
-                        style={[CusTheme.btnView, styles.btnView]}
-                        titleStyle={[CusTheme.btnName, styles.btnName]}
-                        onPress={() => RouterHelper.navigate('完成工作', 'WorkSignUpStepFour')}
-                    />
-                    <Button
                         title={'取消报名'}
                         style={[CusTheme.btnView, styles.btnView]}
                         titleStyle={[CusTheme.btnName, styles.btnName]}
-                        onPress={() => RouterHelper.navigate('确认信息', 'WorkSignUpStepTwo')}
+                        onPress={this.onCancelApply}
+                    />
+                    <Button
+                        title={'确认'}
+                        style={[CusTheme.btnView, styles.btnView]}
+                        titleStyle={[CusTheme.btnName, styles.btnName]}
+                        onPress={this.confirm}
                     />
                 </View>
             </View>
@@ -254,9 +279,9 @@ const styles = StyleSheet.create({
     },
     contentTitle: {
         color: '#333',
-        lineHeight: FontSize(22),
         textAlign: 'center',
         fontSize: FontSize(14),
+        lineHeight: FontSize(22),
     },
     contentTitleCur: {
         fontSize: FontSize(15),
@@ -278,10 +303,17 @@ const styles = StyleSheet.create({
     },
     mobileView: {
         marginTop: 10,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    mobileTitle: {
+        textAlign: 'center',
+        fontSize: FontSize(18),
+        color: CusTheme.themeColor,
     },
     mobileValue: {
         fontSize: FontSize(20),
-        color: CusTheme.themeColor,
     },
 
     multiBtnView: {

@@ -157,7 +157,7 @@ export default class Home extends Component {
                     refreshControl={
                         <RefreshControl
                             title='Loading...'
-                            refreshing={homeStore.loading}
+                            refreshing={loading}
                             onRefresh={this.loadNetData}
                             tintColor="#0398ff"
                             colors={['#0398ff']}

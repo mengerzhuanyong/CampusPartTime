@@ -29,16 +29,34 @@ import {observer, inject} from 'mobx-react';
 import SegmentedControlTab from '../../component/common/SegmentedControlTab'
 import {Button} from 'teaset'
 import WorkPunchCard from "./workPunchCard";
+import JobTagComponent from "../../component/job/jobTagComponent";
 
-
+@inject('loginStore', 'workStore', 'resourceStore')
+@observer
 export default class WorkDetail extends Component {
 
     constructor(props) {
         super(props);
+        let {params} = this.props.navigation.state;
         this.state = {
+            item: params && params.item ? params.item : {id: 1},
             listData: [1, 2, 3, 4],
         };
     }
+
+    componentDidMount() {
+        this.loadNetData();
+    }
+
+    loadNetData = async () => {
+        const {workStore} = this.props;
+        let data = {
+            id: this.state.item.id,
+        };
+
+        let result = await workStore.requestWorkDetail(ServicesApi.jobDetails, data);
+        // console.log(result);
+    };
 
     renderHeaderRightView = () => {
         return (
@@ -51,8 +69,30 @@ export default class WorkDetail extends Component {
         )
     };
 
+    renderWorKDescription = (data) => {
+        if (!data || data.lenth < 1) {
+            return;
+        }
+        let descriptions = data.map((item, index) => {
+            return (
+                <View style={styles.orderUserInfoConItem} key={'desc_' + index}>
+                    <Text style={[styles.orderUserInfoConItemTitle]}>【{item.name}】</Text>
+                    <Text style={[styles.orderUserInfoConItemValue]}>{item.value}</Text>
+                </View>
+            )
+        });
+        return descriptions;
+    };
+
+    signUpWork = () => {
+        let {item} = this.state;
+        RouterHelper.navigate('选择时间', 'WorkSignUpStepOne', {item});
+    };
+
     render() {
         let {loading, listData} = this.state;
+        const {workStore} = this.props;
+        let {workDetail} = workStore;
         let {params} = this.props.navigation.state;
         let pageTitle = params && params.pageTitle ? params.pageTitle : '工作详情';
         return (
@@ -64,48 +104,46 @@ export default class WorkDetail extends Component {
                 <ScrollView style={styles.content}>
                     <View style={[styles.contentItemView,]}>
                         <View style={[styles.contentTitleView, styles.orderGoodsInfoView]}>
-                            <Text style={styles.orderGoodsTitle}>花海地产新盘传单派发</Text>
-                            <View style={[styles.jobInfoTagItemView, styles.jobInfoTagIconView]}>
-                                <Image source={Images.icon_hot} style={[styles.jobInfoTagIcon]} />
-                            </View>
+                            <Text style={styles.orderGoodsTitle}>{workDetail.name}</Text>
+                            <JobTagComponent
+                                style={styles.tagsContainer}
+                                tagsData={workDetail.tags}
+                                {...this.props}
+                            />
                         </View>
-                        <Text style={styles.orderGoodsPrices}>0.8工分/h</Text>
-                        <Text style={styles.orderGoodsNum}>报名人数：7/20</Text>
+                        <Text style={styles.orderGoodsPrices}>{workDetail.price}工分/h</Text>
+                        <Text style={styles.orderGoodsNum}>报名人数：{workDetail.sign_count}/{workDetail.total_count}</Text>
                     </View>
 
                     <View style={[styles.contentItemView, styles.orderUserInfoView]}>
                         <View style={[styles.contentTitleView]}>
-                           <Text style={styles.contentTitle}>职位描述</Text>
+                            <Text style={styles.contentTitle}>职位描述</Text>
                         </View>
                         <View style={styles.orderUserInfoCon}>
-                            <View style={styles.orderUserInfoConItem}>
+                            {this.renderWorKDescription(workDetail.description)}
+
+                            {/*<View style={styles.orderUserInfoConItem}>
                                 <Text style={[styles.orderUserInfoConItemTitle]}>【入职要求】</Text>
                                 <Text style={[styles.orderUserInfoConItemValue]}>形象好、气质佳、阳光开朗、男女不限！</Text>
-                            </View>
-                            <View style={styles.orderUserInfoConItem}>
-                                <Text style={[styles.orderUserInfoConItemTitle]}>【入职要求】</Text>
-                                <Text style={[styles.orderUserInfoConItemValue]}>形象好、气质佳、阳光开朗、男女不限！</Text>
-                            </View>
-                            <View style={styles.orderUserInfoConItem}>
-                                <Text style={[styles.orderUserInfoConItemTitle]}>【入职要求】</Text>
-                                <Text style={[styles.orderUserInfoConItemValue]}>形象好、气质佳、阳光开朗、男女不限！</Text>
-                            </View>
+                            </View>*/}
                         </View>
                     </View>
                     <View style={[styles.contentItemView, styles.orderStatusInfoView]}>
                         <View style={[styles.contentTitleView]}>
                             <Text style={styles.contentTitle}>工作时间</Text>
                         </View>
-                        <Text style={styles.orderStatusInfoItem}>交易状态：等待收货</Text>
-                        <Text style={styles.orderStatusInfoItem}>下单时间：2018.04.23</Text>
-                        <Text style={styles.orderStatusInfoItem}>还需偿还工分：675</Text>
+                        <Text style={styles.orderStatusInfoItem}>开始时间：{workDetail.time_start}</Text>
+                        <Text style={styles.orderStatusInfoItem}>结束时间：{workDetail.time_end}</Text>
+                        <Text style={styles.orderStatusInfoItem}>工作时间段：{workDetail.time_dur}</Text>
                     </View>
                 </ScrollView>
                 <Button
-                    title={'报名'}
+                    title={workDetail.sign_available === 1 ? '报名' : '已报名'}
                     style={[CusTheme.btnView, styles.btnView]}
                     titleStyle={[CusTheme.btnName, styles.btnName]}
-                    onPress={() => RouterHelper.navigate('选择时间', 'WorkSignUpStepOne')}
+                    onPress={() => {
+                        workDetail.sign_available === 1 && this.signUpWork();
+                    }}
                 />
             </View>
         );
@@ -160,8 +198,14 @@ const styles = StyleSheet.create({
         justifyContent: 'space-around',
     },
     orderGoodsTitle: {
-        fontSize: FontSize(16),
+        // flex: 1,
         color: '#333',
+        fontSize: FontSize(16),
+    },
+    tagsContainer: {
+        marginLeft: 10,
+        marginBottom: 0,
+        // backgroundColor: '#123',
     },
     orderGoodsPrices: {
         color: '#ed3126',

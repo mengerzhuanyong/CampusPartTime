@@ -7,8 +7,8 @@
 
 module.exports = {
     // 主域名
-    BASE_HOST: 'http://www.xiaoyuankj.com/api/',
-    // BASE_HOST: 'http://xykj.3todo.com/api/',
+    // BASE_HOST: 'http://www.xiaoyuankj.com/api/',
+    BASE_HOST: 'http://xykj.3todo.com/api/',
     // BASE_HOST: 'http://waimaobang.nididake.com/api/',
 
     // 人才列表
@@ -30,24 +30,16 @@ module.exports = {
     // 注册
     register: 'register',
     // 忘记密码
-    retrievePassword: '忘记密码',
+    retrievePassword: 'forget',
 
     // 工作首页
     jobs: 'jobs/index',
-
-    // 换购首页
-    shoppingMall: 'shopping_mall/index',
-    // 分类选项获取
-    getCategory: 'categories',
-
-    // 会员中心首页
-    mine: 'my_index',
+    // 工作详情页
+    jobDetails: 'job_details',
     // 工作搜索主页
     job_search_form: 'job_search_form',
     // 工作搜索结果页
     job_search_list: 'job_search_list',
-    // 工作详情页
-    job_details: 'job_details',
     // 工作报名
     job_application_submit: 'job_application_submit',
     // 报名时间段
@@ -56,8 +48,13 @@ module.exports = {
     job_application_result: 'job_application_result',
     // 取消报名
     job_application_cancel: 'job_application_cancel',
+
+    // 换购首页
+    shoppingMall: 'shopping_mall/index',
+    // 分类选项获取
+    getCategory: 'categories',
     // 换购商品详情
-    work_goods_details: 'work_goods_details',
+    workGoodsDetails: 'work_goods_details',
     // 换购
     work_goods_buy: 'work_goods_buy',
     // 提交换购订单
@@ -68,6 +65,9 @@ module.exports = {
     point_goods_payment: 'point_goods_payment',
     // 积分商城首页
     point_mall: 'point_mall/index',
+
+    // 会员中心首页
+    mine: 'my_index',
     // 文件上传
     upload: 'upload',
     // 身份证认证

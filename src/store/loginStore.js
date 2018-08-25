@@ -21,6 +21,20 @@ export default class LoginStore extends BaseStore {
     @action
     doLogin = async (url, data) => {
         this.loading = true;
+        const result = await Services.post(url, data, true);
+        // console.log('result', result);
+        runInAction(() => {
+            this.loading = false;
+            if (result.code === 1) {
+                this.saveUserInfo(result.data)
+            }
+        });
+        return result;
+    };
+
+    @action
+    recoverPassword = async (url, data) => {
+        this.loading = true;
         const result = await Services.post(url, data);
         // console.log('result', result);
         runInAction(() => {

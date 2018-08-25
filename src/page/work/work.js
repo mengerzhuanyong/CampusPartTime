@@ -4,6 +4,7 @@
  * @大梦
  */
 
+
 'use strict';
 
 import React, {Component} from 'react'
@@ -41,6 +42,7 @@ import {HorizontalLine, VerticalLine} from '../../component/common/commonLine'
 import JobItem from "../../component/item/jobItem";
 import BannerComponent from "../../component/common/BannerComponent";
 import HotNewsComponent from "../../component/common/HotNewsComponent";
+import SpinnerLoading from "../../component/common/SpinnerLoading";
 
 
 @inject('loginStore', 'workStore', 'resourceStore')
@@ -50,6 +52,7 @@ export default class Work extends Component {
         super(props);
         this.state = {
             type: 2,
+            ready: false,
         };
         this.page = 1;
         this.pageSize = 10;
@@ -59,7 +62,7 @@ export default class Work extends Component {
         this.loadNetData();
     }
 
-    componentWillUnmount(){
+    componentWillUnmount() {
         let timers = [this.timer1, this.timer2];
         ClearTimer(timers);
     }
@@ -68,7 +71,7 @@ export default class Work extends Component {
         return (
             <View style={styles.headerView}>
                 <TouchableOpacity style={styles.headerLeftView}>
-                    <Image source={Images.icon_place} style={CusTheme.headerIcon} />
+                    <Image source={Images.icon_place} style={CusTheme.headerIcon}/>
                     <Text style={[CusTheme.headerIconTitle, styles.headerIconTitle]}>黄岛区</Text>
                 </TouchableOpacity>
                 <Text style={[CusTheme.headerTitle, styles.headerTitle]}>工作</Text>
@@ -77,7 +80,7 @@ export default class Work extends Component {
                     onPress={() => RouterHelper.navigate('消息', 'SystemMessage')}
                 >
                     <Image source={Images.icon_message} style={CusTheme.headerIcon}/>
-                    <View style={CusTheme.pointView} />
+                    <View style={CusTheme.pointView}/>
                 </TouchableOpacity>
             </View>
         );
@@ -122,6 +125,9 @@ export default class Work extends Component {
         } else {
             endStatus = true;
         }
+        this.setState({
+            ready: true
+        });
         this.flatListRef && this.flatListRef.stopRefresh();
         this.flatListRef && this.flatListRef.stopEndReached({allLoad: endStatus});
     };
@@ -137,7 +143,7 @@ export default class Work extends Component {
     };
 
     _renderSeparator = () => {
-        return <HorizontalLine style={styles.horLine} />;
+        return <HorizontalLine style={styles.horLine}/>;
     };
 
     _renderHeaderComponent = () => {
@@ -155,15 +161,15 @@ export default class Work extends Component {
                     <TouchableOpacity style={styles.sortBtnItemView}>
                         <Text style={styles.sortBtnItemName}>全部职位</Text>
                     </TouchableOpacity>
-                    <VerticalLine lineStyle={styles.sortVerLine} />
+                    <VerticalLine lineStyle={styles.sortVerLine}/>
                     <TouchableOpacity style={styles.sortBtnItemView}>
                         <Text style={styles.sortBtnItemName}>按剩余人数排序</Text>
-                        <Image source={Images.icon_sort} style={styles.sortBtnIcon} />
+                        <Image source={Images.icon_sort} style={styles.sortBtnIcon}/>
                     </TouchableOpacity>
-                    <VerticalLine lineStyle={styles.sortVerLine} />
+                    <VerticalLine lineStyle={styles.sortVerLine}/>
                     <TouchableOpacity style={styles.sortBtnItemView}>
                         <Text style={styles.sortBtnItemName}>按工分排序</Text>
-                        <Image source={Images.icon_sort} style={styles.sortBtnIcon} />
+                        <Image source={Images.icon_sort} style={styles.sortBtnIcon}/>
                     </TouchableOpacity>
                 </View>
             </View>
@@ -182,6 +188,7 @@ export default class Work extends Component {
 
     render() {
         const {workStore} = this.props;
+        const {ready} = this.state;
         return (
             <View style={styles.container}>
                 <NavigationBar
@@ -193,24 +200,27 @@ export default class Work extends Component {
                     leftView={null}
                     backgroundImage={null}
                 />
-                <FlatListView
-                    style={styles.listContent}
-                    initialRefresh={false}
-                    ref={this._captureRef}
-                    removeClippedSubviews={false}
-                    data={workStore.dataSource}
-                    renderItem={this._renderListItem}
-                    keyExtractor={this._keyExtractor}
-                    onEndReached={this._onEndReached}
-                    onRefresh={this._onRefresh}
-                    ItemSeparatorComponent={this._renderSeparator}
-                    ListHeaderComponent={this._renderHeaderComponent}
-                />
+                {ready ?
+                    <FlatListView
+                        style={styles.listContent}
+                        initialRefresh={false}
+                        ref={this._captureRef}
+                        removeClippedSubviews={false}
+                        data={workStore.dataSource}
+                        renderItem={this._renderListItem}
+                        keyExtractor={this._keyExtractor}
+                        onEndReached={this._onEndReached}
+                        onRefresh={this._onRefresh}
+                        ItemSeparatorComponent={this._renderSeparator}
+                        ListHeaderComponent={this._renderHeaderComponent}
+                    />
+                    : <SpinnerLoading isVisible={true}/>
+                }
                 <TouchableOpacity
                     style={styles.btnView}
                     onPress={() => RouterHelper.navigate('平台分配工作', 'AutoGetWork')}
                 >
-                    <Image source={Images.img_platform} style={styles.btnIcon} />
+                    <Image source={Images.img_platform} style={styles.btnIcon}/>
                 </TouchableOpacity>
             </View>
         );

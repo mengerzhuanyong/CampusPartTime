@@ -45,7 +45,8 @@ if (!__DEV__) {
 }
 
 // 屏蔽调试警告
-console.ignoredYellowBox = ['Remote debugger is in', 'Warning: isMounted(...)'];
+console.disableYellowBox = true;
+// console.ignoredYellowBox = ['Remote debugger is in', 'Warning: isMounted(...)'];
 
 // 系统是iOS
 global.__IOS__ = (Platform.OS === 'ios');

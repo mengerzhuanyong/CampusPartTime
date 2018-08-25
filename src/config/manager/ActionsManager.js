@@ -3,11 +3,6 @@
  * https://menger.me
  * @大梦
  */
-/**
- * 校园空兼 -
- * https://menger.me
- * @大梦
- */
 
 'use strict';
 

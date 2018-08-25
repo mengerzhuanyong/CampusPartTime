@@ -70,15 +70,15 @@ export default class Login extends Component {
 
     _guestLogin = () => {
         // RouterHelper.reset('', 'Tab');
-        RouterHelper.navigate('Tab');
+        RouterHelper.navigate('', 'Tab');
     };
 
     _onNavigateRecoverPwd = () => {
-        RouterHelper.navigate('RecoverPwd');
+        RouterHelper.navigate('', 'RecoverPwd');
     };
 
     _onNavigateRegister = () => {
-        RouterHelper.navigate('Register');
+        RouterHelper.navigate('', 'Register');
     };
 
     render() {

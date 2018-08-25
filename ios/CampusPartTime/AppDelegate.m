@@ -17,7 +17,7 @@
 
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
-#import "SplashScreen.h"  // here
+#import "RNSplashScreen.h"  // here
 #import "Orientation.h" // <--- import
 #import <UIKit/UIKit.h>
 #import <AVFoundation/AVFoundation.h>  // import
@@ -61,7 +61,7 @@
   
  [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryAmbient error:nil];  // allow
   
-  [SplashScreen show];  // here
+  [RNSplashScreen show];  // here
   
   return YES;
 }

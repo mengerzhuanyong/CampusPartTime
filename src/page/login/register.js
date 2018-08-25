@@ -41,6 +41,11 @@ export default class Register extends Component {
         }
     }
 
+    componentWillUnmount() {
+        const timers = [this.timer];
+        ClearTimer(timers)
+    }
+
     _onNavigateBack = () => {
         RouterHelper.goBack();
     };
@@ -77,10 +82,11 @@ export default class Register extends Component {
         let data = {mobile, password, re_password, code, agree};
         const result = await loginStore.doLogin(url, data);
         // console.log('result---->>', result);
+        ToastManager.show(result.msg);
         if (result.code === 1) {
-            RouterHelper.reset('', 'Tab');
-        } else {
-            ToastManager.show(result.msg);
+            this.timer = setTimeout(() => {
+                RouterHelper.reset('', 'Tab');
+            }, 1000);
         }
     };
 

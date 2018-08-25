@@ -39,137 +39,56 @@ import {QRscanner} from 'react-native-qr-scanner'
 import {Carousel, ListRow} from 'teaset'
 import {HorizontalLine} from '../../component/common/commonLine'
 import GoodsItem from "../../component/item/goodsItem";
+import GoodsCarousel from "../../component/shop/GoodsCarousel"
 
 
+@inject('loginStore', 'shopStore')
+@observer
 export default class GoodsDetail extends Component {
+
     constructor(props) {
         super(props);
+        let {params} = this.props.navigation.state;
         this.state = {
-            loading: false,
-            navigation: [
-                {id: 1, title: '手机', icon: Images.icon_nav_mobile,},
-                {id: 2, title: '电脑', icon: Images.icon_nav_pc,},
-                {id: 3, title: '平板', icon: Images.icon_nav_pad,},
-                {id: 4, title: '外设', icon: Images.icon_nav_mouse,},
-                {id: 5, title: '单反', icon: Images.icon_nav_camera,},
-            ],
-            listData: [
-                {id: 1, title: '手机', icon: Images.icon_nav_mobile,},
-                {id: 2, title: '电脑', icon: Images.icon_nav_pc,},
-                {id: 3, title: '平板', icon: Images.icon_nav_pad,},
-                {id: 4, title: '外设', icon: Images.icon_nav_mouse,},
-                {id: 5, title: '单反', icon: Images.icon_nav_camera,},
-            ],
+            item: params && params.item ? params.item : {id: 1},
+            listData: [1, 2, 3, 4],
         };
-        this.page = 1;
     }
 
     componentDidMount() {
+        this.loadNetData();
     }
 
-    componentWillUnmount(){
-        let timers = [this.timer1, this.timer2];
-        // console.log(global.ClearTimer);
-        ClearTimer(timers);
+    loadNetData = async () => {
+        const {shopStore} = this.props;
+        let data = {
+            id: this.state.item.id,
+        };
+
+        let result = await shopStore.requestGoodsDetail(ServicesApi.workGoodsDetails, data);
+        console.log(result);
     }
 
-    renderNavigationBarView = () => {
-        return (
-            <View style={styles.headerView}>
-                <TouchableOpacity
-                    style={styles.headerTitleView}
-                    onPress={() => RouterHelper.navigate('搜索', 'Search')}
-                >
-                    <Image source={Images.icon_search} style={[CusTheme.headerIcon, styles.headerSearchIcon]} />
-                    <Text style={[CusTheme.headerIconTitle, styles.headerSearchTitle]}>搜索商品</Text>
-                </TouchableOpacity>
-            </View>
-        );
-    };
-
-    renderNavigationContentView = () => {
-        let data = this.state.navigation;
-        if (!data || data.length < 1) {
+    renderDescription = (data) => {
+        if (!data || data.lenth < 1) {
             return;
         }
-        let navigation = data.map((item, index) => {
+        let descriptions = data.map((item, index) => {
             return (
-                <TouchableOpacity
-                    key={item.id}
-                    style={styles.navItemView}
-                >
-                    <Image source={item.icon} style={styles.navIcon}/>
-                    <Text style={styles.navTitle}>{item.title}</Text>
-                </TouchableOpacity>
-            );
-        });
-        return navigation;
-    };
-
-    _captureRef = (v) => {
-        this.flatList = v;
-    };
-
-    _keyExtractor = (item, index) => {
-        return `z_${index}`
-    };
-
-    // 上拉加载
-    _onEndReached = () => {
-        this.timer1 = setTimeout(() => {
-            let dataTemp = this.state.listData;
-            let allLoad = false;
-            //模拟数据加载完毕,即page > 0,
-            if (this.page < 2) {
-                this.setState({ data: dataTemp.concat(this.state.listData) });
-            }
-            // allLoad 当全部加载完毕后可以设置此属性，默认为false
-            this.flatList.stopEndReached({ allLoad: this.page === 2 });
-            this.page++;
-        }, 2000);
-    };
-
-    // 下拉刷新
-    _onRefresh = () => {
-        this.timer2 = setTimeout(() => {
-            // 调用停止刷新
-            this.flatList.stopRefresh()
-        }, 2000);
-    };
-
-    _renderSeparator = () => {
-        return <HorizontalLine style={styles.horLine} />;
-    };
-
-    _renderHeaderComponent = () => {
-        return (
-
-            <View style={styles.headerComponentView}>
-                <View style={styles.navContentView}>
-                    {this.renderNavigationContentView()}
+                <View style={styles.goodsUserInfoConItem} key={'desc_' + index}>
+                    <Text style={[styles.goodsUserInfoTitle]}>{item.name}：</Text>
+                    <Text style={[styles.goodsUserInfoText]}>{item.value}</Text>
                 </View>
-                <ListRow
-                    style={styles.contentTitleView}
-                    title={'热门换购'}
-                    titleStyle={CusTheme.contentTitle}
-                    icon={<Image source={Images.icon_shop_package} style={[CusTheme.contentTitleIcon, {tintColor: '#ed3126'}]} />}
-                    detail={'更多 >>'}
-                    accessory={'none'}
-                    onPress={() => alert('Press!')}
-                />
-            </View>
-        );
-    };
-
-    _renderListItem = (info) => {
-        return (
-            <GoodsItem />
-        );
-    };
+            )
+        });
+        return descriptions;
+    }
 
     render() {
         let {loading, listData} = this.state;
-        // listData = [];
+        const {shopStore} = this.props;
+        let {getGoodsDetail} = shopStore;
+        console.log(getGoodsDetail.illustration);
         let {params} = this.props.navigation.state;
         let pageTitle = params && params.pageTitle ? params.pageTitle : '商品详情';
         return (
@@ -179,44 +98,15 @@ export default class GoodsDetail extends Component {
                 />
                 <ScrollView style={styles.content}>
                     <View style={styles.contentTopView}>
-                        <Carousel
-                            style={styles.headBackCarousel}
-                            control={
-                                <Carousel.Control
-                                    style={styles.carouselControlView}
-                                    dot={<View style={styles.carouselControl}/>}
-                                    activeDot={<View style={[styles.carouselControl, styles.carouselControlCur]}/>}
-                                />
-                            }
-                        >
-                            <TouchableWithoutFeedback>
-                                <ImageBackground
-                                    style={styles.headBackImage}
-                                    resizeMode={'contain'}
-                                    source={Images.img_goods1}
-                                />
-                            </TouchableWithoutFeedback>
-                            <TouchableWithoutFeedback>
-                                <ImageBackground
-                                    style={styles.headBackImage}
-                                    resizeMode={'contain'}
-                                    source={Images.img_goods1}
-                                />
-                            </TouchableWithoutFeedback>
-                            <TouchableWithoutFeedback>
-                                <ImageBackground
-                                    style={styles.headBackImage}
-                                    resizeMode={'contain'}
-                                    source={Images.img_goods1}
-                                />
-                            </TouchableWithoutFeedback>
-
-                        </Carousel>
+                        <GoodsCarousel
+                            bannerData={getGoodsDetail.illustration}
+                            {...this.props}
+                        />
                     </View>
                     <View style={[styles.contentItemView, styles.goodsInfoView]}>
                         <View style={[styles.goodsInfoTopView]}>
                             <View style={[styles.goodsInfoTitleView]}>
-                                <Text style={styles.goodsTitle}>苹果 iPhone X 64G 黑色</Text>
+                                <Text style={styles.goodsTitle}>{getGoodsDetail.name}</Text>
                                 <View style={styles.goodsInfoTagsView}>
                                     <View style={styles.goodsInfoTagItemView}>
                                         <Text style={styles.goodsInfoTagItemName}>急招</Text>
@@ -228,13 +118,13 @@ export default class GoodsDetail extends Component {
                             </View>
                             <View style={styles.goodsInfoPriceView}>
                                 <Text style={styles.goodsInfoPriceTips}>¥</Text>
-                                <Text style={styles.goodsInfoPriceValue}>8999</Text>
+                                <Text style={styles.goodsInfoPriceValue}>{getGoodsDetail.price}</Text>
                                 <Text style={styles.goodsInfoPriceTips}>元</Text>
                             </View>
                         </View>
                         <View style={styles.goodsInfoWorkPointsView}>
                             <Text style={styles.goodsInfoWorkPoints}>折算工分：</Text>
-                            <Text style={styles.goodsInfoWorkPoints}>2200</Text>
+                            <Text style={styles.goodsInfoWorkPoints}>{getGoodsDetail.work_point}</Text>
                         </View>
                     </View>
                     <View style={[styles.contentItemView, styles.goodsUserInfoView]}>
@@ -242,18 +132,11 @@ export default class GoodsDetail extends Component {
                             <Text style={styles.contentTitle}>【商品介绍】</Text>
                         </View>
                         <View style={styles.goodsUserInfoCon}>
-                            <View style={styles.goodsUserInfoConItem}>
+                            {this.renderDescription(getGoodsDetail.description)}
+                            {/*<View style={styles.goodsUserInfoConItem}>
                                 <Text style={[styles.goodsUserInfoTitle]}>主屏尺寸：</Text>
                                 <Text style={[styles.goodsUserInfoText]}>5.8英寸</Text>
-                            </View>
-                            <View style={styles.goodsUserInfoConItem}>
-                                <Text style={[styles.goodsUserInfoTitle]}>主屏尺寸：</Text>
-                                <Text style={[styles.goodsUserInfoText]}>5.8英寸</Text>
-                            </View>
-                            <View style={styles.goodsUserInfoConItem}>
-                                <Text style={[styles.goodsUserInfoTitle]}>主屏尺寸：</Text>
-                                <Text style={[styles.goodsUserInfoText]}>5.8英寸</Text>
-                            </View>
+                            </View>*/}
                         </View>
                     </View>
                     <View style={styles.multiBtnView}>
@@ -296,7 +179,7 @@ const styles = StyleSheet.create({
     headBackImage: {
         width: headBackImageW,
         height: headBackImageW * 0.735,
-        // backgroundColor: '#123',
+        // backgroundColor: '#f60',
     },
     carouselControlView: {
         marginBottom: 10,

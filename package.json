@@ -11,10 +11,11 @@
         "jpush-react-native": "^2.2.3",
         "jshare-react-native": "^1.3.2",
         "mobx": "^4.3.1",
-        "mobx-react": "^5.2.0",
+        "mobx-react": "^5.1.2",
         "moment": "^2.22.1",
         "query-string": "^6.1.0",
         "react": "^16.3.1",
+        "react-dom": "^16.4.2",
         "react-native": "0.55.4",
         "react-native-background-timer": "^2.0.1",
         "react-native-camera": "^1.1.4",
@@ -37,6 +38,7 @@
         "react-native-syan-image-picker": "^0.1.6",
         "react-native-video": "^2.0.0",
         "react-navigation": "^2.2.0",
+        "redux": "^4.0.0",
         "teaset": "^0.5.8"
     },
     "devDependencies": {

@@ -7,7 +7,7 @@
 
 'use strict';
 
-import React, { Component } from 'react'
+import React, {Component} from 'react'
 import {
     Animated,
     ScrollView,
@@ -27,56 +27,32 @@ import NavigationBar from '../../component/common/NavigationBar'
 import FlatListView from '../../component/common/FlatListView'
 import {ListRow, Button} from 'teaset'
 import {HorizontalLine} from "../../component/common/commonLine";
+import {inject, observer} from "mobx-react/index";
+import SpinnerLoading from "../../component/common/SpinnerLoading";
+import RouterHelper from "../../router/RouterHelper";
+import WorkSignUpStepTwo from "./workSignUpStepTwo";
 
+@inject('loginStore', 'workStore', 'resourceStore')
+@observer
 export default class WorkSignUpStepOne extends Component {
 
     constructor(props) {
         super(props);
+        let {params} = this.props.navigation.state;
         this.state = {
-            loading: false,
-            navigation: [
-                {id: 1, title: '手机', icon: Images.icon_nav_mobile,},
-                {id: 2, title: '电脑', icon: Images.icon_nav_pc,},
-                {id: 3, title: '平板', icon: Images.icon_nav_pad,},
-                {id: 4, title: '外设', icon: Images.icon_nav_mouse,},
-                {id: 5, title: '单反', icon: Images.icon_nav_camera,},
-            ],
-            listData: [
-                {id: 1, title: '手机', icon: Images.icon_nav_mobile,},
-                {id: 2, title: '电脑', icon: Images.icon_nav_pc,},
-                {id: 3, title: '平板', icon: Images.icon_nav_pad,},
-                {id: 4, title: '外设', icon: Images.icon_nav_mouse,},
-                {id: 5, title: '单反', icon: Images.icon_nav_camera,},
-            ],
+            item: params && params.item ? params.item : {id: 1},
         };
         this.page = 1;
     }
 
-    componentWillUnmount(){
+    componentDidMount() {
+        this.loadNetData();
+    }
+
+    componentWillUnmount() {
         let timers = [this.timer1, this.timer2];
         ClearTimer(timers);
     }
-
-    clearCache = () => {
-        this.setState({
-            cacheSize: '',
-        });
-    };
-
-    makeCall = (mobile) => {
-        let url = 'tel: ' + mobile;
-        Linking.canOpenURL(url)
-            .then(supported => {
-                if (!supported) {
-                    // console.log('Can\'t handle url: ' + url);
-                } else {
-                    return Linking.openURL(url);
-                }
-            })
-            .catch((err)=>{
-                // console.log('An error occurred', err)
-            });
-    };
 
     _captureRef = (v) => {
         this.flatList = v;
@@ -86,6 +62,21 @@ export default class WorkSignUpStepOne extends Component {
         return `z_${index}`
     };
 
+    loadNetData = async () => {
+        const {workStore} = this.props;
+        let data = {
+            id: this.state.item.id,
+        };
+
+        let result = await workStore.requestWorkTimes(ServicesApi.job_application_time, data);
+        this.flatList && this.flatList.stopRefresh();
+    };
+
+    // 下拉刷新
+    _onRefresh = () => {
+        this.loadNetData();
+    };
+
     // 上拉加载
     _onEndReached = () => {
         this.timer1 = setTimeout(() => {
@@ -93,31 +84,23 @@ export default class WorkSignUpStepOne extends Component {
             let allLoad = false;
             //模拟数据加载完毕,即page > 0,
             if (this.page < 2) {
-                this.setState({ data: dataTemp.concat(this.state.listData) });
+                this.setState({data: dataTemp.concat(this.state.listData)});
             }
             // allLoad 当全部加载完毕后可以设置此属性，默认为false
-            this.flatList.stopEndReached({ allLoad: this.page === 2 });
+            this.flatList.stopEndReached({allLoad: this.page === 2});
             this.page++;
-        }, 2000);
-    };
-
-    // 下拉刷新
-    _onRefresh = () => {
-        this.timer2 = setTimeout(() => {
-            // 调用停止刷新
-            this.flatList.stopRefresh()
-        }, 2000);
+        }, 500);
     };
 
     _renderSeparator = () => {
-        return <HorizontalLine style={styles.horLine} />;
+        return <HorizontalLine style={styles.horLine}/>;
     };
 
     _renderHeaderComponent = () => {
         return (
             <View style={styles.headerComponentView}>
                 <View style={[styles.contentItemView, styles.contentSignStepView]}>
-                    <Image source={Images.img_bg_step1} style={CusTheme.signUpStepImg} />
+                    <Image source={Images.img_bg_step1} style={CusTheme.signUpStepImg}/>
                     <View style={styles.contentSignStepConView}>
                         <Text style={[styles.contentSignStepContext, styles.contentSignStepContextCur]}>选择时间</Text>
                         <Text style={styles.contentSignStepContext}>确认信息</Text>
@@ -134,26 +117,65 @@ export default class WorkSignUpStepOne extends Component {
         );
     };
 
-    _renderListItem = (info) => {
+    _renderListItem = ({index, item}) => {
+        let selectVisible = item.optional === 1;
+        let selectStatus = item.selected === 2;
+        let selected = !selectVisible && !selectStatus;
+        const params = {
+            title: '温馨提示',
+            detail: '当前时间您已有工作，无法选择',
+            actions: [
+                {title: '确定',}
+            ]
+        };
         return (
             <View style={[styles.timeItemView]}>
                 <View style={[styles.timeItemTitleView]}>
-                    <Image source={Images.icon_check} style={styles.timeItemIcon} />
-                    <Text style={[styles.timeItemTitle]}>2018.06.10 周日</Text>
+                    <Image source={selectStatus ? Images.icon_checked : Images.icon_check}
+                           style={[styles.timeItemIcon, selected && styles.timeItemIconGray]}/>
+                    <Text style={[styles.timeItemTitle]}>{item.date}</Text>
                 </View>
                 <View style={[styles.timeItemDetailView]}>
                     <Button
-                        title={'选择'}
-                        style={[styles.timeBtnView, styles.timeBtnViewCur]}
-                        titleStyle={[styles.timeBtnName, styles.timeBtnNameCur]}
+                        title={selectStatus ? '已选' : '选择'}
+                        style={[styles.timeBtnView, selectStatus && styles.timeBtnViewCur, selected && styles.timeBtnViewGray]}
+                        titleStyle={[styles.timeBtnName, selectStatus && styles.timeBtnNameCur, selected && styles.timeBtnNameGray]}
+                        onPress={() => {
+                            if (selectVisible) {
+                                this.onSelectTimeItem(index, item);
+                            } else {
+                                AlertManager.show(params)
+                            }
+                        }}
                     />
                 </View>
             </View>
         );
     };
 
+    onSelectTimeItem = (index, item) => {
+        const {onSelectTimeItem} = this.props.workStore;
+        onSelectTimeItem(index, item);
+    };
+
+    onSubmitTimes = async () => {
+        const {onSubmitTimes, sign_id, work_time} = this.props.workStore;
+        let {item: {id}} = this.state;
+        let url = ServicesApi.job_application_submit;
+        let data = {
+            id,
+            sign_id,
+            work_time,
+        };
+        let result = await onSubmitTimes(url, data);
+        if (result.code === 1) {
+            RouterHelper.navigate('确认信息', 'WorkSignUpStepTwo');
+        }
+    };
+
     render() {
         let {loading, listData} = this.state;
+        const {workStore} = this.props;
         let {params} = this.props.navigation.state;
         let pageTitle = params && params.pageTitle ? params.pageTitle : '选择时间';
         return (
@@ -166,12 +188,13 @@ export default class WorkSignUpStepOne extends Component {
                         style={styles.listContent}
                         initialRefresh={false}
                         ref={this._captureRef}
-                        data={listData}
+                        data={workStore.getOnSelectTimeItem}
+                        extraData={workStore.getOnSelectTimeItem}
+                        enableLoadMore={false}
+                        onRefresh={this._onRefresh}
                         removeClippedSubviews={false}
                         renderItem={this._renderListItem}
                         keyExtractor={this._keyExtractor}
-                        onEndReached={this._onEndReached}
-                        onRefresh={this._onRefresh}
                         ItemSeparatorComponent={this._renderSeparator}
                         ListHeaderComponent={this._renderHeaderComponent}
                     />
@@ -180,7 +203,7 @@ export default class WorkSignUpStepOne extends Component {
                     title={'下一步'}
                     style={[CusTheme.btnView, styles.btnView]}
                     titleStyle={[CusTheme.btnName, styles.btnName]}
-                    onPress={() => RouterHelper.navigate('确认信息', 'WorkSignUpStepTwo')}
+                    onPress={this.onSubmitTimes}
                 />
             </View>
         );
@@ -268,6 +291,9 @@ const styles = StyleSheet.create({
         resizeMode: 'contain',
         marginRight: 10,
     },
+    timeItemIconGray: {
+        tintColor: '#ccc',
+    },
     timeItemTitle: {
         color: '#333',
         fontSize: FontSize(15),
@@ -287,12 +313,18 @@ const styles = StyleSheet.create({
     timeBtnViewCur: {
         backgroundColor: CusTheme.themeColor,
     },
+    timeBtnViewGray: {
+        borderColor: '#ccc',
+    },
     timeBtnName: {
         color: CusTheme.themeColor,
         fontSize: FontSize(14),
     },
     timeBtnNameCur: {
         color: '#fff',
+    },
+    timeBtnNameGray: {
+        color: '#ccc',
     },
 
     btnView: {

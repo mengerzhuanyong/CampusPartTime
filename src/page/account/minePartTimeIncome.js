@@ -60,7 +60,7 @@ export default class MinePartTimeIncome extends Component {
             // allLoad 当全部加载完毕后可以设置此属性，默认为false
             this.flatList.stopEndReached({ allLoad: this.page === 2 });
             this.page++;
-        }, 2000);
+        }, 500);
     };
 
     // 下拉刷新
@@ -68,7 +68,7 @@ export default class MinePartTimeIncome extends Component {
         this.timer2 = setTimeout(() => {
             // 调用停止刷新
             this.flatList.stopRefresh()
-        }, 2000);
+        }, 500);
     };
 
     _renderSeparator = () => {

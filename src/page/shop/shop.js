@@ -4,6 +4,7 @@
  * @大梦
  */
 
+
 'use strict';
 
 import React, {Component} from 'react'
@@ -39,6 +40,7 @@ import {QRscanner} from 'react-native-qr-scanner'
 import {Carousel, ListRow} from 'teaset'
 import {HorizontalLine} from '../../component/common/commonLine'
 import GoodsItem from "../../component/item/goodsItem";
+import SpinnerLoading from "../../component/common/SpinnerLoading";
 
 @inject('loginStore', 'shopStore')
 @observer
@@ -61,6 +63,7 @@ export default class Shop extends Component {
                 {id: 4, title: '外设', icon: Images.icon_nav_mouse,},
                 {id: 5, title: '单反', icon: Images.icon_nav_camera,},
             ],
+            ready: false,
         };
         this.page = 1;
         this.pageSize = 10;
@@ -146,6 +149,9 @@ export default class Shop extends Component {
         } else {
             endStatus = true;
         }
+        this.setState({
+            ready: true
+        });
         this.flatListRef && this.flatListRef.stopRefresh();
         this.flatListRef && this.flatListRef.stopEndReached({allLoad: endStatus});
     };
@@ -196,6 +202,7 @@ export default class Shop extends Component {
 
     render() {
         const {shopStore} = this.props;
+        const {ready} = this.state;
         return (
             <View style={styles.container}>
                 <NavigationBar
@@ -208,19 +215,22 @@ export default class Shop extends Component {
                     backgroundImage={null}
                 />
                 <View style={styles.content}>
-                    <FlatListView
-                        style={styles.listContent}
-                        initialRefresh={false}
-                        ref={this._captureRef}
-                        data={shopStore.dataSource}
-                        removeClippedSubviews={false}
-                        renderItem={this._renderListItem}
-                        keyExtractor={this._keyExtractor}
-                        onEndReached={this._onEndReached}
-                        onRefresh={this._onRefresh}
-                        ItemSeparatorComponent={this._renderSeparator}
-                        ListHeaderComponent={this._renderHeaderComponent}
-                    />
+                    {ready ?
+                        <FlatListView
+                            style={styles.listContent}
+                            initialRefresh={false}
+                            ref={this._captureRef}
+                            data={shopStore.dataSource}
+                            removeClippedSubviews={false}
+                            renderItem={this._renderListItem}
+                            keyExtractor={this._keyExtractor}
+                            onEndReached={this._onEndReached}
+                            onRefresh={this._onRefresh}
+                            ItemSeparatorComponent={this._renderSeparator}
+                            ListHeaderComponent={this._renderHeaderComponent}
+                        />
+                        : <SpinnerLoading/>
+                    }
                 </View>
             </View>
         );

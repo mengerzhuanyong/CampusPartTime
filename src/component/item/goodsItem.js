@@ -46,9 +46,12 @@ export default class GoodsItem extends React.PureComponent {
     };
 
     render() {
-        let {item} = this.props;
+        let {item, onPress} = this.props;
         return (
-            <TouchableOpacity style={styles.goodsItemView}>
+            <TouchableOpacity
+                onPress = {onPress}
+                style = {styles.goodsItemView}
+            >
                 <View style={styles.goodsItemPicView}>
                     <Image
                         style={styles.goodsItemPic}
