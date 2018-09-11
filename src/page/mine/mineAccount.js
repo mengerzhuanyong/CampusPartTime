@@ -23,7 +23,10 @@ import {
 import NavigationBar from '../../component/navigation/NavigationBar'
 import {Button, Carousel, ListRow} from 'teaset'
 import MineRepayment from "../account/mineRepayment";
+import {inject, observer} from "mobx-react";
 
+@inject('loginStore', 'mineStore')
+@observer
 export default class MineAccount extends Component {
 
     constructor(props) {
@@ -32,6 +35,8 @@ export default class MineAccount extends Component {
     }
 
     render() {
+        let {mineStore} = this.props;
+        let {dataSource} = mineStore;
         let {params} = this.props.navigation.state;
         let pageTitle = params && params.pageTitle ? params.pageTitle : '设置';
         return (
@@ -42,11 +47,11 @@ export default class MineAccount extends Component {
                 <ScrollView style={styles.content}>
                     <ListRow
                         title={'我的余额'}
-                        detail={'25350.00元'}
+                        detail={dataSource.balance}
                         style={styles.contentTitleView}
                         titleStyle={CusTheme.contentTitle}
                         accessory={<Image source={Images.icon_arrow_right} style={[CusTheme.contentRightIcon, {}]} />}
-                        onPress={() => RouterHelper.navigate('我的余额', 'MineIntegritySystem', {})}
+                        onPress={() => RouterHelper.navigate('我的余额', 'MineWithDraw', {})}
                     />
                     <ListRow
                         title={'信用额度'}

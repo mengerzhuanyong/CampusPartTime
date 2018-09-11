@@ -4,6 +4,7 @@
  * @大梦
  */
 
+
 'use strict';
 
 import React, { Component } from 'react'
@@ -39,12 +40,14 @@ import {QRscanner} from 'react-native-qr-scanner'
 import {HorizontalLine, VerticalLine} from '../../component/common/commonLine'
 
 
+@inject('loginStore', 'mineStore')
+@observer
 export default class MineWithDraw extends Component {
 
     constructor(props) {
         super(props);
         this.state =  {
-            type: '1',
+            type: 1,
             money: '',
             allMoney: '0',
             minMoney: '100',
@@ -55,13 +58,34 @@ export default class MineWithDraw extends Component {
     }
 
     componentWillUnmount(){
+        let timers = [this.timer];
+        ClearTimer(timers);
     }
 
-    submitWithdraw = () => {
+    onSelectPaymentMethod = (type) => {
+        this.setState({type});
+    };
+    
+    submitWithdraw = async () => {
+        const {mineStore} = this.props;
+        let {type, money} = this.state;
+        let url = ServicesApi.jobs;
+        let data = {
+            type,
+            money,
+        };
+        let result = await mineStore.requestMyProfile(url, data);
+        if (result && result.code === 1) {
+            this.timer = setTimeout(() => {
+                RouterHelper.goBack();
+            }, 600);
+        }
 
     };
 
     render(){
+        let {mineStore} = this.props;
+        let {dataSource} = mineStore;
         let {type, money, allMoney, minMoney} = this.state;
         let {params} = this.props.navigation.state;
         let pageTitle = params && params.pageTitle ? params.pageTitle : '余额提现';
@@ -76,23 +100,29 @@ export default class MineWithDraw extends Component {
                             <Text style={styles.contentTitle}>请选择提现方式</Text>
                         </View>
                         <HorizontalLine lineStyle={styles.horLine} />
-                        <TouchableOpacity style={styles.accountInfoItem}>
+                        <TouchableOpacity 
+                            style={styles.accountInfoItem}
+                            onPress={() => this.onSelectPaymentMethod(1)}
+                        >
                             <View style={styles.accountInfoItem}>
                                 <Image source={Images.icon_wechat} style={styles.accountIcon}/>
                                 <Text style={styles.accountTitle}>提现到微信</Text>
                             </View>
                             <View style={styles.selectBtnView}>
-                                <Image source={Images.icon_select} style={styles.selectBtnIcon}/>
+                                <Image source={type === 1 ? Images.icon_selected : Images.icon_select} style={styles.selectBtnIcon}/>
                             </View>
                         </TouchableOpacity>
                         <HorizontalLine lineStyle={styles.horLine} />
-                        <TouchableOpacity style={styles.accountInfoItem}>
+                        <TouchableOpacity 
+                            style={styles.accountInfoItem}
+                            onPress={() => this.onSelectPaymentMethod(2)}
+                        >
                             <View style={styles.accountInfoItem}>
                                 <Image source={Images.icon_alipay} style={styles.accountIcon}/>
                                 <Text style={styles.accountTitle}>提现到支付宝</Text>
                             </View>
                             <View style={styles.selectBtnView}>
-                                <Image source={Images.icon_selected} style={styles.selectBtnIcon}/>
+                                <Image source={type === 2 ? Images.icon_selected : Images.icon_select} style={styles.selectBtnIcon}/>
                             </View>
                         </TouchableOpacity>
                     </View>
@@ -126,13 +156,13 @@ export default class MineWithDraw extends Component {
                         </View>
                         <HorizontalLine lineStyle={styles.horLine} />
                         <View style={styles.containerBotView}>
-                            <Text style={[styles.leftTitle, styles.containerTitle]}>可用余额 {parseFloat(allMoney).toFixed(2)}元</Text>
+                            <Text style={[styles.leftTitle, styles.containerTitle]}>可用余额 {parseFloat(dataSource.balance).toFixed(2)}元</Text>
                             <TouchableOpacity
                                 onPress={() => {
-                                    let status = parseFloat(allMoney).toFixed(2) - parseFloat(minMoney).toFixed(2);
+                                    let status = parseFloat(dataSource.balance).toFixed(2) - parseFloat(minMoney).toFixed(2);
                                     if (status >= 0) {
                                         this.setState({
-                                            money: parseFloat(allMoney).toFixed(2)
+                                            money: parseFloat(dataSource.balance).toFixed(2)
                                         });
                                     } else {
                                         let msg = '余额不足' + minMoney + '元，无法提交申请';
@@ -148,6 +178,7 @@ export default class MineWithDraw extends Component {
                         title={'提现'}
                         style={[CusTheme.btnView, styles.btnView]}
                         titleStyle={[CusTheme.btnName, styles.btnName]}
+                        onPress={this.submitWithdraw}
                     />
                 </ScrollView>
             </View>

@@ -25,7 +25,10 @@ import {Button, Carousel, ListRow} from 'teaset'
 import {HorizontalLine, VerticalLine} from '../../component/common/commonLine'
 import FlatListView from '../../component/common/FlatListView'
 import ActionsManager from "../../config/manager/ActionsManager";
+import {inject, observer} from "mobx-react";
 
+@inject('loginStore', 'mineStore')
+@observer
 export default class MinePoints extends Component {
 
     constructor(props) {

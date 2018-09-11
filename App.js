@@ -5,6 +5,7 @@
  */
  
 'use strict';
+
 import React from 'react'
 import './src/config/Global'
 import { Provider } from 'mobx-react'
