@@ -21,7 +21,7 @@ import {
     TouchableOpacity,
     TouchableWithoutFeedback,
 } from 'react-native'
-import NavigationBar from '../../component/common/NavigationBar'
+import NavigationBar from '../../component/navigation/NavigationBar'
 
 
 export default class MineRepayment extends Component {

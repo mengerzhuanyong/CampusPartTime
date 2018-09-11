@@ -23,7 +23,7 @@ import {
     TouchableWithoutFeedback,
 } from 'react-native'
 
-import NavigationBar from '../../component/common/NavigationBar'
+import NavigationBar from '../../component/navigation/NavigationBar'
 import SegmentedView from '../../component/segmentedView/index'
 import ImageView from '../../component/common/ImageView'
 import {inject, observer} from 'mobx-react'
@@ -60,7 +60,8 @@ export default class Home extends Component {
         this.loadNetData();
     }
 
-    componentWillUnmount() {}
+    componentWillUnmount() {
+    }
 
     loadNetData = () => {
         this.requestDataSource();
@@ -83,7 +84,7 @@ export default class Home extends Component {
         return (
             <View style={styles.headerView}>
                 <TouchableOpacity style={styles.headerLeftView}>
-                    <Image source={Images.icon_place} style={CusTheme.headerIcon} />
+                    <Image source={Images.icon_place} style={CusTheme.headerIcon}/>
                     <Text style={[CusTheme.headerIconTitle, styles.headerIconTitle]}>黄岛区</Text>
                 </TouchableOpacity>
                 <Text style={[CusTheme.headerTitle, styles.headerTitle]}>首页</Text>
@@ -92,7 +93,7 @@ export default class Home extends Component {
                     onPress={() => RouterHelper.navigate('消息', 'SystemMessage')}
                 >
                     <Image source={Images.icon_message} style={CusTheme.headerIcon}/>
-                    <View style={CusTheme.pointView} />
+                    <View style={CusTheme.pointView}/>
                 </TouchableOpacity>
             </View>
         );
@@ -108,7 +109,7 @@ export default class Home extends Component {
                 return <HomeGoodsItem
                     item={item}
                     onPress={() => RouterHelper.navigate(item.name, '', {item})}
-                    key={'goods'+index}
+                    key={'goods' + index}
                     {...this.props}
                 />;
             });
@@ -118,7 +119,7 @@ export default class Home extends Component {
                 return <JobItem
                     item={item}
                     onPress={() => RouterHelper.navigate('兼职详情', 'WorkDetail', {item})}
-                    key={'job'+index}
+                    key={'job' + index}
                     {...this.props}
                 />;
             });
@@ -128,7 +129,7 @@ export default class Home extends Component {
                 return <HomeGoodsItem
                     item={item}
                     onPress={() => RouterHelper.navigate(item.name, '', {item})}
-                    key={'goods'+index}
+                    key={'goods' + index}
                     {...this.props}
                 />;
             });
@@ -148,8 +149,8 @@ export default class Home extends Component {
                     style={{
                         backgroundColor: '#fff',
                     }}
-                    statusBarStyle={'default'}
-                    leftView={null}
+                    statusBarStyle={'dark-content'}
+                    renderLeftAction={null}
                     backgroundImage={null}
                 />
                 <ScrollView
@@ -181,7 +182,8 @@ export default class Home extends Component {
                                 style={styles.contentTitleView}
                                 title={'热门换购'}
                                 titleStyle={CusTheme.contentTitle}
-                                icon={<Image source={Images.icon_shop_package} style={[CusTheme.contentTitleIcon, {tintColor: '#ed3126'}]} />}
+                                icon={<Image source={Images.icon_shop_package}
+                                             style={[CusTheme.contentTitleIcon, {tintColor: '#ed3126'}]}/>}
                                 detail={'更多 >>'}
                                 accessory={'none'}
                                 onPress={() => RouterHelper.navigate('热门换购', 'Shop')}
@@ -200,7 +202,8 @@ export default class Home extends Component {
                                 style={styles.contentTitleView}
                                 title={'热门工作推荐'}
                                 titleStyle={CusTheme.contentTitle}
-                                icon={<Image source={Images.icon_category} style={[CusTheme.contentTitleIcon, {tintColor: '#2f91eb'}]} />}
+                                icon={<Image source={Images.icon_category}
+                                             style={[CusTheme.contentTitleIcon, {tintColor: '#2f91eb'}]}/>}
                                 detail={'更多 >>'}
                                 accessory={'none'}
                                 onPress={() => RouterHelper.navigate('热门工作推荐', 'Work')}
@@ -214,7 +217,8 @@ export default class Home extends Component {
                                 style={styles.contentTitleView}
                                 title={'积分兑换热榜'}
                                 titleStyle={CusTheme.contentTitle}
-                                icon={<Image source={Images.icon_points} style={[CusTheme.contentTitleIcon, {tintColor: '#ffb04a'}]} />}
+                                icon={<Image source={Images.icon_points}
+                                             style={[CusTheme.contentTitleIcon, {tintColor: '#ffb04a'}]}/>}
                                 detail={'更多 >>'}
                                 accessory={'none'}
                                 onPress={() => RouterHelper.navigate('积分兑换热榜', 'GoodsList')}

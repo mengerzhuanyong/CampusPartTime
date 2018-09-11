@@ -55,4 +55,11 @@ export default class SystemStore extends BaseStore {
         const result = await this.postRequest(url, data, true);
         return result;
     };
+
+    // 图片上传
+    @action
+    uploadImages = async (url, data) => {
+        const result = await this.postRequest(url, data, true);
+        return result;
+    };
 }

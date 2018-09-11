@@ -69,6 +69,11 @@ const DefaultTheme = {
     minPixel: 1 / PixelRatio.get(),
     themeColor: themeColor,
     pageBackgroundColor: '#f6f6f6',
+    navBarPadding: 0,
+    navBarBackgroundColor: themeColor,
+    navBarTitleColor: '#fff',
+    navBarTitleFontSize: fontSize(15),
+    navBarHeight: 44,
     // 全局公用样式表 ,感觉不是很合理
     // 居中样式
     centerStyle: globalStyles.centerStyle,

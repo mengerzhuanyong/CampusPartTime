@@ -17,7 +17,7 @@ import {
     TouchableOpacity,
 } from 'react-native'
 import {Button} from 'teaset'
-import NavigationBar from '../../component/common/NavigationBar'
+import NavigationBar from '../../component/navigation/NavigationBar'
 import DropDownMenu from '../../component/common/DropDownMenu';
 import Container from '../../component/common/Container';
 

@@ -20,7 +20,7 @@ import {
     TouchableOpacity,
     TouchableWithoutFeedback,
 } from 'react-native'
-import NavigationBar from '../../component/common/NavigationBar'
+import NavigationBar from '../../component/navigation/NavigationBar'
 import {Button, Carousel, ListRow} from 'teaset'
 import {HorizontalLine, VerticalLine} from '../../component/common/commonLine'
 import FlatListView from '../../component/common/FlatListView'
@@ -158,7 +158,7 @@ const styles = StyleSheet.create({
     },
     content: {
         flex: 1,
-        marginTop: -64,
+        marginTop: CusTheme.systemNavHeight,
     },
     horLine: {
         backgroundColor: '#ddd',

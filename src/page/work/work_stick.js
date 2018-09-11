@@ -20,7 +20,7 @@ import {
     TouchableOpacity,
     TouchableWithoutFeedback,
 } from 'react-native'
-import NavigationBar from '../../component/common/NavigationBar';
+import NavigationBar from '../../component/navigation/NavigationBar';
 import SectionListView from '../../component/common/SectionListView';
 import ListView from '../../component/list/ListView';
 import SpinnerLoading from '../../component/common/SpinnerLoading';
@@ -229,8 +229,8 @@ export default class Work extends Component {
                     style={{
                         backgroundColor: '#fff',
                     }}
-                    statusBarStyle={'default'}
-                    leftView={null}
+                    statusBarStyle={'dark-content'}
+                    renderLeftAction={null}
                     backgroundImage={null}
                 />
                 {/* <SpinnerLoading isVisible={workStore.loading} /> */}

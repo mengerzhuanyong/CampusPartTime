@@ -19,7 +19,7 @@ import {
 import {observer, inject} from 'mobx-react'
 import {Button} from 'teaset'
 
-import NavigationBar from '../../component/common/NavigationBar'
+import NavigationBar from '../../component/navigation/NavigationBar'
 import Container from '../../component/common/Container'
 import SendSMS from '../../component/common/SendSMS'
 import {HorizontalLine, VerticalLine} from '../../component/common/commonLine'

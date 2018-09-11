@@ -8,7 +8,7 @@
 
 import React from 'react'
 import { View, Text, StyleSheet, TouchableOpacity, } from 'react-native';
-import NavigationBar from '../../component/common/NavigationBar';
+import NavigationBar from '../../component/navigation/NavigationBar';
 import Container from '../../component/common/Container';
 import SpinnerLoading from '../../component/common/SpinnerLoading';
 import ChatPage from '../../component/chat/ChatPage'

@@ -33,9 +33,9 @@ class CusNavigationBar extends PureComponent {
         return (
             <NavigationBar
                 style={[styles.navBarStyle, style]}
-                title={
-                    <Text style={styles.navTitle}>{title}</Text>
-                }
+                // title={
+                //     <Text style={styles.navTitle}>{title}</Text>
+                // }
                 background={backgroundImage !== null ?
                     <ImageBackground
                         style={styles.navBackImage}

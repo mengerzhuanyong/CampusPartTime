@@ -98,7 +98,7 @@ const TabNavigator = createBottomTabNavigator({
         })
     },
 }, {
-    initialRouteName: 'Work',
+    initialRouteName: 'Mine',
     tabBarOptions: {
         showIcon: true,
         indicatorStyle: {height: 0},
@@ -168,6 +168,7 @@ const StackNavigator = createStackNavigator(configRouter({
 }), {
     // initialRouteName: 'Tab',
     initialRouteName: 'Login',
+    // initialRouteName: 'MineProfile',
     cardStyle: {
         shadowOpacity: 0,
         shadowRadius: 0,

@@ -4,6 +4,7 @@
  * @大梦
  */
 
+
 'use strict';
 
 import React from 'react'
@@ -12,8 +13,9 @@ import {ActionSheet, Overlay, Label} from 'teaset';
 import {fontSize, bouncer} from '../../util/Tool';
 import AreaContent from '../../component/common/AreaContent';
 import ShareContent from '../../component/common/ShareContent';
-import CusTheme from '../Theme';
+import CusTheme from '../theme/Theme';
 import JShareModule from 'jshare-react-native'
+import TimeContent from "../../component/common/TimeContent";
 
 class ActionsManager {
 
@@ -52,6 +54,29 @@ class ActionsManager {
                     onCloseRequest={() => this.hide()}
                 >
                     <ShareContent moduleTitle={moduleTitle} onPress={func}/>
+                </Overlay.PullView>
+            )
+        }
+    }
+
+    static showTime(times, start, end, func) {
+        this.pullViewRefs = bouncer(this.pullViewRefs.slice()); // 过滤
+        if (this.pullViewRefs.length === 0) {
+            Overlay.show(
+                <Overlay.PullView
+                    ref={v => this.pullViewRefs.push(v)}
+                    side={'bottom'}
+                    modal={false}
+                    rootTransform={'none'}
+                    containerStyle={CusTheme.bgTransparentStyle}
+                    onCloseRequest={() => this.hide()}
+                >
+                    <TimeContent
+                        onPress={func}
+                        data={times}
+                        startTime={start}
+                        endTime={end}
+                    />
                 </Overlay.PullView>
             )
         }

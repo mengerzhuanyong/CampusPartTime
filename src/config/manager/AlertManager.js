@@ -11,7 +11,7 @@ import { View, Text } from 'react-native';
 import AlertContent from '../../component/common/AlertContent';
 import { bouncer } from '../../util/Tool';
 import { Overlay } from 'teaset';
-import CusTheme from '../Theme'
+import CusTheme from '../theme/Theme'
 
 class AlertManager {
 

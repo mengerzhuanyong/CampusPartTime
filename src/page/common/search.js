@@ -21,7 +21,7 @@ import {
     TouchableWithoutFeedback,
 } from 'react-native'
 
-import NavigationBar from '../../component/common/NavigationBar'
+import NavigationBar from '../../component/navigation/NavigationBar'
 import SegmentedView from '../../component/segmentedView/index'
 import ImageView from '../../component/common/ImageView'
 import {inject, observer} from 'mobx-react'
@@ -162,8 +162,8 @@ export default class Work extends Component {
                     style={{
                         backgroundColor: '#fff',
                     }}
-                    statusBarStyle={'default'}
-                    leftView={null}
+                    statusBarStyle={'dark-content'}
+                    renderLeftAction={null}
                     backgroundImage={null}
                 />
                 {this.renderNavigationBarView()}

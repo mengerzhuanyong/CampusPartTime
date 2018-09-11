@@ -14,7 +14,7 @@ import {
     ScrollView,
     StyleSheet,
 } from 'react-native'
-import NavigationBar from '../../component/common/NavigationBar'
+import NavigationBar from '../../component/navigation/NavigationBar'
 import SpinnerLoading from '../../component/common/SpinnerLoading'
 
 export default class CommonWebPage extends PureComponent {

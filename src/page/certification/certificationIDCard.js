@@ -17,20 +17,74 @@ import {
     TouchableOpacity,
 } from 'react-native'
 import {Button} from 'teaset'
-import NavigationBar from '../../component/common/NavigationBar'
+import NavigationBar from '../../component/navigation/NavigationBar'
+import {inject, observer} from "mobx-react/index";
+import SpinnerLoading from "../../component/common/SpinnerLoading";
 
+const options = {
+    imageCount: 1,             // 最大选择图片数目，默认6
+    isCamera: true,            // 是否允许用户在内部拍照，默认true
+    isCrop: true,             // 是否允许裁剪，默认false
+    CropW: ~~(SCREEN_WIDTH * 0.8),    // 裁剪宽度，默认屏幕宽度60%
+    CropH: ~~(SCREEN_WIDTH * 0.5),    // 裁剪高度，默认屏幕宽度60%
+    showCropFrame: true,       // 是否显示裁剪区域，默认true
+    showCropGrid: false,       // 是否隐藏裁剪区域网格，默认false
+    quality: 70,                // 压缩质量
+    enableBase64: true,
+};
+
+@inject('loginStore', 'mineStore', 'systemStore')
+@observer
 export default class CertificationIDCard extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {};
+        this.state = {
+            uploading1: false,
+            uploading2: false,
+            realname: '',
+            id_number: '',
+            image_1: '',
+            image_2: '',
+        };
     }
 
-    handlerImages = (type) => {
+    handlerImages = async (type) => {
+        if (type === 1) {
+            this.setState({uploading1: true});
+        } else {
+            this.setState({uploading2: true});
+        }
+        let result = await ImagePickerManager.showMultipleImagePicker(options);
+        console.log(result);
+        if (result.code === 1) {
+            let data = {
+                image: result.data[0].base64,
+            };
+            if (type === 1) {
+                this.setState({image_1: data.image, uploading1: false});
+            } else {
+                this.setState({image_2: data.image, uploading2: false});
+            }
+        }
+    };
 
+    onSubmitIdCardVerify = async () => {
+        let {realname, id_number, image_1, image_2} = this.state;
+        const {mineStore} = this.props;
+        const {onSubmitIdCardVerify} = mineStore;
+        let url = ServicesApi.id_verify;
+        let data = {
+            realname,
+            id_number,
+            image_1,
+            image_2,
+        };
+        let result = await onSubmitIdCardVerify(url, data);
     };
 
     render() {
+        let {image_1, image_2, uploading1, uploading2} = this.state;
         let {params} = this.props.navigation.state;
         let pageTitle = params && params.pageTitle ? params.pageTitle : '身份证认证';
         return (
@@ -41,17 +95,41 @@ export default class CertificationIDCard extends Component {
                 <ScrollView style={styles.content}>
                     <TouchableOpacity
                         style={styles.uploadItemView}
-                        onPress={() => this.handlerImages()}
+                        onPress={() => this.handlerImages(1)}
                     >
-                        <Image source={Images.icon_plus} style={styles.uploadIcon} />
-                        <Text style={styles.uploadBtnName}>手持证件照</Text>
+                        {image_1 !== '' ?
+                            <Image source={{uri: image_1}} style={styles.uploadImage} />
+                            :
+                            <View style={styles.uploadContent}>
+                            {uploading1 ?
+                                <SpinnerLoading isVisible={uploading1} />
+                                :
+                                <View style={styles.uploadContentTips}>
+                                    <Image source={Images.icon_plus} style={styles.uploadIcon} />
+                                    <Text style={styles.uploadBtnName}>手持证件照</Text>
+                                </View>
+                            }
+                            </View>
+                        }
                     </TouchableOpacity>
                     <TouchableOpacity
                         style={styles.uploadItemView}
-                        onPress={() => this.handlerImages()}
+                        onPress={() => this.handlerImages(2)}
                     >
-                        <Image source={Images.icon_plus} style={styles.uploadIcon} />
-                        <Text style={styles.uploadBtnName}>身份证正面照</Text>
+                        {image_2 !== '' ?
+                            <Image source={{uri: image_2}} style={styles.uploadImage} />
+                            :
+                            <View style={styles.uploadContent}>
+                                {uploading2 ?
+                                    <SpinnerLoading isVisible={uploading2} />
+                                    :
+                                    <View style={styles.uploadContentTips}>
+                                        <Image source={Images.icon_plus} style={styles.uploadIcon} />
+                                        <Text style={styles.uploadBtnName}>身份证正面照</Text>
+                                    </View>
+                                }
+                            </View>
+                        }
                     </TouchableOpacity>
                     <View style={styles.userInfoTipsView}>
                         <Image source={Images.icon_notice} style={styles.userInfoTipsIcon} />
@@ -67,7 +145,9 @@ export default class CertificationIDCard extends Component {
                             keyboardType={'numeric'}
                             returnKeyType={'done'}
                             onChangeText={(text) => {
-                                this.setState({});
+                                this.setState({
+                                    realname: text,
+                                });
                             }}
                         />
                     </View>
@@ -78,10 +158,12 @@ export default class CertificationIDCard extends Component {
                             style={styles.userInfoItemInput}
                             underlineColorAndroid={'rgba(0, 0, 0, 0)'}
                             placeholder={'请输入您的身份证号'}
-                            keyboardType={'numeric'}
+                            // keyboardType={'numeric'}
                             returnKeyType={'done'}
                             onChangeText={(text) => {
-                                this.setState({});
+                                this.setState({
+                                    id_number: text
+                                });
                             }}
                         />
                     </View>
@@ -89,6 +171,7 @@ export default class CertificationIDCard extends Component {
                         title={'提交认证'}
                         style={styles.submitBtnView}
                         titleStyle={styles.submitBtnName}
+                        onPress={this.onSubmitIdCardVerify}
                     />
                 </ScrollView>
             </View>
@@ -115,6 +198,18 @@ const styles = StyleSheet.create({
         height: ScaleSize(360),
         backgroundColor: '#fff',
         justifyContent: 'center',
+    },
+    uploadContent: {
+        flex: 1,
+    },
+    uploadContentTips: {
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    uploadImage: {
+        width: SCREEN_WIDTH - 40,
+        height: ScaleSize(320),
+        resizeMode: 'contain',
     },
     uploadIcon: {
         marginVertical: 15,

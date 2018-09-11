@@ -22,7 +22,7 @@ import {
     TouchableWithoutFeedback,
 } from 'react-native'
 
-import NavigationBar from '../../component/common/NavigationBar'
+import NavigationBar from '../../component/navigation/NavigationBar'
 import {ListRow, Button} from 'teaset'
 import {observer, inject} from "mobx-react";
 
@@ -201,13 +201,13 @@ const styles = StyleSheet.create({
     },
 
     contentView: {
-        marginTop: -64,
+        marginTop: CusTheme.systemNavHeight,
     },
     lastContentItemView: {
         marginBottom: 30,
     },
     contentTopView: {
-        marginTop: -64,
+        marginTop: CusTheme.systemNavHeight,
         paddingTop: 64,
         width: SCREEN_WIDTH,
         alignItems: 'center',

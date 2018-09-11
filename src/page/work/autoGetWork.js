@@ -23,33 +23,27 @@ import {
     TouchableWithoutFeedback,
 } from 'react-native'
 
-import NavigationBar from '../../component/common/NavigationBar'
+import NavigationBar from '../../component/navigation/NavigationBar'
 import FlatListView from '../../component/common/FlatListView'
 import {ListRow, Button} from 'teaset'
 import {HorizontalLine} from "../../component/common/commonLine";
+import {inject, observer} from "mobx-react/index";
+import RouterHelper from "../../router/RouterHelper";
 
+@inject('loginStore', 'workStore', 'resourceStore')
+@observer
 export default class AutoGetWork extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
             loading: false,
-            navigation: [
-                {id: 1, title: '手机', icon: Images.icon_nav_mobile,},
-                {id: 2, title: '电脑', icon: Images.icon_nav_pc,},
-                {id: 3, title: '平板', icon: Images.icon_nav_pad,},
-                {id: 4, title: '外设', icon: Images.icon_nav_mouse,},
-                {id: 5, title: '单反', icon: Images.icon_nav_camera,},
-            ],
-            listData: [
-                {id: 1, title: '手机', icon: Images.icon_nav_mobile,},
-                {id: 2, title: '电脑', icon: Images.icon_nav_pc,},
-                {id: 3, title: '平板', icon: Images.icon_nav_pad,},
-                {id: 4, title: '外设', icon: Images.icon_nav_mouse,},
-                {id: 5, title: '单反', icon: Images.icon_nav_camera,},
-            ],
         };
         this.page = 1;
+    }
+
+    componentDidMount() {
+        this.loadNetData();
     }
 
     componentWillUnmount(){
@@ -57,10 +51,10 @@ export default class AutoGetWork extends Component {
         ClearTimer(timers);
     }
 
-    clearCache = () => {
-        this.setState({
-            cacheSize: '',
-        });
+    loadNetData = async () => {
+        const {workStore} = this.props;
+        let result = await workStore.requestPlatformTimes(ServicesApi.job_platform_time);
+        console.log(result);
     };
 
     makeCall = (mobile) => {
@@ -76,6 +70,34 @@ export default class AutoGetWork extends Component {
             .catch((err)=>{
                 // console.log('An error occurred', err)
             });
+    };
+
+    onSelectedTimeItem = (item, index) => {
+        console.log(item);
+        const {workStore} = this.props;
+        let {getTimesOption, onSelectPlatformTimeItem} = workStore;
+        let start = item.select_start_time || '05:00';
+        let end = item.select_end_time || '05:00';
+        ActionsManager.showTime(getTimesOption, start, end, (info) => {
+            item.select_start_time = info[0];
+            item.select_end_time = info[1];
+            onSelectPlatformTimeItem(item, index);
+        });
+    };
+
+    onSubmitForm = async () => {
+        const {workStore} = this.props;
+        let {getTimesArray, onSubmitPlatformTimes} = workStore;
+        let url = ServicesApi.job_submit_platform_time;
+        let data = {
+            getTimesArray
+        };
+        let result = await onSubmitPlatformTimes(url, data);
+        console.log(result);
+        if (result && result.code === 1) {
+            Toast.toastShort(result.msg);
+            RouterHelper.goBack();
+        }
     };
 
     _captureRef = (v) => {
@@ -105,7 +127,8 @@ export default class AutoGetWork extends Component {
     _onRefresh = () => {
         this.timer2 = setTimeout(() => {
             // 调用停止刷新
-            this.flatList.stopRefresh()
+            this.loadNetData();
+            this.flatList && this.flatList.stopRefresh();
         }, 500);
     };
 
@@ -114,15 +137,17 @@ export default class AutoGetWork extends Component {
     };
 
     _renderHeaderComponent = () => {
+        const {workStore} = this.props;
+        let {platform_work_tips} = workStore;
         return (
 
             <View style={styles.headerComponentView}>
                 <View style={styles.contentItemView}>
                     <View style={styles.contentTitleView}>
-                        <Text style={styles.contentTitle}>什么是平台分配工作？</Text>
+                        <Text style={styles.contentTitle}>{platform_work_tips.title}</Text>
                     </View>
                     <View style={styles.contentConView}>
-                        <Text style={styles.contentConText}>兼职，是指职工同时从事一个以上的职业或职务。各国法律一般并不禁止职工兼职，但有的情况下，企业、单位并不特别赞成本企业单位职工兼职。</Text>
+                        <Text style={styles.contentConText}>{platform_work_tips.content}</Text>
                     </View>
                 </View>
                 <View style={[styles.contentItemView, styles.lastContentItemView]}>
@@ -135,22 +160,25 @@ export default class AutoGetWork extends Component {
     };
 
     _renderListItem = (info) => {
+        let {item, index} = info;
         return (
             <View style={[styles.timeItemView]}>
                 <View style={[styles.timeItemTitleView]}>
-                    <Text style={[styles.timeItemTitle]}>2018.06.10 周日</Text>
+                    <Text style={[styles.timeItemTitle]}>{item.date} {item.day}</Text>
                 </View>
                 <View style={[styles.timeItemDetailView]}>
                     <Button
-                        title={'12:00'}
+                        title={item.select_start_time || '请选择'}
                         style={[styles.timeBtnView]}
                         titleStyle={[styles.timeBtnName]}
+                        onPress={() => this.onSelectedTimeItem(item, index)}
                     />
                     <Text style={[styles.timeItemTitle, styles.timeItemDetailTips]}>至</Text>
                     <Button
-                        title={'16:00'}
+                        title={item.select_end_time || '请选择'}
                         style={[styles.timeBtnView]}
                         titleStyle={[styles.timeBtnName]}
+                        onPress={() => this.onSelectedTimeItem(item, index)}
                     />
                 </View>
             </View>
@@ -159,6 +187,8 @@ export default class AutoGetWork extends Component {
 
     render() {
         let {loading, listData} = this.state;
+        const {workStore} = this.props;
+        let {getTimesArray, getTimesOption, platform_work_tips} = workStore;
         let {params} = this.props.navigation.state;
         let pageTitle = params && params.pageTitle ? params.pageTitle : '平台分配工作';
         return (
@@ -171,12 +201,14 @@ export default class AutoGetWork extends Component {
                         style={styles.listContent}
                         initialRefresh={false}
                         ref={this._captureRef}
-                        data={listData}
+                        data={getTimesArray}
                         removeClippedSubviews={false}
                         renderItem={this._renderListItem}
                         keyExtractor={this._keyExtractor}
-                        onEndReached={this._onEndReached}
+                        // onEndReached={this._onEndReached}
+                        enableLoadMore={false}
                         onRefresh={this._onRefresh}
+
                         ItemSeparatorComponent={this._renderSeparator}
                         ListHeaderComponent={this._renderHeaderComponent}
                     />
@@ -185,6 +217,7 @@ export default class AutoGetWork extends Component {
                     title={'提交'}
                     style={[CusTheme.btnView, styles.btnView]}
                     titleStyle={[CusTheme.btnName, styles.btnName]}
+                    onPress={this.onSubmitForm}
                 />
             </View>
         );
@@ -230,6 +263,7 @@ const styles = StyleSheet.create({
     },
 
     timeItemView: {
+        height: 60,
         paddingVertical: 10,
         paddingHorizontal: 15,
         flexDirection: 'row',
@@ -251,12 +285,12 @@ const styles = StyleSheet.create({
         marginHorizontal: 10,
     },
     timeBtnView: {
-        // width: ScaleSize(140),
+        width: ScaleSize(150),
         borderColor: '#eee',
     },
     timeBtnName: {
         color: '#555',
-        fontSize: FontSize(14),
+        fontSize: FontSize(13),
     },
 
     btnView: {

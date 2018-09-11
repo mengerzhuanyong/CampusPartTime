@@ -13,7 +13,7 @@ import {
     scaleSize, fontSize, isMobile, checkMobile, checkPassword, isEmpty, containsChinese,
     clearTimer
 } from '../util/Tool'
-import CusTheme from './Theme'
+import CusTheme from './theme/Theme'
 import Images from './manager/ImageManager'
 // import Services from '../util/Services'
 import Services from '../util/utilRequest'
@@ -22,6 +22,7 @@ import ToastManager from './manager/ToastManager'
 import * as Toast from '../util/utilToast'
 import ActionsManager from './manager/ActionsManager'
 import AlertManager from './manager/AlertManager';
+import ImagePickerManager from './manager/ImagePickerManager';
 import InteractionManager from './manager/InteractionManager';
 import RouterHelper from '../router/RouterHelper'
 import ServicesApi from './ServicesApi'
@@ -62,6 +63,9 @@ global.SCREEN_HEIGHT = CusTheme.screen_height;
 
 // 图片加载
 global.Images = Images;
+
+// 图片选择
+global.ImagePickerManager = ImagePickerManager;
 
 // 存储
 global.StorageManager = StorageManager;

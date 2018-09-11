@@ -22,7 +22,7 @@ import {
     TouchableWithoutFeedback,
 } from 'react-native'
 
-import NavigationBar from '../../component/common/NavigationBar'
+import NavigationBar from '../../component/navigation/NavigationBar'
 import SegmentedView from '../../component/segmentedView/index'
 import ImageView from '../../component/common/ImageView'
 import {inject, observer} from 'mobx-react'

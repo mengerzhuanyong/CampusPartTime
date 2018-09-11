@@ -23,7 +23,7 @@ import {
     TouchableWithoutFeedback,
 } from 'react-native'
 
-import NavigationBar from '../../component/common/NavigationBar'
+import NavigationBar from '../../component/navigation/NavigationBar'
 import FlatListView from '../../component/common/FlatListView'
 import {ListRow, Button} from 'teaset'
 import {HorizontalLine} from "../../component/common/commonLine";

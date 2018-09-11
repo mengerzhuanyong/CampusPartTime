@@ -1,6 +1,6 @@
 import { Menu } from 'teaset';
 import { fontSize } from '../../util/Tool'
-import CusTheme from '../Theme'
+import CusTheme from '../theme/Theme'
 
 /**
  * const params = {

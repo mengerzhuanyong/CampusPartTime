@@ -17,16 +17,49 @@ import {
     TouchableOpacity,
 } from 'react-native'
 import {Button} from 'teaset'
-import NavigationBar from '../../component/common/NavigationBar'
+import NavigationBar from '../../component/navigation/NavigationBar'
 import DropDownMenu from '../../component/common/DropDownMenu';
 import Container from '../../component/common/Container';
+import RouterHelper from "../../router/RouterHelper";
+import {inject, observer} from "mobx-react/index";
 
+@inject('loginStore', 'mineStore')
+@observer
 export default class CertificationMobile extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {};
+        this.state = {
+            realname: '马运东1',
+            mobile: '15066886007',
+            id_number: '370826199009223238',
+        };
     }
+
+    componentWillUnmount(){
+        let timers = [this.timer];
+        ClearTimer(timers);
+    }
+
+    onCertificationMobile = async () => {
+        const {mineStore} = this.props;
+        let {realname, mobile, id_number} = this.state;
+        let {onCertificationMobile} = mineStore;
+        let url = ServicesApi.mobile_verify;
+        let data = {
+            realname,
+            mobile,
+            id_number,
+        };
+        let result = await onCertificationMobile(url, data);
+        console.log(result);
+        Toast.toastShort(result.msg);
+        if (result && result.code === 1) {
+            this.timer = setTimeout(() => {
+                RouterHelper.goBack();
+            }, 600);
+        }
+    };
 
     render() {
         let {params} = this.props.navigation.state;
@@ -47,7 +80,9 @@ export default class CertificationMobile extends Component {
                             keyboardType={'numeric'}
                             returnKeyType={'done'}
                             onChangeText={(text) => {
-                                this.setState({});
+                                this.setState({
+                                    relname: text
+                                });
                             }}
                         />
                     </View>
@@ -61,7 +96,9 @@ export default class CertificationMobile extends Component {
                             keyboardType={'numeric'}
                             returnKeyType={'done'}
                             onChangeText={(text) => {
-                                this.setState({});
+                                this.setState({
+                                    mobile: text,
+                                });
                             }}
                         />
                     </View>
@@ -75,7 +112,9 @@ export default class CertificationMobile extends Component {
                             keyboardType={'numeric'}
                             returnKeyType={'done'}
                             onChangeText={(text) => {
-                                this.setState({});
+                                this.setState({
+                                    id_number: text,
+                                });
                             }}
                         />
                     </View>
@@ -83,6 +122,7 @@ export default class CertificationMobile extends Component {
                         title={'立即认证'}
                         style={styles.submitBtnView}
                         titleStyle={styles.submitBtnName}
+                        onPress={this.onCertificationMobile}
                     />
                 </ScrollView>
             </View>

@@ -1,6 +1,6 @@
 
 import { Toast } from 'teaset';
-import CusTheme from '../Theme';
+import CusTheme from '../theme/Theme';
 
 class ToastManager {
 

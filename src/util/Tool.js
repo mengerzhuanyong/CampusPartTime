@@ -115,7 +115,7 @@ const checkMobile = (mobile) => {
         return false;
     }
     if (!isMobile(mobile)) {
-        alert('mobile');
+        // alert('mobile');
         // Toast.fail('请输入正确的手机号');
         return false;
     }
@@ -268,6 +268,25 @@ const clearTimer = (array) => {
     }
 };
 
+const addCustomProps = (WrapComponent, customProps) => {
+    const componentDefaultProps = WrapComponent.prototype.constructor.defaultProps;
+    WrapComponent.prototype.constructor.defaultProps = {
+        ...componentDefaultProps,
+        ...customProps
+    }
+    if (customProps.style) {
+        const componentRender = WrapComponent.prototype.render;
+        WrapComponent.prototype.render = function render() {
+            let oldProps = this.props;
+            this.props = {
+                ...this.props,
+                style: [customProps.style, oldProps.style]
+            };
+            return componentRender.apply(this)
+        }
+    }
+}
+
 const getDeviceInfo = () => {
     const info = {
         apiLevel: DeviceInfo.getAPILevel(), // api版本，安卓可用
@@ -306,4 +325,5 @@ export {
     sec_to_time_day,
     clearTimer,
     getDeviceInfo,
+    addCustomProps,
 }

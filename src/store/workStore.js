@@ -23,6 +23,9 @@ export default class WorkStore extends BaseStore {
         this.remark = '';
         this.sign_status = '';
         this.server_mobile = '';
+        this.platform_time_list = [];
+        this.platform_time_option = [];
+        this.platform_work_tips = '';
     }
 
     @observable dataSource;
@@ -35,16 +38,31 @@ export default class WorkStore extends BaseStore {
     @observable remark;
     @observable sign_status;
     @observable server_mobile;
+    @observable platform_time_list;
+    @observable platform_time_option;
+    @observable platform_work_tips;
 
     @computed
     get getDataSource() {
         return toJS(this.dataSource);
     }
+
     @computed
     get getOnSelectTimeItem() {
         return this.time_list.slice();
     }
 
+    @computed
+    get getTimesArray() {
+        return toJS(this.platform_time_list);
+    }
+
+    @computed
+    get getTimesOption() {
+        return toJS(this.platform_time_option);
+    }
+
+    // 工作首页 - 列表
     @action
     requestDataSource = async (url, data) => {
         this.loading = true;
@@ -69,6 +87,7 @@ export default class WorkStore extends BaseStore {
         return result;
     };
 
+    // 工作详情
     @action
     requestWorkDetail = async (url, data) => {
         this.loading = true;
@@ -87,6 +106,7 @@ export default class WorkStore extends BaseStore {
         return result;
     };
 
+    // 工作详情 - 工作报名时间
     @action
     requestWorkTimes = async (url, data) => {
         this.loading = true;
@@ -107,6 +127,7 @@ export default class WorkStore extends BaseStore {
         return result;
     };
 
+    // 工作详情 - 点选报名时间
     @action
     onSelectTimeItem = (index, item) => {
         let times = this.time_list.slice();
@@ -124,6 +145,7 @@ export default class WorkStore extends BaseStore {
         this.work_time = work_time;
     };
 
+    // 工作详情 - 提交报名时间
     @action
     onSubmitTimes = async (url, data) => {
         const result = await this.postRequest(url, data, true);
@@ -143,6 +165,7 @@ export default class WorkStore extends BaseStore {
         return result;
     };
 
+    // 工作详情 - 提交报名
     @action
     onSubmitApply = async (url, data) => {
         const result = await this.postRequest(url, data, true);
@@ -163,6 +186,7 @@ export default class WorkStore extends BaseStore {
         return result;
     };
 
+    // 工作详情 - 取消报名
     @action
     onCancelApply = async (url, data) => {
         const result = await this.postRequest(url, data, true);
@@ -180,5 +204,45 @@ export default class WorkStore extends BaseStore {
             })
         }
         return result;
-    }
-}
+    };
+
+    // 平台分配工作 - 获取报名时间
+    @action
+    requestPlatformTimes = async (url) => {
+        this.loading = true;
+        const result = await this.getRequest(url, true);
+        if (result.code === 1) {
+            runInAction(() => {
+                this.loading = false;
+                this.platform_time_list = result.data.time_list;
+                this.platform_time_option = result.data.time_option;
+                this.platform_work_tips = result.data.platform_work_tips;
+            })
+        } else {
+            runInAction(() => {
+                this.loading = false;
+                this.platform_time_list = [];
+                this.platform_time_option = [];
+                this.platform_work_tips = '';
+            })
+        }
+        return result;
+    };
+
+    // 平台分配工作 - 点选工作时间
+    @action
+    onSelectPlatformTimeItem = (item, index) => {
+        let times = this.platform_time_list.slice();
+        times[index] = item;
+        this.platform_time_list = times;
+    };
+
+    // 工作详情 - 提交报名
+    @action
+    onSubmitPlatformTimes = async (url, data) => {
+        const result = await this.postRequest(url, data, true);
+        return result;
+    };
+
+
+};

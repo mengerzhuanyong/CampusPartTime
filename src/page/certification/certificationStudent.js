@@ -8,7 +8,7 @@
 
 import React, { Component } from 'react'
 import { ScrollView, StyleSheet, Text, View } from 'react-native'
-import NavigationBar from '../../component/common/NavigationBar'
+import NavigationBar from '../../component/navigation/NavigationBar'
 import DropDownMenu from '../../component/common/DropDownMenu';
 import Container from '../../component/common/Container';
 

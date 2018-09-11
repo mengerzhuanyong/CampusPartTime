@@ -21,7 +21,7 @@ import {
     TouchableWithoutFeedback,
 } from 'react-native'
 
-import NavigationBar from '../../component/common/NavigationBar'
+import NavigationBar from '../../component/navigation/NavigationBar'
 import SegmentedView from '../../component/segmentedView/index'
 import ImageView from '../../component/common/ImageView'
 import {inject, observer} from 'mobx-react'
@@ -64,10 +64,9 @@ export default class GoodsDetail extends Component {
         let data = {
             id: this.state.item.id,
         };
-
         let result = await shopStore.requestGoodsDetail(ServicesApi.workGoodsDetails, data);
         console.log(result);
-    }
+    };
 
     renderDescription = (data) => {
         if (!data || data.lenth < 1) {
@@ -82,7 +81,7 @@ export default class GoodsDetail extends Component {
             )
         });
         return descriptions;
-    }
+    };
 
     render() {
         let {loading, listData} = this.state;

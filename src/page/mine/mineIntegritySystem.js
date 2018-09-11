@@ -21,7 +21,7 @@ import {
     TouchableOpacity,
     TouchableWithoutFeedback,
 } from 'react-native';
-import NavigationBar from '../../component/common/NavigationBar'
+import NavigationBar from '../../component/navigation/NavigationBar'
 import SegmentedView from '../../component/segmentedView'
 import LRComponent from '../login/LRComponent'
 import SpinnerLoading from '../../component/common/SpinnerLoading';
@@ -160,7 +160,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#eee',
     },
     content: {
-        marginTop: -64,
+        marginTop: CusTheme.systemNavHeight,
     },
     contentTopView: {
         paddingTop: ScaleSize(160),

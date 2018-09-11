@@ -9,7 +9,7 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import Orientation from 'react-native-orientation';
-import NavigationBar from '../../component/common/NavigationBar'
+import NavigationBar from '../../component/navigation/NavigationBar'
 import Container from '../../component/common/Container';
 import VideoPlayer from '../../component/video/index'
 import { Button } from 'teaset';

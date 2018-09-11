@@ -22,7 +22,7 @@ import {
     TouchableWithoutFeedback,
 } from 'react-native'
 
-import NavigationBar from '../../component/common/NavigationBar'
+import NavigationBar from '../../component/navigation/NavigationBar'
 import {inject, observer} from 'mobx-react'
 import {Button, Carousel, ListRow} from 'teaset'
 import {HorizontalLine, VerticalLine} from '../../component/common/commonLine'
@@ -89,7 +89,7 @@ export default class Mine extends Component {
                     title={this.renderNavigationBarView(dataSource.has_message)}
                     style={styles.navigationBarStyle}
                     statusBarStyle={'light-content'}
-                    leftView={null}
+                    renderLeftAction={null}
                     backgroundImage={null}
                 />
                 <ImageBackground
@@ -235,13 +235,13 @@ const styles = StyleSheet.create({
     },
 
     contentView: {
-        marginTop: -64,
+        marginTop: CusTheme.systemNavHeight,
     },
     lastContentItemView: {
         marginBottom: 30,
     },
     contentTopView: {
-        marginTop: -64,
+        marginTop: CusTheme.systemNavHeight,
         paddingTop: 64,
         width: SCREEN_WIDTH,
         alignItems: 'center',

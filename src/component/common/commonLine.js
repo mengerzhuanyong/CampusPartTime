@@ -42,10 +42,10 @@ export class HorizontalLine extends PureComponent {
 const styles = StyleSheet.create({
     verLine: {
         width: CusTheme.minPixel,
-        backgroundColor: '#f5f5f5'
+        backgroundColor: '#eee'
     },
     horLine: {
         height: CusTheme.minPixel,
-        backgroundColor: '#f5f5f5'
+        backgroundColor: '#eee'
     },
 });

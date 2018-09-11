@@ -16,11 +16,15 @@ import {
     StyleSheet,
     ImageBackground,
 } from 'react-native'
-import NavigationBar from '../../component/common/NavigationBar'
+import NavigationBar from '../../component/navigation/NavigationBar'
 import {Button, Carousel, ListRow} from 'teaset'
 
 import {HorizontalLine, VerticalLine} from "../../component/common/commonLine";
+import {inject, observer} from "mobx-react/index";
 
+
+@inject('loginStore', 'mineStore')
+@observer
 export default class MineProfile extends Component {
 
     constructor(props) {
@@ -30,7 +34,27 @@ export default class MineProfile extends Component {
         };
     }
 
+    componentDidMount() {
+        this.loadNetData();
+    }
+
+    loadNetData = async () => {
+        const {mineStore} = this.props;
+        let result = await mineStore.requestMyProfile(ServicesApi.my_details);
+    };
+
+    renderStatusView = (status) => {
+        return (
+            <View style={styles.statusViewStyle}>
+                {status === 2 && <Image source={Images.icon_checked} style={styles.statusIcon}/>}
+                <Text style={styles.statusTitle}>{status === 2 ? '已认证' : '未认证'}</Text>
+            </View>
+        );
+    };
+
     render() {
+        let {mineStore} = this.props;
+        let {myProfile} = mineStore;
         let {stu_cer_uri} = this.state;
         let {params} = this.props.navigation.state;
         let pageTitle = params && params.pageTitle ? params.pageTitle : '我的资料';
@@ -52,10 +76,10 @@ export default class MineProfile extends Component {
                             <Image source={Images.img_avatar_default} style={styles.userAvatar}/>
                         </View>
                         <View style={[styles.contentTopItemView, styles.userInfoView]}>
-                            <Text style={styles.userName}>大梦</Text>
+                            <Text style={styles.userName}>{myProfile.user_info.username}</Text>
                             <View style={styles.studentInfoView}>
-                                <Text style={styles.studentInfoText}>已毕业</Text>
-                                <Text style={styles.studentInfoText}>临沂大学</Text>
+                                <Text style={styles.studentInfoText}>{myProfile.user_info.grade || '已毕业'}</Text>
+                                <Text style={styles.studentInfoText}>{myProfile.user_info.school}</Text>
                             </View>
                         </View>
                     </ImageBackground>
@@ -63,39 +87,39 @@ export default class MineProfile extends Component {
                         <ListRow
                             style={styles.contentTitleView}
                             title={'身份证认证'}
-                            detail={'未认证'}
+                            detail={this.renderStatusView(myProfile.id_card_status)}
                             titleStyle={CusTheme.contentTitle}
                             icon={<Image source={Images.icon_user_card} style={[CusTheme.contentTitleIcon, {}]} />}
                             accessory={<Image source={Images.icon_arrow_right} style={[CusTheme.contentRightIcon, {}]} />}
-                            onPress={() => RouterHelper.navigate('身份证认证', 'CertificationIDCard', {})}
+                            onPress={() => myProfile.id_card_status === 1 && RouterHelper.navigate('身份证认证', 'CertificationIDCard', {})}
                         />
                         <ListRow
                             style={styles.contentTitleView}
                             title={'学籍资料认证'}
-                            detail={'未认证'}
+                            detail={this.renderStatusView(myProfile.student_status)}
                             titleStyle={CusTheme.contentTitle}
                             icon={<Image source={Images.icon_school_roll} style={[CusTheme.contentTitleIcon, {}]} />}
                             accessory={<Image source={Images.icon_arrow_right} style={[CusTheme.contentRightIcon, {}]} />}
-                            onPress={() => RouterHelper.navigate('学籍资料认证', 'CommonWebPage', {url: stu_cer_uri, style: styles.webViewStyle})}
+                            onPress={() => myProfile.student_status === 1 && RouterHelper.navigate('学籍资料认证', 'CommonWebPage', {url: myProfile.student_url, style: styles.webViewStyle})}
                         />
                         <ListRow
                             style={styles.contentTitleView}
                             title={'绑定紧急联系人'}
-                            detail={'未认证'}
+                            detail={this.renderStatusView(myProfile.contact_status)}
                             titleStyle={CusTheme.contentTitle}
                             icon={<Image source={Images.icon_user_contact} style={[CusTheme.contentTitleIcon, {}]} />}
                             accessory={<Image source={Images.icon_arrow_right} style={[CusTheme.contentRightIcon, {}]} />}
-                            onPress={() => RouterHelper.navigate('绑定紧急联系人', 'EmergencyContact', {})}
+                            onPress={() => myProfile.contact_status === 1 && RouterHelper.navigate('绑定紧急联系人', 'EmergencyContact', {})}
                         />
                         <ListRow
                             style={styles.contentTitleView}
                             title={'手机号实名认证'}
-                            detail={'未认证'}
+                            detail={this.renderStatusView(myProfile.mobile_status)}
                             titleStyle={CusTheme.contentTitle}
                             icon={<Image source={Images.icon_mobile} style={[CusTheme.contentTitleIcon, {}]} />}
                             accessory={<Image source={Images.icon_arrow_right} style={[CusTheme.contentRightIcon, {}]} />}
+                            onPress={() => myProfile.mobile_status === 1 && RouterHelper.navigate('手机号实名认证', 'CertificationMobile', {})}
                             bottomSeparator={'none'}
-                            onPress={() => RouterHelper.navigate('手机号实名认证', 'CertificationMobile', {})}
                         />
                     </View>
                 </ScrollView>
@@ -110,7 +134,7 @@ const styles = StyleSheet.create({
     },
     content: {
         flex: 1,
-        marginTop: -64,
+        marginTop: CusTheme.systemNavHeight,
     },
     contentTopView: {
         paddingTop: ScaleSize(150),
@@ -167,6 +191,20 @@ const styles = StyleSheet.create({
         marginLeft: 10,
         color: '#333',
         fontSize: FontSize(14),
+    },
+    statusViewStyle: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    statusIcon: {
+        width: 15,
+        height: 15,
+        marginRight: 5,
+        resizeMode: 'contain',
+    },
+    statusTitle: {
+        color: '#888',
+        fontSize: FontSize(11),
     },
     webViewStyle: {
         marginTop: -46,

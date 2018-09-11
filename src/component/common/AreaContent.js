@@ -8,20 +8,20 @@ import CusTheme from '../../config/Theme'
 class AreaContent extends React.PureComponent {
 
     constructor(props) {
-        super(props)
-        this.data = []
-        this.data = require('../../asset/json/area.json')
+        super(props);
+        this.data = [];
+        this.data = require('../../asset/json/area.json');
         let len = this.data.length;
-        let province = [], city = [], area = []
+        let province = [], city = [], area = [];
         this.data.map((item, index) => {
-            province.push(item.name)
+            province.push(item.name);
             if (index === 0) {
                 item.city.map((item2, index2) => {
-                    city.push(item2.name)
+                    city.push(item2.name);
                     area = item2.area
-                })
+                });
             }
-        })
+        });
         this.state = { province, provinceIndex: 0, city: city, cityIndex: 0, area: area, areaIndex: 0 }
     }
     componentDidMount() {
@@ -29,48 +29,48 @@ class AreaContent extends React.PureComponent {
     }
 
     _onProChange = (index) => {
-        let city = this.data[index]
-        let arr = []
+        let city = this.data[index];
+        let arr = [];
         city.city.map((item, index) => {
-            arr.push(item.name)
-        })
+            arr.push(item.name);
+        });
         this.setState({
             city: arr,
             cityIndex: 0,
             provinceIndex: index,
             areaIndex: 0,
             area: city.city[0]['area']
-        })
-    }
+        });
+    };
     _onCityChange = (index) => {
-        let city = this.data[this.state.provinceIndex]
-        let arr = city.city
-        let obj = arr[index]
+        let city = this.data[this.state.provinceIndex];
+        let arr = city.city;
+        let obj = arr[index];
         this.setState({
             area: obj.area,
             areaIndex: 0,
             cityIndex: index
         })
-    }
+    };
     _onAreaChange = (index) => {
         this.setState({
             areaIndex: index,
         })
-    }
+    };
     _onPressOK = () => {
-        const { onPress } = this.props
-        let one = this.data[this.state.provinceIndex]
-        let two = one.city[this.state.cityIndex]
-        let three = two.area[this.state.areaIndex]
-        let province = one.name
-        let city = two.name
-        let area = three
-        onPress && onPress([province, city, area])
-        ActionsManager.hide()
-    }
+        const {onPress} = this.props;
+        let one = this.data[this.state.provinceIndex];
+        let two = one.city[this.state.cityIndex];
+        let three = two.area[this.state.areaIndex];
+        let province = one.name;
+        let city = two.name;
+        let area = three;
+        onPress && onPress([province, city, area]);
+        ActionsManager.hide();
+    };
     _onPressCancel = () => {
         ActionsManager.hide()
-    }
+    };
     render() {
         return (
             <View style={styles.container}>

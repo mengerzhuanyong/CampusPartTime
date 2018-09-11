@@ -48,6 +48,10 @@ module.exports = {
     job_application_result: 'job_application_result',
     // 取消报名
     job_application_cancel: 'job_application_cancel',
+    // 平台分配时间获取
+    job_platform_time: 'freetime',
+    // 提交工作时间
+    job_submit_platform_time: 'freetime_submit',
 
     // 换购首页
     shoppingMall: 'shopping_mall/index',

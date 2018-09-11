@@ -20,7 +20,7 @@ import {
     TouchableOpacity,
     TouchableWithoutFeedback,
 } from 'react-native'
-import NavigationBar from '../../component/common/NavigationBar'
+import NavigationBar from '../../component/navigation/NavigationBar'
 import {Button, Carousel, ListRow} from 'teaset'
 import MineRepayment from "../account/mineRepayment";
 
