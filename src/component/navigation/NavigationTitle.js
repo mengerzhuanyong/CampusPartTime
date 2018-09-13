@@ -19,7 +19,7 @@ class NavigationTitle extends React.PureComponent {
     renderContent = () => {
         const {title, titleStyle} = this.props;
         if (typeof title === 'string') {
-            console.log('renderContent', title);
+            // console.log('renderContent', title);
             return (
                 <Text
                     style={[styles.title, titleStyle]}

@@ -104,6 +104,14 @@ export default class Setting extends Component {
                         />
                         <ListRow
                             style={styles.contentTitleView}
+                            title={'我的地址'}
+                            titleStyle={CusTheme.contentTitle}
+                            detail={''}
+                            accessory={<Image source={Images.icon_arrow_right} style={[CusTheme.contentRightIcon, {}]} />}
+                            onPress={() => RouterHelper.navigate('我的地址', 'Address', {})}
+                        />
+                        <ListRow
+                            style={styles.contentTitleView}
                             title={'关于我们'}
                             titleStyle={CusTheme.contentTitle}
                             detail={''}

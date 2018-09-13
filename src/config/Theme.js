@@ -2,6 +2,8 @@ import { Dimensions, Platform, Text, StyleSheet, PixelRatio, StatusBar } from 'r
 import {Theme} from 'teaset'
 import { fontSize, scaleSize } from '../util/Tool';
 
+const __IOS__ = Platform.OS === 'ios';
+
 //  更改三个文件控件字体大小随系统改变的属性,如果想更改其它第三方的默认属性也可以这样改
 // addCustomProps(Text, { allowFontScaling: false });
 // addCustomProps(TextInput, { allowFontScaling: false });
@@ -60,7 +62,7 @@ const themeColor = '#1ab588';
 
 const DefaultTheme = {
 
-    
+    __IOS__: __IOS__,
     isIPhoneX: Theme.isIPhoneX,
     fitIPhoneXTop: 44,
     fitIPhoneXBottom: 34,

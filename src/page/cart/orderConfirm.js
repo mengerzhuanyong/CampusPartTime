@@ -1,9 +1,8 @@
 /**
- * 校园空兼 - GoodsDetail
+ * 校园空兼 - OrderConfirm
  * https://menger.me
  * @大梦
  */
-
 
 'use strict';
 
@@ -46,7 +45,7 @@ import GoodsTagComponent from "../../component/shop/goodsTagComponent";
 
 @inject('loginStore', 'shopStore')
 @observer
-export default class GoodsDetail extends Component {
+export default class OrderConfirm extends Component {
 
     constructor(props) {
         super(props);
@@ -58,31 +57,27 @@ export default class GoodsDetail extends Component {
     }
 
     componentDidMount() {
-        this.loadNetData();
+        // this.loadNetData();
     }
 
     loadNetData = async () => {
         const {shopStore} = this.props;
-        let url = ServicesApi.workGoodsDetails;
         let data = {
             id: this.state.item.id,
         };
-        let result = await shopStore.requestGoodsDetail(url, data);
+        let result = await shopStore.requestGoodsDetail(ServicesApi.workGoodsDetails, data);
         // console.log(result);
     };
 
-    onSubmitOrderToCart = async (type) => {
+    onSubmitOrderConfirm = async (type) => {
         const {shopStore} = this.props;
-        let {item} = this.state;
-        let url = ServicesApi.work_goods_buy;
         let data = {
-            type,
-            id: item.id,
+            id: this.state.item.id,
         };
-        let result = await shopStore.onSubmitOrderToCart(url, data);
+        let result = await shopStore.onSubmitOrderConfirm(ServicesApi.workGoodsDetails, data);
         // console.log(result);
         if (result && result.code === 1) {
-            RouterHelper.navigate('订单确认', 'OrderConfirm', {d: 'OrderConfirm'});
+            RouterHelper.navigate('', 'OrderSubmit');
         }
     };
 
@@ -91,10 +86,18 @@ export default class GoodsDetail extends Component {
             return;
         }
         let descriptions = data.map((item, index) => {
+            let iconView = null;
+            if (item.icon === 1) {
+                iconView = <Image source={Images.icon_checked} style={styles.iconCheck} />
+            }
+            if (item.icon === 2) {
+                iconView = <Image source={Images.icon_checked} style={[styles.iconCheck, styles.iconCheckGray]} />
+            }
             return (
                 <View style={styles.goodsUserInfoConItem} key={'desc_' + index}>
                     <Text style={[styles.goodsUserInfoTitle]}>{item.name}：</Text>
                     <Text style={[styles.goodsUserInfoText]}>{item.value}</Text>
+                    {iconView}
                 </View>
             )
         });
@@ -104,10 +107,10 @@ export default class GoodsDetail extends Component {
     render() {
         let {loading, listData} = this.state;
         const {shopStore} = this.props;
-        let {getGoodsDetail} = shopStore;
-        // console.log(getGoodsDetail.illustration);
+        let {cartGoodsInfo} = shopStore;
+        // console.log(cartGoodsInfo.illustration);
         let {params} = this.props.navigation.state;
-        let pageTitle = params && params.pageTitle ? params.pageTitle : '商品详情';
+        let pageTitle = params && params.pageTitle ? params.pageTitle : '订单确认';
         return (
             <View style={styles.container}>
                 <NavigationBar
@@ -116,58 +119,41 @@ export default class GoodsDetail extends Component {
                 <ScrollView style={styles.content}>
                     <View style={styles.contentTopView}>
                         <GoodsCarousel
-                            bannerData={getGoodsDetail.illustration}
+                            bannerData={cartGoodsInfo.illustration}
                             {...this.props}
                         />
                     </View>
                     <View style={[styles.contentItemView, styles.goodsInfoView]}>
                         <View style={[styles.goodsInfoTopView]}>
                             <View style={[styles.goodsInfoTitleView]}>
-                                <Text style={styles.goodsTitle}>{getGoodsDetail.name}</Text>
+                                <Text style={styles.goodsTitle}>{cartGoodsInfo.name}</Text>
                                 <GoodsTagComponent
-                                    tagsData={getGoodsDetail.tags}
+                                    tagsData={cartGoodsInfo.tags}
                                     {...this.props}
                                 />
-                                {/*<View style={styles.goodsInfoTagsView}>*/}
-                                    {/*<View style={styles.goodsInfoTagItemView}>*/}
-                                        {/*<Text style={styles.goodsInfoTagItemName}>急招</Text>*/}
-                                    {/*</View>*/}
-                                    {/*<View style={[styles.goodsInfoTagItemView, styles.goodsInfoTagIconView]}>*/}
-                                        {/*<Image source={Images.icon_hot} style={[styles.goodsInfoIcon]} />*/}
-                                    {/*</View>*/}
-                                {/*</View>*/}
                             </View>
                             <View style={styles.goodsInfoPriceView}>
                                 <Text style={styles.goodsInfoPriceTips}>¥</Text>
-                                <Text style={styles.goodsInfoPriceValue}>{getGoodsDetail.price}</Text>
+                                <Text style={styles.goodsInfoPriceValue}>{cartGoodsInfo.price}</Text>
                                 <Text style={styles.goodsInfoPriceTips}>元</Text>
                             </View>
                         </View>
                         <View style={styles.goodsInfoWorkPointsView}>
                             <Text style={styles.goodsInfoWorkPoints}>折算工分：</Text>
-                            <Text style={styles.goodsInfoWorkPoints}>{getGoodsDetail.work_point}</Text>
+                            <Text style={styles.goodsInfoWorkPoints}>{cartGoodsInfo.work_point}</Text>
                         </View>
                     </View>
                     <View style={[styles.contentItemView, styles.goodsUserInfoView]}>
-                        <View style={[styles.contentTitleView]}>
-                            <Text style={styles.contentTitle}>【商品介绍】</Text>
-                        </View>
                         <View style={styles.goodsUserInfoCon}>
-                            {this.renderDescription(getGoodsDetail.description)}
+                            {this.renderDescription(cartGoodsInfo.payment_info)}
                         </View>
                     </View>
                     <View style={styles.multiBtnView}>
                         <Button
-                            title={'余额换购'}
+                            title={'确认换购'}
                             style={[CusTheme.btnView, styles.btnView]}
                             titleStyle={[CusTheme.btnName, styles.btnName]}
-                            onPress={() => this.onSubmitOrderToCart(2)}
-                        />
-                        <Button
-                            title={'工分换购'}
-                            style={[CusTheme.btnView, styles.btnView]}
-                            titleStyle={[CusTheme.btnName, styles.btnName]}
-                            onPress={() => this.onSubmitOrderToCart(1)}
+                            onPress={() => this.onSubmitOrderConfirm(1)}
                         />
                     </View>
                 </ScrollView>
@@ -244,26 +230,33 @@ const styles = StyleSheet.create({
         marginBottom: 10,
         flexWrap: 'wrap',
         flexDirection: 'row',
-        // alignItems: 'center',
+        alignItems: 'center',
         justifyContent: 'space-between',
     },
     goodsUserInfoConItem: {
         marginTop: 10,
-        width: (SCREEN_WIDTH - 30) / 2,
+        width: SCREEN_WIDTH - 30,
         flexDirection: 'row',
-        // alignItems: 'center',
+        alignItems: 'center',
     },
     goodsUserInfoTitle: {
-        // flex: 1,
         color: '#333',
-        fontSize: FontSize(11),
+        fontSize: FontSize(13),
         lineHeight: FontSize(20),
     },
     goodsUserInfoText: {
-        flex: 1,
         color: '#555',
-        fontSize: FontSize(11),
+        fontSize: FontSize(13),
         lineHeight: FontSize(20),
+    },
+    iconCheck: {
+        width: 20,
+        height: 20,
+        resizeMode: 'contain',
+        marginLeft: 5,
+    },
+    iconCheckGray: {
+        tintColor: '#ddd',
     },
     goodsUserPhone: {},
 

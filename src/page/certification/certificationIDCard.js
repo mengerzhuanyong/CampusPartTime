@@ -56,7 +56,7 @@ export default class CertificationIDCard extends Component {
             this.setState({uploading2: true});
         }
         let result = await ImagePickerManager.showMultipleImagePicker(options);
-        console.log(result);
+        // console.log(result);
         if (result.code === 1) {
             let data = {
                 image: result.data[0].base64,

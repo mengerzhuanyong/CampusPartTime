@@ -1,5 +1,5 @@
 /**
- * 校园空兼 -
+ * 校园空兼 - ActionsManager
  * https://menger.me
  * @大梦
  */

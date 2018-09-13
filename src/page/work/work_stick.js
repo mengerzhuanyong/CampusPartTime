@@ -64,7 +64,7 @@ export default class Work extends Component {
         }
         const data2 = await optionStore.requestDataSource(ServicesApi.OPTIONS, {names: ''});
         this.sectionList && this.sectionList.stopRefresh();
-        console.log('requestDataSource', data)
+        // console.log('requestDataSource', data)
     };
 
     _onRefresh = () => {
@@ -99,7 +99,7 @@ export default class Work extends Component {
     };
 
     _onPressDrop = (title) => {
-        console.log(title);
+        // console.log(title);
         const {workStore} = this.props;
         workStore.setSelectFilter(title);
     };
@@ -151,8 +151,8 @@ export default class Work extends Component {
         } else {
             type = '人才';
         }
-        console.log('loginStore.userInfo.role', loginStore.userInfo.role);
-        console.log('_renderItem');
+        // console.log('loginStore.userInfo.role', loginStore.userInfo.role);
+        // console.log('_renderItem');
         return (
             <ListRow type={type} item={item} index={index} onPress={this._onPressListRow}/>
         )
@@ -167,7 +167,7 @@ export default class Work extends Component {
 
     _renderContentComponent = (selectIndex) => {
         const {optionStore, workStore} = this.props;
-        console.log('dadadad', optionStore.options.ent_industry);
+        // console.log('dadadad', optionStore.options.ent_industry);
         if (selectIndex === 0) {
             return (
                 <View style={styles.dropDownMenuView}>

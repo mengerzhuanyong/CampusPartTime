@@ -55,7 +55,7 @@ export default class WorkSignUpStepOne extends Component {
     }
 
     _captureRef = (v) => {
-        this.flatList = v;
+        this.flatListRef = v;
     };
 
     _keyExtractor = (item, index) => {
@@ -69,7 +69,7 @@ export default class WorkSignUpStepOne extends Component {
         };
 
         let result = await workStore.requestWorkTimes(ServicesApi.job_application_time, data);
-        this.flatList && this.flatList.stopRefresh();
+        this.flatList && this.flatListRef.stopRefresh();
     };
 
     // 下拉刷新
@@ -87,7 +87,7 @@ export default class WorkSignUpStepOne extends Component {
                 this.setState({data: dataTemp.concat(this.state.listData)});
             }
             // allLoad 当全部加载完毕后可以设置此属性，默认为false
-            this.flatList.stopEndReached({allLoad: this.page === 2});
+            this.flatListRef.stopEndReached({allLoad: this.page === 2});
             this.page++;
         }, 500);
     };

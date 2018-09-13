@@ -35,6 +35,7 @@ export default class Index extends React.Component {
     componentWillUnmount() {
         this._removeNetworkListener();
         this._removePushListener();
+        this._clearTimer();
     };
 
     _initSetting = () => {
@@ -64,17 +65,27 @@ export default class Index extends React.Component {
         if (localRes.code === 1) {
             if (localRes.data.token === undefined || localRes.data.token === '') {
                 // 未登录
-                RouterHelper.reset('', 'Login');
+                this.timer1 = setTimeout(() => {
+                    RouterHelper.reset('', 'Login');
+                    SplashScreen.hide();
+                }, 600);
             } else {
                 // 已经登录
+                // console.log(localRes);
                 loginStore.saveUserInfo(localRes.data);
-                RouterHelper.reset('', 'Tab');
+                this.timer2 = setTimeout(() => {
+                    RouterHelper.reset('', 'Tab');
+                    // RouterHelper.reset('', 'Address');
+                    SplashScreen.hide();
+                }, 600);
             }
         } else {
             // 第一次安装app
-            // RouterHelper.reset('', 'Login');
+            this.timer3 = setTimeout(() => {
+            //     RouterHelper.reset('', 'Login');
+                SplashScreen.hide();
+            }, 600);
         }
-        SplashScreen.hide();
     };
 
     _addNetworkListener = () => {
@@ -128,6 +139,11 @@ export default class Index extends React.Component {
         JPushModule.removeReceiveOpenNotificationListener();
         JPushModule.removeGetRegistrationIdListener();
         JPushModule.clearAllNotifications();
+    };
+
+    _clearTimer = () => {
+        let timers = [this.timer1, this.timer2, this.timer3];
+        ClearTimer(timers);
     };
 
     render() {

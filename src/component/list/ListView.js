@@ -148,7 +148,7 @@ class ListView extends React.PureComponent {
 
     startRefresh = () => {
         if (!this.state.isRefreshing) {
-            console.log('startRefresh')
+            // console.log('startRefresh')
             if (this._currentEndReachedStatus === EndReachedStatus.ALL_LOADED) {
                 this._currentEndReachedStatus = EndReachedStatus.WAITING_LOADING
             }
@@ -176,7 +176,7 @@ class ListView extends React.PureComponent {
         ) {
             return;
         }
-        console.log('_onEndReached', this._currentEndReachedStatus)
+        // console.log('_onEndReached', this._currentEndReachedStatus)
         if (this._currentEndReachedStatus === EndReachedStatus.FIRST_LOADED) {
             this._currentEndReachedStatus = EndReachedStatus.WAITING_LOADING
             return;
@@ -197,7 +197,7 @@ class ListView extends React.PureComponent {
 
     startEndReached = () => {
         if (!this.state.isEndReached) {
-            console.log('startEndReached');
+            // console.log('startEndReached');
             this._currentEndReachedStatus = EndReachedStatus.START_LOADED;
             this.setState({ isEndReached: true }, () => {
                 // 问题所在，不能显示到视图最底层

@@ -1,5 +1,5 @@
 /**
- * 校园空兼 -
+ * 校园空兼 - GoodsItem
  * https://menger.me
  * @大梦
  */

@@ -81,11 +81,13 @@ const Images = {
     icon_user_line: require('../../asset/icon/icon_user_line.png'),
     icon_user_sign: require('../../asset/icon/icon_user_sign.png'),
     icon_wechat: require('../../asset/icon/icon_wechat.png'),
+    icon_wechat_timelines: require('../../asset/icon/icon_wechat_timelines.png'),
     icon_work_space: require('../../asset/icon/icon_work_space.png'),
 
 
     // IMAGES
-    img_bg_navbar: require('../../asset/img/img_bg_navbar.png'),
+    img_bg_nav_bar: require('../../asset/img/img_bg_nav_bar.png'),
+    img_bg_nav_bar2: require('../../asset/img/img_bg_nav_bar2.png'),
     img_avatar_default: require('../../asset/img/img_avatar_default.png'),
     img_banner: require('../../asset/img/img_banner.png'),
     img_bg_empty_account: require('../../asset/img/img_bg_empty_account.png'),

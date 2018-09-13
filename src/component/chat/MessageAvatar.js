@@ -1,5 +1,5 @@
 /**
- * 校园空兼 -
+ * 校园空兼 - Avatar
  * https://menger.me
  * @大梦
  */

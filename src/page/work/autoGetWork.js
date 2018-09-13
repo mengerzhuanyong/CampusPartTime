@@ -54,7 +54,7 @@ export default class AutoGetWork extends Component {
     loadNetData = async () => {
         const {workStore} = this.props;
         let result = await workStore.requestPlatformTimes(ServicesApi.job_platform_time);
-        console.log(result);
+        // console.log(result);
     };
 
     makeCall = (mobile) => {
@@ -73,7 +73,7 @@ export default class AutoGetWork extends Component {
     };
 
     onSelectedTimeItem = (item, index) => {
-        console.log(item);
+        // console.log(item);
         const {workStore} = this.props;
         let {getTimesOption, onSelectPlatformTimeItem} = workStore;
         let start = item.select_start_time || '05:00';
@@ -93,7 +93,7 @@ export default class AutoGetWork extends Component {
             getTimesArray
         };
         let result = await onSubmitPlatformTimes(url, data);
-        console.log(result);
+        // console.log(result);
         if (result && result.code === 1) {
             Toast.toastShort(result.msg);
             RouterHelper.goBack();
@@ -101,7 +101,7 @@ export default class AutoGetWork extends Component {
     };
 
     _captureRef = (v) => {
-        this.flatList = v;
+        this.flatListRef = v;
     };
 
     _keyExtractor = (item, index) => {
@@ -118,7 +118,7 @@ export default class AutoGetWork extends Component {
                 this.setState({ data: dataTemp.concat(this.state.listData) });
             }
             // allLoad 当全部加载完毕后可以设置此属性，默认为false
-            this.flatList.stopEndReached({ allLoad: this.page === 2 });
+            this.flatListRef.stopEndReached({ allLoad: this.page === 2 });
             this.page++;
         }, 500);
     };
@@ -128,7 +128,7 @@ export default class AutoGetWork extends Component {
         this.timer2 = setTimeout(() => {
             // 调用停止刷新
             this.loadNetData();
-            this.flatList && this.flatList.stopRefresh();
+            this.flatList && this.flatListRef.stopRefresh();
         }, 500);
     };
 

@@ -39,7 +39,7 @@ class CusNavigationBar extends PureComponent {
                 background={backgroundImage !== null ?
                     <ImageBackground
                         style={styles.navBackImage}
-                        source={Images.img_bg_navbar}
+                        source={Images.img_bg_nav_bar}
                     /> : null
                 }
                 rightView={null}

@@ -72,6 +72,20 @@ module.exports = {
 
     // 会员中心首页
     mine: 'my_index',
+    // 信用额度
+    my_credit: 'my_credit',
+    // 工分明细
+    my_work_point: 'my_work_point',
+
+    // 地址列表
+    address_list: 'address_list',
+    // 新增地址
+    address_add: 'add_address',
+    // 修改地址
+    address_edit: 'update_address',
+    // 删除地址
+    address_del: 'del_address',
+
     // 文件上传
     upload: 'upload',
     // 身份证认证

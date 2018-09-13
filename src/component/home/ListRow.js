@@ -43,7 +43,7 @@ class ListRow extends React.PureComponent {
 
     renderItemSub = () => {
         const { item, type } = this.props
-        console.log(item);
+        // console.log(item);
         return (
             <View style={styles.itemSubContainer}>
                 <View style={styles.itemExp}>
@@ -61,7 +61,7 @@ class ListRow extends React.PureComponent {
 
     renderTags = () => {
         const { item, type } = this.props
-        console.log('renderTags', item.tags)
+        // console.log('renderTags', item.tags)
         if (!item.tags) {
             return null
         }

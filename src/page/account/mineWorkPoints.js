@@ -24,7 +24,10 @@ import NavigationBar from '../../component/navigation/NavigationBar'
 import {Button, Carousel, ListRow} from 'teaset'
 import {HorizontalLine, VerticalLine} from '../../component/common/commonLine'
 import FlatListView from '../../component/common/FlatListView'
+import {inject, observer} from "mobx-react/index";
 
+@inject('loginStore', 'mineStore')
+@observer
 export default class MineWorkPoints extends Component {
 
     constructor(props) {
@@ -32,6 +35,12 @@ export default class MineWorkPoints extends Component {
         this.state = {
             listData: [1,2,3,4],
         };
+        this.page = 1;
+        this.pageSize = 10;
+    }
+
+    componentDidMount() {
+        this.loadNetData(this.page);
     }
 
     componentWillUnmount(){
@@ -39,35 +48,47 @@ export default class MineWorkPoints extends Component {
         ClearTimer(timers);
     }
 
+    loadNetData = async (page) => {
+        const {mineStore} = this.props;
+        let url = ServicesApi.my_work_point;
+        let data = {
+            page,
+            sort: 2,
+            position: 0,
+            sort_column: 1,
+            page_size: this.pageSize,
+        };
+
+        let result = await mineStore.requestWorkPoints(url, data);
+        let endStatus = false;
+        if (result && result.code === 1) {
+            endStatus = result.data.list_data.length < data.page_size;
+        } else {
+            endStatus = true;
+        }
+        this.setState({
+            ready: true
+        });
+        this.flatListRef && this.flatListRef.stopRefresh();
+        this.flatListRef && this.flatListRef.stopEndReached({allLoad: endStatus});
+    };
+
+    _onRefresh = (stopRefresh) => {
+        this.page = 1;
+        this.loadNetData(this.page);
+    };
+
+    _onEndReached = (stopEndReached) => {
+        this.page++;
+        this.loadNetData(this.page);
+    };
+
     _captureRef = (v) => {
-        this.flatList = v;
+        this.flatListRef = v;
     };
 
     _keyExtractor = (item, index) => {
-        return `z_${index}`
-    };
-
-    // 上拉加载
-    _onEndReached = () => {
-        this.timer1 = setTimeout(() => {
-            let dataTemp = this.state.listData;
-            let allLoad = false;
-            //模拟数据加载完毕,即page > 0,
-            if (this.page < 2) {
-                this.setState({ data: dataTemp.concat(this.state.listData) });
-            }
-            // allLoad 当全部加载完毕后可以设置此属性，默认为false
-            this.flatList.stopEndReached({ allLoad: this.page === 2 });
-            this.page++;
-        }, 500);
-    };
-
-    // 下拉刷新
-    _onRefresh = () => {
-        this.timer2 = setTimeout(() => {
-            // 调用停止刷新
-            this.flatList.stopRefresh()
-        }, 500);
+        return `z_${item.id}`
     };
 
     _renderSeparator = () => {
@@ -75,8 +96,9 @@ export default class MineWorkPoints extends Component {
     };
 
     _renderHeaderComponent = () => {
+        const {mineStore} = this.props;
+        let {myWorkPoints, myWorkPointsDetail} = mineStore;
         return (
-
             <View style={styles.headerComponentView}>
                 <ImageBackground
                     style={styles.contentTopView}
@@ -84,18 +106,18 @@ export default class MineWorkPoints extends Component {
                     resizeMode={'cover'}
                 >
                     <View style={[styles.contentTopItemView, styles.creditsInfoView]}>
-                        <Text style={styles.creditsInfoTitle}>需偿还总工分</Text>
-                        <Text style={styles.creditsInfoValue}>9999</Text>
+                        <Text style={styles.creditsInfoTitle}>需偿还工分</Text>
+                        <Text style={styles.creditsInfoValue}>{myWorkPoints.debt || 0}</Text>
                     </View>
                     <View style={[styles.contentTopItemView, styles.userAccountView]}>
                         <View style={[styles.userAccountItemView]}>
-                            <Text style={[styles.userAccountInfo, styles.userAccountInfoCur]}>732</Text>
-                            <Text style={styles.userAccountInfo}>剩余工分</Text>
+                            <Text style={[styles.userAccountInfo, styles.userAccountInfoCur]}>{myWorkPoints.pay || 0}</Text>
+                            <Text style={styles.userAccountInfo}>已偿还工分</Text>
                         </View>
                         <VerticalLine lineStyle={styles.verLine} />
                         <View style={[styles.userAccountItemView]}>
-                            <Text style={[styles.userAccountInfo, styles.userAccountInfoCur]}>350</Text>
-                            <Text style={styles.userAccountInfo}>我的余额</Text>
+                            <Text style={[styles.userAccountInfo, styles.userAccountInfoCur]}>{myWorkPoints.total || 0}</Text>
+                            <Text style={styles.userAccountInfo}>总偿还工分</Text>
                         </View>
                     </View>
                 </ImageBackground>
@@ -107,17 +129,18 @@ export default class MineWorkPoints extends Component {
         );
     };
 
-    _renderListItem = (info) => {
+    _renderListItem = ({item, index}) => {
+        console.log(item, index);
         return (
             <View style={styles.detailInfoItemView}>
                 <View style={styles.detailInfoItemTopView}>
-                    <Text style={styles.detailInfoItemTitle}>花海地产新盘传单派发</Text>
+                    <Text style={styles.detailInfoItemTitle}>{item.job_name}</Text>
                 </View>
                 <View style={styles.detailInfoItemBotView}>
-                    <Text style={styles.detailInfoItemTime}>2018-07-10</Text>
+                    <Text style={styles.detailInfoItemTime}>{item.time}</Text>
                     <View style={styles.detailInfoItemBotRightView}>
-                        <Text style={styles.detailInfoItemType}>偿还：</Text>
-                        <Text style={styles.detailInfoItemValue}>20工分</Text>
+                        <Text style={styles.detailInfoItemType}>{item.work_tips}：</Text>
+                        <Text style={styles.detailInfoItemValue}>{item.point}</Text>
                     </View>
                 </View>
             </View>
@@ -125,6 +148,8 @@ export default class MineWorkPoints extends Component {
     };
 
     render() {
+        const {mineStore} = this.props;
+        let {myWorkPoints, myWorkPointsDetail} = mineStore;
         let {loading, listData} = this.state;
         let {params} = this.props.navigation.state;
         let pageTitle = params && params.pageTitle ? params.pageTitle : '工分明细';
@@ -132,13 +157,15 @@ export default class MineWorkPoints extends Component {
             <View style={styles.container}>
                 <NavigationBar
                     title={pageTitle}
+                    style={{backgroundColor: 'transparent'}}
+                    backgroundImage={Images.img_bg_nav_bar}
                 />
                 <View style={styles.content}>
                     <FlatListView
                         style={styles.listContent}
                         initialRefresh={false}
                         ref={this._captureRef}
-                        data={this.state.listData}
+                        data={myWorkPointsDetail}
                         renderItem={this._renderListItem}
                         keyExtractor={this._keyExtractor}
                         onEndReached={this._onEndReached}
@@ -164,10 +191,10 @@ const styles = StyleSheet.create({
         backgroundColor: '#ddd',
     },
     contentTopView: {
-        paddingTop: ScaleSize(150),
+        paddingTop: 74,
         width: SCREEN_WIDTH,
         alignItems: 'center',
-        height: ScaleSize(510),
+        height: __IOS__ ? ScaleSize(510) : ScaleSize(560),
     },
     creditsDialView: {
         alignItems: 'center',

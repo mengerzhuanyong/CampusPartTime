@@ -21,10 +21,18 @@ export default class MineStore extends BaseStore {
             },
             student_url: 'https://h5.apix.cn/degrees?signature=64392c4592131eee29c24579e5d6bd65',
         };
+        this.myCredits = {
+            setRotateValue: -126,
+        };
+        this.myWorkPoints = {};
+        this.myWorkPointsDetail = [];
     }
 
     @observable dataSource;
     @observable myProfile;
+    @observable myCredits;
+    @observable myWorkPoints;
+    @observable myWorkPointsDetail;
 
     @computed
     get getDataSource() {
@@ -87,6 +95,46 @@ export default class MineStore extends BaseStore {
                 newStatus.id_card_status = result.data;
                 this.myProfile = newStatus;
             });
+        }
+        return result;
+    };
+
+    // 信用额度
+    @action
+    getMyCredits = async (url) => {
+        this.loading = true;
+        const result = await this.getRequest(url, true);
+        if (result.code === 1) {
+            runInAction(() => {
+                this.loading = false;
+                this.myCredits = result.data;
+            });
+        }
+        return result;
+    };
+
+    // 工分明细
+    @action
+    requestWorkPoints = async (url, data) => {
+        this.loading = true;
+        const result = await this.postRequest(url, data, true);
+        if (result.code === 1) {
+            runInAction(() => {
+                this.loading = false;
+                if (data.page === 1) {
+                    this.myWorkPoints = result.data;
+                    this.myWorkPointsDetail = result.data.list_data;
+                } else {
+                    if (result.data.list_data.length !== 0) {
+                        this.myWorkPointsDetail = this.myWorkPointsDetail.concat(result.data.list_data);
+                    }
+                }
+            })
+        } else {
+            runInAction(() => {
+                this.loading = false;
+                this.myWorkPointsDetail = [];
+            })
         }
         return result;
     };

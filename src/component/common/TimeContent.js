@@ -66,7 +66,7 @@ class TimeContent extends React.PureComponent {
             Toast.toastShort('结束时间不能小于开始时间，请重新选择');
         } else {
             onPress && onPress([startTime, endTime]);
-            console.log(startTime, endTime);
+            // console.log(startTime, endTime);
             ActionsManager.hide();
         }
     };

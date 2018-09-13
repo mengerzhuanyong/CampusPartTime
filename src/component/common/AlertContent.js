@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 /**
  * 校园空兼 - 
  * https://menger.me
@@ -11,7 +11,7 @@ import React from 'react'
 import { View, Text, StyleSheet, TouchableHighlight, Image, TouchableOpacity } from 'react-native';
 import PropTypes from 'prop-types'
 import { fontSize, scaleSize, isEmpty } from '../../util/Tool';
-import CusTheme from '../../config/Theme';
+import CusTheme from '../../config/theme/Theme';
 
 
 class AlertContent extends React.PureComponent {
@@ -119,7 +119,8 @@ const styles = StyleSheet.create({
         overflow: 'hidden',
         alignItems: 'center',
         backgroundColor: '#fff',
-        width: CusTheme.alertWidth,
+        // width: CusTheme.alertWidth,
+        minWidth: CusTheme.alertWidth,
         minHeight: CusTheme.alertMinHeight,
     },
     closeView: {
@@ -146,7 +147,7 @@ const styles = StyleSheet.create({
         color: '#555',
         marginVertical: 20,
         textAlign: 'center',
-        fontSize: fontSize(13),
+        fontSize: fontSize(12),
         // minHeight: scaleSize(80),
         lineHeight: scaleSize(44),
         maxWidth: CusTheme.alertDetailMaxWidth,
@@ -168,7 +169,7 @@ const styles = StyleSheet.create({
     },
     actionText: {
         color: CusTheme.alertActionColor,
-        fontSize: fontSize(14),
+        fontSize: fontSize(13),
     },
     separator: {
         borderRightWidth: StyleSheet.hairlineWidth,

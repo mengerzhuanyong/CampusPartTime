@@ -160,13 +160,13 @@ const styles = StyleSheet.create({
         backgroundColor: '#eee',
     },
     content: {
-        marginTop: CusTheme.systemNavHeight,
+        marginTop: CusTheme.isIPhoneX ? CusTheme.systemNavHeight - 24 : CusTheme.systemNavHeight,
     },
     contentTopView: {
-        paddingTop: ScaleSize(160),
         width: SCREEN_WIDTH,
         alignItems: 'center',
-        height: ScaleSize(300),
+        paddingTop: CusTheme.isIPhoneX ? ScaleSize(220) : ScaleSize(180),
+        height: CusTheme.isIPhoneX ? ScaleSize(400) : ScaleSize(360),
     },
     creditsInfoView: {
         flexDirection: 'row',

@@ -52,7 +52,7 @@ export default class CertificationMobile extends Component {
             id_number,
         };
         let result = await onCertificationMobile(url, data);
-        console.log(result);
+        // console.log(result);
         Toast.toastShort(result.msg);
         if (result && result.code === 1) {
             this.timer = setTimeout(() => {

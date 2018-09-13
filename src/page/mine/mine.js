@@ -90,7 +90,7 @@ export default class Mine extends Component {
                     style={styles.navigationBarStyle}
                     statusBarStyle={'light-content'}
                     renderLeftAction={null}
-                    backgroundImage={null}
+                    backgroundImage={Images.img_bg_nav_bar}
                 />
                 <ImageBackground
                     style={styles.contentTopView}
@@ -98,7 +98,7 @@ export default class Mine extends Component {
                     resizeMode={'cover'}
                 >
                     <View style={[styles.contentTopItemView, styles.userAvatarView]}>
-                        <Image source={Images.img_avatar_default} style={styles.userAvatar}/>
+                        <Image source={dataSource.avatar ? {uri: dataSource.avatar} : Images.img_avatar_default} style={styles.userAvatar}/>
                     </View>
                     <View style={[styles.contentTopItemView, styles.userNameView]}>
                         <Text style={styles.userName}>{dataSource.nickname}</Text>
@@ -199,8 +199,8 @@ const styles = StyleSheet.create({
 
     },
     navigationBarStyle: {
-        backgroundColor: 'transparent',
-        // backgroundColor: '#ff660080',
+        // backgroundColor: 'transparent',
+        backgroundColor: '#73d39a00',
     },
     headerView: {
         flex: 1,
@@ -241,13 +241,12 @@ const styles = StyleSheet.create({
         marginBottom: 30,
     },
     contentTopView: {
-        marginTop: CusTheme.systemNavHeight,
-        paddingTop: 64,
+        paddingTop: 74,
         width: SCREEN_WIDTH,
         alignItems: 'center',
         // justifyContent: 'center',
-        height: ScaleSize(510),
-        // backgroundColor: '#123',
+        marginTop: CusTheme.systemNavHeight,
+        height: __IOS__ ? ScaleSize(510) : ScaleSize(560),
     },
     contentTopItemView: {
         flexDirection: 'row',
@@ -260,7 +259,7 @@ const styles = StyleSheet.create({
         height: ScaleSize(160),
         borderRadius: ScaleSize(80),
         overflow: 'hidden',
-        backgroundColor: '#f50'
+        // backgroundColor: '#f50'
     },
     userAvatar: {
         width: ScaleSize(160),

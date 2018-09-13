@@ -38,7 +38,7 @@ class CusSegmentedView extends PureComponent {
         lazyDelay: 0,
         pageHeight: -1,
         showSegmentedBar: true,
-        // backgroundImage: Images.img_bg_navbar
+        // backgroundImage: Images.img_bg_nav_bar
     };
 
     constructor(props) {

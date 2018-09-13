@@ -15,10 +15,10 @@ class NavigationAction extends React.PureComponent {
     };
 
     renderContent = () => {
-        const { renderAction } = this.props
+        const {renderAction} = this.props;
         if (Array.isArray(renderAction)) {
             return (
-                <View style={styles.actionContainer} >
+                <View style={styles.actionContainer}>
                     {renderAction.map((item, index) => {
                         if (React.isValidElement(item)) {
                             return React.cloneElement(item, {
@@ -35,16 +35,16 @@ class NavigationAction extends React.PureComponent {
                 </View>
             )
         } else if (typeof renderAction === 'function') {
-            return renderAction()
+            return renderAction();
         } else if (React.isValidElement(renderAction)) {
-            return renderAction
+            return renderAction;
         }
-        return null
-    }
+        return null;
+    };
 
     render() {
-        const { style, onLayout } = this.props
-        console.log('渲染')
+        const {style, onLayout} = this.props;
+        // console.log('渲染')
         return (
             <View style={[styles.actionContainer, style]} onLayout={onLayout}>
                 {this.renderContent()}
@@ -60,4 +60,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default NavigationAction
+export default NavigationAction;

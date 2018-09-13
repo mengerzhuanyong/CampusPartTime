@@ -24,9 +24,9 @@ export default class BaseStore {
     getRequest = async (url, print = false) => {
         const result = await Services.get(url, print);
         // console.log('result', result);
-        if (result && result.code !== 1) {
-            ToastManager.show(result.msg);
-        }
+        // if (result && result.code !== 1) {
+        //     ToastManager.show(result.msg);
+        // }
         return result;
     };
 
@@ -34,9 +34,9 @@ export default class BaseStore {
     postRequest = async (url, data, print = false) => {
         const result = await Services.post(url, data, print);
         // console.log('result', result);
-        if (result && result.code !== 1) {
-            ToastManager.show(result.msg);
-        }
+        // if (result && result.code !== 1) {
+        //     ToastManager.show(result.msg);
+        // }
         return result;
     }
 

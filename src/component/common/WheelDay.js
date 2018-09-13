@@ -54,7 +54,7 @@ class WheelDay extends React.PureComponent {
         let { date } = this.state;
         let year = date.getFullYear(), month = date.getMonth(), day = date.getDate();
         let daysCount = this.daysCount[this.isLeapYear(year) ? 1 : 0][month];
-        console.log('daysCount', daysCount);
+        // console.log('daysCount', daysCount);
         let days = [];
         for (let i = 1; i <= daysCount; ++i) days.push(i);
 

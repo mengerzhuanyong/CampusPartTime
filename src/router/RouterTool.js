@@ -26,61 +26,63 @@ export const tabOptions = (params) => {
 export const configRouter = (routeConfig) => {
     for (let name in routeConfig) {
         let Component = routeConfig[name].screen;
-        routeConfig[name].screen = createNavigationContainer(Component);
+        routeConfig[name].screen = createNavigationContainer(Component)
     }
-    return routeConfig;
-};
+    return routeConfig
+}
 
 // 高阶组件
 export const createNavigationContainer = (OldComponent) => {
 
     class NewComponent extends React.PureComponent {
 
-        static displayName = `addToRouteStack(${OldComponent.displayName ||
-        OldComponent.name})`;
+        static displayName = `todoNavigationContainer(${OldComponent.displayName ||
+            OldComponent.name})`;
+
+        constructor(props) {
+            super(props)
+            this.subscriptions = []
+        }
 
         componentDidMount() {
-            InteractionManager.runAfterInteractions(() => {
-                this._handleNavigation()
+            requestAnimationFrame(() => {
+                this._addNavigation()
             })
         };
 
         componentWillUnmount() {
             requestAnimationFrame(() => {
-                // console.log('componentWillUnmount');
-                RouterHelper.remove(this.props.navigation);
-                this.subscriptions.forEach(sub => sub.remove());
+                this._removeNavigation()
             })
         };
 
-        _handleNavigation = () => {
-            // console.log('_handleNavigation');
-            RouterHelper.addStack(this.props.navigation);
+        _addNavigation = () => {
+            const { navigation } = this.props
+            RouterHelper.addStack(navigation);
             this.subscriptions = [
-                this.props.navigation.addListener('willBlur', (payload) => {
+                navigation.addListener('willBlur', (payload) => {
                     this._oldComponentRef && this._oldComponentRef.componentWillBlur && this._oldComponentRef.componentWillBlur(payload)
                 }),
-                this.props.navigation.addListener('willFocus', (payload) => {
+                navigation.addListener('willFocus', (payload) => {
                     this._oldComponentRef && this._oldComponentRef.componentWillFocus && this._oldComponentRef.componentWillFocus(payload)
                 }),
-                this.props.navigation.addListener('didFocus', (payload) => {
+                navigation.addListener('didFocus', (payload) => {
                     this._oldComponentRef && this._oldComponentRef.componentDidFocus && this._oldComponentRef.componentDidFocus(payload)
                 }),
-                this.props.navigation.addListener('didBlur', (payload) => {
+                navigation.addListener('didBlur', (payload) => {
                     this._oldComponentRef && this._oldComponentRef.componentDidBlur && this._oldComponentRef.componentDidBlur(payload)
                 }),
             ]
-        };
+        }
+
+        _removeNavigation = () => {
+            const { navigation } = this.props
+            RouterHelper.remove(navigation);
+            this.subscriptions.forEach(listener => listener && listener.remove());
+        }
 
         _captureRef = (v) => {
             this._oldComponentRef = v
-        };
-
-        onPushToNextPage = (pageTitle, component, params = {}) => {
-            RouterHelper.navigate(component, {
-                pageTitle: pageTitle,
-                ...params
-            })
         };
 
         render() {
@@ -93,7 +95,7 @@ export const createNavigationContainer = (OldComponent) => {
         }
     }
 
-    return hoistNonReactStatics(NewComponent, OldComponent);
+    return hoistNonReactStatics(NewComponent, OldComponent)
 };
 
 const styles = StyleSheet.create({

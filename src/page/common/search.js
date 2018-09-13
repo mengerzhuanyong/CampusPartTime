@@ -102,7 +102,7 @@ export default class Work extends Component {
     };
 
     _captureRef = (v) => {
-        this.flatList = v;
+        this.flatListRef = v;
     };
 
     _keyExtractor = (item, index) => {
@@ -119,7 +119,7 @@ export default class Work extends Component {
                 this.setState({ data: dataTemp.concat(this.state.listData) });
             }
             // allLoad 当全部加载完毕后可以设置此属性，默认为false
-            this.flatList.stopEndReached({ allLoad: this.page === 2 });
+            this.flatListRef.stopEndReached({ allLoad: this.page === 2 });
             this.page++;
         }, 500);
     };
@@ -128,7 +128,7 @@ export default class Work extends Component {
     _onRefresh = () => {
         this.timer2 = setTimeout(() => {
             // 调用停止刷新
-            this.flatList.stopRefresh()
+            this.flatListRef.stopRefresh()
         }, 500);
     };
 

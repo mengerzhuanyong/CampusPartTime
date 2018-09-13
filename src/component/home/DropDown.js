@@ -35,7 +35,7 @@ class DropDown extends PureComponent {
 
     render() {
         const {data} = this.props;
-        console.log(data);
+        // console.log(data);
         return (
             <View style={styles.container}>
                 <ScrollView>

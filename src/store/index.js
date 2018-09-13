@@ -4,6 +4,7 @@
  * @大梦
  */
 
+
 'use strict';
 
 import AppStore from './appStore'
@@ -15,6 +16,7 @@ import OptionStore from "./optionStore"
 import ShopStore from "./shopStore"
 import MineStore from "./mineStore"
 import SystemStore from "./systemStore"
+import AddressStore from "./addressStore";
 
 export default {
     appStore: new AppStore(),
@@ -26,4 +28,5 @@ export default {
     shopStore: new ShopStore(),
     mineStore: new MineStore(),
     systemStore: new SystemStore(),
+    addressStore: new AddressStore(),
 };

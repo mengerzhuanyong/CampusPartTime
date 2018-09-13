@@ -19,13 +19,13 @@ class NavigationActionItem extends React.PureComponent {
 
     _onPress = () => {
         requestAnimationFrame(() => {
-            const { title, onPress } = this.props
-            onPress && onPress(title)
+            const {title, onPress} = this.props;
+            onPress && onPress(title);
         })
-    }
+    };
 
     render() {
-        const { title, titleStyle, icon, iconStyle } = this.props
+        const {title, titleStyle, icon, iconStyle} = this.props;
         return (
             <TouchableOpacity
                 style={styles.actionTouch}
@@ -54,4 +54,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default NavigationActionItem
+export default NavigationActionItem;

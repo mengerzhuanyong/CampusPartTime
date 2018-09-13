@@ -44,7 +44,7 @@ export default class CommonWebPage extends PureComponent {
         let url = params && params.url ? params.url : '';
         let style = params && params.style ? params.style : '';
         let pageTitle = params && params.pageTitle ? params.pageTitle : '详情页';
-        console.log(url);
+        // console.log(url);
         return (
             <View style={styles.container}>
                 <NavigationBar

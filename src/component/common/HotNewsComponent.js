@@ -1,5 +1,5 @@
 /**
- * 速芽物流用户端 - HotNewsComponent
+ * 校园空兼 - HotNewsComponent
  * https://menger.me
  * @大梦
  */
@@ -42,7 +42,7 @@ export default class HotNewsComponent extends Component {
     }
 
     componentWillReceiveProps(nextProps){
-        console.log(nextProps.noticeData);
+        // console.log(nextProps.noticeData);
         this.setState({
             noticeData: nextProps.noticeData
         });
@@ -75,7 +75,10 @@ export default class HotNewsComponent extends Component {
     render(){
         const {noticeData} = this.props;
         return (
-            <ScrollView style={[styles.container]}>
+            <ScrollView
+                style={[styles.container]}
+                removeClippedSubviews={false}
+            >
                 <View style={styles.noticeContainer}>
                     <Image
                         style={styles.noticeIcon}
@@ -99,6 +102,7 @@ export default class HotNewsComponent extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        height: ScaleSize(100),
         backgroundColor: '#fff',
     },
 

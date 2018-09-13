@@ -22,7 +22,7 @@ export default class OptionStore extends BaseStore {
     requestDataSource = async (url, data) => {
         const result = await Services.post(url, data);
         const dataSource = result;
-        console.log(dataSource);
+        // console.log(dataSource);
         if (dataSource.code === 1) {
             runInAction(() => {
                 this.options = dataSource.data;

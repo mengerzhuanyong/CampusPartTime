@@ -24,18 +24,26 @@ import {
 import NavigationBar from '../../component/navigation/NavigationBar'
 import {Button, Carousel, ListRow} from 'teaset'
 import {HorizontalLine, VerticalLine} from '../../component/common/commonLine'
+import {inject, observer} from "mobx-react/index";
 
+@inject('loginStore', 'mineStore')
+@observer
 export default class MineCredits extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
             rotateValue: new Animated.Value(0),
-            setRotateValue: 0,
+            setRotateValue: 126,
         };
     }
 
     componentDidMount() {
+        // this.startAnimation();
+        this.loadNetData();
+    }
+
+    startAnimation = () => {
         let TIMES = 1;
         // this.state.rotateValue.setValue(1);
         Animated.timing(this.state.rotateValue, {
@@ -43,9 +51,28 @@ export default class MineCredits extends Component {
             duration: 1000 * TIMES,
             easing: Easing.linear
         }).start(); // 开始spring动画
-    }
+    };
+
+    loadNetData = async() => {
+        const {mineStore} = this.props;
+        let url = ServicesApi.my_credit;
+        let result = await mineStore.getMyCredits(url);
+        if (result && result.code === 1) {
+            this.startAnimation();
+        }
+    };
+
+    onSubmitVerify = () => {
+        let {mineStore} = this.props;
+        let {myCredits} = mineStore;
+        if (myCredits.id_verify === 1) {
+            RouterHelper.navigate('芝麻信用认证', 'CertificationMobile', {});
+        }
+    };
 
     render() {
+        let {mineStore} = this.props;
+        let {myCredits} = mineStore;
         let {rotateValue, setRotateValue} = this.state;
         let {params} = this.props.navigation.state;
         let pageTitle = params && params.pageTitle ? params.pageTitle : '信用额度';
@@ -53,10 +80,8 @@ export default class MineCredits extends Component {
             <View style={styles.container}>
                 <NavigationBar
                     title={pageTitle}
-                    style={{
-                        backgroundColor: 'transparent'
-                    }}
-                    // backgroundImage={true}
+                    style={{backgroundColor: 'transparent'}}
+                    backgroundImage={Images.img_bg_nav_bar2}
                 />
                 <ScrollView style={styles.content}>
                     <ImageBackground
@@ -78,7 +103,7 @@ export default class MineCredits extends Component {
                                             {
                                                 rotateZ: this.state.rotateValue.interpolate({
                                                     inputRange: [0, 360],
-                                                    outputRange: ['-126deg', `${setRotateValue}deg`,]
+                                                    outputRange: ['-126deg', `${myCredits.setRotateValue}deg`,]
                                                 })
                                             },
                                             {translateY: -ScaleSize(222)/2}
@@ -89,19 +114,19 @@ export default class MineCredits extends Component {
                                 />
                             </View>
                             <View style={[styles.contentTopItemView, styles.creditsInfoView]}>
-                                <Text style={styles.creditsInfoValue}>9999</Text>
+                                <Text style={styles.creditsInfoValue}>{myCredits.total}</Text>
                                 <Text style={styles.creditsInfoTitle}>我的额度</Text>
                             </View>
                         </ImageBackground>                        
                         <View style={[styles.contentTopItemView, styles.userAccountView]}>
                             <View style={[styles.userAccountItemView]}>
-                                <Text style={styles.userAccountInfo}>剩余工分: </Text>
-                                <Text style={[styles.userAccountInfo, styles.userAccountInfoCur]}>732</Text>
+                                <Text style={styles.userAccountInfo}>剩余额度: </Text>
+                                <Text style={[styles.userAccountInfo, styles.userAccountInfoCur]}>{myCredits.available}</Text>
                             </View>
                             <VerticalLine lineStyle={styles.verLine} />
                             <View style={[styles.userAccountItemView]}>
-                                <Text style={styles.userAccountInfo}>我的余额: </Text>
-                                <Text style={[styles.userAccountInfo, styles.userAccountInfoCur]}>350</Text>
+                                <Text style={styles.userAccountInfo}>已用额度: </Text>
+                                <Text style={[styles.userAccountInfo, styles.userAccountInfoCur]}>{myCredits.used}</Text>
                             </View>
                         </View>
                     </ImageBackground>
@@ -109,11 +134,11 @@ export default class MineCredits extends Component {
                         <ListRow
                             style={styles.contentTitleView}
                             title={'芝麻信用认证'}
-                            detail={'未认证'}
+                            detail={myCredits.id_verify === 1 ? '未认证' : '已认证'}
                             titleStyle={CusTheme.contentTitle}
                             accessory={<Image source={Images.icon_arrow_right} style={[CusTheme.contentRightIcon, {}]} />}
                             bottomSeparator={'none'}
-                            onPress={() => RouterHelper.navigate('芝麻信用认证', 'CertificationMobile', {})}
+                            onPress={this.onSubmitVerify}
                         />
                     </View>
                 </ScrollView>
@@ -131,7 +156,7 @@ const styles = StyleSheet.create({
         marginTop: CusTheme.systemNavHeight,
     },
     contentTopView: {
-        paddingTop: ScaleSize(150),
+        paddingTop: 74,
         width: SCREEN_WIDTH,
         alignItems: 'center',
         height: ScaleSize(720),

@@ -60,8 +60,19 @@ import VideoPage from '../page/common/videoPage'
 import Chat from '../page/common/chat'
 import WorkPunchCard from "../page/work/workPunchCard"
 import Search from "../page/common/search"
+
 import GoodsList from "../page/shop/goodsList"
 import GoodsDetail from "../page/shop/goodsDetail"
+
+import OrderConfirm from "../page/cart/orderConfirm"
+import OrderSubmit from "../page/cart/orderSubmit"
+import OrderCompleted from "../page/cart/orderCompleted"
+
+import Address from "../page/address/address"
+import AddressAdd from "../page/address/addressAdd"
+import AddressEdit from "../page/address/addressEdit"
+
+
 import WorkDetail from "../page/work/workDetail"
 
 const TabNavigator = createBottomTabNavigator({
@@ -98,7 +109,7 @@ const TabNavigator = createBottomTabNavigator({
         })
     },
 }, {
-    initialRouteName: 'Mine',
+    initialRouteName: 'Home',
     tabBarOptions: {
         showIcon: true,
         indicatorStyle: {height: 0},
@@ -128,6 +139,10 @@ const StackNavigator = createStackNavigator(configRouter({
 
     GoodsList: {screen: GoodsList},
     GoodsDetail: {screen: GoodsDetail},
+
+    OrderConfirm: {screen: OrderConfirm},
+    OrderSubmit: {screen: OrderSubmit},
+    OrderCompleted: {screen: OrderCompleted},
 
     AutoGetWork: {screen: AutoGetWork},
     WorkDetail: {screen: WorkDetail},
@@ -163,8 +178,9 @@ const StackNavigator = createStackNavigator(configRouter({
     CertificationStudent: {screen: CertificationStudent},
     EmergencyContact: {screen: EmergencyContact},
 
-    VideoPage: {screen: VideoPage},
-    Chat: {screen: Chat},
+    Address: {screen: Address},
+    AddressAdd: {screen: AddressAdd},
+    AddressEdit: {screen: AddressEdit},
 }), {
     // initialRouteName: 'Tab',
     initialRouteName: 'Login',

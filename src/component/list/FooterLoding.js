@@ -44,7 +44,7 @@ class FooterLoding extends React.PureComponent {
         } else if (loading) {
             return this.renderIndicator()
         }
-        console.log('footer', 'null')
+        // console.log('footer', 'null')
         return null
     }
 }

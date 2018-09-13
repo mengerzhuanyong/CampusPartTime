@@ -5,7 +5,7 @@ import ImagePicker from 'react-native-image-picker';
 class ImagePickerManager {
 
     static showMultipleImagePicker(option = {}) {
-        console.log(option);
+        // console.log(option);
         return new Promise((resolve, reject) => {
             SyanImagePicker.showImagePicker(option, (error, selectedPhotos) => {
                 let data = [];
@@ -51,7 +51,7 @@ class ImagePickerManager {
     static showLaunchCamera(option = {}) {
         return new Promise((resolve, reject) => {
             ImagePicker.launchCamera(option, (response) => {
-                console.log('ImagePicker', response.uri.slice(7));
+                // console.log('ImagePicker', response.uri.slice(7));
                 let data = null;
                 if (response.didCancel) {
                     // 取消

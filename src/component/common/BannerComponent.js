@@ -1,5 +1,5 @@
 /**
- * 速芽物流用户端 - BannerComponent
+ * 校园空兼 - BannerComponent
  * https://menger.me
  * @大梦
  */
@@ -83,7 +83,10 @@ export default class BannerComponent extends Component {
     render(){
         const { bannerData } = this.state;
         return (
-            <ScrollView style={[styles.container]}>
+            <ScrollView
+                style={[styles.container]}
+                removeClippedSubviews={false}
+            >
                 <Carousel
                     style={styles.headBackCarousel}
                     control={
@@ -106,6 +109,7 @@ const styles = StyleSheet.create({
     container: {
         marginTop: __IOS__ ? 0 : -20,
         backgroundColor: '#fff',
+        height: headBackImageW * 0.452,
     },
     bannerViewWrap: {},
 

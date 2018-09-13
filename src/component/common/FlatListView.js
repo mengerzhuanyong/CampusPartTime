@@ -24,7 +24,7 @@ class FlatListView extends React.PureComponent {
 
 
     static propTypes = {
-        ...FlatList.propTypes,
+        // ...FlatList.propTypes,
 
         initialRefresh: PropTypes.bool,//列表初始化时是否显示刷新按钮,请求数据结束后需要手动调用stopRefresh方法
         enableLoadMore: PropTypes.bool, //是否能上拉加载
@@ -41,7 +41,7 @@ class FlatListView extends React.PureComponent {
 
     };
     static defaultProps = {
-        ...FlatList.defaultProps,
+        // ...FlatList.defaultProps,
 
         initialRefresh: true,
         enableRefresh: true,
@@ -270,7 +270,7 @@ class FlatListView extends React.PureComponent {
     };
     render() {
         const { onRefresh, onEndReached, onLayout, onContentSizeChange, enableRefresh, enableLoadMore, ...others } = this.props;
-        // console.log('render');
+        console.log('render');
         return (
             <FlatList
                 ref={this._captureRef}

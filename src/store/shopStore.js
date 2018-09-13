@@ -15,10 +15,14 @@ export default class ShopStore extends BaseStore {
         super(params);
         this.dataSource = [];
         this.goodsDetail = {};
+        this.cartGoodsInfo = {};
+        this.orderTips = {};
     }
 
     @observable dataSource;
     @observable goodsDetail;
+    @observable cartGoodsInfo;
+    @observable orderTips;
 
     @computed
     get getDataSource() {
@@ -29,6 +33,7 @@ export default class ShopStore extends BaseStore {
         return toJS(this.goodsDetail);
     }
 
+    // 换购首页
     @action
     requestDataSource = async (url, data) => {
         this.loading = true;
@@ -53,10 +58,11 @@ export default class ShopStore extends BaseStore {
         return result;
     };
 
+    // 商品详情页
     @action
     requestGoodsDetail = async (url, data) => {
         this.loading = true;
-        const result = await this.postRequest(url, data);
+        const result = await this.postRequest(url, data, true);
         if (result.code === 1) {
             runInAction(() => {
                 this.loading = false;
@@ -66,6 +72,63 @@ export default class ShopStore extends BaseStore {
             runInAction(() => {
                 this.loading = false;
                 this.goodsDetail = {};
+            })
+        }
+        return result;
+    };
+
+    // 加入购物车
+    @action
+    onSubmitOrderToCart = async (url, data) => {
+        this.loading = true;
+        const result = await this.postRequest(url, data, true);
+        if (result.code === 1) {
+            runInAction(() => {
+                this.loading = false;
+                this.cartGoodsInfo = result.data;
+            })
+        } else {
+            runInAction(() => {
+                this.loading = false;
+                this.cartGoodsInfo = {};
+            })
+        }
+        return result;
+    };
+
+    // 确认换购
+    @action
+    onSubmitOrderConfirm = async (url, data) => {
+        this.loading = true;
+        const result = await this.postRequest(url, data, true);
+        if (result.code === 1) {
+            runInAction(() => {
+                this.loading = false;
+                // this.cartGoodsInfo = result.data;
+            })
+        } else {
+            runInAction(() => {
+                this.loading = false;
+                // this.cartGoodsInfo = {};
+            })
+        }
+        return result;
+    };
+
+    // 提交订单
+    @action
+    onSubmitOrder = async (url, data) => {
+        this.loading = true;
+        const result = await this.postRequest(url, data, true);
+        if (result.code === 1) {
+            runInAction(() => {
+                this.loading = false;
+                // this.cartGoodsInfo = result.data;
+            })
+        } else {
+            runInAction(() => {
+                this.loading = false;
+                // this.cartGoodsInfo = {};
             })
         }
         return result;

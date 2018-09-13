@@ -21,18 +21,18 @@ export default {
     screen_height: height,
 
     // 弹窗提示组件的样式
-    alertWidth: 260,
+    alertWidth: 300,
     alertMinHeight: 52,
     alertTitleMaxWidth: 200,
-    alertDetailMaxWidth: 230,
+    alertDetailMaxWidth: 250,
     alertActionHeight: 42,
     alertActionColor: '#348fe4',
     alertSeparatorColor: '#eaeaea',
-    alertTitleFontSize: fontSize(16),
+    alertTitleFontSize: fontSize(15),
     alertTitleColor: '#000',
-    alertDetailFontSize: fontSize(13),
+    alertDetailFontSize: fontSize(12),
     alertDetailColor: '#000',
-    alertActionFontSize: fontSize(14),
+    alertActionFontSize: fontSize(13),
 
     // action组件
     actionMaxHeight: 230,

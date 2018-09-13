@@ -17,7 +17,7 @@ import {HorizontalLine} from "./commonLine";
 
 const ShareSource = [
     {actionTitle: '微信好友', actionImage: Images.icon_wechat, type: 1},
-    {actionTitle: '朋友圈', actionImage: Images.icon_wechat, type: 2},
+    {actionTitle: '朋友圈', actionImage: Images.icon_wechat_timelines, type: 2},
     {actionTitle: 'QQ', actionImage: Images.icon_qq, type: 3},
 ];
 
@@ -80,14 +80,15 @@ const styles = StyleSheet.create({
     container: {
         borderTopLeftRadius: 5,
         borderTopRightRadius: 5,
-        height: scaleSize(400),
         backgroundColor: '#fff',
+        height: CusTheme.isIPhoneX ? scaleSize(440) : scaleSize(400),
         paddingBottom: CusTheme.isIPhoneX ? CusTheme.fitIPhoneXBottom : 0,
     },
     contentTitleView: {
         height: 45,
         alignItems: 'center',
         justifyContent: 'center',
+        // backgroundColor: '#f60',
     },
     contentTitle: {
         color: '#333',
@@ -95,7 +96,7 @@ const styles = StyleSheet.create({
     },
     shareContent: {
         flex: 1,
-        paddingVertical: 30,
+        paddingVertical: CusTheme.__IOS__ ? 30 : 0,
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-around',
@@ -106,8 +107,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     actionImage: {
-        width: scaleSize(100),
-        height: scaleSize(100),
+        width: scaleSize(80),
+        height: scaleSize(80),
         resizeMode: 'contain',
     },
     actionText: {
@@ -116,7 +117,7 @@ const styles = StyleSheet.create({
         fontSize: fontSize(12),
     },
     separator: {
-        height: StyleSheet.hairlineWidth,
+        height: CusTheme.minPixel,
         backgroundColor: '#cdcdcd',
     },
     cancelButton: {

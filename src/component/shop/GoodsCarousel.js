@@ -1,5 +1,5 @@
 /**
- * 速芽物流用户端 - GoodsCarousel
+ * 校园空兼 - GoodsCarousel
  * https://menger.me
  * @大梦
  */

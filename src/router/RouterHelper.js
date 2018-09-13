@@ -5,12 +5,15 @@
  */
 
 'use strict';
+
 import { StackActions, NavigationActions } from 'react-navigation'
 
 class RouterHelper {
 
     // navigation的实例
-    static navigation = null;
+    static get navigation() {
+        return this.routeStack.length !== 0 ? this.routeStack[this.routeStack.length - 1] : null;
+    };
     // 上次执行to方法的时间
     static lastActionTime = 0;
     // 重复点击判断间隔时间,单位毫秒
@@ -21,8 +24,8 @@ class RouterHelper {
     static routeInterceptor;
 
     static addStack(navigation) {
-        if (this.routeStack.findIndex((item) => navigation.state.key === item.state.key) === -1) {
-            this.navigation = navigation;
+        let index = this.routeStack.findIndex((item) => navigation.state.key === item.state.key);
+        if (index === -1) {
             this.routeStack.push(navigation);
         }
     }
@@ -31,11 +34,11 @@ class RouterHelper {
         let index = this.routeStack.findIndex((item) => navigation.state.key === item.state.key);
         if (index !== -1) {
             this.routeStack.splice(index, 1);
-            this.navigation = this.routeStack[this.routeStack.length - 1]
         }
     }
+
     // 最好使用这个
-    static navigate(pageTitle, routeName, params, delay = true) {
+    static navigate(pageTitle, routeName, params = {}, delay = true) {
         params = {
             pageTitle,
             ...params
@@ -58,6 +61,12 @@ class RouterHelper {
     }
 
     static goBack(routeName) {
+        let nowTime = new Date().getTime();
+        if ((nowTime - this.lastActionTime) <= this.interval) {
+            console.warn('间隔时间内重复点击了');
+            return;
+        }
+        this.lastActionTime = nowTime;
         if (routeName) {
             const index = this.routeStack.findIndex((item) => routeName === item.state.routeName);
             const navTarget = this.routeStack[index + 1];
@@ -68,7 +77,7 @@ class RouterHelper {
         }
     }
 
-    static push(pageTitle, routeName, params, delay = true) {
+    static push(pageTitle, routeName, params = {}, delay = true) {
         params = {
             pageTitle,
             ...params
@@ -76,7 +85,7 @@ class RouterHelper {
         let nowTime = new Date().getTime();
         if ((nowTime - this.lastActionTime) <= this.interval && delay) {
             console.warn('间隔时间内重复点击了');
-            return
+            return;
         }
         if (this.routeInterceptor && !this.routeInterceptor(routeName, params)) {
             // console.log('路由跳转被拦截');
@@ -90,28 +99,27 @@ class RouterHelper {
         this.navigation.push(routeName, params);
     }
 
-    static pop(n, params) {
-        this.navigation.pop(n, params)
+    static pop(n, params = {}) {
+        this.navigation.pop(n, params);
     }
 
-    static popToTop(params) {
-        this.navigation.popToTop(params)
+    static popToTop(params = {}) {
+        this.navigation.popToTop(params);
     }
 
-    static replace(pageTitle, routeName, params) {
+    static replace(pageTitle, routeName, params = {}) {
         params = {
             pageTitle,
             ...params
         };
-        this.navigation.replace(routeName, params)
+        this.navigation.replace(routeName, params);
     }
 
-    static reset(pageTitle, routeName, params) {
+    static reset(pageTitle, routeName, params = {}) {
         params = {
             pageTitle,
             ...params
         };
-
         let resetAction = StackActions.reset({
             index: 0,
             actions: [
