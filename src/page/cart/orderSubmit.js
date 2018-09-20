@@ -48,21 +48,43 @@ export default class OrderSubmit extends Component {
 
     constructor(props) {
         super(props);
+        const {shopStore} = this.props;
+        let {cartGoodsInfo} = shopStore;
         this.state = {
+            address: cartGoodsInfo && cartGoodsInfo.address ? cartGoodsInfo.address : {
+                id: '',
+                username: '',
+                mobile: '',
+                area: [],
+                address: '',
+            },
             message: '',
-            item: {
-                id: 1,
-            }
         };
     }
+
+    updateContent = (data) => {
+        console.log(data);
+        this.setState({
+            address: data
+        });
+    };
+
+    selectedAddress = () => {
+        let params = {
+            id: this.state.address.id,
+            PAGE_FLAG: 'CART',
+            updateContent: this.updateContent,
+        };
+        RouterHelper.navigate('选择地址', 'Address', params);
+    };
 
     onSubmitOrder = async (type) => {
         const {shopStore} = this.props;
         let {message} = this.state;
         let url = ServicesApi.work_goods_payment;
         let data = {
-            goods_id: this.state.item.id,
-            type: 1,
+            goods_id: shopStore.cartGoodsInfo.id,
+            type: shopStore.cartGoodsInfo.type,
             receiver_info: {
                 username: '',
                 mobile: '',
@@ -70,17 +92,17 @@ export default class OrderSubmit extends Component {
             },
             message,
         };
-            RouterHelper.navigate('换购完成', 'OrderCompleted');
         let result = await shopStore.onSubmitOrder(url, data);
         // console.log(result);
         if (result && result.code === 1) {
+            RouterHelper.navigate('换购完成', 'OrderCompleted');
         }
     };
 
     render() {
         const {shopStore} = this.props;
         let {cartGoodsInfo} = shopStore;
-        let {loading, listData} = this.state;
+        let {loading, address} = this.state;
         let {params} = this.props.navigation.state;
         let pageTitle = params && params.pageTitle ? params.pageTitle : '订单详情';
         return (
@@ -94,17 +116,23 @@ export default class OrderSubmit extends Component {
                             <Image source={Images.img_goods1} style={styles.orderGoodsPic}/>
                         </View>
                         <View style={styles.orderGoodsTitleView}>
-                            <Text style={styles.orderGoodsTitle}>苹果iPhone X 64G 黑色</Text>
-                            <Text style={styles.orderGoodsPrices}>2200工分</Text>
+                            <Text style={styles.orderGoodsTitle}>{cartGoodsInfo.name}</Text>
+                            <Text style={styles.orderGoodsPrices}>{cartGoodsInfo.cart_price}</Text>
                         </View>
                     </View>
-                    <View style={[styles.contentItemView, styles.orderUserInfoView]}>
-                        <View style={styles.orderUserInfoCon}>
-                            <Text style={[styles.orderUserName, styles.orderUserInfoText]}>收货人：张三</Text>
-                            <Text style={[styles.orderUserPhone, styles.orderUserInfoText]}>13234536789</Text>
+                    <TouchableOpacity
+                        style={[styles.contentItemView, styles.orderUserInfoView]}
+                        onPress={this.selectedAddress}
+                    >
+                        <View style={styles.selectAddressView}>
+                            <View style={styles.orderUserInfoCon}>
+                                <Text style={[styles.orderUserInfoText, styles.orderUserName]}>收货人：{address.username}</Text>
+                                <Text style={[styles.orderUserInfoText, styles.orderUserPhone]}>{address.mobile}</Text>
+                            </View>
+                            <Text style={[styles.orderUserInfoText, styles.orderUserAddress]}>{address.area}{address.address}</Text>
                         </View>
-                        <Text style={[styles.orderUserAddress, styles.orderUserInfoText]}>山东省青岛市黄岛区新安街道前湾港路579号 山东科技大学北区宿舍区六号楼102</Text>
-                    </View>
+                        <Image source={Images.icon_arrow_right} style={styles.iconArrowStyle} />
+                    </TouchableOpacity>
                     <View style={[styles.contentItemView, styles.orderStatusInfoView]}>
                         <Text style={styles.orderStatusInfoItem}>交易状态：等待收货</Text>
                         <Text style={styles.orderStatusInfoItem}>用户留言：</Text>
@@ -175,21 +203,41 @@ const styles = StyleSheet.create({
         color: '#ed3126',
         fontSize: FontSize(15),
     },
-    orderUserInfoView: {},
+    orderUserInfoView: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+    },
+    selectAddressView: {
+        flex: 1,
+    },
     orderUserInfoCon: {
         marginBottom: 10,
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'space-between',
+        // justifyContent: 'space-between',
     },
     orderUserInfoText: {
         color: '#333',
         fontSize: FontSize(14),
         lineHeight: FontSize(20),
     },
-    orderUserName: {},
-    orderUserPhone: {},
-    orderUserAddress: {},
+    orderUserName: {
+    },
+    orderUserPhone: {
+        color: '#666',
+        marginLeft: 10,
+        fontSize: FontSize(13),
+    },
+    orderUserAddress: {
+        color: '#666',
+        fontSize: FontSize(12),
+    },
+    iconArrowStyle: {
+        width: 20,
+        marginLeft: 10,
+        resizeMode: 'contain',
+    },
     orderStatusInfoView: {},
     orderStatusInfoItem: {
         color: '#444',

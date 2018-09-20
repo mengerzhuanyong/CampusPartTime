@@ -26,6 +26,12 @@ export default class WorkStore extends BaseStore {
         this.platform_time_list = [];
         this.platform_time_option = [];
         this.platform_work_tips = '';
+        this.work_nav_arr = ['已报名工作（0）', '正在进行工作（0）'];
+        this.workBenchData = [];
+        this.workBenchDetail = {
+            job_info: {},
+            user_info: {},
+        };
     }
 
     @observable dataSource;
@@ -41,6 +47,9 @@ export default class WorkStore extends BaseStore {
     @observable platform_time_list;
     @observable platform_time_option;
     @observable platform_work_tips;
+    @observable work_nav_arr;
+    @observable workBenchData;
+    @observable workBenchDetail;
 
     @computed
     get getDataSource() {
@@ -62,6 +71,11 @@ export default class WorkStore extends BaseStore {
         return toJS(this.platform_time_option);
     }
 
+    @computed
+    get getWorkNavigation() {
+        return toJS(this.work_nav_arr);
+    }
+
     // 工作首页 - 列表
     @action
     requestDataSource = async (url, data) => {
@@ -73,8 +87,9 @@ export default class WorkStore extends BaseStore {
                 if (data.page === 1) {
                     this.dataSource = result.data.list_data;
                 } else {
+                    let temp = this.dataSource;
                     if (result.data.list_data.length !== 0) {
-                        this.dataSource = this.dataSource.concat(result.data.list_data)
+                        this.dataSource = temp.concat(result.data.list_data)
                     }
                 }
             })
@@ -241,6 +256,51 @@ export default class WorkStore extends BaseStore {
     @action
     onSubmitPlatformTimes = async (url, data) => {
         const result = await this.postRequest(url, data, true);
+        return result;
+    };
+
+    // 获取工作台导航
+    @action
+    requestWorkNavigation = async (url) => {
+        const result = await this.getRequest(url, true);
+        if (result.code === 1) {
+            runInAction(() => {
+                this.work_nav_arr = result.data;
+            })
+        }
+        return result;
+    };
+
+    // 获取工作台列表
+    @action
+    requestWorkBenchData = async (url, data) => {
+        const result = await this.postRequest(url, data, true);
+        if (result.code === 1) {
+            runInAction(() => {
+                this.loading = false;
+                if (data.page === 1) {
+                    this.workBenchData = result.data.list_data;
+                } else {
+                    let temp = this.workBenchData;
+                    if (result.data.list_data.length !== 0) {
+                        this.workBenchData = temp.concat(result.data.list_data)
+                    }
+                }
+            })
+        }
+        return result;
+    };
+
+    // 获取工作台工作详情
+    @action
+    requestWorkBenchDetail = async (url, data) => {
+        const result = await this.postRequest(url, data, true);
+        this.loading = false;
+        if (result.code === 1) {
+            runInAction(() => {
+                this.workBenchDetail = result.data;
+            })
+        }
         return result;
     };
 

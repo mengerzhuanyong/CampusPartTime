@@ -39,7 +39,7 @@ class SpinnerLoading extends PureComponent {
     componentWillReceiveProps(nextProps) {
         const { isVisible, animated } = nextProps;
         const { visible } = this.state;
-        if (isVisible != visible) {
+        if (isVisible !== visible) {
             !isVisible && animated ? this.startAnimated() : this.setState({ visible: isVisible })
         }
     }

@@ -31,17 +31,74 @@ import {Button} from 'teaset'
 
 import MineOrderList from './mineOrderList'
 
+@inject('loginStore', 'mineStore', 'orderStore')
+@observer
 export default class OrderDetail extends Component {
 
     constructor(props) {
         super(props);
+        let {params} = this.props.navigation.state;
         this.state = {
             listData: [1, 2, 3, 4],
+            item: params && params.item ? params.item : {
+                order_data: {},
+                goods_data: {},
+            },
         };
     }
+    
+    componentDidMount() {
+        this.requestOrderDetail();
+    }
 
+    requestOrderDetail = async () => {
+        const {orderStore} = this.props;
+        let {item} = this.state;
+        let url = ServicesApi.order_details;
+        let data = {
+            type: item.type,
+            order_id: item.id,
+        };
+        let result = await orderStore.requestOrderDetail(url, data);
+    };
+
+
+
+    confirmPickUpOrder = (item) => {
+        const params = {
+            title: '温馨提示',
+            detail: '您确认收到货物了吗',
+            actions: [
+                {
+                    title: '取消',
+                    onPress: () => {},
+                },
+                {
+                    title: '确定',
+                    onPress: () => this.submitPickUpOrder(item),
+                }
+            ]
+        };
+        AlertManager.show(params);
+    }
+
+    submitPickUpOrder = async (item) => {
+        const {orderStore} = this.props;
+        let url = ServicesApi.receipt;
+        let data = {
+            type: item.type,
+            order_id: item.id,
+        };
+        let result = await orderStore.submitPickUpOrder(url, data);
+        if (result && result.code === 1) {
+            this.requestOrderDetail();
+        }
+    }
+    
     render() {
-        let {loading, listData} = this.state;
+        let {loading, item} = this.state;
+        const {orderStore} = this.props;
+        let {orderDetail} = orderStore;
         let {params} = this.props.navigation.state;
         let pageTitle = params && params.pageTitle ? params.pageTitle : '订单详情';
         return (
@@ -55,27 +112,33 @@ export default class OrderDetail extends Component {
                             <Image source={Images.img_goods1} style={styles.orderGoodsPic}/>
                         </View>
                         <View style={styles.orderGoodsTitleView}>
-                            <Text style={styles.orderGoodsTitle}>苹果iPhone X 64G 黑色</Text>
-                            <Text style={styles.orderGoodsPrices}>2200工分</Text>
+                            <Text style={styles.orderGoodsTitle}>{orderDetail.goods_data.name}</Text>
+                            <Text style={styles.orderGoodsPrices}>{orderDetail.goods_data.price}</Text>
                         </View>
                     </View>
                     <View style={[styles.contentItemView, styles.orderUserInfoView]}>
                         <View style={styles.orderUserInfoCon}>
-                            <Text style={[styles.orderUserName, styles.orderUserInfoText]}>收货人：张三</Text>
-                            <Text style={[styles.orderUserPhone, styles.orderUserInfoText]}>13234536789</Text>
+                            <Text style={[styles.orderUserName, styles.orderUserInfoText]}>收货人：{orderDetail.order_data.member_name}</Text>
+                            <Text style={[styles.orderUserPhone, styles.orderUserInfoText]}>{orderDetail.order_data.mobile}</Text>
                         </View>
-                        <Text style={[styles.orderUserAddress, styles.orderUserInfoText]}>山东省青岛市黄岛区新安街道前湾港路579号 山东科技大学北区宿舍区六号楼102</Text>
+                        <Text style={[styles.orderUserAddress, styles.orderUserInfoText]}>{orderDetail.order_data.address}</Text>
                     </View>
                     <View style={[styles.contentItemView, styles.orderStatusInfoView]}>
-                        <Text style={styles.orderStatusInfoItem}>交易状态：等待收货</Text>
-                        <Text style={styles.orderStatusInfoItem}>下单时间：2018.04.23</Text>
-                        <Text style={styles.orderStatusInfoItem}>还需偿还工分：675</Text>
+                        <Text style={styles.orderStatusInfoItem}>交易状态：{orderDetail.order_data.status_name}</Text>
+                        <Text style={styles.orderStatusInfoItem}>下单时间：{orderDetail.order_data.create_time}</Text>
+                        {item.type === 1 && <Text style={styles.orderStatusInfoItem}>还需偿还工分：{orderDetail.order_data.pay_work_point}</Text>}
                     </View>
                     <Button
-                        title={'申请退换货'}
+                        title={orderDetail.order_data.status === 1 ? '确认收货' : '申请退换货'}
                         style={[CusTheme.btnView, styles.btnView]}
                         titleStyle={[CusTheme.btnName, styles.btnName]}
-                        onPress={() => RouterHelper.navigate('', 'Work')}
+                        onPress={() => {
+                            if (orderDetail.order_data.status === 1) {
+                                this.confirmPickUpOrder(item);
+                            } else {
+                                RouterHelper.navigate('申请退换货', 'MineRepayment', {flag: 'order'});
+                            }
+                        }}
                     />
                 </ScrollView>
             </View>

@@ -7,7 +7,7 @@
 
 'use strict';
 
-import React, {PureComponent} from 'react';
+import React, {Component} from 'react';
 import {
     View,
     Text,
@@ -26,67 +26,53 @@ import {checkMobile, checkPassword} from '../../util/Tool';
 import GoodsItem from '../../component/item/goodsItem'
 import {HorizontalLine, VerticalLine} from "../../component/common/commonLine";
 import OrderItem from "../../component/item/orderItem";
+import {inject, observer} from "mobx-react/index";
 
-export default class MineOrderList extends PureComponent {
+@inject('loginStore', 'orderStore')
+@observer
+export default class MineOrderList extends Component {
     constructor(props) {
         super(props);
         this.state = {
             loading: false,
-            navigation: [
-                {id: 1, title: '手机', icon: Images.icon_nav_mobile,},
-                {id: 2, title: '电脑', icon: Images.icon_nav_pc,},
-                {id: 3, title: '平板', icon: Images.icon_nav_pad,},
-                {id: 4, title: '外设', icon: Images.icon_nav_mouse,},
-                {id: 5, title: '单反', icon: Images.icon_nav_camera,},
-            ],
-            listData: [
-                {id: 1, title: '手机', icon: Images.icon_nav_mobile,},
-                {id: 2, title: '电脑', icon: Images.icon_nav_pc,},
-                {id: 3, title: '平板', icon: Images.icon_nav_pad,},
-                {id: 4, title: '外设', icon: Images.icon_nav_mouse,},
-                {id: 5, title: '单反', icon: Images.icon_nav_camera,},
-            ],
+            listData: [1,2,3],
+            type: this.props.type,
+            status: this.props.status,
         };
         this.page = 1;
+        this.pageSize = 10;
     }
+
+    static defaultProps = {
+        type: 1,
+        status: 0,
+    };
 
     componentDidMount() {
+        let {type, status} = this.props;
+        this.requestDataSource(this.page, type, status);
     }
 
-    componentWillUnmount(){
+    componentWillReceiveProps(nextProps) {
+        // console.log('componentWillReceiveProps---->', nextProps);
+        if (nextProps.type !== this.props.type) {
+            this.requestDataSource(this.page, nextProps.type, nextProps.status);
+        }
+    }
+
+    // shouldComponentUpdate(nextProps, nextState) {
+    //     console.log(nextProps, nextState);
+    //     if (nextProps.type === this.props.type && nextProps.status === this.props.status) {
+    //         console.log('shouldComponentUpdate----> false');
+    //         return false;
+    //     }
+    //     return true;
+    // }
+
+    componentWillUnmount() {
         let timers = [this.timer1, this.timer2];
         ClearTimer(timers);
     }
-
-    renderNavigationBarView = () => {
-        return (
-            <View style={styles.headerView}>
-                <TouchableOpacity style={styles.headerTitleView}>
-                    <Image source={Images.icon_search} style={[CusTheme.headerIcon, styles.headerSearchIcon]} />
-                    <Text style={[CusTheme.headerIconTitle, styles.headerSearchTitle]}>搜索商品</Text>
-                </TouchableOpacity>
-            </View>
-        );
-    };
-
-    renderNavigationContentView = () => {
-        let data = this.state.navigation;
-        if (!data || data.length < 1) {
-            return;
-        }
-        let navigation = data.map((item, index) => {
-            return (
-                <TouchableOpacity
-                    key={item.id}
-                    style={styles.navItemView}
-                >
-                    <Image source={item.icon} style={styles.navIcon}/>
-                    <Text style={styles.navTitle}>{item.title}</Text>
-                </TouchableOpacity>
-            );
-        });
-        return navigation;
-    };
 
     _captureRef = (v) => {
         this.flatListRef = v;
@@ -96,27 +82,41 @@ export default class MineOrderList extends PureComponent {
         return `z_${index}`
     };
 
-    // 上拉加载
-    _onEndReached = () => {
-        this.timer1 = setTimeout(() => {
-            let dataTemp = this.state.listData;
-            let allLoad = false;
-            //模拟数据加载完毕,即page > 0,
-            if (this.page < 2) {
-                this.setState({ data: dataTemp.concat(this.state.listData) });
-            }
-            // allLoad 当全部加载完毕后可以设置此属性，默认为false
-            this.flatListRef.stopEndReached({ allLoad: this.page === 2 });
-            this.page++;
-        }, 500);
+    requestDataSource = async (page, type, status) => {
+        let {orderStore} = this.props;
+        // let {type, status} = this.state;
+        console.log('---->',type);
+        let url = ServicesApi.my_orders;
+        let data = {
+            type,
+            status,
+            page,
+            page_size: this.pageSize,
+        };
+        let result = await orderStore.requestDataSource(url, data, status);
+        let endStatus = false;
+        if (result && result.code === 1) {
+            endStatus = result.data.list_data.length < data.page_size;
+        } else {
+            endStatus = true;
+        }
+        this.setState({
+            ready: true
+        });
+        this.flatListRef && this.flatListRef.stopRefresh();
+        this.flatListRef && this.flatListRef.stopEndReached({allLoad: endStatus});
     };
 
-    // 下拉刷新
-    _onRefresh = () => {
-        this.timer2 = setTimeout(() => {
-            // 调用停止刷新
-            this.flatListRef.stopRefresh()
-        }, 500);
+    _onRefresh = (stopRefresh) => {
+        this.page = 1;
+        let {type, status} = this.props;
+        this.requestDataSource(this.page, type, status);
+    };
+
+    _onEndReached = (stopEndReached) => {
+        this.page++;
+        let {type, status} = this.props;
+        this.requestDataSource(this.page, type, status);
     };
 
     _renderSeparator = () => {
@@ -132,38 +132,53 @@ export default class MineOrderList extends PureComponent {
                 />
                 <Text style={CusTheme.emptyText}>亲！您还没有相关的订单哦</Text>
                 {/*<Button*/}
-                    {/*title={'去看看'}*/}
-                    {/*style={styles.btnView}*/}
-                    {/*titleStyle={styles.btnName}*/}
-                    {/*onPress={() => RouterHelper.navigate('', 'Work')}*/}
+                {/*title={'去看看'}*/}
+                {/*style={styles.btnView}*/}
+                {/*titleStyle={styles.btnName}*/}
+                {/*onPress={() => RouterHelper.navigate('', 'Work')}*/}
                 {/*/>*/}
             </View>
         );
     };
 
-    _renderListItem = (info) => {
+    _renderListItem = ({item, index}) => {
         return (
-            <OrderItem />
+            <OrderItem
+                item={item}
+                onPushToDetail={() => this.onPushToDetail(item)}
+                {...this.props}
+            />
         );
     };
 
+    onPushToDetail = (item) => {
+        RouterHelper.navigate('订单详情', 'OrderDetail', {item});
+    }
+
     render() {
+        const {orderStore, type, status} = this.props;
         let {loading, listData} = this.state;
-        listData = [];
+
+        let dataSource = orderStore.dataSource[`${status}`];
+        if (!dataSource) {
+            return <SpinnerLoading isVisible={true}/>;
+        }
         return (
-            <FlatListView
-                style={styles.listContent}
-                initialRefresh={false}
-                ref={this._captureRef}
-                data={listData}
-                removeClippedSubviews={false}
-                renderItem={this._renderListItem}
-                keyExtractor={this._keyExtractor}
-                onEndReached={this._onEndReached}
-                onRefresh={this._onRefresh}
-                ItemSeparatorComponent={this._renderSeparator}
-                ListEmptyComponent={this._renderEmptyComponent}
-            />
+            <View style={styles.container}>
+                <FlatListView
+                    style={styles.listContent}
+                    initialRefresh={true}
+                    ref={this._captureRef}
+                    data={dataSource}
+                    removeClippedSubviews={false}
+                    renderItem={this._renderListItem}
+                    keyExtractor={this._keyExtractor}
+                    onEndReached={this._onEndReached}
+                    onRefresh={this._onRefresh}
+                    ItemSeparatorComponent={this._renderSeparator}
+                    ListEmptyComponent={this._renderEmptyComponent}
+                />
+            </View>
         );
     }
 }
@@ -179,6 +194,7 @@ const styles = StyleSheet.create({
     headerComponentView: {},
     // 列表区
     listContent: {
+        flex: 1,
         paddingHorizontal: 10,
         width: SCREEN_WIDTH,
         backgroundColor: '#fff',

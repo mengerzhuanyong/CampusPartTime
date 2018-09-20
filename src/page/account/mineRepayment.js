@@ -22,16 +22,33 @@ import {
     TouchableWithoutFeedback,
 } from 'react-native'
 import NavigationBar from '../../component/navigation/NavigationBar'
+import {inject, observer} from "mobx-react/index";
 
-
+@inject('loginStore', 'mineStore', 'resourceStore')
+@observer
 export default class MineRepayment extends Component {
 
     constructor(props) {
         super(props);
+        let {params} = this.props.navigation.state;
         this.state = {
-            customerMobile: '400-500-6666',
+            flag: params && params.flag ? params.flag : 'money',
         };
     }
+
+    componentDidMount() {
+        this.requestDataSources();
+    }
+
+    requestDataSources = async () => {
+        let {flag} = this.state;
+        const {resourceStore} = this.props;
+        let url = ServicesApi.customer_service;
+        let data = {
+            flag,
+        };
+        let result = await resourceStore.requestCustomerService(url, data);
+    };
 
     makeCall = (mobile) => {
         let url = 'tel: ' + mobile;
@@ -49,6 +66,8 @@ export default class MineRepayment extends Component {
     };
 
     render() {
+        const {resourceStore} = this.props;
+        let {customerService} = resourceStore;
         let {customerMobile} = this.state;
         let {params} = this.props.navigation.state;
         let pageTitle = params && params.pageTitle ? params.pageTitle : '提前还款';
@@ -62,14 +81,14 @@ export default class MineRepayment extends Component {
                         <Image source={Images.icon_customer_service} style={styles.contentImg}/>
                     </View>
                     <View style={styles.contentTitleView}>
-                        <Text style={styles.contentTitle}>请拨打客服电话联系还款</Text>
+                        <Text style={styles.contentTitle}>{customerService.title}</Text>
                         <TouchableOpacity
                             style={styles.mobileView}
-                            onPress={() => this.makeCall(customerMobile)}
+                            onPress={() => this.makeCall(customerService.mobile)}
                         >
-                            <Text style={styles.contentTitle}>{customerMobile}</Text>
+                            <Text style={styles.contentTitle}>{customerService.mobile}</Text>
                         </TouchableOpacity>
-                        <Text style={styles.contentSubtitle}>还款说明：还款说明还款说明还款说明还款说明</Text>
+                        <Text style={styles.contentSubtitle}>{customerService.tips}</Text>
                     </View>
                 </View>
             </View>
@@ -107,6 +126,9 @@ const styles = StyleSheet.create({
     contentSubtitle: {
         color: '#999',
         marginTop: 10,
-        fontSize: FontSize(13),
+        textAlign: 'center',
+        marginHorizontal: 20,
+        fontSize: FontSize(12),
+        lineHeight: 24,
     },
 });

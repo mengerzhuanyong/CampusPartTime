@@ -33,7 +33,7 @@ class Message extends React.Component {
     shouldComponentUpdate(nextProps, nextState, nextContext) {
         const info = nextProps.info
         const preInfo = this.props.info
-        if (info.item.message_id != preInfo.item.message_id) {
+        if (info.item.message_id !== preInfo.item.message_id) {
             return true
         } else {
             return false

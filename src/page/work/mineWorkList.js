@@ -7,7 +7,7 @@
 
 'use strict';
 
-import React, {PureComponent} from 'react';
+import React, {Component} from 'react';
 import {
     View,
     Text,
@@ -27,72 +27,51 @@ import GoodsItem from '../../component/item/goodsItem'
 import {HorizontalLine, VerticalLine} from "../../component/common/commonLine";
 import OrderItem from "../../component/item/orderItem";
 import MineJobItem from "../../component/item/mineJobItem";
+import {inject, observer} from "mobx-react/index";
 
-export default class MineWorkList extends PureComponent {
+@inject('loginStore', 'workStore')
+@observer
+export default class MineWorkList extends Component {
     constructor(props) {
         super(props);
         this.state = {
             loading: false,
-            navigation: [
-                {id: 1, title: '手机', icon: Images.icon_nav_mobile,},
-                {id: 2, title: '电脑', icon: Images.icon_nav_pc,},
-                {id: 3, title: '平板', icon: Images.icon_nav_pad,},
-                {id: 4, title: '外设', icon: Images.icon_nav_mouse,},
-                {id: 5, title: '单反', icon: Images.icon_nav_camera,},
-            ],
-            listData: [
-                {id: 1, title: '手机', icon: Images.icon_nav_mobile,},
-                {id: 2, title: '电脑', icon: Images.icon_nav_pc,},
-                {id: 3, title: '平板', icon: Images.icon_nav_pad,},
-                {id: 4, title: '外设', icon: Images.icon_nav_mouse,},
-                {id: 5, title: '单反', icon: Images.icon_nav_camera,},
-            ],
+            listData: [1,2,3],
+            type: this.props.type,
         };
         this.page = 1;
+        this.pageSize = 10;
     }
+
+    static defaultProps = {
+        type: 1,
+    };
 
     componentDidMount() {
+        let {type} = this.props;
+        this.requestDataSource(this.page, type);
     }
 
-    componentWillUnmount(){
-        let timers = [this.timer1, this.timer2];
-        ClearTimer(timers);
-    }
-
-    componentWillUnmount(){
-        let timers = [this.timer1, this.timer2];
-        ClearTimer(timers);
-    }
-
-    renderNavigationBarView = () => {
-        return (
-            <View style={styles.headerView}>
-                <TouchableOpacity style={styles.headerTitleView}>
-                    <Image source={Images.icon_search} style={[CusTheme.headerIcon, styles.headerSearchIcon]} />
-                    <Text style={[CusTheme.headerIconTitle, styles.headerSearchTitle]}>搜索商品</Text>
-                </TouchableOpacity>
-            </View>
-        );
-    };
-
-    renderNavigationContentView = () => {
-        let data = this.state.navigation;
-        if (!data || data.length < 1) {
-            return;
+    componentWillReceiveProps(nextProps) {
+        // console.log('componentWillReceiveProps---->', nextProps);
+        if (nextProps.type !== this.props.type) {
+            this.requestDataSource(this.page, nextProps.type);
         }
-        let navigation = data.map((item, index) => {
-            return (
-                <TouchableOpacity
-                    key={item.id}
-                    style={styles.navItemView}
-                >
-                    <Image source={item.icon} style={styles.navIcon}/>
-                    <Text style={styles.navTitle}>{item.title}</Text>
-                </TouchableOpacity>
-            );
-        });
-        return navigation;
-    };
+    }
+
+    // shouldComponentUpdate(nextProps, nextState) {
+    //     console.log(nextProps, nextState);
+    //     if (nextProps.type === this.props.type && nextProps.status === this.props.status) {
+    //         console.log('shouldComponentUpdate----> false');
+    //         return false;
+    //     }
+    //     return true;
+    // }
+
+    componentWillUnmount() {
+        let timers = [this.timer1, this.timer2];
+        ClearTimer(timers);
+    }
 
     _captureRef = (v) => {
         this.flatListRef = v;
@@ -102,27 +81,38 @@ export default class MineWorkList extends PureComponent {
         return `z_${index}`
     };
 
-    // 上拉加载
-    _onEndReached = () => {
-        this.timer1 = setTimeout(() => {
-            let dataTemp = this.state.listData;
-            let allLoad = false;
-            //模拟数据加载完毕,即page > 0,
-            if (this.page < 2) {
-                this.setState({ data: dataTemp.concat(this.state.listData) });
-            }
-            // allLoad 当全部加载完毕后可以设置此属性，默认为false
-            this.flatListRef.stopEndReached({ allLoad: this.page === 2 });
-            this.page++;
-        }, 500);
+    requestDataSource = async (page, type) => {
+        let {workStore} = this.props;
+        let url = ServicesApi.work_bench;
+        let data = {
+            type,
+            page,
+            page_size: this.pageSize,
+        };
+        let result = await workStore.requestWorkBenchData(url, data);
+        let endStatus = false;
+        if (result && result.code === 1) {
+            endStatus = result.data.list_data.length < data.page_size;
+        } else {
+            endStatus = true;
+        }
+        this.setState({
+            ready: true
+        });
+        this.flatListRef && this.flatListRef.stopRefresh();
+        this.flatListRef && this.flatListRef.stopEndReached({allLoad: endStatus});
     };
 
-    // 下拉刷新
-    _onRefresh = () => {
-        this.timer2 = setTimeout(() => {
-            // 调用停止刷新
-            this.flatListRef.stopRefresh()
-        }, 500);
+    _onRefresh = (stopRefresh) => {
+        this.page = 1;
+        let {type} = this.props;
+        this.requestDataSource(this.page, type);
+    };
+
+    _onEndReached = (stopEndReached) => {
+        this.page++;
+        let {type} = this.props;
+        this.requestDataSource(this.page, type);
     };
 
     _renderSeparator = () => {
@@ -147,29 +137,47 @@ export default class MineWorkList extends PureComponent {
         );
     };
 
-    _renderListItem = (info) => {
+    _renderListItem = ({item, index}) => {
         return (
-            <MineJobItem />
+            <MineJobItem
+                item={item}
+                onPushToDetail={() => this.onPushToDetail(item)}
+                {...this.props}
+            />
         );
     };
 
+    onPushToDetail = (item) => {
+        if (item.status === 2) {
+            RouterHelper.navigate('工作详情', 'MineWorkDetail', {item});
+        } else {
+            RouterHelper.navigate('确认信息', 'WorkSignUpStepThree', {item, flag: 'workspace'});
+        }
+    }
+
     render() {
+        const {workStore, type} = this.props;
         let {loading, listData} = this.state;
-        listData = [];
+        let {workBenchData} = workStore;
+        if (!workBenchData) {
+            return <SpinnerLoading isVisible={true}/>;
+        }
         return (
-            <FlatListView
-                style={styles.listContent}
-                initialRefresh={false}
-                ref={this._captureRef}
-                data={listData}
-                removeClippedSubviews={false}
-                renderItem={this._renderListItem}
-                keyExtractor={this._keyExtractor}
-                onEndReached={this._onEndReached}
-                onRefresh={this._onRefresh}
-                ItemSeparatorComponent={this._renderSeparator}
-                ListEmptyComponent={this._renderEmptyComponent}
-            />
+            <View style={styles.container}>
+                <FlatListView
+                    style={styles.listContent}
+                    initialRefresh={true}
+                    ref={this._captureRef}
+                    data={workBenchData}
+                    removeClippedSubviews={false}
+                    renderItem={this._renderListItem}
+                    keyExtractor={this._keyExtractor}
+                    onEndReached={this._onEndReached}
+                    onRefresh={this._onRefresh}
+                    ItemSeparatorComponent={this._renderSeparator}
+                    ListEmptyComponent={this._renderEmptyComponent}
+                />
+            </View>
         );
     }
 }

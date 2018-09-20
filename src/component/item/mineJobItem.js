@@ -10,6 +10,7 @@ import React, { Component, PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import {View, Text, ViewPropTypes, StyleSheet, Image, TouchableOpacity} from 'react-native';
 import {scaleSize} from "../../util/Tool";
+import JobTagComponent from "../job/jobTagComponent";
 
 export default class MineJobItem extends PureComponent {
 
@@ -31,35 +32,36 @@ export default class MineJobItem extends PureComponent {
     static defaultProps = {
         ...View.defaultProps,
         active: false,
+        item: {},
     };
 
     render() {
+        let {item, onPushToDetail} = this.props;
         return (
-            <TouchableOpacity style={styles.jobItemView}>
+            <TouchableOpacity
+                style={styles.jobItemView}
+                onPress={onPushToDetail}
+            >
                 <View style={styles.jobItemPicView}>
                     <Image
                         style={styles.jobItemPic}
                         resizeMode={'cover'}
-                        source={Images.img_jobs1}
+                        source={item.illustration ? {uri: item.illustration} : Images.img_jobs1}
                     />
                 </View>
                 <View style={styles.jobInfoView}>
                     <View style={[styles.jobInfoItemView, styles.jobInfoTitleView]}>
-                        <Text style={styles.jobInfoTitle}>花盘传单派发</Text>
-                        <View style={styles.jobInfoTagsView}>
-                            <View style={styles.jobInfoTagItemView}>
-                                <Text style={styles.jobInfoTagItemName}>急招</Text>
-                            </View>
-                            <View style={[styles.jobInfoTagItemView, styles.jobInfoTagIconView]}>
-                                <Image source={Images.icon_hot} style={[styles.jobInfoTagIcon]} />
-                            </View>
-                        </View>
+                        <Text style={styles.jobInfoTitle}>{item.name}</Text>
+                        <JobTagComponent
+                            tagsData={item.tags}
+                            {...this.props}
+                        />
                     </View>
                     <View style={[styles.jobInfoItemView, styles.marginVerticalView]} />
                     <View style={styles.jobInfoItemView}>
                         <View style={styles.jobInfoLeftView}>
                             <Image source={Images.icon_calendar} style={[styles.jobInfoTagIcon]} />
-                            <Text style={styles.jobInfoContext}>2018.04.04</Text>
+                            <Text style={styles.jobInfoContext}>{item.work_time}</Text>
                         </View>
                     </View>
                 </View>

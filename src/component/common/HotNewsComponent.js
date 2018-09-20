@@ -64,7 +64,7 @@ export default class HotNewsComponent extends Component {
                         activeOpacity={1}
                         onPress={() => RouterHelper.navigate('消息', 'SystemMessage')}
                     >
-                        <Text style={styles.noticeContext}>{item.content}</Text>
+                        <Text style={styles.noticeContext} numberOfLines={1}>{item.content}</Text>
                     </TouchableOpacity>
                 )
             });
@@ -126,6 +126,7 @@ const styles = StyleSheet.create({
         // backgroundColor: '#123',
     },
     noticeContext: {
+        flex: 1,
         color: '#f4954e',
         fontSize: FontSize(12),
     },

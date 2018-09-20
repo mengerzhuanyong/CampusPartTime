@@ -82,7 +82,7 @@ export default class OrderConfirm extends Component {
     };
 
     renderDescription = (data) => {
-        if (!data || data.lenth < 1) {
+        if (!data || data.length < 1) {
             return;
         }
         let descriptions = data.map((item, index) => {

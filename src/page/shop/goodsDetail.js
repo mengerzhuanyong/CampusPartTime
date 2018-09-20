@@ -87,7 +87,7 @@ export default class GoodsDetail extends Component {
     };
 
     renderDescription = (data) => {
-        if (!data || data.lenth < 1) {
+        if (!data || data.length < 1) {
             return;
         }
         let descriptions = data.map((item, index) => {
@@ -128,14 +128,6 @@ export default class GoodsDetail extends Component {
                                     tagsData={getGoodsDetail.tags}
                                     {...this.props}
                                 />
-                                {/*<View style={styles.goodsInfoTagsView}>*/}
-                                    {/*<View style={styles.goodsInfoTagItemView}>*/}
-                                        {/*<Text style={styles.goodsInfoTagItemName}>急招</Text>*/}
-                                    {/*</View>*/}
-                                    {/*<View style={[styles.goodsInfoTagItemView, styles.goodsInfoTagIconView]}>*/}
-                                        {/*<Image source={Images.icon_hot} style={[styles.goodsInfoIcon]} />*/}
-                                    {/*</View>*/}
-                                {/*</View>*/}
                             </View>
                             <View style={styles.goodsInfoPriceView}>
                                 <Text style={styles.goodsInfoPriceTips}>¥</Text>

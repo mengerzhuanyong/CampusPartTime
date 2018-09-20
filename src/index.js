@@ -75,7 +75,7 @@ export default class Index extends React.Component {
                 loginStore.saveUserInfo(localRes.data);
                 this.timer2 = setTimeout(() => {
                     RouterHelper.reset('', 'Tab');
-                    // RouterHelper.reset('', 'Address');
+                    // RouterHelper.reset('', 'MineWorkSpace');
                     SplashScreen.hide();
                 }, 600);
             }

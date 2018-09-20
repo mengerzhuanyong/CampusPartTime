@@ -1,5 +1,5 @@
 /**
- * 校园空兼 - Work
+ * 校园空兼 - Search
  * https://menger.me
  * @大梦
  */
@@ -42,7 +42,7 @@ import JobItem from "../../component/item/jobItem";
 
 
 
-export default class Work extends Component {
+export default class Search extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -158,7 +158,7 @@ export default class Work extends Component {
         return (
             <View style={styles.container}>
                 <NavigationBar
-                    title={null}
+                    title={this.renderNavigationBarView()}
                     style={{
                         backgroundColor: '#fff',
                     }}
@@ -166,7 +166,6 @@ export default class Work extends Component {
                     renderLeftAction={null}
                     backgroundImage={null}
                 />
-                {this.renderNavigationBarView()}
                 <View style={styles.content}>
                     <View style={styles.searchTipsView}>
                         <View style={styles.searchTipsItemView}>
@@ -180,27 +179,22 @@ export default class Work extends Component {
                                     titleStyle={styles.searchTipsConItemName}
                                 />
                                 <Button
-                                    title={'手机'}
+                                    title={'电脑'}
                                     style={styles.searchTipsConItem}
                                     titleStyle={styles.searchTipsConItemName}
                                 />
                                 <Button
-                                    title={'手机'}
+                                    title={'相机'}
                                     style={styles.searchTipsConItem}
                                     titleStyle={styles.searchTipsConItemName}
                                 />
                                 <Button
-                                    title={'手机'}
+                                    title={'iPhone X Max'}
                                     style={styles.searchTipsConItem}
                                     titleStyle={styles.searchTipsConItemName}
                                 />
                                 <Button
-                                    title={'手机'}
-                                    style={styles.searchTipsConItem}
-                                    titleStyle={styles.searchTipsConItemName}
-                                />
-                                <Button
-                                    title={'手机'}
+                                    title={'iPhone XR'}
                                     style={styles.searchTipsConItem}
                                     titleStyle={styles.searchTipsConItemName}
                                 />
@@ -220,22 +214,22 @@ export default class Work extends Component {
                                     titleStyle={styles.searchTipsConItemName}
                                 />
                                 <Button
-                                    title={'手机'}
+                                    title={'电脑'}
                                     style={styles.searchTipsConItem}
                                     titleStyle={styles.searchTipsConItemName}
                                 />
                                 <Button
-                                    title={'手机'}
+                                    title={'相机'}
                                     style={styles.searchTipsConItem}
                                     titleStyle={styles.searchTipsConItemName}
                                 />
                                 <Button
-                                    title={'手机'}
+                                    title={'iPhone X Max'}
                                     style={styles.searchTipsConItem}
                                     titleStyle={styles.searchTipsConItemName}
                                 />
                                 <Button
-                                    title={'手机'}
+                                    title={'iPhone XR'}
                                     style={styles.searchTipsConItem}
                                     titleStyle={styles.searchTipsConItemName}
                                 />
@@ -270,9 +264,6 @@ const styles = StyleSheet.create({
     },
     headerView: {
         flex: 1,
-        top: 20,
-        zIndex: 999,
-        position: 'absolute',
         paddingHorizontal: 15,
         width: SCREEN_WIDTH,
         flexDirection: 'row',
@@ -288,8 +279,8 @@ const styles = StyleSheet.create({
     },
     headerLeftIcon: {
         tintColor: '#333',
-        width: ScaleSize(55),
-        height: ScaleSize(55),
+        width: 25,
+        height: 25,
         resizeMode: 'contain',
     },
     headerSearchView: {

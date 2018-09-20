@@ -13,13 +13,17 @@ export default class ShopStore extends BaseStore {
 
     constructor(params) {
         super(params);
+        this.goodsNavigation = [];
         this.dataSource = [];
+        this.goodsList = [];
         this.goodsDetail = {};
         this.cartGoodsInfo = {};
         this.orderTips = {};
     }
 
+    @observable goodsNavigation;
     @observable dataSource;
+    @observable goodsList;
     @observable goodsDetail;
     @observable cartGoodsInfo;
     @observable orderTips;
@@ -33,11 +37,23 @@ export default class ShopStore extends BaseStore {
         return toJS(this.goodsDetail);
     }
 
+    // 商品分类
+    getGoodsCategory = async (url, data) => {
+        this.loading = true;
+        const result = await this.postRequest(url, data, true);
+        if (result.code === 1) {
+            runInAction(() => {
+                this.goodsNavigation = result.data;
+            })
+        }
+        return result;
+    };
+
     // 换购首页
     @action
     requestDataSource = async (url, data) => {
         this.loading = true;
-        const result = await this.postRequest(url, data);
+        const result = await this.postRequest(url, data, true);
         if (result.code === 1) {
             runInAction(() => {
                 this.loading = false;
@@ -53,6 +69,27 @@ export default class ShopStore extends BaseStore {
             runInAction(() => {
                 this.loading = false;
                 this.dataSource = [];
+            })
+        }
+        return result;
+    };
+
+    // 商品列表
+    @action
+    requestGoodsList = async (url, data) => {
+        this.loading = true;
+        const result = await this.postRequest(url, data, true);
+        if (result.code === 1) {
+            runInAction(() => {
+                this.loading = false;
+                if (data.page === 1) {
+                    this.goodsList = result.data.list_data;
+                } else {
+                    let temp = this.goodsList;
+                    if (result.data.list_data.length !== 0) {
+                        this.goodsList = temp.concat(result.data.list_data)
+                    }
+                }
             })
         }
         return result;

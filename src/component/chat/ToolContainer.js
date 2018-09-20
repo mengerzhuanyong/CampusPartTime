@@ -211,7 +211,7 @@ class ToolContainer extends React.PureComponent {
     _onKeyboardShow = (info) => {
         const { contentHeight, onToolbarWillShow } = this.props
 
-        if (info.duration != 0) {
+        if (info.duration !== 0) {
             const endCoordinates = info.endCoordinates
             const toValue = contentHeight - endCoordinates.height
             this.toolAnimatedRef.startAnimatedTiming(toValue)

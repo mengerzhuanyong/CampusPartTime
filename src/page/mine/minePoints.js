@@ -36,12 +36,40 @@ export default class MinePoints extends Component {
         this.state = {
             listData: [1,2,3,4],
         };
+        this.page = 1;
+        this.pageSize = 10;
+    }
+
+    componentDidMount() {
+        this.requestDataSource(this.page);
     }
 
     componentWillUnmount(){
         let timers = [this.timer1, this.timer2];
         ClearTimer(timers);
     }
+
+    requestDataSource = async (page) => {
+        const {mineStore} = this.props;
+        let url = ServicesApi.my_point;
+        let data = {
+            page,
+            page_size: this.pageSize,
+        };
+
+        let result = await mineStore.requestPointDetail(url, data);
+        let endStatus = false;
+        if (result && result.code === 1) {
+            endStatus = result.data.list_data.length < data.page_size;
+        } else {
+            endStatus = true;
+        }
+        this.setState({
+            ready: true
+        });
+        this.flatListRef && this.flatListRef.stopRefresh();
+        this.flatListRef && this.flatListRef.stopEndReached({allLoad: endStatus});
+    };
 
     onShare = () => {
         const params = {
@@ -54,10 +82,17 @@ export default class MinePoints extends Component {
         ActionsManager.showShareModule(params);
     };
 
-    _showPointsRules = () => {
+    _showPointsRules = (data = []) => {
+        let context = data.map((item, index) => {
+            return (
+                <Text key={item.id} style={styles.alertContext}>{item.value}</Text>
+            );
+        });
+        let content = <View style={styles.alertContent}>{context}</View>;
+        console.log(content);
         const params = {
             title: '积分规则',
-            detail: '1、分享至微信好友可获得10积分。',
+            detail: content,
             showClose: true,
             style: styles.alertContainer,
             actionStyle: styles.actionStyle,
@@ -105,8 +140,9 @@ export default class MinePoints extends Component {
     };
 
     _renderHeaderComponent = () => {
+        let {mineStore} = this.props;
+        let {pointsInfo} = mineStore;
         return (
-
             <View style={styles.headerComponentView}>
                 <ImageBackground
                     style={styles.contentTopView}
@@ -115,7 +151,7 @@ export default class MinePoints extends Component {
                 >
                     <View style={[styles.contentTopItemView, styles.creditsInfoView]}>
                         <Text style={styles.creditsInfoTitle}>当前积分</Text>
-                        <Text style={styles.creditsInfoValue}>9999</Text>
+                        <Text style={styles.creditsInfoValue}>{pointsInfo.points}</Text>
                     </View>
                 </ImageBackground>
                 <View style={styles.navBtnView}>
@@ -136,7 +172,7 @@ export default class MinePoints extends Component {
                     <Text style={styles.contentTitle}>积分获取记录</Text>
                     <TouchableOpacity
                         style={styles.contentTitleRightView}
-                        onPress={this._showPointsRules}
+                        onPress={() => this._showPointsRules(pointsInfo.point_rules)}
                     >
                         <Text style={styles.contentDetail}>积分规则</Text>
                     </TouchableOpacity>
@@ -146,18 +182,20 @@ export default class MinePoints extends Component {
         );
     };
 
-    _renderListItem = (info) => {
+    _renderListItem = ({item, index}) => {
         return (
             <View style={styles.detailInfoItemView}>
-                <Text style={styles.detailInfoItemTitle}>朋友圈分享</Text>
-                <Text style={styles.detailInfoItemTime}>2018-07-10</Text>
-                <Text style={styles.detailInfoItemValue}>15积分</Text>
+                <Text style={styles.detailInfoItemTitle}>{item.name}</Text>
+                <Text style={styles.detailInfoItemTime}>{item.date}</Text>
+                <Text style={styles.detailInfoItemValue}>{item.value}</Text>
             </View>
         );
     };
 
     render() {
         let {loading, listData} = this.state;
+        let {mineStore} = this.props;
+        let {pointsInfo, pointsDetail} = mineStore;
         let {params} = this.props.navigation.state;
         let pageTitle = params && params.pageTitle ? params.pageTitle : '工分明细';
         return (
@@ -173,7 +211,7 @@ export default class MinePoints extends Component {
                         style={styles.listContent}
                         initialRefresh={false}
                         ref={this._captureRef}
-                        data={this.state.listData}
+                        data={pointsDetail}
                         renderItem={this._renderListItem}
                         keyExtractor={this._keyExtractor}
                         onEndReached={this._onEndReached}
@@ -364,6 +402,18 @@ const styles = StyleSheet.create({
         paddingHorizontal: 10,
         width: SCREEN_WIDTH - 50,
         // backgroundColor: '#123'
+    },
+    alertContent: {
+        marginTop: 15,
+        minHeight: 80,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    alertContext: {
+        // flex: 1,
+        color: '#333',
+        fontSize: FontSize(12),
+        lineHeight: FontSize(18),
     },
     actionStyle: {
         height: 0,

@@ -26,6 +26,10 @@ export default class MineStore extends BaseStore {
         };
         this.myWorkPoints = {};
         this.myWorkPointsDetail = [];
+        this.pointsInfo = {};
+        this.pointsDetail = [];
+        this.creditInfo = [];
+        this.creditDetail = [];
     }
 
     @observable dataSource;
@@ -33,6 +37,10 @@ export default class MineStore extends BaseStore {
     @observable myCredits;
     @observable myWorkPoints;
     @observable myWorkPointsDetail;
+    @observable pointsInfo;
+    @observable pointsDetail;
+    @observable creditInfo;
+    @observable creditDetail;
 
     @computed
     get getDataSource() {
@@ -134,6 +142,60 @@ export default class MineStore extends BaseStore {
             runInAction(() => {
                 this.loading = false;
                 this.myWorkPointsDetail = [];
+            })
+        }
+        return result;
+    };
+
+    // 积分明细
+    @action
+    requestPointDetail = async (url, data) => {
+        this.loading = true;
+        const result = await this.postRequest(url, data, true);
+        if (result.code === 1) {
+            runInAction(() => {
+                this.loading = false;
+                if (data.page === 1) {
+                    this.pointsInfo = result.data;
+                    this.pointsDetail = result.data.list_data;
+                } else {
+                    if (result.data.list_data.length !== 0) {
+                        this.pointsDetail = this.pointsDetail.concat(result.data.list_data)
+                    }
+                }
+            })
+        } else {
+            runInAction(() => {
+                this.loading = false;
+                this.pointsInfo = {};
+                this.pointsDetail = [];
+            })
+        }
+        return result;
+    };
+
+    // 诚信体系
+    @action
+    requestCreditDetail = async (url, data) => {
+        this.loading = true;
+        const result = await this.postRequest(url, data, true);
+        if (result.code === 1) {
+            runInAction(() => {
+                this.loading = false;
+                if (data.page === 1) {
+                    this.creditInfo = result.data;
+                    this.creditDetail = result.data.list_data;
+                } else {
+                    if (result.data.list_data.length !== 0) {
+                        this.creditDetail = this.creditDetail.concat(result.data.list_data)
+                    }
+                }
+            })
+        } else {
+            runInAction(() => {
+                this.loading = false;
+                this.creditInfo = {};
+                this.creditDetail = [];
             })
         }
         return result;

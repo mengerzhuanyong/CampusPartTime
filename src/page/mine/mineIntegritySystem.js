@@ -30,17 +30,64 @@ import { observer, inject } from 'mobx-react';
 import SegmentedControlTab from '../../component/common/SegmentedControlTab'
 import MineOrderList from '../order/mineOrderList'
 import {HorizontalLine, VerticalLine} from "../../component/common/commonLine";
+import FlatListView from "../../component/common/FlatListView";
+import {Button} from "teaset";
+
+@inject('loginStore', 'mineStore')
+@observer
 export default class MineIntegritySystem extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {};
+        this.state = {
+            activeTabIndex: 0,
+        };
+        this.page = 1;
+        this.pageSize = 10;
     }
 
-    _showPointsRules = () => {
+    componentDidMount() {
+        this.requestDataSource(this.page);
+    }
+
+    componentWillUnmount(){
+        let timers = [this.timer1, this.timer2];
+        ClearTimer(timers);
+    }
+
+    requestDataSource = async (page) => {
+        const {mineStore} = this.props;
+        let url = ServicesApi.credit_system;
+        let data = {
+            page,
+            page_size: this.pageSize,
+        };
+
+        let result = await mineStore.requestCreditDetail(url, data);
+        let endStatus = false;
+        if (result && result.code === 1) {
+            endStatus = result.data.list_data.length < data.page_size;
+        } else {
+            endStatus = true;
+        }
+        this.setState({
+            ready: true
+        });
+        this.flatListRef && this.flatListRef.stopRefresh();
+        this.flatListRef && this.flatListRef.stopEndReached({allLoad: endStatus});
+    };
+
+    _showPointsRules = (data = []) => {
+        let context = data.map((item, index) => {
+            return (
+                <Text key={item.id} style={styles.alertContext}>{item.value}</Text>
+            );
+        });
+        let content = <View style={styles.alertContent}>{context}</View>;
+        console.log(content);
         const params = {
             title: '积分规则',
-            detail: '1、分享至微信好友可获得10积分。',
+            detail: content,
             showClose: true,
             style: styles.alertContainer,
             actionStyle: styles.actionStyle,
@@ -52,7 +99,58 @@ export default class MineIntegritySystem extends Component {
         AlertManager.show(params);
     };
 
+    _captureRef = (v) => {
+        this.flatListRef = v;
+    };
+
+    _keyExtractor = (item, index) => {
+        return `z_${index}`
+    };
+
+    // 上拉加载
+    _onEndReached = () => {
+        this.timer1 = setTimeout(() => {
+
+            // allLoad 当全部加载完毕后可以设置此属性，默认为false
+            this.flatListRef.stopEndReached({ allLoad: this.page === 2 });
+            this.page++;
+        }, 500);
+    };
+
+    // 下拉刷新
+    _onRefresh = () => {
+        this.timer2 = setTimeout(() => {
+            // 调用停止刷新
+            this.flatListRef.stopRefresh()
+        }, 500);
+    };
+
+    _renderSeparator = () => {
+        return <HorizontalLine lineStyle={styles.tableHorLine}/>;
+    };
+
+    _renderHeaderComponent = () => {
+        return (
+            <View style={[styles.tableItemView, styles.tableTitleView]} />
+        );
+    };
+
+    _renderListItem = ({item, index}) => {
+        return (
+            <View style={[styles.tableItemView, styles.tableTitleView]}>
+                <Text style={[styles.tableContext, styles.tableName]} numberOfLines={2}>{item.name}</Text>
+                <VerticalLine lineStyle={styles.tableVerLine}/>
+                <Text style={[styles.tableContext, styles.tableDate]}>{item.date}</Text>
+                <VerticalLine lineStyle={styles.tableVerLine}/>
+                <Text style={[styles.tableContext, styles.tableValue]}>{item.value}</Text>
+            </View>
+        );
+    };
+
     render() {
+        let {activeTabIndex} = this.state;
+        let {mineStore} = this.props;
+        let {creditInfo, creditDetail} = mineStore;
         let {params} = this.props.navigation.state;
         let pageTitle = params && params.pageTitle ? params.pageTitle : '诚信体系';
         return (
@@ -70,10 +168,10 @@ export default class MineIntegritySystem extends Component {
                     >
                         <View style={[styles.contentTopItemView, styles.creditsInfoView]}>
                             <Text style={styles.creditsInfoTitle}>我的诚信分</Text>
-                            <Text style={styles.creditsInfoValue}>9999</Text>
+                            <Text style={styles.creditsInfoValue}>{creditInfo.credit_point}</Text>
                             <TouchableOpacity
                                 style={styles.creditsInfoRulesView}
-                                onPress={this._showPointsRules}
+                                onPress={() => this._showPointsRules(creditInfo.point_rules)}
                             >
                                 <Text style={styles.creditsInfoRules}>积分原则条例 ></Text>
                             </TouchableOpacity>
@@ -87,67 +185,58 @@ export default class MineIntegritySystem extends Component {
                         activeTabTextStyle={styles.activeTabTextStyle}
                         tabsContainerStyle={styles.tabContainer}
                         onTabPress={(index) => {
-                            // console.log(index);
+                            console.log(index);
+                            this.setState({
+                                activeTabIndex: index
+                            });
                         }}
                     />
-                    <View style={styles.pointsTableContent}>
-                        <View style={[styles.tableItemView, styles.tableTitleView]}>
-                            <Text style={styles.tableTitle}>积分</Text>
-                            <VerticalLine lineStyle={styles.tableVerLine}/>
-                            <Text style={styles.tableTitle}>兑换额度</Text>
+                    {activeTabIndex === 1 ?
+                        <View style={styles.pointsTableContent}>
+                            <View style={[styles.tableItemView, styles.tableTitleView]}>
+                                <Text style={styles.tableTitle}>积分</Text>
+                                <VerticalLine lineStyle={styles.tableVerLine}/>
+                                <Text style={styles.tableTitle}>兑换额度</Text>
+                            </View>
+                            {creditInfo.credit_exchange && creditInfo.credit_exchange.map((item, index) => {
+                                return (
+                                    <View
+                                        key={item.id}
+                                        style={styles.itemView}
+                                    >
+                                        <HorizontalLine lineStyle={styles.tableHorLine}/>
+                                        <View style={[styles.tableItemView, styles.tableTitleView]}>
+                                            <Text style={styles.tableContext}>{item.point}</Text>
+                                            <VerticalLine lineStyle={styles.tableVerLine}/>
+                                            <Text style={styles.tableContext}>{item.quota}</Text>
+                                        </View>
+                                    </View>
+                                )
+                            })}
                         </View>
-                        <HorizontalLine lineStyle={styles.tableHorLine}/>
-                        <View style={[styles.tableItemView, styles.tableTitleView]}>
-                            <Text style={styles.tableContext}>500</Text>
-                            <VerticalLine lineStyle={styles.tableVerLine}/>
-                            <Text style={styles.tableContext}>1500</Text>
+                        :
+                        <View style={styles.pointsTableContent}>
+                            <View style={[styles.tableItemView, styles.tableTitleView]}>
+                                <Text style={[styles.tableTitle, styles.tableName]}>操作</Text>
+                                <VerticalLine lineStyle={styles.tableVerLine}/>
+                                <Text style={[styles.tableTitle, styles.tableDate]}>时间</Text>
+                                <VerticalLine lineStyle={styles.tableVerLine}/>
+                                <Text style={[styles.tableTitle, styles.tableValue]}>明细</Text>
+                            </View>
+                            <FlatListView
+                                style={styles.listContent}
+                                initialRefresh={false}
+                                ref={this._captureRef}
+                                data={creditDetail}
+                                renderItem={this._renderListItem}
+                                keyExtractor={this._keyExtractor}
+                                onEndReached={this._onEndReached}
+                                onRefresh={this._onRefresh}
+                                ItemSeparatorComponent={this._renderSeparator}
+                                // ListHeaderComponent={this._renderHeaderComponent}
+                            />
                         </View>
-                        <HorizontalLine lineStyle={styles.tableHorLine}/>
-                        <View style={[styles.tableItemView, styles.tableTitleView]}>
-                            <Text style={styles.tableContext}>500</Text>
-                            <VerticalLine lineStyle={styles.tableVerLine}/>
-                            <Text style={styles.tableContext}>1500</Text>
-                        </View>
-                        <HorizontalLine lineStyle={styles.tableHorLine}/>
-                        <View style={[styles.tableItemView, styles.tableTitleView]}>
-                            <Text style={styles.tableContext}>500</Text>
-                            <VerticalLine lineStyle={styles.tableVerLine}/>
-                            <Text style={styles.tableContext}>1500</Text>
-                        </View>
-                    </View>
-                    <View style={styles.pointsTableContent}>
-                        <View style={[styles.tableItemView, styles.tableTitleView]}>
-                            <Text style={styles.tableTitle}>操作</Text>
-                            <VerticalLine lineStyle={styles.tableVerLine}/>
-                            <Text style={styles.tableTitle}>时间</Text>
-                            <VerticalLine lineStyle={styles.tableVerLine}/>
-                            <Text style={styles.tableTitle}>明细</Text>
-                        </View>
-                        <HorizontalLine lineStyle={styles.tableHorLine}/>
-                        <View style={[styles.tableItemView, styles.tableTitleView]}>
-                            <Text style={styles.tableContext}>500</Text>
-                            <VerticalLine lineStyle={styles.tableVerLine}/>
-                            <Text style={styles.tableContext}>2018.07.10</Text>
-                            <VerticalLine lineStyle={styles.tableVerLine}/>
-                            <Text style={styles.tableContext}>1500</Text>
-                        </View>
-                        <HorizontalLine lineStyle={styles.tableHorLine}/>
-                        <View style={[styles.tableItemView, styles.tableTitleView]}>
-                            <Text style={styles.tableContext}>500</Text>
-                            <VerticalLine lineStyle={styles.tableVerLine}/>
-                            <Text style={styles.tableContext}>2018.07.10</Text>
-                            <VerticalLine lineStyle={styles.tableVerLine}/>
-                            <Text style={styles.tableContext}>1500</Text>
-                        </View>
-                        <HorizontalLine lineStyle={styles.tableHorLine}/>
-                        <View style={[styles.tableItemView, styles.tableTitleView]}>
-                            <Text style={styles.tableContext}>500</Text>
-                            <VerticalLine lineStyle={styles.tableVerLine}/>
-                            <Text style={styles.tableContext}>2018.07.10</Text>
-                            <VerticalLine lineStyle={styles.tableVerLine}/>
-                            <Text style={styles.tableContext}>1500</Text>
-                        </View>
-                    </View>
+                    }
                 </View>
             </View>
         );
@@ -241,6 +330,18 @@ const styles = StyleSheet.create({
         width: SCREEN_WIDTH - 50,
         // backgroundColor: '#123'
     },
+    alertContent: {
+        marginTop: 15,
+        minHeight: 80,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    alertContext: {
+        // flex: 1,
+        color: '#333',
+        fontSize: FontSize(12),
+        lineHeight: FontSize(18),
+    },
     actionStyle: {
         height: 0,
         borderWidth: 0,
@@ -294,5 +395,14 @@ const styles = StyleSheet.create({
         color: '#666',
         textAlign: 'center',
         fontSize: FontSize(12),
+    },
+    tableName: {
+        flex: 2,
+    },
+    tableDate: {
+        flex: 1.5,
+    },
+    tableValue: {
+        flex: 1,
     },
 });

@@ -7,9 +7,8 @@
 
 module.exports = {
     // 主域名
-    // BASE_HOST: 'http://www.xiaoyuankj.com/api/',
-    BASE_HOST: 'http://xykj.3todo.com/api/',
-    // BASE_HOST: 'http://waimaobang.nididake.com/api/',
+    BASE_HOST: 'http://parttime.com/api/',
+    // BASE_HOST: 'http://xykj.3todo.com/api/',
 
     // 人才列表
     RESUME: '/member_list',
@@ -24,6 +23,10 @@ module.exports = {
     getResource: 'get_resource',
     // 获取验证码
     getVerificationCode: 'send_sms',
+    // 导航数据
+    navigation_arr: 'navigation_arr',
+    // 客服信息
+    customer_service: 'customer_service',
 
     // 登录
     login: 'login',
@@ -54,7 +57,7 @@ module.exports = {
     job_submit_platform_time: 'freetime_submit',
 
     // 换购首页
-    shoppingMall: 'shopping_mall/index',
+    work_goods_list: 'work_goods_list',
     // 分类选项获取
     getCategory: 'categories',
     // 换购商品详情
@@ -63,8 +66,6 @@ module.exports = {
     work_goods_buy: 'work_goods_buy',
     // 提交换购订单
     work_goods_payment: 'work_goods_payment',
-    // 获取默认收货地址
-    address: '获取默认收获地址',
     // 提交积分订单
     point_goods_payment: 'point_goods_payment',
     // 积分商城首页
@@ -79,6 +80,8 @@ module.exports = {
 
     // 地址列表
     address_list: 'address_list',
+    // 设置默认地址
+    address_default: 'default_address',
     // 新增地址
     address_add: 'add_address',
     // 修改地址
@@ -108,6 +111,8 @@ module.exports = {
     my_point: 'my_point',
     // 诚信体系
     credit_system: 'credit_system',
+    // 工作台导航
+    workNavigation: 'work_bench_nav',
     // 工作台
     work_bench: 'work_bench',
     // 工作台工作详情

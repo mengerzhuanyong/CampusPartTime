@@ -8,7 +8,7 @@ class DropdownRow extends React.PureComponent {
     constructor(props) {
         super(props)
         const index = props.selectData.findIndex((sub) => sub === props.item)
-        this.state = { isSelected: index != -1 }
+        this.state = { isSelected: index !== -1 }
     }
 
     _onPress = () => {

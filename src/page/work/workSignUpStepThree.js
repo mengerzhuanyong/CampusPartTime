@@ -36,23 +36,11 @@ export default class WorkSignUpStepThree extends Component {
 
     constructor(props) {
         super(props);
+        let {params} = this.props.navigation.state;
         this.state = {
             loading: false,
-            navigation: [
-                {id: 1, title: '手机', icon: Images.icon_nav_mobile,},
-                {id: 2, title: '电脑', icon: Images.icon_nav_pc,},
-                {id: 3, title: '平板', icon: Images.icon_nav_pad,},
-                {id: 4, title: '外设', icon: Images.icon_nav_mouse,},
-                {id: 5, title: '单反', icon: Images.icon_nav_camera,},
-            ],
-            listData: [
-                {id: 1, title: '手机', icon: Images.icon_nav_mobile,},
-                {id: 2, title: '电脑', icon: Images.icon_nav_pc,},
-                {id: 3, title: '平板', icon: Images.icon_nav_pad,},
-                {id: 4, title: '外设', icon: Images.icon_nav_mouse,},
-                {id: 5, title: '单反', icon: Images.icon_nav_camera,},
-            ],
-            customerMobile: '800-820-8820',
+            item: params && params.item ? params.item : '',
+            flag: params && params.flag ? params.flag : '',
         };
         this.page = 1;
     }
@@ -85,88 +73,14 @@ export default class WorkSignUpStepThree extends Component {
             });
     };
 
-    _captureRef = (v) => {
-        this.flatListRef = v;
-    };
-
-    _keyExtractor = (item, index) => {
-        return `z_${index}`
-    };
-
-    // 上拉加载
-    _onEndReached = () => {
-        this.timer1 = setTimeout(() => {
-            let dataTemp = this.state.listData;
-            let allLoad = false;
-            //模拟数据加载完毕,即page > 0,
-            if (this.page < 2) {
-                this.setState({data: dataTemp.concat(this.state.listData)});
-            }
-            // allLoad 当全部加载完毕后可以设置此属性，默认为false
-            this.flatListRef.stopEndReached({allLoad: this.page === 2});
-            this.page++;
-        }, 500);
-    };
-
-    // 下拉刷新
-    _onRefresh = () => {
-        this.timer2 = setTimeout(() => {
-            // 调用停止刷新
-            this.flatListRef.stopRefresh()
-        }, 500);
-    };
-
-    _renderSeparator = () => {
-        return <HorizontalLine style={styles.horLine}/>;
-    };
-
-    _renderHeaderComponent = () => {
-        return (
-            <View style={styles.headerComponentView}>
-                <View style={[styles.contentItemView, styles.contentSignStepView]}>
-                    <Image source={Images.img_bg_step3} style={CusTheme.signUpStepImg}/>
-                    <View style={styles.contentSignStepConView}>
-                        <Text style={[styles.contentSignStepContext, styles.contentSignStepContextCur]}>选择时间</Text>
-                        <Text style={[styles.contentSignStepContext, styles.contentSignStepContextCur]}>确认信息</Text>
-                        <Text style={[styles.contentSignStepContext, styles.contentSignStepContextCur]}>报名审核</Text>
-                        <Text style={styles.contentSignStepContext}>完成工作</Text>
-                    </View>
-                </View>
-                <View style={[styles.contentItemView, styles.lastContentItemView]}>
-                    <View style={[styles.contentTitleView, styles.contentTitleViewCur]}>
-                        <Text style={[styles.contentTitle, styles.contentTitleCur]}>请选择您的可工作时间</Text>
-                    </View>
-                </View>
-            </View>
-        );
-    };
-
-    _renderListItem = (info) => {
-        return (
-            <View style={[styles.timeItemView]}>
-                <View style={[styles.timeItemTitleView]}>
-                    <Text style={[styles.timeItemTitle]}>2018.06.10 周日</Text>
-                </View>
-                <View style={[styles.timeItemDetailView]}>
-                    <Button
-                        title={'12:00'}
-                        style={[styles.timeBtnView]}
-                        titleStyle={[styles.timeBtnName]}
-                    />
-                    <Text style={[styles.timeItemTitle, styles.timeItemDetailTips]}>至</Text>
-                    <Button
-                        title={'16:00'}
-                        style={[styles.timeBtnView]}
-                        titleStyle={[styles.timeBtnName]}
-                    />
-                </View>
-            </View>
-        );
-    };
-
     onCancelApply = async () => {
-        const {onCancelApply, sign_id} = this.props.workStore;
+        const {workStore} = this.props;
+        let {item, flag} = this.state;
+        let {onCancelApply, sign_id} = workStore;
         let url = ServicesApi.job_application_cancel;
+        if (flag === 'workspace') {
+            sign_id = item.id;
+        }
         let data = {
             sign_id,
         };
@@ -181,9 +95,12 @@ export default class WorkSignUpStepThree extends Component {
     };
 
     render() {
-        let {loading, listData, customerMobile} = this.state;
+        let {item, flag} = this.state;
         const {workStore} = this.props;
         let {server_mobile, sign_status, remark} = workStore;
+        if (flag === 'workspace') {
+            server_mobile = item.server_mobile;
+        }
         let {params} = this.props.navigation.state;
         let pageTitle = params && params.pageTitle ? params.pageTitle : '报名审核';
         return (

@@ -4,6 +4,7 @@
  * @大梦
  */
 
+
 'use strict';
 
 import React, {Component} from 'react'
@@ -39,35 +40,35 @@ import {QRscanner} from 'react-native-qr-scanner'
 import {Carousel, ListRow} from 'teaset'
 import {HorizontalLine} from '../../component/common/commonLine'
 import GoodsItem from "../../component/item/goodsItem";
+import SpinnerLoading from "../../component/common/SpinnerLoading";
 
-
+@inject('loginStore', 'shopStore')
+@observer
 export default class GoodsList extends Component {
     constructor(props) {
         super(props);
+        let {params} = this.props.navigation.state;
         this.state = {
             loading: false,
-            navigation: [
-                {id: 1, title: '手机', icon: Images.icon_nav_mobile,},
-                {id: 2, title: '电脑', icon: Images.icon_nav_pc,},
-                {id: 3, title: '平板', icon: Images.icon_nav_pad,},
-                {id: 4, title: '外设', icon: Images.icon_nav_mouse,},
-                {id: 5, title: '单反', icon: Images.icon_nav_camera,},
-            ],
-            listData: [
-                {id: 1, title: '手机', icon: Images.icon_nav_mobile,},
-                {id: 2, title: '电脑', icon: Images.icon_nav_pc,},
-                {id: 3, title: '平板', icon: Images.icon_nav_pad,},
-                {id: 4, title: '外设', icon: Images.icon_nav_mouse,},
-                {id: 5, title: '单反', icon: Images.icon_nav_camera,},
-            ],
+            ready: false,
+            category_id: params && params.category_id ? params.category_id : 0,
         };
         this.page = 1;
+        this.pageSize = 10;
     }
+
+    static defaultProps = {
+        category_id: 0,
+    };
 
     componentDidMount() {
+        InteractionManager.runAfterInteractions(() => {
+            // this.getResource();
+            this.requestDataSource(this.page);
+        });
     }
 
-    componentWillUnmount(){
+    componentWillUnmount() {
         let timers = [this.timer1, this.timer2];
         // console.log(global.ClearTimer);
         ClearTimer(timers);
@@ -80,7 +81,7 @@ export default class GoodsList extends Component {
                     style={styles.headerTitleView}
                     onPress={() => RouterHelper.navigate('搜索', 'Search')}
                 >
-                    <Image source={Images.icon_search} style={[CusTheme.headerIcon, styles.headerSearchIcon]} />
+                    <Image source={Images.icon_search} style={[CusTheme.headerIcon, styles.headerSearchIcon]}/>
                     <Text style={[CusTheme.headerIconTitle, styles.headerSearchTitle]}>搜索商品</Text>
                 </TouchableOpacity>
             </View>
@@ -98,7 +99,7 @@ export default class GoodsList extends Component {
                     key={item.id}
                     style={styles.navItemView}
                 >
-                    <Image source={item.icon} style={styles.navIcon}/>
+                    <Image source={item.icon ? {uri: item.icon} : Image.icon_camera} style={styles.navIcon}/>
                     <Text style={styles.navTitle}>{item.title}</Text>
                 </TouchableOpacity>
             );
@@ -114,31 +115,42 @@ export default class GoodsList extends Component {
         return `z_${index}`
     };
 
-    // 上拉加载
-    _onEndReached = () => {
-        this.timer1 = setTimeout(() => {
-            let dataTemp = this.state.listData;
-            let allLoad = false;
-            //模拟数据加载完毕,即page > 0,
-            if (this.page < 2) {
-                this.setState({ data: dataTemp.concat(this.state.listData) });
-            }
-            // allLoad 当全部加载完毕后可以设置此属性，默认为false
-            this.flatListRef.stopEndReached({ allLoad: this.page === 2 });
-            this.page++;
-        }, 500);
+    requestDataSource = async (page) => {
+        const {shopStore} = this.props;
+        let {category_id} = this.state;
+        let url = ServicesApi.work_goods_list;
+        let data = {
+            page,
+            category_id,
+            page_size: this.pageSize,
+        };
+
+        let result = await shopStore.requestGoodsList(url, data);
+        let endStatus = false;
+        if (result && result.code === 1) {
+            endStatus = result.data.list_data.length < data.page_size;
+        } else {
+            endStatus = true;
+        }
+        this.setState({
+            ready: true
+        });
+        this.flatListRef && this.flatListRef.stopRefresh();
+        this.flatListRef && this.flatListRef.stopEndReached({allLoad: endStatus});
     };
 
-    // 下拉刷新
-    _onRefresh = () => {
-        this.timer2 = setTimeout(() => {
-            // 调用停止刷新
-            this.flatListRef.stopRefresh()
-        }, 500);
+    _onRefresh = (stopRefresh) => {
+        this.page = 1;
+        this.requestDataSource(this.page);
+    };
+
+    _onEndReached = (stopEndReached) => {
+        this.page++;
+        this.requestDataSource(this.page);
     };
 
     _renderSeparator = () => {
-        return <HorizontalLine style={styles.horLine} />;
+        return <HorizontalLine style={styles.horLine}/>;
     };
 
     _renderHeaderComponent = () => {
@@ -152,7 +164,8 @@ export default class GoodsList extends Component {
                     style={styles.contentTitleView}
                     title={'热门换购'}
                     titleStyle={CusTheme.contentTitle}
-                    icon={<Image source={Images.icon_shop_package} style={[CusTheme.contentTitleIcon, {tintColor: '#ed3126'}]} />}
+                    icon={<Image source={Images.icon_shop_package}
+                                 style={[CusTheme.contentTitleIcon, {tintColor: '#ed3126'}]}/>}
                     detail={'更多 >>'}
                     accessory={'none'}
                     onPress={() => alert('Press!')}
@@ -161,15 +174,18 @@ export default class GoodsList extends Component {
         );
     };
 
-    _renderListItem = (info) => {
+    _renderListItem = ({item, index}) => {
         return (
-            <GoodsItem />
+            <GoodsItem
+                item={item}
+                {...this.props}
+            />
         );
     };
 
     render() {
-        let {loading, listData} = this.state;
-        // listData = [];
+        let {loading, ready} = this.state;
+        const {shopStore} = this.props;
         let {params} = this.props.navigation.state;
         let pageTitle = params && params.pageTitle ? params.pageTitle : '商品';
         return (
@@ -178,19 +194,22 @@ export default class GoodsList extends Component {
                     title={pageTitle}
                 />
                 <View style={styles.content}>
-                    <FlatListView
-                        style={styles.listContent}
-                        initialRefresh={false}
-                        ref={this._captureRef}
-                        data={listData}
-                        removeClippedSubviews={false}
-                        renderItem={this._renderListItem}
-                        keyExtractor={this._keyExtractor}
-                        onEndReached={this._onEndReached}
-                        onRefresh={this._onRefresh}
-                        ItemSeparatorComponent={this._renderSeparator}
-                        // ListHeaderComponent={this._renderHeaderComponent}
-                    />
+                    {ready ?
+                        <FlatListView
+                            style={styles.listContent}
+                            initialRefresh={false}
+                            ref={this._captureRef}
+                            data={shopStore.goodsList}
+                            removeClippedSubviews={false}
+                            renderItem={this._renderListItem}
+                            keyExtractor={this._keyExtractor}
+                            onEndReached={this._onEndReached}
+                            onRefresh={this._onRefresh}
+                            ItemSeparatorComponent={this._renderSeparator}
+                            // ListHeaderComponent={this._renderHeaderComponent}
+                        />
+                        : <SpinnerLoading isVisible={true}/>
+                    }
                 </View>
             </View>
         );

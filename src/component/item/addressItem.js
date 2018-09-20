@@ -72,21 +72,21 @@ export default class AddressItem extends React.PureComponent {
     };
 
     render() {
-        const {onPushNavigator, leftIcon, leftTitle, rightText, onPushToAddressEdit, onPushToAddressDel, addressManageStatus} = this.props;
+        const {onPushNavigator, leftIcon, leftTitle, rightText, setDefaultAddress, onPushToAddressEdit, onPushToAddressDel, addressManageStatus} = this.props;
         const {item, PAGE_FLAG, updateContent, show} = this.state;
         return (
             <View style={styles.container}>
-                {PAGE_FLAG === 'FLOW' &&
+                {PAGE_FLAG === 'CART' &&
                     <TouchableOpacity
                         style={styles.addressSelectView}
-                        onPress={() => this.setDefaultAddress(item)}
+                        onPress={setDefaultAddress}
                     >
-                        <Image source={item.is_default === 1 ? Images.icon_checked : Images.icon_checked} style={CusTheme.checkedIcon}/>
+                        <Image source={item.is_default === 1 ? Images.icon_checked : Images.icon_check} style={CusTheme.checkedIcon}/>
                     </TouchableOpacity>
                 }
                 <View style={styles.addressInfoView}>
-                    {PAGE_FLAG === 'FLOW' ?
-                        <TouchableOpacity onPress={() => this.setDefaultAddress(item)}>
+                    {PAGE_FLAG === 'CART' ?
+                        <TouchableOpacity onPress={setDefaultAddress}>
                             <View style={styles.addressInfoItem}>
                                 <Text style={styles.addressInfoName}>{item.username}</Text>
                                 <Text style={styles.addressInfoPhone}>{item.mobile}</Text>

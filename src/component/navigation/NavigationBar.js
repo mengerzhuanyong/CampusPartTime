@@ -37,7 +37,7 @@ class NavigationBar extends React.PureComponent {
         this.backAction = [
             {
                 icon: Images.icon_nav_left,
-                iconStyle: { width: 25, height: 25 },
+                iconStyle: { width: 25, height: 25, resizeMode: 'contain' },
                 onPress: this._onPressBack
             }
         ]

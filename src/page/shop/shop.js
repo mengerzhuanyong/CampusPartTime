@@ -49,6 +49,7 @@ export default class Shop extends Component {
         super(props);
         this.state = {
             loading: false,
+            type: 2,
             navigation: [
                 {id: 1, title: '手机', icon: Images.icon_nav_mobile,},
                 {id: 2, title: '电脑', icon: Images.icon_nav_pc,},
@@ -78,52 +79,22 @@ export default class Shop extends Component {
         ClearTimer(timers);
     }
 
-    renderNavigationBarView = () => {
-        return (
-            <View style={styles.headerView}>
-                <TouchableOpacity
-                    style={styles.headerTitleView}
-                    onPress={() => RouterHelper.navigate('搜索', 'Search')}
-                >
-                    <Image source={Images.icon_search} style={[CusTheme.headerIcon, styles.headerSearchIcon]} />
-                    <Text style={[CusTheme.headerIconTitle, styles.headerSearchTitle]}>搜索商品</Text>
-                </TouchableOpacity>
-            </View>
-        );
-    };
-
-    renderNavigationContentView = () => {
-        let data = this.state.navigation;
-        if (!data || data.length < 1) {
-            return;
-        }
-        let navigation = data.map((item, index) => {
-            return (
-                <TouchableOpacity
-                    key={item.id}
-                    style={styles.navItemView}
-                    onPress={() => RouterHelper.navigate(item.title, 'GoodsList')}
-                >
-                    <Image source={item.icon} style={styles.navIcon}/>
-                    <Text style={styles.navTitle}>{item.title}</Text>
-                </TouchableOpacity>
-            );
-        });
-        return navigation;
-    };
-
     loadNetData = () => {
         InteractionManager.runAfterInteractions(() => {
-            // this.getResource();
+            this.getGoodsCategory();
             this.requestDataSource(this.page);
         })
     };
 
-    getResource = async () => {
+    getGoodsCategory = async () => {
         let {type} = this.state;
-        const {resourceStore} = this.props;
-        let data = await resourceStore.requestDataSource(ServicesApi.getResource, {type});
-        // console.warn(data);
+        const {shopStore} = this.props;
+        let url = ServicesApi.getCategory;
+        let data = {
+            type
+        };
+        let result = await shopStore.getGoodsCategory(url, data);
+        // console.warn(result);
     };
 
     _captureRef = (v) => {
@@ -136,13 +107,14 @@ export default class Shop extends Component {
 
     requestDataSource = async (page) => {
         const {shopStore} = this.props;
+        let url = ServicesApi.work_goods_list;
         let data = {
             page,
             category_id: 0,
             page_size: this.pageSize,
         };
 
-        let result = await shopStore.requestDataSource(ServicesApi.shoppingMall, data);
+        let result = await shopStore.requestDataSource(url, data);
         let endStatus = false;
         if (result && result.code === 1) {
             endStatus = result.data.list_data.length < data.page_size;
@@ -182,9 +154,9 @@ export default class Shop extends Component {
                     title={'热门换购'}
                     titleStyle={CusTheme.contentTitle}
                     icon={<Image source={Images.icon_shop_package} style={[CusTheme.contentTitleIcon, {tintColor: '#ed3126'}]} />}
-                    detail={'更多 >>'}
+                    // detail={'更多 >>'}
                     accessory={'none'}
-                    onPress={() => RouterHelper.navigate('热门换购', 'GoodsList')}
+                    // onPress={() => RouterHelper.navigate('热门换购', 'GoodsList')}
                 />
             </View>
         );
@@ -198,6 +170,41 @@ export default class Shop extends Component {
                 {...this.props}
             />
         );
+    };
+
+    renderNavigationBarView = () => {
+        return (
+            <View style={styles.headerView}>
+                <TouchableOpacity
+                    style={styles.headerTitleView}
+                    onPress={() => RouterHelper.navigate('搜索', 'Search')}
+                >
+                    <Image source={Images.icon_search} style={[CusTheme.headerIcon, styles.headerSearchIcon]} />
+                    <Text style={[CusTheme.headerIconTitle, styles.headerSearchTitle]}>搜索商品</Text>
+                </TouchableOpacity>
+            </View>
+        );
+    };
+
+    renderNavigationContentView = () => {
+        let {shopStore} = this.props;
+        let {goodsNavigation} = shopStore;
+        if (!goodsNavigation || goodsNavigation.length < 1) {
+            return;
+        }
+        let navigation = goodsNavigation.map((item, index) => {
+            return (
+                <TouchableOpacity
+                    key={item.id}
+                    style={styles.navItemView}
+                    onPress={() => RouterHelper.navigate(item.name, 'GoodsList', {category_id: item.id})}
+                >
+                    <Image source={item.icon ? {uri: item.icon} : Images.icon_nav_camera} style={styles.navIcon}/>
+                    <Text style={styles.navTitle}>{item.name}</Text>
+                </TouchableOpacity>
+            );
+        });
+        return navigation;
     };
 
     render() {

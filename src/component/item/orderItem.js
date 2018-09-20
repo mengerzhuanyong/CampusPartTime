@@ -31,25 +31,30 @@ export default class OrderItem extends React.PureComponent {
     static defaultProps = {
         ...View.defaultProps,
         active: false,
+        item: {},
     };
 
     render() {
+        let {item, onPushToDetail} = this.props;
         return (
-            <TouchableOpacity style={styles.orderItemView}>
+            <TouchableOpacity
+                style={styles.orderItemView}
+                onPress={onPushToDetail}
+            >
                 <View style={styles.orderItemPicView}>
                     <Image
                         style={styles.orderItemPic}
                         resizeMode={'cover'}
-                        source={Images.img_goods1}
+                        source={item.illustration ? {uri: item.illustration} : Images.img_goods1}
                     />
                 </View>
                 <View style={styles.orderInfoView}>
                     <View style={[styles.orderInfoItemView, styles.orderInfoTitleView]}>
-                        <Text style={[styles.orderInfoTitle, styles.orderInfoLeftCon]} numberOfLines={2}>iPhone X  64G 黑色</Text>
-                        <Text style={[styles.orderInfoPrices, styles.orderInfoRightCon]} numberOfLines={2}>2200工分</Text>
+                        <Text style={[styles.orderInfoTitle, styles.orderInfoLeftCon]} numberOfLines={2}>{item.name}</Text>
+                        <Text style={[styles.orderInfoPrices, styles.orderInfoRightCon]} numberOfLines={2}>{item.price}</Text>
                     </View>
                     <View style={[styles.orderInfoItemView, styles.orderInfoSubtitleView]}>
-                        <Text style={[styles.orderInfoNo, styles.orderInfoLeftCon]} numberOfLines={2}>订单编号：1236738773248</Text>
+                        <Text style={[styles.orderInfoNo, styles.orderInfoLeftCon]} numberOfLines={2}>订单编号：{item.order_no}</Text>
                         <Button
                             title={'查看详情'}
                             style={[styles.orderBtnItem, styles.orderInfoRightCon]}
@@ -73,16 +78,16 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
     },
     orderItemPicView: {
-        width: ScaleSize(180),
-        height: ScaleSize(140),
+        width: ScaleSize(150),
+        height: ScaleSize(110),
         marginRight: 10,
         borderRadius: 5,
         overflow: 'hidden',
         backgroundColor: '#f60',
     },
     orderItemPic: {
-        width: ScaleSize(180),
-        height: ScaleSize(140),
+        width: ScaleSize(150),
+        height: ScaleSize(110),
         resizeMode: 'contain',
     },
     orderInfoView: {
@@ -100,30 +105,34 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     orderInfoRightCon: {
-        width: ScaleSize(140),
+        // width: 70,
         marginLeft: 5,
     },
     orderInfoTitleView: {},
     orderInfoTitle: {
+        fontSize: 15,
         color: '#333',
-        fontSize: FontSize(15),
+        // fontSize: FontSize(15),
     },
     orderInfoPrices: {
+        fontSize: 13,
         color: '#ed3126',
         textAlign: 'right',
-        fontSize: FontSize(12),
+        // fontSize: FontSize(12),
     },
     orderInfoSubtitleView: {},
     orderInfoNo: {
+        fontSize: 13,
         color: '#888',
-        fontSize: FontSize(12),
+        // fontSize: FontSize(12),
     },
     orderBtnItem: {
         paddingHorizontal: 5,
         borderColor: CusTheme.themeColor,
     },
     orderBtnItemName: {
-        fontSize: FontSize(11),
+        fontSize: 13,
+        // fontSize: FontSize(11),
         color: CusTheme.themeColor,
     },
 });

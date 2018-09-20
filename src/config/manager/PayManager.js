@@ -15,7 +15,7 @@ class PayManager {
                 }
                 XPay.wxPay(wx, (res) => {
                      // console.log('微信支付', res)
-                    if (res.errCode == 0) {
+                    if (res.errCode === 0) {
                         resolve({ reslut: 'sucess', code: 0 }) // resule可以自定义
                     } else {
                         resolve({ reslut: 'fail', code: 1 }) // resule可以自定义
@@ -28,7 +28,7 @@ class PayManager {
                         resolve({ reslut: 'fail', code: 1 }) // resule可以自定义
                     } else {
                         const result = JSON.parse(res.result)
-                        if (result.alipay_trade_app_pay_response.code == 10000) {
+                        if (result.alipay_trade_app_pay_response.code === 10000) {
                             resolve({ reslut: 'sucess', code: 0 }) // resule可以自定义
                         } else {
                             resolve({ reslut: 'fail', code: 1 })

@@ -13,10 +13,19 @@ export default class ResourceStore extends BaseStore {
 
     constructor(params) {
         super(params);
-        this.dataSource = '';
+        this.navigationArray = [];
+        this.dataSource = {};
+        this.customerService = {};
     }
 
+    @observable navigationArray;
     @observable dataSource;
+    @observable customerService;
+
+    @computed
+    get getNavigationArray() {
+        return toJS(this.navigationArray);
+    }
 
     @computed
     get getDataSource() {
@@ -24,13 +33,39 @@ export default class ResourceStore extends BaseStore {
     }
 
     @action
+    requestNavigationArray = async (url) => {
+        this.loading = true;
+        const result = await this.getRequest(url);
+        if (result.code === 1) {
+            runInAction(() => {
+                this.loading = false;
+                this.navigationArray = result.data;
+            })
+        }
+        return result;
+    };
+
+    @action
     requestDataSource = async (url, data) => {
         this.loading = true;
-        const result = await Services.post(url, data);
+        const result = await this.postRequest(url, data, true);
         if (result.code === 1) {
             runInAction(() => {
                 this.loading = false;
                 this.dataSource = result.data;
+            })
+        }
+        return result;
+    };
+
+    @action
+    requestCustomerService = async (url, data) => {
+        this.loading = true;
+        const result = await this.postRequest(url, data);
+        if (result.code === 1) {
+            runInAction(() => {
+                this.loading = false;
+                this.customerService = result.data;
             })
         }
         return result;

@@ -75,7 +75,7 @@ class LRComponent extends React.PureComponent {
                         onChangeText={this._onChangeLogin}
                     />
                     {
-                        type == '登陆' ? null : (
+                        type === '登陆' ? null : (
                             <View style={styles.verificationContainer}>
                                 <TextInput
                                     style={styles.verificationInput}
@@ -101,14 +101,14 @@ class LRComponent extends React.PureComponent {
                         secureTextEntry={true}
                         returnKeyType={'done'}
                     />
-                    {type == '登陆' ? (<Text style={styles.forgetPwd} onPress={this._onPressForgetPwd}>忘记密码?</Text>) : (
+                    {type === '登陆' ? (<Text style={styles.forgetPwd} onPress={this._onPressForgetPwd}>忘记密码?</Text>) : (
                         null
                     )}
                     <Button
                         onPress={this._onPress}
                         style={styles.loginButton}
                         titleStyle={styles.loginButtonTitle}
-                        title={type == '登陆' ? '登 陆' : '注 册'} />
+                        title={type === '登陆' ? '登 陆' : '注 册'} />
                 </View>
                 <View style={styles.fastContainer}>
                     <Text style={styles.fastMarkText}>

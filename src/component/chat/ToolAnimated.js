@@ -29,7 +29,7 @@ class ToolAnimated extends React.PureComponent {
     }
 
     startAnimatedSpring = (toValue) => {
-        if (this.currentValue != toValue) {
+        if (this.currentValue !== toValue) {
             Animated.spring(this.translateY, {
                 toValue,
                 friction: 9,
@@ -43,7 +43,7 @@ class ToolAnimated extends React.PureComponent {
     };
 
     startAnimatedTiming = (toValue, duration = 195) => {
-        if (this.currentValue != toValue) {
+        if (this.currentValue !== toValue) {
             Animated.timing(this.translateY, {
                 toValue,
                 duration,

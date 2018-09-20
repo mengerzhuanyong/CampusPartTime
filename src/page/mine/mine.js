@@ -123,6 +123,7 @@ export default class Mine extends Component {
                             icon={<Image source={Images.icon_files} style={[CusTheme.contentTitleIcon, {}]} />}
                             detail={''}
                             accessory={<Image source={Images.icon_arrow_right} style={[CusTheme.contentRightIcon, {}]} />}
+                            // onPress={() => RouterHelper.navigate('我的资料', 'OrderReturn', {})}
                             onPress={() => RouterHelper.navigate('我的资料', 'MineProfile', {})}
                         />
                         <ListRow
@@ -259,7 +260,7 @@ const styles = StyleSheet.create({
         height: ScaleSize(160),
         borderRadius: ScaleSize(80),
         overflow: 'hidden',
-        // backgroundColor: '#f50'
+        backgroundColor: '#f50'
     },
     userAvatar: {
         width: ScaleSize(160),

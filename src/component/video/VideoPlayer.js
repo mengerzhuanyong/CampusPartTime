@@ -63,9 +63,9 @@ class VideoPlayer extends React.PureComponent {
     // 自动管理是否播放，使用Props的话，要在父组件管理太多的状态,引起不必要的渲染
     setPause = (paused) => {
          // console.log('paused')
-        if (this.playStatus == PlayStatus.END) {
+        if (this.playStatus === PlayStatus.END) {
             this.setSeek(0)
-            this.playStatus == PlayStatus.END
+            this.playStatus === PlayStatus.END
         }
         let pausedTemp;
         if (!isEmpty(paused)) {
@@ -73,7 +73,7 @@ class VideoPlayer extends React.PureComponent {
         } else {
             pausedTemp = !this.state.paused
         }
-        if (pausedTemp != this.state.paused) {
+        if (pausedTemp !== this.state.paused) {
             this.setState({ paused: pausedTemp })
             this.playStatus = pausedTemp ? PlayStatus.PAUSED : PlayStatus.PLAYING
         }

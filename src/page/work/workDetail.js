@@ -70,7 +70,7 @@ export default class WorkDetail extends Component {
     };
 
     renderWorKDescription = (data) => {
-        if (!data || data.lenth < 1) {
+        if (!data || data.length < 1) {
             return;
         }
         let descriptions = data.map((item, index) => {

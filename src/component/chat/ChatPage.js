@@ -67,7 +67,7 @@ class ChatPage extends React.PureComponent {
     }
 
     _onToolbarWillShow = (info) => {
-        // if (info.duration != 0) {
+        // if (info.duration !== 0) {
         //      // console.log('_onKeyboardWillShow', info)
         //     const endCoordinates = info.endCoordinates
         //     if (this._keyboardStatus === Status.KeyboardDown) {

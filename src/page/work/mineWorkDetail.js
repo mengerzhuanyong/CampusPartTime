@@ -30,14 +30,67 @@ import SegmentedControlTab from '../../component/common/SegmentedControlTab'
 import {Button} from 'teaset'
 import WorkPunchCard from "./workPunchCard";
 
-
+@inject('loginStore', 'mineStore', 'workStore')
+@observer
 export default class MineWorkDetail extends Component {
 
     constructor(props) {
         super(props);
+        let {params} = this.props.navigation.state;
         this.state = {
             listData: [1, 2, 3, 4],
+            item: params && params.item ? params.item : {
+                job_info: {},
+                user_info: {},
+            },
         };
+    }
+    
+    componentDidMount() {
+        this.requestOrderDetail();
+    }
+
+    requestOrderDetail = async () => {
+        const {workStore} = this.props;
+        let {item} = this.state;
+        let url = ServicesApi.work_bench_job_details;
+        let data = {
+            id: item.id,
+        };
+        let result = await workStore.requestWorkBenchDetail(url, data);
+    };
+
+
+
+    confirmPickUpOrder = (item) => {
+        const params = {
+            title: '温馨提示',
+            detail: '您确认收到货物了吗',
+            actions: [
+                {
+                    title: '取消',
+                    onPress: () => {},
+                },
+                {
+                    title: '确定',
+                    onPress: () => this.submitPickUpOrder(item),
+                }
+            ]
+        };
+        AlertManager.show(params);
+    }
+
+    submitPickUpOrder = async (item) => {
+        const {workStore} = this.props;
+        let url = ServicesApi.receipt;
+        let data = {
+            type: item.type,
+            order_id: item.id,
+        };
+        let result = await workStore.submitPickUpOrder(url, data);
+        if (result && result.code === 1) {
+            this.requestOrderDetail();
+        }
     }
 
     renderHeaderRightView = () => {
@@ -52,7 +105,9 @@ export default class MineWorkDetail extends Component {
     };
 
     render() {
-        let {loading, listData} = this.state;
+        let {loading, item} = this.state;
+        const {workStore} = this.props;
+        let {workBenchDetail} = workStore;
         let {params} = this.props.navigation.state;
         let pageTitle = params && params.pageTitle ? params.pageTitle : '工作详情';
         return (
@@ -64,31 +119,45 @@ export default class MineWorkDetail extends Component {
                 <ScrollView style={styles.content}>
                     <View style={[styles.contentItemView, styles.orderGoodsInfoView]}>
                         <Text style={styles.orderGoodsTitle}>工作状态：</Text>
-                        <Text style={styles.orderGoodsTitle}>正在进行中。。。</Text>
+                        <Text style={styles.orderGoodsTitle}>{workBenchDetail.sign_status_text}</Text>
                     </View>
                     <View style={[styles.contentItemView, styles.orderUserInfoView]}>
                         <View style={[styles.contentTitleView]}>
-                           <Text style={styles.contentTitle}>【工作信息】</Text>
+                           <Text style={styles.contentTitle}>【个人信息】</Text>
                         </View>
-                        <View style={styles.orderUserInfoCon}>
-                            <Text style={[styles.orderUserName, styles.orderUserInfoText]}>收货人：张三</Text>
-                            <Text style={[styles.orderUserPhone, styles.orderUserInfoText]}>13234536789</Text>
+                        <View style={styles.goodsUserInfoCon}>
+                            <View style={styles.goodsUserInfoConItem}>
+                                <Text style={[styles.goodsUserInfoTitle]}>姓名：</Text>
+                                <Text style={[styles.goodsUserInfoText]}>{workBenchDetail.user_info.username}</Text>
+                            </View>
+                            <View style={styles.goodsUserInfoConItem}>
+                                <Text style={[styles.goodsUserInfoTitle]}>学校：</Text>
+                                <Text style={[styles.goodsUserInfoText]}>{workBenchDetail.user_info.school}</Text>
+                            </View>
+                            <View style={styles.goodsUserInfoConItem}>
+                                <Text style={[styles.goodsUserInfoTitle]}>年级：</Text>
+                                <Text style={[styles.goodsUserInfoText]}>{workBenchDetail.user_info.grade}</Text>
+                            </View>
+                            <View style={styles.goodsUserInfoConItem}>
+                                <Text style={[styles.goodsUserInfoTitle]}>电话：</Text>
+                                <Text style={[styles.goodsUserInfoText]}>{workBenchDetail.user_info.mobile}</Text>
+                            </View>
                         </View>
-                        <Text style={[styles.orderUserAddress, styles.orderUserInfoText]}>山东省青岛市黄岛区新安街道前湾港路579号 山东科技大学北区宿舍区六号楼102</Text>
                     </View>
                     <View style={[styles.contentItemView, styles.orderStatusInfoView]}>
                         <View style={[styles.contentTitleView]}>
                             <Text style={styles.contentTitle}>【工作信息】</Text>
                         </View>
-                        <Text style={styles.orderStatusInfoItem}>交易状态：等待收货</Text>
-                        <Text style={styles.orderStatusInfoItem}>下单时间：2018.04.23</Text>
-                        <Text style={styles.orderStatusInfoItem}>还需偿还工分：675</Text>
+                        <Text style={styles.orderStatusInfoItem}>工作名称：{workBenchDetail.job_info.name}</Text>
+                        <Text style={styles.orderStatusInfoItem}>工作时间：{workBenchDetail.job_info.work_time}</Text>
+                        <Text style={styles.orderStatusInfoItem}>工作人员电话：{workBenchDetail.job_info.server_mobile}</Text>
+                        <Text style={styles.orderStatusInfoItem}>工作地点：{workBenchDetail.job_info.address}</Text>
                     </View>
                     <Button
                         title={'打卡'}
                         style={[CusTheme.btnView, styles.btnView]}
                         titleStyle={[CusTheme.btnName, styles.btnName]}
-                        onPress={() => RouterHelper.navigate('', 'WorkPunchCard')}
+                        onPress={() => RouterHelper.navigate('打卡', 'WorkPunchCard')}
                     />
                 </ScrollView>
             </View>
@@ -158,6 +227,31 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
     },
     orderUserInfoText: {
+        color: '#333',
+        fontSize: FontSize(14),
+        lineHeight: FontSize(20),
+    },
+    goodsUserInfoCon: {
+        marginBottom: 10,
+        flexWrap: 'wrap',
+        flexDirection: 'row',
+        // alignItems: 'center',
+        justifyContent: 'space-between',
+    },
+    goodsUserInfoConItem: {
+        marginTop: 10,
+        width: (SCREEN_WIDTH - 30) / 2,
+        flexDirection: 'row',
+        // alignItems: 'center',
+    },
+    goodsUserInfoTitle: {
+        // flex: 1,
+        color: '#333',
+        fontSize: FontSize(14),
+        lineHeight: FontSize(20),
+    },
+    goodsUserInfoText: {
+        flex: 1,
         color: '#333',
         fontSize: FontSize(14),
         lineHeight: FontSize(20),

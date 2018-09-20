@@ -51,10 +51,14 @@ export default class Address extends Component {
 
     constructor(props) {
         super(props);
+        let {params} = this.props.navigation.state;
         this.state = {
             message: '',
             customerMobile: '400-500-6666',
             ready: false,
+            PAGE_FLAG: params.PAGE_FLAG !== '' ? params.PAGE_FLAG : '',
+            updateContent: params.updateContent ? params.updateContent : () => {
+            },
         };
         this.page = 1;
         this.pageSize = 10;
@@ -150,12 +154,31 @@ export default class Address extends Component {
         return (
             <AddressItem
                 item={item}
+                PAGE_FLAG={this.state.PAGE_FLAG}
+                updateContent={this.state.updateContent}
                 addressManageStatus={status}
                 onPushToAddressEdit={() => RouterHelper.navigate('编辑地址', 'AddressEdit', {item})}
                 onPushToAddressDel={() => this.deleteConfirm(item)}
+                setDefaultAddress={() => this.setDefaultAddress(item)}
                 {...this.props}
             />
         );
+    };
+
+    setDefaultAddress = async (item) => {
+        const {addressStore} = this.props;
+        const {updateContent} = this.state;
+        let url = ServicesApi.address_default;
+        let data = {
+            id: item.id,
+        };
+        let result = await addressStore.onSubmitAddress(url, data);
+        if (result && result.code === 1) {
+            updateContent(item);
+            RouterHelper.goBack();
+        } else {
+            Toast.toastShort(result.msg);
+        }
     };
 
     deleteConfirm = (item) => {
@@ -165,7 +188,8 @@ export default class Address extends Component {
             actions: [
                 {
                     title: '取消',
-                    onPress: () => {},
+                    onPress: () => {
+                    },
                 },
                 {
                     title: '确定',

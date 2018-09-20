@@ -56,7 +56,7 @@ class SegmentedBar extends React.PureComponent {
 
     componentWillReceiveProps(nextProps) {
         let nextItemsLayout = this.makeArray(this._itemsLayout, nextProps.children);
-        if (nextItemsLayout.length != this._itemsLayout.length) {
+        if (nextItemsLayout.length !== this._itemsLayout.length) {
             this._buttonsLayout = this.makeArray(this._buttonsLayout, nextProps.children);
             this._itemsLayout = nextItemsLayout;
             this._itemsAddWidth = this.makeArray(this._itemsAddWidth, nextProps.children, 0);
@@ -76,7 +76,7 @@ class SegmentedBar extends React.PureComponent {
     }
 
     set activeIndex(value) {
-        if (this._activeIndex != value) {
+        if (this._activeIndex !== value) {
             this._activeIndex = value;
             this.updateIndicator();
             this.forceUpdate();
@@ -167,7 +167,7 @@ class SegmentedBar extends React.PureComponent {
     }
 
     isEqualLayout(obj1, obj2) {
-        return obj1.x == obj2.x && obj1.y == obj2.y && obj1.width == obj2.width && obj1.height == obj2.height;
+        return obj1.x === obj2.x && obj1.y === obj2.y && obj1.width === obj2.width && obj1.height === obj2.height;
     }
 
     onButtonPress(index) {
@@ -219,7 +219,7 @@ class SegmentedBar extends React.PureComponent {
                 saveOnLayout && saveOnLayout(e);
             },
             onAddWidth: width => {
-                if (width != this._itemsAddWidth[index]) {
+                if (width !== this._itemsAddWidth[index]) {
                     this._itemsAddWidth[index] = width;
                     this.forceUpdate();
                 }
@@ -241,7 +241,7 @@ class SegmentedBar extends React.PureComponent {
                 translateX: this._indicatorX
             }]
         };
-        if (this.props.indicatorPosition == 'top') {
+        if (this.props.indicatorPosition === 'top') {
             style.top = indicatorPositionPadding || indicatorPositionPadding === 0 ? indicatorPositionPadding : Theme.sbIndicatorPositionPadding;
         } else {
             style.bottom = indicatorPositionPadding || indicatorPositionPadding === 0 ? indicatorPositionPadding : Theme.sbIndicatorPositionPadding;

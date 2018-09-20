@@ -88,7 +88,7 @@ class AreaContent extends React.PureComponent {
                         itemStyle={styles.itemStyle}
                         index={this.state.provinceIndex}
                         items={this.state.province}
-                        // defaultIndex={this.years.findIndex((item) => item == currentYear)}
+                        // defaultIndex={this.years.findIndex((item) => item === currentYear)}
                         onChange={this._onProChange}
                     />
                     <Wheel
@@ -96,7 +96,7 @@ class AreaContent extends React.PureComponent {
                         itemStyle={styles.itemStyle}
                         index={this.state.cityIndex}
                         items={this.state.city}
-                        // defaultIndex={this.months.findIndex((item) => item == currentMounth)}
+                        // defaultIndex={this.months.findIndex((item) => item === currentMounth)}
                         onChange={this._onCityChange}
                     />
                     <Wheel
@@ -104,7 +104,7 @@ class AreaContent extends React.PureComponent {
                         itemStyle={styles.itemStyle}
                         index={this.state.areaIndex}
                         items={this.state.area}
-                        // defaultIndex={days.findIndex((item) => item == currentDay)}
+                        // defaultIndex={days.findIndex((item) => item === currentDay)}
                         onChange={this._onAreaChange}
                     />
                 </View>

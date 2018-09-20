@@ -26,7 +26,7 @@ class ToolBarSend extends React.PureComponent {
     }
 
     changeVisible = (isVisible) => {
-        if (this.state.isVisible != isVisible) {
+        if (this.state.isVisible !== isVisible) {
             this.setState({ isVisible })
         }
     }

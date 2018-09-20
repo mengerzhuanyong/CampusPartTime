@@ -25,23 +25,37 @@ import SegmentedView from '../../component/segmentedView'
 import LRComponent from '../login/LRComponent'
 import SpinnerLoading from '../../component/common/SpinnerLoading';
 import dismissKeyboard from 'dismissKeyboard' // 键盘miss的方法
-import { observer, inject } from 'mobx-react';
 import SegmentedControlTab from '../../component/common/SegmentedControlTab'
 
 import MineOrderList from '../order/mineOrderList'
 import MineWorkList from "../work/mineWorkList";
+import {inject, observer} from "mobx-react/index";
 
+@inject('loginStore', 'workStore')
+@observer
 export default class MineWorkSpace extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            listData: [1,2,3,4],
+            type: 1,
         };
     }
 
+    componentDidMount() {
+        this.requestDataSource();
+    }
+
+    requestDataSource = async () => {
+        let {workStore} = this.props;
+        let url = ServicesApi.workNavigation;
+        let result = await workStore.requestWorkNavigation(url);
+    };
+
     render() {
-        let {loading, listData} = this.state;
+        let {loading, type} = this.state;
+        let {workStore} = this.props;
+        let {work_nav_arr, getWorkNavigation} = workStore;
         let {params} = this.props.navigation.state;
         let pageTitle = params && params.pageTitle ? params.pageTitle : '工作台';
         return (
@@ -50,7 +64,7 @@ export default class MineWorkSpace extends React.Component {
                     title={pageTitle}
                 />
                 <SegmentedControlTab
-                    values={['已报名工作(4)', '正在进行工作(2)']}
+                    values={getWorkNavigation}
                     tabStyle={styles.tab}
                     showSeparator={true}
                     separatorStyle={styles.separatorStyle}
@@ -59,14 +73,14 @@ export default class MineWorkSpace extends React.Component {
                     activeTabTextStyle={styles.activeTabTextStyle}
                     tabsContainerStyle={styles.tabContainer}
                     onTabPress={(index) => {
+                        type = index + 1;
+                        this.setState({type});
                         // console.log(index);
                     }}
                 />
                 <MineWorkList
-                    title={'待收货'}
-                    style={styles.navBarItemView}
-                    titleStyle={styles.sheetTitle}
-                    activeTitleStyle={styles.sheetActiveTitle}
+                    type={type}
+                    {...this.props}
                 />
             </View>
         );

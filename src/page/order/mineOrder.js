@@ -6,7 +6,7 @@
 
 'use strict';
 
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import {
     Text,
     View,
@@ -21,26 +21,73 @@ import {
     TouchableWithoutFeedback,
 } from 'react-native';
 import NavigationBar from '../../component/navigation/NavigationBar'
-import SegmentedView from '../../component/segmentedView'
 import LRComponent from '../login/LRComponent'
 import SpinnerLoading from '../../component/common/SpinnerLoading';
 import dismissKeyboard from 'dismissKeyboard' // 键盘miss的方法
-import { observer, inject } from 'mobx-react';
+import {observer, inject} from 'mobx-react';
 import SegmentedControlTab from '../../component/common/SegmentedControlTab'
 
 import MineOrderList from './mineOrderList'
+import ResourceStore from "../../store/resourceStore";
+import SegmentedView from "../../component/segmented/SegmentedView";
 
+@inject('loginStore', 'mineStore', 'resourceStore')
+@observer
 export default class MineOrder extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            listData: [1,2,3,4],
+            type: 1,
+            curIndex: 0,
+            nav_arr: [
+                {title: '全部', status: 0},
+                {title: '待收货', status: 1},
+                {title: '已收货', status: 2},
+                {title: '退换货', status: 4},
+            ]
         };
     }
 
+    componentDidMount() {
+        this.requestNavigationArray();
+    }
+
+    requestNavigationArray = async () => {
+        const {resourceStore} = this.props;
+        let url = ServicesApi.navigation_arr;
+        let result = await resourceStore.requestNavigationArray(url);
+    };
+
+    renderSegmentedTabView = (data) => {
+        let {type} = this.state;
+        // if (!data || data.length < 1) {
+        //     return;
+        // }
+        // console.log(data);
+        let tabView = data.map((item, index) => {
+            return (
+                <View
+                    key={item.status}
+                    title={item.title}
+                    style={styles.navBarItemView}
+                    titleStyle={styles.sheetTitle}
+                    activeTitleStyle={styles.sheetActiveTitle}
+                >
+                    <MineOrderList
+                        type={type}
+                        status={item.status}
+                        {...this.props}
+                    />
+                </View>
+            );
+        });
+        return tabView;
+    };
+
     render() {
-        let {loading, listData} = this.state;
+        let {loading, nav_arr} = this.state;
+        let {resourceStore} = this.props;
         let {params} = this.props.navigation.state;
         let pageTitle = params && params.pageTitle ? params.pageTitle : '我的订单';
         return (
@@ -56,45 +103,25 @@ export default class MineOrder extends React.Component {
                     activeTabTextStyle={styles.activeTabTextStyle}
                     tabsContainerStyle={styles.tabContainer}
                     onTabPress={(index) => {
-                        // console.log(index);
+                        let type = index + 1;
+                        this.setState({type});
                     }}
                 />
-                <SegmentedView
-                    ref={v => this.segmentedView = v}
-                    style={styles.segmentedView}
-                    barStyle={styles.segmentedBar}
-                    indicatorLineColor={CusTheme.themeColor}
-                    indicatorPositionPadding={ScaleSize(-4)}
-                    scrollEnabled={true}
-                    lazy={false}
-                    keyboardShouldPersistTaps={'always'}
-                >
-                    <MineOrderList
-                        title={'全部'}
-                        style={styles.navBarItemView}
-                        titleStyle={styles.sheetTitle}
-                        activeTitleStyle={styles.sheetActiveTitle}
-                    />
-                    <MineOrderList
-                        title={'待收货'}
-                        style={styles.navBarItemView}
-                        titleStyle={styles.sheetTitle}
-                        activeTitleStyle={styles.sheetActiveTitle}
-                    />
-                    <MineOrderList
-                        title={'已收货'}
-                        style={styles.navBarItemView}
-                        titleStyle={styles.sheetTitle}
-                        activeTitleStyle={styles.sheetActiveTitle}
-                    />
-                    <MineOrderList
-                        title={'退换货'}
-                        style={styles.navBarItemView}
-                        titleStyle={styles.sheetTitle}
-                        activeTitleStyle={styles.sheetActiveTitle}
-                    />
-                </SegmentedView>
-
+                {resourceStore.navigationArray.length > 0 ?
+                    <SegmentedView
+                        ref={v => this.segmentedView = v}
+                        style={styles.segmentedView}
+                        barStyle={styles.segmentedBar}
+                        indicatorLineColor={CusTheme.themeColor}
+                        indicatorPositionPadding={ScaleSize(-4)}
+                        scrollEnabled={true}
+                        // lazy={false}
+                        keyboardShouldPersistTaps={'always'}
+                    >
+                        {this.renderSegmentedTabView(resourceStore.navigationArray)}
+                    </SegmentedView>
+                    : <SpinnerLoading isVisible={true}/>
+                }
             </View>
         );
     }
@@ -126,8 +153,7 @@ const styles = StyleSheet.create({
     activeTabTextStyle: {},
 
 
-    segmentedView: {
-    },
+    segmentedView: {},
     segmentedBar: {
         borderBottomWidth: 1,
         borderColor: '#ddd',
@@ -135,14 +161,14 @@ const styles = StyleSheet.create({
     },
     sheetActiveTitle: {
         color: CusTheme.themeColor,
-        fontSize: FontSize(14),
+        fontSize: FontSize(13),
     },
     sheetTitle: {
         color: '#999',
-        fontSize: FontSize(14),
+        fontSize: FontSize(13),
     },
     navBarItemView: {
         width: SCREEN_WIDTH,
-        backgroundColor: '#123',
+        // backgroundColor: '#123',
     },
 });

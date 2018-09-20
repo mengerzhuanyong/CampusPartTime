@@ -33,7 +33,7 @@ export default class StickyHeader extends PureComponent {
     render() {
         const { stickyHeaderY, stickyScrollY, children, style } = this.props;
         const { stickyLayoutY } = this.state;
-        let y = stickyHeaderY != -1 ? stickyHeaderY : stickyLayoutY;
+        let y = stickyHeaderY !== -1 ? stickyHeaderY : stickyLayoutY;
         const translateY = stickyScrollY.interpolate({
             inputRange: [-1, 0, y, y + 1],
             outputRange: [0, 0, 0, 1],

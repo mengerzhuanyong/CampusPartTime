@@ -236,7 +236,7 @@ class ListView extends React.PureComponent {
 
     _onLayout = (event) => {
         const { onLayout } = this.props
-        if (event.nativeEvent.layout.height != 0 && event.nativeEvent.layout.width != 0) {
+        if (event.nativeEvent.layout.height !== 0 && event.nativeEvent.layout.width !== 0) {
             this._currentListSize = { width: event.nativeEvent.layout.width, height: event.nativeEvent.layout.height }
         }
         onLayout && onLayout(event)

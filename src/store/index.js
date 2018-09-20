@@ -17,6 +17,8 @@ import ShopStore from "./shopStore"
 import MineStore from "./mineStore"
 import SystemStore from "./systemStore"
 import AddressStore from "./addressStore";
+import PointsStore from "./pointsStore";
+import OrderStore from "./orderStore";
 
 export default {
     appStore: new AppStore(),
@@ -29,4 +31,6 @@ export default {
     mineStore: new MineStore(),
     systemStore: new SystemStore(),
     addressStore: new AddressStore(),
+    pointsStore: new PointsStore(),
+    orderStore: new OrderStore(),
 };

@@ -70,17 +70,28 @@ export default class Work extends Component {
     renderNavigationBarView = () => {
         return (
             <View style={styles.headerView}>
-                <TouchableOpacity style={styles.headerLeftView}>
+                <TouchableOpacity
+                    style={[styles.headerButtonView, styles.headerRightView]}
+                >
                     <Image source={Images.icon_place} style={CusTheme.headerIcon}/>
                     <Text style={[CusTheme.headerIconTitle, styles.headerIconTitle]}>黄岛区</Text>
                 </TouchableOpacity>
-                <Text style={[CusTheme.headerTitle, styles.headerTitle]}>工作</Text>
+                {/*<Text style={[CusTheme.headerTitle, styles.headerTitle]}>工作</Text>*/}
                 <TouchableOpacity
-                    style={styles.headerRightView}
+                    style={styles.headerTitleView}
+                    onPress={() => RouterHelper.navigate('搜索', 'Search')}
+                >
+                    <Image source={Images.icon_search} style={[CusTheme.headerIcon, styles.headerSearchIcon]} />
+                    <Text style={[CusTheme.headerIconTitle, styles.headerSearchTitle]}>搜索商品</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                    style={[styles.headerButtonView, styles.headerRightView]}
                     onPress={() => RouterHelper.navigate('消息', 'SystemMessage')}
                 >
-                    <Image source={Images.icon_message} style={CusTheme.headerIcon}/>
-                    <View style={CusTheme.pointView}/>
+                    <View style={styles.headerRightView}>
+                        <Image source={Images.icon_message} style={CusTheme.headerIcon}/>
+                        <View style={CusTheme.pointView}/>
+                    </View>
                 </TouchableOpacity>
             </View>
         );
@@ -238,12 +249,19 @@ const styles = StyleSheet.create({
         width: SCREEN_WIDTH,
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'center',
+        justifyContent: 'space-between',
         // backgroundColor: '#123'
     },
+    headerButtonView: {
+        height: 35,
+        minWidth: 20,
+        flexDirection: 'row',
+        alignItems: 'center',
+        // backgroundColor: '#f60',
+    },
     headerLeftView: {
-        left: 15,
-        position: 'absolute',
+        // left: 15,
+        // position: 'absolute',
         flexDirection: 'row',
         alignItems: 'center',
     },
@@ -255,9 +273,30 @@ const styles = StyleSheet.create({
         fontSize: FontSize(11),
         color: CusTheme.themeColor,
     },
+    headerTitleView: {
+        flex: 1,
+        height: 35,
+        marginHorizontal: 10,
+        borderRadius: 18,
+        overflow: 'hidden',
+        flexDirection: 'row',
+        alignItems: 'center',
+        borderColor: '#d2d2d2',
+        justifyContent: 'center',
+        // backgroundColor: '#f60',
+        borderWidth: CusTheme.minPixel,
+    },
+    headerSearchIcon: {
+        marginRight: 10,
+    },
+    headerSearchTitle: {
+        color: '#999',
+        fontSize: FontSize(14),
+    },
     headerRightView: {
-        right: 15,
-        position: 'absolute',
+        justifyContent: 'flex-end',
+        // right: 15,
+        // position: 'absolute',
     },
     leftViewBar: {
         color: '#fff',

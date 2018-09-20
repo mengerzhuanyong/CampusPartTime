@@ -212,4 +212,9 @@ export default {
         color: '#333',
         fontSize: fontSize(20),
     },
+    checkedIcon: {
+        width: scaleSize(60),
+        height: scaleSize(60),
+        resizeMode: 'contain',
+    }
 }

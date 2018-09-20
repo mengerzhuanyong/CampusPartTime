@@ -74,6 +74,7 @@ import AddressEdit from "../page/address/addressEdit"
 
 
 import WorkDetail from "../page/work/workDetail"
+import OrderReturn from "../page/order/orderReturn";
 
 const TabNavigator = createBottomTabNavigator({
     Home: {
@@ -109,7 +110,7 @@ const TabNavigator = createBottomTabNavigator({
         })
     },
 }, {
-    initialRouteName: 'Home',
+    initialRouteName: 'Mine',
     tabBarOptions: {
         showIcon: true,
         indicatorStyle: {height: 0},
@@ -140,10 +141,6 @@ const StackNavigator = createStackNavigator(configRouter({
     GoodsList: {screen: GoodsList},
     GoodsDetail: {screen: GoodsDetail},
 
-    OrderConfirm: {screen: OrderConfirm},
-    OrderSubmit: {screen: OrderSubmit},
-    OrderCompleted: {screen: OrderCompleted},
-
     AutoGetWork: {screen: AutoGetWork},
     WorkDetail: {screen: WorkDetail},
     WorkSignUpStepOne: {screen: WorkSignUpStepOne},
@@ -165,9 +162,13 @@ const StackNavigator = createStackNavigator(configRouter({
     MinePartTimeIncome: {screen: MinePartTimeIncome},
     MineRepayment: {screen: MineRepayment},
     MineWithDraw: {screen: MineWithDraw},
-
+    
     MineOrder: {screen: MineOrder},
+    OrderConfirm: {screen: OrderConfirm},
+    OrderSubmit: {screen: OrderSubmit},
+    OrderCompleted: {screen: OrderCompleted},
     OrderDetail: {screen: OrderDetail},
+    OrderReturn: {screen: OrderReturn},
 
     Setting: {screen: Setting},
     ShareApp: {screen: ShareApp},

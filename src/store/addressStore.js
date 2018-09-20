@@ -15,7 +15,7 @@ export default class AddressStore extends BaseStore {
         super(params);
         this.loading = true;
         this.dataSource = [];
-        this.addressManageStatus = true;
+        this.addressManageStatus = false;
     }
 
     @observable dataSource;

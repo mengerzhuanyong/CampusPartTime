@@ -80,7 +80,7 @@ class SegmentedItem extends React.PureComponent {
                     count={badge}
                     onLayout={e => {
                         let { width } = e.nativeEvent.layout;
-                        if (width != this.state.badgeWidth) {
+                        if (width !== this.state.badgeWidth) {
                             this.setState({ badgeWidth: width });
                             onAddWidth && onAddWidth(width);
                         }
