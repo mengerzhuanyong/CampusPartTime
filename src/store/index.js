@@ -19,6 +19,7 @@ import SystemStore from "./systemStore"
 import AddressStore from "./addressStore";
 import PointsStore from "./pointsStore";
 import OrderStore from "./orderStore";
+import SearchStore from "./searchStore";
 
 export default {
     appStore: new AppStore(),
@@ -33,4 +34,5 @@ export default {
     addressStore: new AddressStore(),
     pointsStore: new PointsStore(),
     orderStore: new OrderStore(),
+    searchStore: new SearchStore(),
 };

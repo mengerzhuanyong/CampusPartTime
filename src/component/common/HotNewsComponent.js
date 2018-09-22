@@ -21,7 +21,7 @@ import {Carousel} from "teaset";
 
 export default class HotNewsComponent extends Component {
 
-    constructor(props){
+    constructor(props) {
         super(props);
         this.state = {
             swiperShow: false,
@@ -34,67 +34,62 @@ export default class HotNewsComponent extends Component {
     };
 
     componentDidMount() {
-        this.timer =  setTimeout(() => {
+        this.timer = setTimeout(() => {
             this.setState({
                 swiperShow: true
             });
         }, 0)
     }
 
-    componentWillReceiveProps(nextProps){
+    componentWillReceiveProps(nextProps) {
         // console.log(nextProps.noticeData);
         this.setState({
             noticeData: nextProps.noticeData
         });
     }
 
-    componentWillUnmount(){
+    componentWillUnmount() {
         this.timer && clearTimeout(this.timer);
     }
 
     renderNotice = (row) => {
-            if (row.length <= 0) {
-                return null;
-            }
-            const notices = row.map((item, index) => {
-                return (
-                    <TouchableOpacity
-                        style={styles.noticeItemView}
-                        key={"notice_" + index}
-                        activeOpacity={1}
-                        onPress={() => RouterHelper.navigate('消息', 'SystemMessage')}
-                    >
-                        <Text style={styles.noticeContext} numberOfLines={1}>{item.content}</Text>
-                    </TouchableOpacity>
-                )
-            });
-            // 这里不能输出信息，否则会陷入死循环
-            return notices;
+        if (row.length <= 0) {
+            return null;
+        }
+        const notices = row.map((item, index) => {
+            return (
+                <TouchableOpacity
+                    style={styles.noticeItemView}
+                    key={"notice_" + index}
+                    activeOpacity={1}
+                    onPress={() => RouterHelper.navigate('消息', 'SystemMessage')}
+                >
+                    <Text style={styles.noticeContext} numberOfLines={1}>{item.content}{item.content}</Text>
+                </TouchableOpacity>
+            )
+        });
+        // 这里不能输出信息，否则会陷入死循环
+        return notices;
     };
 
-    render(){
+    render() {
         const {noticeData} = this.props;
         return (
-            <ScrollView
-                style={[styles.container]}
-                removeClippedSubviews={false}
-            >
-                <View style={styles.noticeContainer}>
-                    <Image
-                        style={styles.noticeIcon}
-                        source={Images.icon_bell}
-                    />
-                    {noticeData.length > 0 ?
-                        <Carousel
-                            style={styles.noticeContainer}
-                            control={false}
-                            horizontal={false}
-                            interval={5000}
-                        >{this.renderNotice(noticeData)}</Carousel>
-                        : <View style={styles.noticeContainer}/>
-                    }
-                </View>
-            </ScrollView>
+            <View style={styles.container}>
+                <Image
+                    style={styles.noticeIcon}
+                    source={Images.icon_bell}
+                />
+                {noticeData.length > 0 ?
+                    <Carousel
+                        style={styles.noticeContainer}
+                        control={false}
+                        horizontal={false}
+                        interval={5000}
+                    >{this.renderNotice(noticeData)}</Carousel>
+                    : <View style={styles.noticeContainer}/>
+                }
+            </View>
         );
     }
 }
@@ -102,31 +97,32 @@ export default class HotNewsComponent extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        flexDirection: 'row',
+        alignItems: 'center',
         height: ScaleSize(100),
         backgroundColor: '#fff',
+        justifyContent: 'center',
+        paddingLeft: ScaleSize(20),
     },
 
     noticeContainer: {
         flex: 1,
-        flexDirection: 'row',
-        alignItems: 'center',
         height: ScaleSize(60),
         justifyContent: 'center',
-        marginLeft: ScaleSize(20),
         marginVertical: ScaleSize(20),
     },
     noticeIcon: {
         width: ScaleSize(30),
         height: ScaleSize(30),
         resizeMode: 'contain',
+        marginRight: 10,
     },
     noticeItemView: {
+        flex: 1,
         height: ScaleSize(60),
         justifyContent: 'center',
-        // backgroundColor: '#123',
     },
     noticeContext: {
-        flex: 1,
         color: '#f4954e',
         fontSize: FontSize(12),
     },

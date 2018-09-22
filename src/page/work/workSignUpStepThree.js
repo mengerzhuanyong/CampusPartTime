@@ -56,10 +56,9 @@ export default class WorkSignUpStepThree extends Component {
         });
     };
 
-    makeCall = () => {
-        const {workStore} = this.props;
-        let {server_mobile} = workStore;
+    makeCall = (server_mobile) => {
         let url = 'tel: ' + server_mobile;
+        // console.log(url);
         Linking.canOpenURL(url)
             .then(supported => {
                 if (!supported) {
@@ -122,7 +121,7 @@ export default class WorkSignUpStepThree extends Component {
                         <Text style={styles.contentTitle}>您的报名已被受理，请等待工作人员与您联系，您也可点击拨打服务热线咨询审核情况</Text>
                         <TouchableOpacity
                             style={styles.mobileView}
-                            onPress={this.makeCall}
+                            onPress={() => this.makeCall(server_mobile)}
                         >
                             <Text style={[styles.mobileTitle,]}>立即拨打：</Text>
                             <Text style={[styles.mobileTitle, styles.mobileValue]}>{server_mobile}</Text>

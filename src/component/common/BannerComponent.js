@@ -22,7 +22,7 @@ import SpinnerLoading from "./SpinnerLoading";
 
 export default class BannerComponent extends Component {
 
-    constructor(props){
+    constructor(props) {
         super(props);
         this.state = {
             swiperShow: false,
@@ -35,20 +35,20 @@ export default class BannerComponent extends Component {
     };
 
     componentDidMount() {
-        this.timer =  setTimeout(() => {
+        this.timer = setTimeout(() => {
             this.setState({
                 swiperShow: true
             });
         }, 0)
     }
 
-    componentWillReceiveProps(nextProps){
+    componentWillReceiveProps(nextProps) {
         this.setState({
             bannerData: nextProps.bannerData
         });
     }
 
-    componentWillUnmount(){
+    componentWillUnmount() {
         this.timer && clearTimeout(this.timer);
     }
 
@@ -80,13 +80,15 @@ export default class BannerComponent extends Component {
         }
     };
 
-    render(){
-        const { bannerData } = this.state;
+    render() {
+        const {bannerData} = this.state;
+        // <ScrollView
+        //     style={[styles.container]}
+        //     removeClippedSubviews={false}
+        // >
+        // </ScrollView>
         return (
-            <ScrollView
-                style={[styles.container]}
-                removeClippedSubviews={false}
-            >
+            <View style={styles.container}>
                 <Carousel
                     style={styles.headBackCarousel}
                     control={
@@ -97,8 +99,7 @@ export default class BannerComponent extends Component {
                         />
                     }
                 >{this.renderBanner(bannerData)}</Carousel>
-
-            </ScrollView>
+            </View>
         );
     }
 }

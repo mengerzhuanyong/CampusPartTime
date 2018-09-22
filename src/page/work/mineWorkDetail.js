@@ -43,11 +43,17 @@ export default class MineWorkDetail extends Component {
                 job_info: {},
                 user_info: {},
             },
+            punchCardStatus: false,
         };
     }
     
     componentDidMount() {
         this.requestOrderDetail();
+    }
+
+    componentWillUnmount() {
+        let timers = [this.timer, this.timer1];
+        ClearTimer(timers);
     }
 
     requestOrderDetail = async () => {
@@ -61,7 +67,6 @@ export default class MineWorkDetail extends Component {
     };
 
 
-
     confirmPickUpOrder = (item) => {
         const params = {
             title: '温馨提示',
@@ -69,7 +74,8 @@ export default class MineWorkDetail extends Component {
             actions: [
                 {
                     title: '取消',
-                    onPress: () => {},
+                    onPress: () => {
+                    },
                 },
                 {
                     title: '确定',
@@ -78,7 +84,7 @@ export default class MineWorkDetail extends Component {
             ]
         };
         AlertManager.show(params);
-    }
+    };
 
     submitPickUpOrder = async (item) => {
         const {workStore} = this.props;
@@ -91,7 +97,34 @@ export default class MineWorkDetail extends Component {
         if (result && result.code === 1) {
             this.requestOrderDetail();
         }
-    }
+    };
+
+    onSubmitPunchCard = async (res) => {
+        // console.log(res);
+        ToastManager.showCustom('打卡中。。。');
+        const {workStore} = this.props;
+        let url = ServicesApi.job_sign;
+        let data = {
+            data: res.data,
+            lat: 35.1515151,
+            lng: 120.21212121,
+        };
+        try {
+            let result = await workStore.onSubmitPunchCard(url, data);
+            this.timer = setTimeout(() => {
+                if (result.code === 1) {
+                    ToastManager.success('打卡成功');
+                } else {
+                    ToastManager.success('打卡失败');
+                }
+            }, 1000);
+        } catch (e) {
+            this.timer1 = setTimeout(() => {
+                ToastManager.hideCustom();
+                ToastManager.fail('网络请求失败，请稍后重试');
+            }, 1000);
+        }
+    };
 
     renderHeaderRightView = () => {
         return (
@@ -157,7 +190,7 @@ export default class MineWorkDetail extends Component {
                         title={'打卡'}
                         style={[CusTheme.btnView, styles.btnView]}
                         titleStyle={[CusTheme.btnName, styles.btnName]}
-                        onPress={() => RouterHelper.navigate('打卡', 'WorkPunchCard')}
+                        onPress={() => RouterHelper.navigate('打卡', 'WorkPunchCard', {item, onSubmitPunchCard: (res) => this.onSubmitPunchCard(res)})}
                     />
                 </ScrollView>
             </View>

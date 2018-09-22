@@ -139,7 +139,7 @@ export default class Shop extends Component {
     };
 
     _renderSeparator = () => {
-        return <HorizontalLine style={styles.horLine} />;
+        return <HorizontalLine lineStyle={styles.horLine} />;
     };
 
     _renderHeaderComponent = () => {
@@ -177,7 +177,7 @@ export default class Shop extends Component {
             <View style={styles.headerView}>
                 <TouchableOpacity
                     style={styles.headerTitleView}
-                    onPress={() => RouterHelper.navigate('搜索', 'Search')}
+                    onPress={() => RouterHelper.navigate('搜索', 'Search', {type: 2})}
                 >
                     <Image source={Images.icon_search} style={[CusTheme.headerIcon, styles.headerSearchIcon]} />
                     <Text style={[CusTheme.headerIconTitle, styles.headerSearchTitle]}>搜索商品</Text>
@@ -278,11 +278,13 @@ const styles = StyleSheet.create({
         borderWidth: CusTheme.minPixel,
     },
     headerSearchIcon: {
+        width: 15,
+        height: 15,
         marginRight: 10,
     },
     headerSearchTitle: {
         color: '#999',
-        fontSize: FontSize(14),
+        fontSize: FontSize(12),
     },
     headerTitle: {
         color: '#333',

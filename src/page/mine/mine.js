@@ -30,7 +30,7 @@ import ActionsManager from "../../config/manager/ActionsManager";
 import SpinnerLoading from "../../component/common/SpinnerLoading";
 
 
-@inject('loginStore', 'mineStore')
+@inject('loginStore', 'mineStore', 'systemStore')
 @observer
 export default class Mine extends Component {
     constructor(props) {
@@ -65,14 +65,30 @@ export default class Mine extends Component {
         );
     };
 
-    onShare = () => {
-        const params = {
-            type: 'link',
-            url: 'https://bbs.hupu.com/22838911.html?share_from=kqapp',
-            title: '这是我见过最惨烈的打架了…当然也是最浮夸的演技',
-            text: '大清早的看得我笑出了猪叫',
-        };
-        ActionsManager.showShareModule(params);
+    onSignIn = async () => {
+        const {mineStore} = this.props;
+        let data = await mineStore.requestDataSource(ServicesApi.mine);
+    };
+
+    onShare = async () => {
+        const {systemStore} = this.props;
+        let {appShareParams} = systemStore;
+        let url = ServicesApi.get_app_share;
+        if (appShareParams !== '') {
+            ActionsManager.showShareModule(appShareParams);
+            return;
+        }
+        try {
+            let result = await systemStore.getAppShareParams(url);
+            if (result && result.code === 1) {
+                ActionsManager.showShareModule(result.data);
+            } else {
+                Toast.toastShort(result.msg);
+            }
+        } catch (e) {
+            console.log(e);
+            Toast.toastShort('error');
+        }
     };
 
     render() {
@@ -88,7 +104,7 @@ export default class Mine extends Component {
                 <NavigationBar
                     title={this.renderNavigationBarView(dataSource.has_message)}
                     style={styles.navigationBarStyle}
-                    statusBarStyle={'light-content'}
+                    statusBarStyle={'dark-content'}
                     renderLeftAction={null}
                     backgroundImage={Images.img_bg_nav_bar}
                 />
@@ -102,10 +118,19 @@ export default class Mine extends Component {
                     </View>
                     <View style={[styles.contentTopItemView, styles.userNameView]}>
                         <Text style={styles.userName}>{dataSource.nickname}</Text>
-                        <View style={styles.signInView}>
-                            <Text style={styles.signInTips}>签到 +{dataSource.sign_point}</Text>
-                            <Image source={Images.icon_points_symbol} style={styles.pointsIcon}/>
-                        </View>
+                        {dataSource.is_signend === 2 ?
+                            <TouchableOpacity
+                                style={styles.signInView}
+                                onPress={this.onSignIn}
+                            >
+                                <Text style={styles.signInTips}>签到 +{dataSource.sign_point}</Text>
+                                <Image source={Images.icon_points_symbol} style={styles.pointsIcon}/>
+                            </TouchableOpacity>
+                            :
+                            <View style={styles.signInView}>
+                                <Text style={styles.signInTips}>已签到</Text>
+                            </View>
+                        }
                     </View>
                     <View style={[styles.contentTopItemView, styles.userAccountView]}>
                         <Text style={styles.userAccountInfo}>剩余工分: {dataSource.work_point}</Text>
@@ -276,7 +301,7 @@ const styles = StyleSheet.create({
         fontSize: FontSize(15),
     },
     signInView: {
-        // width: 115,
+        minWidth: 60,
         // height: 30,
         paddingVertical: 3,
         paddingHorizontal: 5,

@@ -64,7 +64,7 @@ export default class ShareContent extends React.PureComponent {
                     <Text style={styles.contentTitle}>{moduleTitle || '分享APP'}</Text>
                 </View>
                 {this._renderContent(ShareSource, 'share')}
-                <HorizontalLine style={styles.separator} />
+                <HorizontalLine lineStyle={styles.separator} />
                 <TouchableOpacity
                     style={styles.cancelButton}
                     onPress={this._onPressCancel}

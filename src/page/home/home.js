@@ -70,13 +70,17 @@ export default class Home extends Component {
 
     requestDataSource = async () => {
         const {homeStore} = this.props;
-        let data = await homeStore.requestDataSource(ServicesApi.index, {});
+        let url = ServicesApi.index;
+        let data = {};
+        let result = await homeStore.requestDataSource(url, data);
     };
 
     getResource = async () => {
         let {type} = this.state;
         const {resourceStore} = this.props;
-        let data = await resourceStore.requestDataSource(ServicesApi.getResource, {type});
+        let url = ServicesApi.getResource;
+        let data = {type};
+        let result = await resourceStore.requestDataSource(url, data);
         // console.warn(data);
     };
 
@@ -141,7 +145,7 @@ export default class Home extends Component {
         let {loading} = this.state;
         let {homeStore, resourceStore} = this.props;
         let {hot_goods, hot_jobs, hot_point_goods} = homeStore.getDataSource;
-        let {banner_data, notice_data} = resourceStore.getDataSource;
+        let {banner_data, notice_data} = resourceStore.getHomeDataSource;
         return (
             <View style={styles.container}>
                 <NavigationBar

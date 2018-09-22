@@ -61,7 +61,7 @@ export default class ShopStore extends BaseStore {
                     this.dataSource = result.data.list_data;
                 } else {
                     if (result.data.list_data.length !== 0) {
-                        this.dataSource = this.dataSource.concat(result.data.list_data)
+                        this.dataSource = this.dataSource.concat(result.data.list_data);
                     }
                 }
             })

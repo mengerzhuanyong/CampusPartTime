@@ -4,6 +4,7 @@
  * @大梦
  */
 
+
 'use strict';
 
 import React, {Component} from 'react'
@@ -30,7 +31,6 @@ import FlatListView from '../../component/common/FlatListView'
 import AreaContent from '../../component/common/AreaContent'
 import Container from '../../component/common/Container'
 import Countdown from '../../component/common/Countdown'
-import {action} from 'mobx';
 import SyanImagePicker from 'react-native-syan-image-picker'
 import ImagePicker from 'react-native-image-picker';
 import PayManager from '../../config/manager/PayManager'
@@ -39,34 +39,112 @@ import {QRscanner} from 'react-native-qr-scanner'
 import {Carousel, ListRow} from 'teaset'
 import {HorizontalLine, VerticalLine} from '../../component/common/commonLine'
 import JobItem from "../../component/item/jobItem";
+import GoodsItem from "../../component/item/goodsItem";
+import SpinnerLoading from "../../component/common/SpinnerLoading";
 
-
-
+@inject('searchStore', 'workStore', 'shopStore')
+@observer
 export default class Search extends Component {
     constructor(props) {
         super(props);
+        let {params} = this.props.navigation.state;
         this.state = {
+            firstLoading: true,
             loading: false,
             listData: [1,2,3],
+            keyword: '',
+            type: params && params.type ? params.type : 1,
+            ready: false,
         };
-        this.page = 0
+        this.page = 1;
+        this.pageSize = 10;
     }
 
-    async componentDidMount() {
-        let url = ServicesApi.index;
-        let data = {
-            id: 1,
-        };
-        let result = await Services.post(url, data, true, 'index');
-        // console.log(result);
+    componentDidMount() {
+        this.requestHotKeywords();
+        this.loadSearchHistory();
     }
 
     componentWillUnmount(){
-        let timers = [this.timer1, this.timer2];
+        let timers = [this.timer1, this.timer2, this.timer3];
         ClearTimer(timers);
     }
 
+    requestHotKeywords = async () => {
+        let {type} = this.state;
+        const {searchStore} = this.props;
+        let url = ServicesApi.hot_keywords;
+        let data = {type};
+        let result = await searchStore.requestHotKeywords(url, data);
+    };
+
+    loadSearchHistory = async () => {
+        let {type} = this.state;
+        const {searchStore} = this.props;
+        let result = await searchStore.onLoadKeyWords(type);
+    };
+
+    submitSearch = async (keyword, page = this.page) => {
+        let {type} = this.state;
+        const {searchStore, workStore, shopStore} = this.props;
+        if (keyword === '') {
+            ToastManager.show('关键词不能为空，请重新输入');
+            return;
+        }
+        this.setState({
+            firstLoading: false,
+        });
+        let keyResult = await searchStore.onSaveKeyWords(type, keyword);
+        let url = ServicesApi.job_search_list;
+        let data = {
+            page,
+            category_id: 0,
+            keywords: keyword,
+            page_size: this.pageSize,
+        };
+        let result = {};
+        switch (type) {
+            case 1:
+                url = ServicesApi.job_search_list;
+                result = await searchStore.requestDataSource(type, url, data);
+                break;
+            case 2:
+                url = ServicesApi.work_goods_list;
+                result = await searchStore.requestDataSource(type, url, data);
+                break;
+            case 3:
+                url = ServicesApi.point_goods_list;
+                result = await searchStore.requestDataSource(type, url, data);
+                break;
+            default:
+                url = ServicesApi.job_search_list;
+                result = await searchStore.requestDataSource(type, url, data);
+                break;
+        }
+        let endStatus = false;
+        if (result && result.code === 1) {
+            endStatus = result.data.list_data.length < data.page_size;
+        } else {
+            endStatus = true;
+        }
+        this.timer3 = setTimeout(() => {
+            this.setState({
+                ready: true
+            });
+        }, 600);
+        this.flatListRef && this.flatListRef.stopRefresh();
+        this.flatListRef && this.flatListRef.stopEndReached({allLoad: endStatus});
+
+    };
+
+    clearLocalKeyword = async () => {
+        let {type} = this.state;
+        const {searchStore} = this.props;
+        let result = await searchStore.onSaveKeyWords(type);
+    };
+
     renderNavigationBarView = () => {
+        let {keyword, type} = this.state;
         return (
             <View style={styles.headerView}>
                 <TouchableOpacity
@@ -81,19 +159,22 @@ export default class Search extends Component {
                         style={styles.headerSearchInput}
                         ref={v => this.input = v}
                         underlineColorAndroid={'rgba(0, 0, 0, 0)'}
-                        placeholder={'搜索兼职 / 商品'}
+                        placeholder={type === 1 ? '搜索兼职' : '搜索商品'}
                         // secureTextEntry={true}
                         placeholderTextColor={'#999'}
-                        returnKeyType={'done'}
+                        returnKeyType={'search'}
                         clearButtonMode='while-editing'
-                        onChangeText={() => {
-
+                        onChangeText={(text) => {
+                            this.setState({
+                                keyword: text
+                            });
                         }}
+                        onSubmitEditing={() => this.submitSearch(keyword)}
                     />
                 </View>
                 <TouchableOpacity
                     style={styles.headerRightView}
-                    onPress={() => RouterHelper.navigate('消息', 'SystemMessage')}
+                    onPress={() => this.submitSearch(keyword)}
                 >
                     <Text style={[CusTheme.headerBtnName, styles.headerBtnName]}>搜索</Text>
                 </TouchableOpacity>
@@ -109,31 +190,16 @@ export default class Search extends Component {
         return `z_${index}`
     };
 
-    // 上拉加载
-    _onEndReached = () => {
-        this.timer1 = setTimeout(() => {
-            let dataTemp = this.state.listData;
-            let allLoad = false;
-            //模拟数据加载完毕,即page > 0,
-            if (this.page < 2) {
-                this.setState({ data: dataTemp.concat(this.state.listData) });
-            }
-            // allLoad 当全部加载完毕后可以设置此属性，默认为false
-            this.flatListRef.stopEndReached({ allLoad: this.page === 2 });
-            this.page++;
-        }, 500);
+    _onRefresh = (stopRefresh) => {
+        let {keyword} = this.state;
+        this.page = 1;
+        this.submitSearch(keyword, this.page);
     };
 
-    // 下拉刷新
-    _onRefresh = () => {
-        this.timer2 = setTimeout(() => {
-            // 调用停止刷新
-            this.flatListRef.stopRefresh()
-        }, 500);
-    };
-
-    _renderSeparator = () => {
-        return <HorizontalLine style={styles.horLine} />;
+    _onEndReached = (stopEndReached) => {
+        let {keyword} = this.state;
+        this.page++;
+        this.submitSearch(keyword, this.page);
     };
 
     _renderHeaderComponent = () => {
@@ -144,17 +210,90 @@ export default class Search extends Component {
     };
 
     _renderListItem = ({item}) => {
-        return (
-            <JobItem />
-        );
+        let {type} = this.state;
+        let itemView = null;
+        switch (type) {
+            case 1:
+                itemView = <JobItem
+                    item={item}
+                    onPress={() => RouterHelper.navigate('兼职详情', 'WorkDetail', {item})}
+                    {...this.props}
+                />;
+                break;
+            case 2:
+                itemView = <GoodsItem
+                    item={item}
+                    onPress={() => RouterHelper.navigate('商品详情', 'GoodsDetail', {item})}
+                    {...this.props}
+                />;
+                break;
+            case 3:
+                itemView = <GoodsItem
+                    item={item}
+                    onPress={() => RouterHelper.navigate('商品详情', 'GoodsDetail', {item})}
+                    {...this.props}
+                />;
+                break;
+            default:
+                itemView = <JobItem
+                    item={item}
+                    onPress={() => RouterHelper.navigate('兼职详情', 'WorkDetail', {item})}
+                    {...this.props}
+                />;
+                break;
+        }
+        return itemView;
     };
 
     _renderSeparator = () => {
         return <HorizontalLine lineStyle={styles.horLine} />
     };
 
+    renderSearchKeywords = (data) => {
+        console.log(data);
+        if (!data || data.length < 1) {
+            return null;
+        }
+        let contents = data.map((item, index) => {
+            return (
+                <Button
+                    key={index}
+                    title={item}
+                    style={styles.searchTipsConItem}
+                    titleStyle={styles.searchTipsConItemName}
+                    onPress={() => this.submitSearch(item)}
+                />
+            )
+        });
+        return contents;
+    };
+
     render() {
-        let {loading, listData} = this.state;
+        let {loading, firstLoading, ready, listData, type} = this.state;
+        const {searchStore, workStore, shopStore} = this.props;
+        let {getHotKeywords, getWorkSearchKeys, getShopSearchKeys,
+            getPointSearchKeys, getWorkDataSource, getShopDataSource, getPointDataSource} = searchStore;
+        let localKeywords = [];
+        let dataSource = [];
+        switch(type) {
+            case 1:
+                localKeywords = getWorkSearchKeys;
+                dataSource = getWorkDataSource;
+                break;
+            case 2:
+                localKeywords = getShopSearchKeys;
+                dataSource = getShopDataSource;
+                break;
+            case 3:
+                localKeywords = getPointSearchKeys;
+                dataSource = getPointDataSource;
+                break;
+            default:
+                localKeywords = getWorkSearchKeys;
+                dataSource = getWorkDataSource;
+                break;
+        }
+        console.log(getWorkSearchKeys, getShopSearchKeys, getPointSearchKeys, dataSource);
         return (
             <View style={styles.container}>
                 <NavigationBar
@@ -167,88 +306,51 @@ export default class Search extends Component {
                     backgroundImage={null}
                 />
                 <View style={styles.content}>
-                    <View style={styles.searchTipsView}>
-                        <View style={styles.searchTipsItemView}>
-                            <View style={styles.searchTipsTitleView}>
-                                <Text style={styles.searchTipsTitle}>热门搜索</Text>
+                    {firstLoading ?
+                        <View style={[styles.searchTipsView, ]}>
+                            <View style={styles.searchTipsItemView}>
+                                <View style={styles.searchTipsTitleView}>
+                                    <Text style={styles.searchTipsTitle}>热门搜索</Text>
+                                </View>
+                                <View style={styles.searchTipsContent}>
+                                    {this.renderSearchKeywords(getHotKeywords)}
+                                </View>
                             </View>
-                            <View style={styles.searchTipsContent}>
-                                <Button
-                                    title={'手机'}
-                                    style={styles.searchTipsConItem}
-                                    titleStyle={styles.searchTipsConItemName}
-                                />
-                                <Button
-                                    title={'电脑'}
-                                    style={styles.searchTipsConItem}
-                                    titleStyle={styles.searchTipsConItemName}
-                                />
-                                <Button
-                                    title={'相机'}
-                                    style={styles.searchTipsConItem}
-                                    titleStyle={styles.searchTipsConItemName}
-                                />
-                                <Button
-                                    title={'iPhone X Max'}
-                                    style={styles.searchTipsConItem}
-                                    titleStyle={styles.searchTipsConItemName}
-                                />
-                                <Button
-                                    title={'iPhone XR'}
-                                    style={styles.searchTipsConItem}
-                                    titleStyle={styles.searchTipsConItemName}
-                                />
+                            <View style={styles.searchTipsItemView}>
+                                <View style={styles.searchTipsTitleView}>
+                                    <Text style={styles.searchTipsTitle}>搜索历史</Text>
+                                    <TouchableOpacity
+                                        style={styles.searchTipsTitleRightView}
+                                        onPress={this.clearLocalKeyword}
+                                    >
+                                        <Image source={Images.icon_trash} style={[CusTheme.contentRightIcon, styles.searchTipsIcon]} />
+                                    </TouchableOpacity>
+                                </View>
+                                <View style={styles.searchTipsContent}>
+                                    {this.renderSearchKeywords(localKeywords)}
+                                </View>
                             </View>
                         </View>
-                        <View style={styles.searchTipsItemView}>
-                            <View style={styles.searchTipsTitleView}>
-                                <Text style={styles.searchTipsTitle}>搜索历史</Text>
-                                <TouchableOpacity style={styles.searchTipsTitleRightView}>
-                                    <Image source={Images.icon_trash} style={[CusTheme.contentRightIcon, styles.searchTipsIcon]} />
-                                </TouchableOpacity>
-                            </View>
-                            <View style={styles.searchTipsContent}>
-                                <Button
-                                    title={'手机'}
-                                    style={styles.searchTipsConItem}
-                                    titleStyle={styles.searchTipsConItemName}
+                        :
+                        <View style={styles.listContentView}>
+                            {ready ?
+                                <FlatListView
+                                    style={[styles.listContent, ]}
+                                    initialRefresh={false}
+                                    ref={this._captureRef}
+                                    removeClippedSubviews={false}
+                                    data={dataSource}
+                                    renderItem={this._renderListItem}
+                                    keyExtractor={this._keyExtractor}
+                                    onEndReached={this._onEndReached}
+                                    onRefresh={this._onRefresh}
+                                    ItemSeparatorComponent={this._renderSeparator}
+                                    ListHeaderComponent={this._renderHeaderComponent}
                                 />
-                                <Button
-                                    title={'电脑'}
-                                    style={styles.searchTipsConItem}
-                                    titleStyle={styles.searchTipsConItemName}
-                                />
-                                <Button
-                                    title={'相机'}
-                                    style={styles.searchTipsConItem}
-                                    titleStyle={styles.searchTipsConItemName}
-                                />
-                                <Button
-                                    title={'iPhone X Max'}
-                                    style={styles.searchTipsConItem}
-                                    titleStyle={styles.searchTipsConItemName}
-                                />
-                                <Button
-                                    title={'iPhone XR'}
-                                    style={styles.searchTipsConItem}
-                                    titleStyle={styles.searchTipsConItemName}
-                                />
-                            </View>
+                                : <SpinnerLoading isVisible={true}/>
+                            }
                         </View>
-                    </View>
-                    <FlatListView
-                        style={styles.listContent}
-                        initialRefresh={false}
-                        ref={this._captureRef}
-                        removeClippedSubviews={false}
-                        data={this.state.listData}
-                        renderItem={this._renderListItem}
-                        keyExtractor={this._keyExtractor}
-                        onEndReached={this._onEndReached}
-                        onRefresh={this._onRefresh}
-                        ItemSeparatorComponent={this._renderSeparator}
-                        ListHeaderComponent={this._renderHeaderComponent}
-                    />
+                    }
                 </View>
             </View>
         );
@@ -332,6 +434,10 @@ const styles = StyleSheet.create({
         paddingLeft: ScaleSize(25),
     },
 
+    content: {
+        flex: 1,
+    },
+
     searchTipsView: {
         padding: 15,
     },
@@ -369,9 +475,13 @@ const styles = StyleSheet.create({
         fontSize: FontSize(12),
     },
 
+    listContentView: {
+        flex: 1,
+        backgroundColor: '#fff',
+    },
     listContent: {
         flex: 1,
-        backgroundColor: '#eee',
+        backgroundColor: '#fff',
     },
     listHeaderComponent: {},
     horLine: {

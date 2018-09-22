@@ -31,12 +31,28 @@ import {Button} from 'teaset'
 import {QRscanner} from 'react-native-qr-scanner';
 
 
+const ScannerOptions = {
+    zoom: 0,
+    finderY: -30,
+    width: SCREEN_WIDTH * 0.6,
+    height: SCREEN_WIDTH * 0.6,
+    hintTextPosition: ScaleSize(180),
+    hintText: '将二维码放入框内，即可自动扫描',
+};
+
+@inject('loginStore', 'mineStore', 'workStore')
+@observer
 export default class WorkPunchCard extends Component {
 
     constructor(props) {
         super(props);
+        let {params} = this.props.navigation.state;
         this.state = {
             listData: [1, 2, 3, 4],
+            item: params && params.item ? params.item : {
+                job_info: {},
+                user_info: {},
+            },
         };
     }
 
@@ -51,8 +67,23 @@ export default class WorkPunchCard extends Component {
         )
     };
 
-    onRead = (res) => {
-        // console.log(res);
+    onBack = async () => {
+        // const {workStore} = this.props;
+        // let {item} = this.state;
+        // let url = ServicesApi.work_bench_job_details;
+        // let data = {
+        //     id: item.id,
+        // };
+        // let result = await workStore.requestWorkBenchDetail(url, data);
+    };
+
+    onRead = async (res) => {
+        console.log(res);
+        let {params} = this.props.navigation.state;
+        let {onSubmitPunchCard} = params;
+        onSubmitPunchCard && onSubmitPunchCard(res);
+        RouterHelper.goBack();
+
     };
 
     render() {
@@ -67,9 +98,12 @@ export default class WorkPunchCard extends Component {
                 <View style={styles.content}>
                     <QRscanner
                         onRead={this.onRead}
-                        finderY={-30}
-                        hintText={'将二维码放入框内，即可自动扫描'}
-                        hintTextPosition={ScaleSize(180)}
+                        zoom={ScannerOptions.zoom}
+                        finderY={ScannerOptions.finderY}
+                        rectWidth={ScannerOptions.width}
+                        hintText={ScannerOptions.hintText}
+                        rectHeight={ScannerOptions.height}
+                        hintTextPosition={ScannerOptions.hintTextPosition}
                     />
                 </View>
             </View>

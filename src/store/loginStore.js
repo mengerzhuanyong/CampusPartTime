@@ -64,14 +64,14 @@ export default class LoginStore extends BaseStore {
     saveUserInfo = (userInfo) => {
         global.token = userInfo.token;
         this.userInfo = userInfo;
-        StorageManager.save(Constant.USER_INFO_KEY, userInfo);
+        let result = StorageManager.save(Constant.USER_INFO_KEY, userInfo);
     };
 
     @action
     cleanUserInfo = () => {
         global.token = '';
         this.userInfo = {mobile: '', token: ''};
-        StorageManager.remove(Constant.USER_INFO_KEY);
+        let result = StorageManager.remove(Constant.USER_INFO_KEY);
     }
 
 }

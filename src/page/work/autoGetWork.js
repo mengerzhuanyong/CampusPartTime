@@ -133,7 +133,7 @@ export default class AutoGetWork extends Component {
     };
 
     _renderSeparator = () => {
-        return <HorizontalLine style={styles.horLine} />;
+        return <HorizontalLine lineStyle={styles.horLine} />;
     };
 
     _renderHeaderComponent = () => {

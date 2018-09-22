@@ -38,6 +38,7 @@ export default class MineWorkList extends Component {
             loading: false,
             listData: [1,2,3],
             type: this.props.type,
+            ready: false,
         };
         this.page = 1;
         this.pageSize = 10;
@@ -116,7 +117,7 @@ export default class MineWorkList extends Component {
     };
 
     _renderSeparator = () => {
-        return <HorizontalLine style={styles.horLine} />;
+        return <HorizontalLine lineStyle={styles.horLine} />;
     };
 
     _renderEmptyComponent = () => {
@@ -153,30 +154,33 @@ export default class MineWorkList extends Component {
         } else {
             RouterHelper.navigate('确认信息', 'WorkSignUpStepThree', {item, flag: 'workspace'});
         }
-    }
+    };
 
     render() {
         const {workStore, type} = this.props;
-        let {loading, listData} = this.state;
+        let {loading, ready} = this.state;
         let {workBenchData} = workStore;
         if (!workBenchData) {
             return <SpinnerLoading isVisible={true}/>;
         }
         return (
             <View style={styles.container}>
-                <FlatListView
-                    style={styles.listContent}
-                    initialRefresh={true}
-                    ref={this._captureRef}
-                    data={workBenchData}
-                    removeClippedSubviews={false}
-                    renderItem={this._renderListItem}
-                    keyExtractor={this._keyExtractor}
-                    onEndReached={this._onEndReached}
-                    onRefresh={this._onRefresh}
-                    ItemSeparatorComponent={this._renderSeparator}
-                    ListEmptyComponent={this._renderEmptyComponent}
-                />
+                {ready ?
+                    <FlatListView
+                        style={styles.listContent}
+                        initialRefresh={true}
+                        ref={this._captureRef}
+                        data={workBenchData}
+                        removeClippedSubviews={false}
+                        renderItem={this._renderListItem}
+                        keyExtractor={this._keyExtractor}
+                        onEndReached={this._onEndReached}
+                        onRefresh={this._onRefresh}
+                        ItemSeparatorComponent={this._renderSeparator}
+                        ListEmptyComponent={this._renderEmptyComponent}
+                    />
+                    : <SpinnerLoading isVisible={true}/>
+                }
             </View>
         );
     }

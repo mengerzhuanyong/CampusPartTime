@@ -27,7 +27,7 @@ import FlatListView from '../../component/common/FlatListView'
 import ActionsManager from "../../config/manager/ActionsManager";
 import {inject, observer} from "mobx-react";
 
-@inject('loginStore', 'mineStore')
+@inject('loginStore', 'mineStore', 'systemStore')
 @observer
 export default class MinePoints extends Component {
 
@@ -71,15 +71,25 @@ export default class MinePoints extends Component {
         this.flatListRef && this.flatListRef.stopEndReached({allLoad: endStatus});
     };
 
-    onShare = () => {
-        const params = {
-            moduleTitle: '分享赚积分',
-            type: 'link',
-            url: 'https://bbs.hupu.com/22838911.html?share_from=kqapp',
-            title: '这是我见过最惨烈的打架了…当然也是最浮夸的演技',
-            text: '大清早的看得我笑出了猪叫',
-        };
-        ActionsManager.showShareModule(params);
+    onShare = async () => {
+        const {systemStore} = this.props;
+        let {appShareParams} = systemStore;
+        let url = ServicesApi.get_app_share;
+        if (appShareParams !== '') {
+            ActionsManager.showShareModule(appShareParams);
+            return;
+        }
+        try {
+            let result = await systemStore.getAppShareParams(url);
+            if (result && result.code === 1) {
+                ActionsManager.showShareModule(result.data);
+            } else {
+                Toast.toastShort(result.msg);
+            }
+        } catch (e) {
+            console.log(e);
+            Toast.toastShort('error');
+        }
     };
 
     _showPointsRules = (data = []) => {
@@ -136,7 +146,7 @@ export default class MinePoints extends Component {
     };
 
     _renderSeparator = () => {
-        return <HorizontalLine style={styles.horLine} />;
+        return <HorizontalLine lineStyle={styles.horLine} />;
     };
 
     _renderHeaderComponent = () => {

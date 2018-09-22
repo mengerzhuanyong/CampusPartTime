@@ -15,9 +15,11 @@ export default class SystemStore extends BaseStore {
         super(params);
         this.loading = true;
         this.dataSource = [];
+        this.appShareParams = '';
     }
 
     @observable dataSource;
+    @observable appShareParams;
 
     @computed
     get getDataSource() {
@@ -59,6 +61,23 @@ export default class SystemStore extends BaseStore {
     // 图片上传
     @action
     uploadImages = async (url, data) => {
+        const result = await this.postRequest(url, data, true);
+        return result;
+    };
+
+    // 分享APP
+    @action
+    getAppShareParams = async (url) => {
+        const result = await this.getRequest(url, true);
+        runInAction(() => {
+            this.appShareParams = result.data;
+        });
+        return result;
+    };
+
+    // 获取分享APP积分
+    @action
+    getSharePoints = async (url, data) => {
         const result = await this.postRequest(url, data, true);
         return result;
     };

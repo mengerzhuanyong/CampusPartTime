@@ -16,7 +16,10 @@ import ShareContent from '../../component/common/ShareContent';
 import CusTheme from '../theme/Theme';
 import JShareModule from 'jshare-react-native'
 import TimeContent from "../../component/common/TimeContent";
+import {inject, observer} from "mobx-react/index";
 
+@inject('systemStore')
+@observer
 class ActionsManager {
 
     static pullViewRefs = [];
@@ -125,9 +128,11 @@ class ActionsManager {
             params = {type, platform, url, title, text, imageUrl: 'Images.icon_setting'};
             JShareModule.share(params, (success) => {
                 // console.log(success);
+
                 switch (success.state) {
                     case 'success':
-                        ToastManager.show('分享成功!');
+                        // ToastManager.show('分享成功!');
+                        ActionsManager.getSharePoints(item);
                         break;
                     case 'fail':
                         ToastManager.show('分享失败!');
@@ -136,15 +141,16 @@ class ActionsManager {
                         ToastManager.show('取消分享!');
                         break;
                     case 'unknown':
-                        ToastManager.show('分享成功，未知状态!');
+                        // ToastManager.show('分享成功，未知状态!');
+                        ActionsManager.getSharePoints(item);
                         break;
                     default:
-                        ToastManager.show('分享成功!');
+                        ActionsManager.getSharePoints(item);
+                        // ToastManager.show('分享成功!');
                         break;
                 }
-
             }, (error) => {
-                // console.log(error);
+                console.log(error);
                 ToastManager.show('未安装客户端，分享失败');
             });
         })
@@ -157,7 +163,17 @@ class ActionsManager {
             lastRef.close();
         }
     }
+
+    static async getSharePoints(type) {
+        let url = ServicesApi.share_get_point;
+        let data = {type};
+        let result = await Services.post(url, data, true);
+        if (result && result.code !== 1) {
+            ToastManager.hide();
+            ToastManager.show(result.msg);
+        }
+    }
 }
 
 
-export default ActionsManager
+export default ActionsManager;

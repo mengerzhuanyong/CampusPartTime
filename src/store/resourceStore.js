@@ -14,12 +14,14 @@ export default class ResourceStore extends BaseStore {
     constructor(params) {
         super(params);
         this.navigationArray = [];
-        this.dataSource = {};
+        this.homeDataSource = {};
+        this.workDataSource = {};
         this.customerService = {};
     }
 
     @observable navigationArray;
-    @observable dataSource;
+    @observable homeDataSource;
+    @observable workDataSource;
     @observable customerService;
 
     @computed
@@ -28,8 +30,13 @@ export default class ResourceStore extends BaseStore {
     }
 
     @computed
-    get getDataSource() {
-        return toJS(this.dataSource);
+    get getHomeDataSource() {
+        return toJS(this.homeDataSource);
+    }
+
+    @computed
+    get getWorkDataSource() {
+        return toJS(this.workDataSource);
     }
 
     @action
@@ -52,7 +59,12 @@ export default class ResourceStore extends BaseStore {
         if (result.code === 1) {
             runInAction(() => {
                 this.loading = false;
-                this.dataSource = result.data;
+                console.log(data);
+                if (data.type === 1) {
+                    this.homeDataSource = result.data;
+                } else {
+                    this.workDataSource = result.data;
+                }
             })
         }
         return result;

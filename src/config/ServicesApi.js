@@ -7,8 +7,8 @@
 
 module.exports = {
     // 主域名
-    BASE_HOST: 'http://parttime.com/api/',
-    // BASE_HOST: 'http://xykj.3todo.com/api/',
+    // BASE_HOST: 'http://parttime.com/api/',
+    BASE_HOST: 'http://xykj.3todo.com/api/',
 
     // 人才列表
     RESUME: '/member_list',
@@ -27,6 +27,8 @@ module.exports = {
     navigation_arr: 'navigation_arr',
     // 客服信息
     customer_service: 'customer_service',
+    // 热门搜索关键词
+    hot_keywords: 'hot_keywords',
 
     // 登录
     login: 'login',
@@ -36,11 +38,9 @@ module.exports = {
     retrievePassword: 'forget',
 
     // 工作首页
-    jobs: 'jobs/index',
+    job_list: 'job_list',
     // 工作详情页
     jobDetails: 'job_details',
-    // 工作搜索主页
-    job_search_form: 'job_search_form',
     // 工作搜索结果页
     job_search_list: 'job_search_list',
     // 工作报名
@@ -69,7 +69,7 @@ module.exports = {
     // 提交积分订单
     point_goods_payment: 'point_goods_payment',
     // 积分商城首页
-    point_mall: 'point_mall/index',
+    point_goods_list: 'point_goods_list',
 
     // 会员中心首页
     mine: 'my_index',

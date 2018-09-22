@@ -110,7 +110,7 @@ const TabNavigator = createBottomTabNavigator({
         })
     },
 }, {
-    initialRouteName: 'Mine',
+    initialRouteName: 'Work',
     tabBarOptions: {
         showIcon: true,
         indicatorStyle: {height: 0},

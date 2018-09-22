@@ -79,10 +79,10 @@ export default class Work extends Component {
                 {/*<Text style={[CusTheme.headerTitle, styles.headerTitle]}>工作</Text>*/}
                 <TouchableOpacity
                     style={styles.headerTitleView}
-                    onPress={() => RouterHelper.navigate('搜索', 'Search')}
+                    onPress={() => RouterHelper.navigate('搜索', 'Search', {type: 1})}
                 >
                     <Image source={Images.icon_search} style={[CusTheme.headerIcon, styles.headerSearchIcon]} />
-                    <Text style={[CusTheme.headerIconTitle, styles.headerSearchTitle]}>搜索商品</Text>
+                    <Text style={[CusTheme.headerIconTitle, styles.headerSearchTitle]}>搜索兼职</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                     style={[styles.headerButtonView, styles.headerRightView]}
@@ -107,7 +107,9 @@ export default class Work extends Component {
     getResource = async () => {
         let {type} = this.state;
         const {resourceStore} = this.props;
-        let data = await resourceStore.requestDataSource(ServicesApi.getResource, {type});
+        let url = ServicesApi.getResource;
+        let data = {type};
+        let result = await resourceStore.requestDataSource(url, data);
         // console.warn(data);
     };
 
@@ -121,6 +123,7 @@ export default class Work extends Component {
 
     requestDataSource = async (page) => {
         const {workStore} = this.props;
+        let url = ServicesApi.job_list;
         let data = {
             page,
             sort: 2,
@@ -128,8 +131,7 @@ export default class Work extends Component {
             sort_column: 1,
             page_size: this.pageSize,
         };
-
-        let result = await workStore.requestDataSource(ServicesApi.jobs, data);
+        let result = await workStore.requestDataSource(url, data);
         let endStatus = false;
         if (result && result.code === 1) {
             endStatus = result.data.list_data.length < data.page_size;
@@ -154,12 +156,12 @@ export default class Work extends Component {
     };
 
     _renderSeparator = () => {
-        return <HorizontalLine style={styles.horLine}/>;
+        return <HorizontalLine lineStyle={styles.horLine}/>;
     };
 
     _renderHeaderComponent = () => {
         let {resourceStore} = this.props;
-        let {banner_data, notice_data} = resourceStore.getDataSource;
+        let {banner_data, notice_data} = resourceStore.getWorkDataSource;
         return (
             <View style={styles.listHeaderComponent}>
                 <BannerComponent
@@ -287,11 +289,13 @@ const styles = StyleSheet.create({
         borderWidth: CusTheme.minPixel,
     },
     headerSearchIcon: {
+        width: 15,
+        height: 15,
         marginRight: 10,
     },
     headerSearchTitle: {
         color: '#999',
-        fontSize: FontSize(14),
+        fontSize: FontSize(12),
     },
     headerRightView: {
         justifyContent: 'flex-end',

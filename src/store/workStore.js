@@ -304,5 +304,12 @@ export default class WorkStore extends BaseStore {
         return result;
     };
 
+    // 打卡
+    @action
+    onSubmitPunchCard = async (url, data) => {
+        const result = await this.postRequest(url, data, true);
+        return result;
+    };
+
 
 };
