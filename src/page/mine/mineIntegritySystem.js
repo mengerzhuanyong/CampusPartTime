@@ -160,7 +160,7 @@ export default class MineIntegritySystem extends Component {
                     style={{backgroundColor: 'transparent'}}
                     backgroundImage={null}
                 />
-                <View style={styles.content}>
+                <ScrollView style={styles.content}>
                     <ImageBackground
                         style={styles.contentTopView}
                         source={Images.img_bg_mine}
@@ -237,7 +237,7 @@ export default class MineIntegritySystem extends Component {
                             />
                         </View>
                     }
-                </View>
+                </ScrollView>
             </View>
         );
     }

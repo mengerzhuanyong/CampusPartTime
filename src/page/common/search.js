@@ -140,7 +140,7 @@ export default class Search extends Component {
     clearLocalKeyword = async () => {
         let {type} = this.state;
         const {searchStore} = this.props;
-        let result = await searchStore.onSaveKeyWords(type);
+        let result = await searchStore.onClearKeyWords(type);
     };
 
     renderNavigationBarView = () => {
@@ -317,7 +317,7 @@ export default class Search extends Component {
                                 </View>
                             </View>
                             <View style={styles.searchTipsItemView}>
-                                <View style={styles.searchTipsTitleView}>
+                                {localKeywords && localKeywords.length > 0 && <View style={styles.searchTipsTitleView}>
                                     <Text style={styles.searchTipsTitle}>搜索历史</Text>
                                     <TouchableOpacity
                                         style={styles.searchTipsTitleRightView}
@@ -325,7 +325,7 @@ export default class Search extends Component {
                                     >
                                         <Image source={Images.icon_trash} style={[CusTheme.contentRightIcon, styles.searchTipsIcon]} />
                                     </TouchableOpacity>
-                                </View>
+                                </View>}
                                 <View style={styles.searchTipsContent}>
                                     {this.renderSearchKeywords(localKeywords)}
                                 </View>

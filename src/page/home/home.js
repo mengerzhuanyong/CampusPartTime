@@ -43,6 +43,7 @@ import HomeGoodsItem from "../../component/item/homeGoodsItem"
 import BannerComponent from "../../component/common/BannerComponent"
 import HotNewsComponent from "../../component/common/HotNewsComponent"
 import SpinnerLoading from "../../component/common/SpinnerLoading";
+import Location from "../../component/location/location";
 
 @inject('loginStore', 'homeStore', 'resourceStore')
 @observer
@@ -84,20 +85,21 @@ export default class Home extends Component {
         // console.warn(data);
     };
 
-    renderNavigationBarView = () => {
+    renderNavigationBarView = (status) => {
         return (
             <View style={styles.headerView}>
-                <TouchableOpacity style={styles.headerLeftView}>
-                    <Image source={Images.icon_place} style={CusTheme.headerIcon}/>
-                    <Text style={[CusTheme.headerIconTitle, styles.headerIconTitle]}>黄岛区</Text>
-                </TouchableOpacity>
+                <Location
+                    style={styles.headerLeftView}
+                    // iconStyle={}
+                    titleStyle={styles.headerIconTitle}
+                />
                 <Text style={[CusTheme.headerTitle, styles.headerTitle]}>首页</Text>
                 <TouchableOpacity
                     style={styles.headerRightView}
                     onPress={() => RouterHelper.navigate('消息', 'SystemMessage')}
                 >
                     <Image source={Images.icon_message} style={CusTheme.headerIcon}/>
-                    <View style={CusTheme.pointView}/>
+                    {status === 1 && <View style={CusTheme.pointView} />}
                 </TouchableOpacity>
             </View>
         );
@@ -112,7 +114,7 @@ export default class Home extends Component {
             listView = data.map((item, index) => {
                 return <HomeGoodsItem
                     item={item}
-                    onPress={() => RouterHelper.navigate(item.name, '', {item})}
+                    onPress={() => RouterHelper.navigate(item.name, 'GoodsDetail', {item})}
                     key={'goods' + index}
                     {...this.props}
                 />;
@@ -132,7 +134,7 @@ export default class Home extends Component {
             listView = data.map((item, index) => {
                 return <HomeGoodsItem
                     item={item}
-                    onPress={() => RouterHelper.navigate(item.name, '', {item})}
+                    onPress={() => RouterHelper.navigate(item.name, 'GoodsDetail', {item})}
                     key={'goods' + index}
                     {...this.props}
                 />;
@@ -145,11 +147,11 @@ export default class Home extends Component {
         let {loading} = this.state;
         let {homeStore, resourceStore} = this.props;
         let {hot_goods, hot_jobs, hot_point_goods} = homeStore.getDataSource;
-        let {banner_data, notice_data} = resourceStore.getHomeDataSource;
+        let {banner_data, notice_data, has_message} = resourceStore.getHomeDataSource;
         return (
             <View style={styles.container}>
                 <NavigationBar
-                    title={this.renderNavigationBarView()}
+                    title={this.renderNavigationBarView(has_message)}
                     style={{
                         backgroundColor: '#fff',
                     }}

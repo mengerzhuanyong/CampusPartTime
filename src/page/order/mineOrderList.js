@@ -21,12 +21,11 @@ import FlatListView from '../../component/common/FlatListView'
 import {Button, ListRow} from 'teaset';
 import PropTypes from 'prop-types'
 import SpinnerLoading from '../../component/common/SpinnerLoading'
-import moduleName from 'jshare-react-native';
 import {checkMobile, checkPassword} from '../../util/Tool';
 import GoodsItem from '../../component/item/goodsItem'
 import {HorizontalLine, VerticalLine} from "../../component/common/commonLine";
 import OrderItem from "../../component/item/orderItem";
-import {inject, observer} from "mobx-react/index";
+import {inject, observer} from "mobx-react";
 
 @inject('loginStore', 'orderStore')
 @observer
@@ -131,12 +130,6 @@ export default class MineOrderList extends Component {
                     source={Images.img_bg_empty_order}
                 />
                 <Text style={CusTheme.emptyText}>亲！您还没有相关的订单哦</Text>
-                {/*<Button*/}
-                {/*title={'去看看'}*/}
-                {/*style={styles.btnView}*/}
-                {/*titleStyle={styles.btnName}*/}
-                {/*onPress={() => RouterHelper.navigate('', 'Work')}*/}
-                {/*/>*/}
             </View>
         );
     };
@@ -153,7 +146,7 @@ export default class MineOrderList extends Component {
 
     onPushToDetail = (item) => {
         RouterHelper.navigate('订单详情', 'OrderDetail', {item});
-    }
+    };
 
     render() {
         const {orderStore, type, status} = this.props;
@@ -163,6 +156,7 @@ export default class MineOrderList extends Component {
         if (!dataSource) {
             return <SpinnerLoading isVisible={true}/>;
         }
+        console.log(dataSource);
         return (
             <View style={styles.container}>
                 <FlatListView
@@ -195,8 +189,9 @@ const styles = StyleSheet.create({
     // 列表区
     listContent: {
         flex: 1,
-        paddingHorizontal: 10,
+        // paddingHorizontal: 10,
         width: SCREEN_WIDTH,
+        height: 100,
         backgroundColor: '#fff',
     },
 });

@@ -153,7 +153,7 @@ class NavigationBar extends React.PureComponent {
 
 const styles = StyleSheet.create({
     container: {
-        zIndex: 999,
+        zIndex: 99,
         width: '100%',
         height: Theme.navBarHeight + Theme.statusBarHeight,
         backgroundColor: Theme.navBarBackgroundColor,
@@ -177,6 +177,7 @@ const styles = StyleSheet.create({
         // backgroundColor: 'red',
     },
     navRightContainer: {
+        zIndex: 999,
         position: 'absolute',
         right: Theme.navBarPadding,
         justifyContent: 'center',

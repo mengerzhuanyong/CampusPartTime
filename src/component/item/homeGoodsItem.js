@@ -34,7 +34,7 @@ export default class HomeGoodsItem extends PureComponent {
     };
 
     render() {
-        let {onPress} = this.props;
+        let {onPress, item} = this.props;
         return (
             <TouchableOpacity
                 style={styles.goodsItemView}
@@ -43,10 +43,10 @@ export default class HomeGoodsItem extends PureComponent {
                 <ImageBackground
                     style={styles.goodsItemPic}
                     resizeMode={'cover'}
-                    source={Images.img_goods1}
+                    source={item.illustration ? {uri: item.illustration} : Images.img_goods1}
                 >
                     <View style={styles.goodsInfoView}>
-                        <Text style={styles.goodsTitle}>iPhone X</Text>
+                        <Text style={styles.goodsTitle} numberOfLines={1}>{item.name}</Text>
                         <Image source={Images.icon_shop_package} style={[CusTheme.contentTitleIcon]} />
                     </View>
                 </ImageBackground>
@@ -77,6 +77,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
     },
     goodsTitle: {
+        flex: 1,
         color: '#fff',
         fontSize: FontSize(13),
     },

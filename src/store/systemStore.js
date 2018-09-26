@@ -13,7 +13,7 @@ export default class SystemStore extends BaseStore {
 
     constructor(params) {
         super(params);
-        this.loading = true;
+
         this.dataSource = [];
         this.appShareParams = '';
     }
@@ -29,11 +29,10 @@ export default class SystemStore extends BaseStore {
     // 请求数据列表
     @action
     requestDataSource = async (url, data) => {
-        this.loading = true;
+
         const result = await this.postRequest(url, data, true);
         if (result.code === 1) {
             runInAction(() => {
-                this.loading = false;
                 if (data.page === 1) {
                     this.dataSource = result.data.list_data;
                 } else {
@@ -44,7 +43,6 @@ export default class SystemStore extends BaseStore {
             })
         } else {
             runInAction(() => {
-                this.loading = false;
                 this.dataSource = [];
             })
         }

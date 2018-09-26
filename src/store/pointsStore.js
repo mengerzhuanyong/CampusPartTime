@@ -13,7 +13,7 @@ export default class PointsStore extends BaseStore {
 
     constructor(params) {
         super(params);
-        this.loading = true;
+
         this.pointsInfo = {};
         this.dataSource = [];
     }
@@ -29,11 +29,10 @@ export default class PointsStore extends BaseStore {
     // 积分历史
     @action
     requestDataSource = async (url, data) => {
-        this.loading = true;
+
         const result = await this.postRequest(url, data, true);
         if (result.code === 1) {
             runInAction(() => {
-                this.loading = false;
                 if (data.page === 1) {
                     this.pointsInfo = result.data;
                     this.dataSource = result.data.list_data;
@@ -45,7 +44,6 @@ export default class PointsStore extends BaseStore {
             })
         } else {
             runInAction(() => {
-                this.loading = false;
                 this.pointsInfo = {};
                 this.dataSource = [];
             })

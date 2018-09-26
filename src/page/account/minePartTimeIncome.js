@@ -4,9 +4,10 @@
  * @大梦
  */
 
+
 'use strict';
 
-import React, { Component } from 'react'
+import React, {Component} from 'react'
 import {
     Text,
     View,
@@ -24,55 +25,75 @@ import NavigationBar from '../../component/navigation/NavigationBar'
 import {Button, Carousel, ListRow} from 'teaset'
 import {HorizontalLine, VerticalLine} from '../../component/common/commonLine'
 import FlatListView from '../../component/common/FlatListView'
+import JobIncomeItem from "../../component/item/jobIncomeItem";
+import {inject, observer} from "mobx-react/index";
+import SpinnerLoading from "../../component/common/SpinnerLoading";
 
+@inject('loginStore', 'mineStore')
+@observer
 export default class MinePartTimeIncome extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
+            ready: false,
             listData: [],
         };
         this.page = 1;
+        this.pageSize = 10;
     }
 
-    componentWillUnmount(){
+    componentDidMount() {
+        this.loadNetData(this.page);
+    }
+
+    componentWillUnmount() {
         let timers = [this.timer1, this.timer2];
         ClearTimer(timers);
     }
+
+    loadNetData = async (page) => {
+        const {mineStore} = this.props;
+        let url = ServicesApi.my_job_income;
+        let data = {
+            page,
+            page_size: this.pageSize,
+        };
+
+        let result = await mineStore.requestWorkIncome(url, data);
+        let endStatus = false;
+        if (result && result.code === 1) {
+            endStatus = result.data.list_data.length < data.page_size;
+        } else {
+            endStatus = true;
+        }
+        this.setState({
+            ready: true
+        });
+        this.flatListRef && this.flatListRef.stopRefresh();
+        this.flatListRef && this.flatListRef.stopEndReached({allLoad: endStatus});
+    };
+
+    _onRefresh = (stopRefresh) => {
+        this.page = 1;
+        this.loadNetData(this.page);
+    };
+
+    _onEndReached = (stopEndReached) => {
+        this.page++;
+        this.loadNetData(this.page);
+    };
 
     _captureRef = (v) => {
         this.flatListRef = v;
     };
 
     _keyExtractor = (item, index) => {
-        return `z_${index}`
-    };
-
-    // 上拉加载
-    _onEndReached = () => {
-        this.timer1 = setTimeout(() => {
-            let dataTemp = this.state.listData;
-            let allLoad = false;
-            //模拟数据加载完毕,即page > 0,
-            if (this.page < 2) {
-                this.setState({ data: dataTemp.concat(this.state.listData) });
-            }
-            // allLoad 当全部加载完毕后可以设置此属性，默认为false
-            this.flatListRef.stopEndReached({ allLoad: this.page === 2 });
-            this.page++;
-        }, 500);
-    };
-
-    // 下拉刷新
-    _onRefresh = () => {
-        this.timer2 = setTimeout(() => {
-            // 调用停止刷新
-            this.flatListRef.stopRefresh()
-        }, 500);
+        return `z_${item.id}`
     };
 
     _renderSeparator = () => {
-        return <HorizontalLine lineStyle={styles.horLine} />;
+        return <HorizontalLine lineStyle={styles.horLine}/>;
     };
 
     _renderEmptyComponent = () => {
@@ -93,40 +114,21 @@ export default class MinePartTimeIncome extends Component {
         );
     };
 
-    _renderListItem = (info) => {
+    _renderListItem = ({item, index}) => {
+
         return (
-            <View style={styles.detailInfoItemView}>
-                <View style={styles.detailInfoItemTopView}>
-                    <Text style={styles.detailInfoItemTitle}>花海地产新盘传单派发</Text>
-                </View>
-                <HorizontalLine lineStyle={styles.horLine} />
-                <View style={styles.detailInfoItemMidView}>
-                    <View style={styles.detailInfoItemTextView}>
-                        <Text style={styles.detailInfoItemType}>起止时间：</Text>
-                        <Text style={styles.detailInfoItemTime}>2018-07-10 - 2018-07-20</Text>
-                    </View>
-                    <View style={styles.detailInfoItemTextView}>
-                        <Text style={styles.detailInfoItemType}>工作地点：</Text>
-                        <Text style={styles.detailInfoItemTime}>黄岛区花海地产售楼处</Text>
-                    </View>
-                </View>
-                <HorizontalLine lineStyle={styles.horLine} />
-                <View style={styles.detailInfoItemBotView}>
-                    <View style={styles.detailInfoItemTextView}>
-                        <Text style={styles.detailInfoItemType}>工作收益：</Text>
-                        <Text style={styles.detailInfoItemValue}>20工分</Text>
-                    </View>
-                    <View style={styles.detailInfoItemTextView}>
-                        <Text style={styles.detailInfoItemType}>总收益：</Text>
-                        <Text style={styles.detailInfoItemValue}>20工分</Text>
-                    </View>
-                </View>
-            </View>
+            <JobIncomeItem
+                item={item}
+                {...this.props}
+            />
         );
     };
 
     render() {
-        let {loading, listData} = this.state;
+        let {loading, ready, listData} = this.state;
+        listData = [1, 2, 3];
+        const {mineStore} = this.props;
+        let {myWorkPoints, myWorkIncomeDetail} = mineStore;
         let {params} = this.props.navigation.state;
         let pageTitle = params && params.pageTitle ? params.pageTitle : '兼职收入明细';
         return (
@@ -135,17 +137,20 @@ export default class MinePartTimeIncome extends Component {
                     title={pageTitle}
                 />
                 <View style={styles.content}>
-                    <FlatListView
-                        style={styles.listContent}
-                        initialRefresh={false}
-                        ref={this._captureRef}
-                        data={this.state.listData}
-                        renderItem={this._renderListItem}
-                        keyExtractor={this._keyExtractor}
-                        onEndReached={this._onEndReached}
-                        onRefresh={this._onRefresh}
-                        ListEmptyComponent={this._renderEmptyComponent}
-                    />
+                    {ready ?
+                        <FlatListView
+                            style={styles.listContent}
+                            initialRefresh={false}
+                            ref={this._captureRef}
+                            data={myWorkIncomeDetail}
+                            renderItem={this._renderListItem}
+                            keyExtractor={this._keyExtractor}
+                            onEndReached={this._onEndReached}
+                            onRefresh={this._onRefresh}
+                            ListEmptyComponent={this._renderEmptyComponent}
+                        />
+                        : <SpinnerLoading isVisible={true}/>
+                    }
                 </View>
             </View>
         );
@@ -271,6 +276,7 @@ const styles = StyleSheet.create({
         color: '#333',
         fontSize: FontSize(15),
     },
+
     detailInfoItemView: {
         borderRadius: 3,
         marginBottom: 10,

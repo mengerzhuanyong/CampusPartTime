@@ -22,6 +22,7 @@ Theme.set({
     menuItemTitleColor: '#53812f',
     menuItemFontSize: fontSize(14),
     menuItemSeparatorColor: '#d8d8d8',
+    navBarContentHeight: 44,
 
     // 设置ToastManager的颜色和字体大小
     toastTextColor: '#fff',

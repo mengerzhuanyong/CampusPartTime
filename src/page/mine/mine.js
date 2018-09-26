@@ -47,7 +47,9 @@ export default class Mine extends Component {
 
     requestDataSource = async () => {
         const {mineStore} = this.props;
-        let data = await mineStore.requestDataSource(ServicesApi.mine);
+        let url = ServicesApi.mine;
+        let data = await mineStore.requestDataSource(url);
+        this.setState({loading: true});
     };
 
     renderNavigationBarView = (status) => {
@@ -58,8 +60,10 @@ export default class Mine extends Component {
                     style={styles.headerRightView}
                     onPress={() => RouterHelper.navigate('消息', 'SystemMessage')}
                 >
-                    <Image source={Images.icon_message} style={[CusTheme.headerIcon, {tintColor: '#fff'}]}/>
-                    {status === 1 && <View style={CusTheme.pointView} />}
+                    <View style={styles.headerRightViewCon}>
+                        <Image source={Images.icon_message} style={[CusTheme.headerIcon, {tintColor: '#fff'}]}/>
+                        {status === 1 && <View style={CusTheme.pointView} />}
+                    </View>
                 </TouchableOpacity>
             </View>
         );
@@ -67,7 +71,12 @@ export default class Mine extends Component {
 
     onSignIn = async () => {
         const {mineStore} = this.props;
-        let data = await mineStore.requestDataSource(ServicesApi.mine);
+        let url = ServicesApi.check_in;
+        let result = await mineStore.onSubmitSingIn(url);
+        Toast.toastShort(result.msg);
+        if (result && result.code === 1) {
+            this.requestDataSource();
+        }
     };
 
     onShare = async () => {
@@ -104,7 +113,7 @@ export default class Mine extends Component {
                 <NavigationBar
                     title={this.renderNavigationBarView(dataSource.has_message)}
                     style={styles.navigationBarStyle}
-                    statusBarStyle={'dark-content'}
+                    statusBarStyle={'light-content'}
                     renderLeftAction={null}
                     backgroundImage={Images.img_bg_nav_bar}
                 />
@@ -252,8 +261,14 @@ const styles = StyleSheet.create({
     },
     headerRightView: {
         right: 15,
+        width: 30,
+        height: 35,
         position: 'absolute',
+        alignItems: 'flex-end',
+        justifyContent: 'center',
+        // backgroundColor: '#123',
     },
+    headerRightViewCon: {},
     leftViewBar: {
         color: '#fff',
         fontSize: FontSize(17),

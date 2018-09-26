@@ -29,6 +29,7 @@ module.exports = {
     customer_service: 'customer_service',
     // 热门搜索关键词
     hot_keywords: 'hot_keywords',
+    location: 'location',
 
     // 登录
     login: 'login',
@@ -73,10 +74,14 @@ module.exports = {
 
     // 会员中心首页
     mine: 'my_index',
+    // 会员中心首页
+    check_in: 'check_in',
     // 信用额度
     my_credit: 'my_credit',
     // 工分明细
     my_work_point: 'my_work_point',
+    // 兼职收入明细
+    my_job_income: 'job_income',
 
     // 地址列表
     address_list: 'address_list',
@@ -99,6 +104,9 @@ module.exports = {
     mobile_verify: 'mobile_verify',
     // 我的资料
     my_details: 'my_details',
+    // 绑定微信
+    bindWeChat: 'wxlogin',
+
     // 我的订单
     my_orders: 'my_orders',
     // 订单详情

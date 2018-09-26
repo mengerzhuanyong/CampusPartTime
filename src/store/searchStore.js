@@ -13,7 +13,7 @@ export default class SearchStore extends BaseStore {
 
     constructor(params) {
         super(params);
-        this.loading = true;
+
         this.dataSource = [];
         this.workDataSource = [];
         this.shopDataSource = [];
@@ -67,9 +67,9 @@ export default class SearchStore extends BaseStore {
     // 请求数据列表
     @action
     requestDataSource = async (type, url, data) => {
-        this.loading = true;
+
         const result = await this.postRequest(url, data, true);
-        this.loading = false;
+        
         if (result.code === 1) {
             runInAction(() => {
                 switch (type) {
@@ -122,7 +122,7 @@ export default class SearchStore extends BaseStore {
     // 获取热门搜索
     @action
     requestHotKeywords = async (url, data) => {
-        this.loading = true;
+
         const result = await this.postRequest(url, data, true);
         if (result.code === 1) {
             runInAction(() => {
@@ -211,7 +211,7 @@ export default class SearchStore extends BaseStore {
             keywordsTemp.splice(status, 1);
             keywordsTemp.unshift(keyword);
         }
-        if (status === -1 && keyword !== '') {
+        if (status === -1 && keyword !== '' && keyword) {
             keywordsTemp.unshift(keyword);
         }
         if (keywordsTemp.length > SEARCH_COUNT) {

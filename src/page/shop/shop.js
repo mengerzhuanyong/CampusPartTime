@@ -166,7 +166,7 @@ export default class Shop extends Component {
         return (
             <GoodsItem
                 item={item}
-                onPress={() => RouterHelper.navigate('商品详情', 'GoodsDetail', {item})}
+                onPress={() => RouterHelper.navigate(item.name, 'GoodsDetail', {item})}
                 {...this.props}
             />
         );
@@ -225,7 +225,7 @@ export default class Shop extends Component {
                     {ready ?
                         <FlatListView
                             style={styles.listContent}
-                            initialRefresh={false}
+                            initialRefresh={true}
                             ref={this._captureRef}
                             data={shopStore.dataSource}
                             removeClippedSubviews={false}

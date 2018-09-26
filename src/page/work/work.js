@@ -43,8 +43,11 @@ import JobItem from "../../component/item/jobItem";
 import BannerComponent from "../../component/common/BannerComponent";
 import HotNewsComponent from "../../component/common/HotNewsComponent";
 import SpinnerLoading from "../../component/common/SpinnerLoading";
+import ListView from "../../component/list/ListView";
+import DropDownMenu from '../../component/common/DropDownMenu';
+import Location from "../../component/location/location";
 
-
+const headerHeight = 172;
 @inject('loginStore', 'workStore', 'resourceStore')
 @observer
 export default class Work extends Component {
@@ -53,9 +56,15 @@ export default class Work extends Component {
         this.state = {
             type: 2,
             ready: false,
+            maskHidden: true,
+            sortPosition: '职位',
+            sortPositionId: 0,
+            sortType: '', // 1: need_count 2: price 3: ''
+            sortOrderType: 1,
         };
         this.page = 1;
         this.pageSize = 10;
+        this.opacity = new Animated.Value(0);
     }
 
     componentDidMount() {
@@ -67,16 +76,36 @@ export default class Work extends Component {
         ClearTimer(timers);
     }
 
-    renderNavigationBarView = () => {
+    startOpacityAnimated = (index) => {
+        if (this.state.maskHidden) {
+            this.setState({ maskHidden: false }, () => {
+                this.dropDownMenu.changeBar(index);
+                Animated.timing(this.opacity, {
+                    toValue: 1,
+                    duration: 500,
+                    useNativeDriver: true
+                }).start(() => {
+
+                })
+            })
+        } else {
+            Animated.timing(this.opacity, {
+                toValue: 0,
+                duration: 500,
+                useNativeDriver: true
+            }).start(() => {
+                this.setState({ maskHidden: true })
+            })
+        }
+    }
+
+    renderNavigationBarView = (status) => {
         return (
             <View style={styles.headerView}>
-                <TouchableOpacity
-                    style={[styles.headerButtonView, styles.headerRightView]}
-                >
-                    <Image source={Images.icon_place} style={CusTheme.headerIcon}/>
-                    <Text style={[CusTheme.headerIconTitle, styles.headerIconTitle]}>黄岛区</Text>
-                </TouchableOpacity>
-                {/*<Text style={[CusTheme.headerTitle, styles.headerTitle]}>工作</Text>*/}
+                <Location
+                    style={styles.headerLeftView}
+                    titleStyle={styles.headerIconTitle}
+                />
                 <TouchableOpacity
                     style={styles.headerTitleView}
                     onPress={() => RouterHelper.navigate('搜索', 'Search', {type: 1})}
@@ -90,7 +119,7 @@ export default class Work extends Component {
                 >
                     <View style={styles.headerRightView}>
                         <Image source={Images.icon_message} style={CusTheme.headerIcon}/>
-                        <View style={CusTheme.pointView}/>
+                        {status === 1 && <View style={CusTheme.pointView} />}
                     </View>
                 </TouchableOpacity>
             </View>
@@ -100,6 +129,7 @@ export default class Work extends Component {
     loadNetData = () => {
         InteractionManager.runAfterInteractions(() => {
             this.getResource();
+            this.getWorkCategory();
             this.requestDataSource(this.page);
         })
     };
@@ -113,6 +143,16 @@ export default class Work extends Component {
         // console.warn(data);
     };
 
+    getWorkCategory = async () => {
+        const {resourceStore} = this.props;
+        let url = ServicesApi.getCategory;
+        let data = {
+            type: 1,
+        };
+        let result = await resourceStore.getWorkCategory(url, data);
+        // console.warn(result);
+    };
+
     _captureRef = (v) => {
         this.flatListRef = v;
     };
@@ -122,13 +162,14 @@ export default class Work extends Component {
     };
 
     requestDataSource = async (page) => {
+        let {sortPositionId, sortType, sortOrderType} = this.state;
         const {workStore} = this.props;
         let url = ServicesApi.job_list;
         let data = {
             page,
-            sort: 2,
-            position: 0,
-            sort_column: 1,
+            sort: sortType,
+            position: sortPositionId,
+            sort_column: sortOrderType,
             page_size: this.pageSize,
         };
         let result = await workStore.requestDataSource(url, data);
@@ -143,6 +184,21 @@ export default class Work extends Component {
         });
         this.flatListRef && this.flatListRef.stopRefresh();
         this.flatListRef && this.flatListRef.stopEndReached({allLoad: endStatus});
+    };
+
+    _onClose = () => {
+        setTimeout(() => {
+            this.setState({maskHidden: true});
+        }, 500);
+    };
+
+    _onPressItem = (index) => {
+        // console.log(this.flatListRef.contentOffset)
+        if (this.flatListRef.contentOffset.y < headerHeight) {
+            const option = {animated: false, itemIndex: 0, sectionIndex: 0, viewOffset: 40, viewPosition: 0};
+            this.flatListRef.scrollToLocation(option);
+        }
+        this.startOpacityAnimated(index);
     };
 
     _onRefresh = (stopRefresh) => {
@@ -170,23 +226,54 @@ export default class Work extends Component {
                 <HotNewsComponent
                     noticeData={notice_data}
                 />
-                <View style={styles.listSortBtnView}>
-                    <TouchableOpacity style={styles.sortBtnItemView}>
-                        <Text style={styles.sortBtnItemName}>全部职位</Text>
-                    </TouchableOpacity>
-                    <VerticalLine lineStyle={styles.sortVerLine}/>
-                    <TouchableOpacity style={styles.sortBtnItemView}>
-                        <Text style={styles.sortBtnItemName}>按剩余人数排序</Text>
-                        <Image source={Images.icon_sort} style={styles.sortBtnIcon}/>
-                    </TouchableOpacity>
-                    <VerticalLine lineStyle={styles.sortVerLine}/>
-                    <TouchableOpacity style={styles.sortBtnItemView}>
-                        <Text style={styles.sortBtnItemName}>按工分排序</Text>
-                        <Image source={Images.icon_sort} style={styles.sortBtnIcon}/>
-                    </TouchableOpacity>
-                </View>
+                {/*<HorizontalLine lineStyle={styles.sortHorLine} />*/}
             </View>
         );
+    };
+
+    _renderSectionHeader = ({section}) => {
+        let {sortPosition, sortPositionId, sortType, sortOrderType,} = this.state;
+        return (
+            <View style={styles.listSortBtnView}>
+                <TouchableOpacity
+                    style={[styles.sortBtnItemView, styles.sortBtnItemOne]}
+                    onPress={() => this._onPressItem(0)}
+                >
+                    <Text style={styles.sortBtnItemName} numberOfLines={1}>{sortPosition}</Text>
+                    <Image source={Images.icon_arrow_down} style={styles.sortBtnIcon}/>
+                </TouchableOpacity>
+                <VerticalLine lineStyle={styles.sortVerLine}/>
+                <TouchableOpacity
+                    style={[styles.sortBtnItemView, styles.sortBtnItemTwo]}
+                    onPress={() => {
+                        let _sortOrderType = sortOrderType === 1 ? 2 : 1;
+                        this.setState({
+                            sortType: 'need_count',
+                            sortOrderType: _sortOrderType,
+                            maskHidden: true,
+                        }, () => this._onRefresh());
+                    }}
+                >
+                    <Text style={styles.sortBtnItemName} numberOfLines={1}>按剩余人数排序</Text>
+                    <Image source={Images.icon_sort} style={styles.sortBtnIcon}/>
+                </TouchableOpacity>
+                <VerticalLine lineStyle={styles.sortVerLine}/>
+                <TouchableOpacity
+                    style={[styles.sortBtnItemView, styles.sortBtnItemThree]}
+                    onPress={() => {
+                        let _sortOrderType = sortOrderType === 1 ? 2 : 1;
+                        this.setState({
+                            sortType: 'price',
+                            sortOrderType: _sortOrderType,
+                            maskHidden: true,
+                        }, () => this._onRefresh());
+                    }}
+                >
+                    <Text style={styles.sortBtnItemName} numberOfLines={1}>按工分排序</Text>
+                    <Image source={Images.icon_sort} style={styles.sortBtnIcon}/>
+                </TouchableOpacity>
+            </View>
+        )
     };
 
     _renderListItem = ({item}) => {
@@ -199,13 +286,80 @@ export default class Work extends Component {
         );
     };
 
+    _renderContentComponent = (selectIndex) => {
+        let {sortPosition, sortPositionId} = this.state;
+        const {resourceStore} = this.props;
+        let {workNavigation} = resourceStore;
+        if (selectIndex !== 0 || !workNavigation || workNavigation.length < 1) {
+            return null;
+        }
+        let itemView = workNavigation.map((item, index) => {
+            return (
+                <Button
+                    key={item.id}
+                    title={item.name}
+                    style={[styles.positionBtnView, sortPositionId === item.id && styles.positionBtnViewCur]}
+                    titleStyle={[styles.positionTitleStyle, sortPositionId === item.id && styles.positionTitleStyleCur]}
+                    onPress={() => {
+                            this.setState({
+                                sortPosition: item.name,
+                                sortPositionId: item.id,
+                                maskHidden: true,
+                                // ready: false,
+                            }, () => this._onRefresh());
+                        // this._onClose();
+                        this.timer3 = setTimeout(() => {
+                        }, 600);
+                    }}
+                />
+            )
+        })
+            return (
+                <View style={[styles.dropDownMenuView,]}>
+                    <Button
+                        title={'全部'}
+                        style={[styles.positionBtnView, sortPositionId === 0 && styles.positionBtnViewCur]}
+                        titleStyle={[styles.positionTitleStyle, sortPositionId === 0 && styles.positionTitleStyleCur]}
+                        onPress={() => {
+                                this.setState({
+                                    sortPosition: '职位',
+                                    sortPositionId: 0,
+                                    maskHidden: true,
+                                    // ready: false,
+                                }, () => this._onRefresh());
+                            // this._onClose();
+                            this.timer4 = setTimeout(() => {
+                            }, 600);
+                        }}
+                    />
+                    {itemView}
+                </View>
+            );
+    };
+
+    contentHeight = (selectIndex) => {
+        return 100;
+    };
+
     render() {
-        const {workStore} = this.props;
-        const {ready} = this.state;
+        const {workStore, resourceStore} = this.props;
+        let {getWorkDataSource} = resourceStore;
+        const {ready, maskHidden} = this.state;
+        console.log('workStore.dataSource----->',workStore.getDataSource);
+        let sectionDataSources = [
+            {title: 'sectionTitle', data: workStore.dataSource},
+            // {title: 'sectionTitle', data: workStore.dataSource},
+            // {title: 'sectionTitle', data: workStore.dataSource},
+            // {title: 'sectionTitle', data: workStore.dataSource},
+            // {title: 'sectionTitle', data: workStore.dataSource},
+        ];
+        // if (!workStore.getDataSource || workStore.getDataSource.length < 1) {
+        //     sectionDataSources = [];
+        // }
         return (
             <View style={styles.container}>
                 <NavigationBar
-                    title={this.renderNavigationBarView()}
+                    title={this.renderNavigationBarView(getWorkDataSource.has_message)}
                     style={{
                         backgroundColor: '#fff',
                     }}
@@ -214,21 +368,39 @@ export default class Work extends Component {
                     backgroundImage={null}
                 />
                 {ready ?
-                    <FlatListView
-                        style={styles.listContent}
-                        initialRefresh={false}
+                    <ListView
+                        initialRefresh={true}
+                        enableLoadMore={true}
                         ref={this._captureRef}
-                        removeClippedSubviews={false}
-                        data={workStore.dataSource}
+                        listType={'SectionList'}
+                        style={styles.listContent}
+                        data={sectionDataSources}
+                        onRefresh={this._onRefresh}
                         renderItem={this._renderListItem}
                         keyExtractor={this._keyExtractor}
                         onEndReached={this._onEndReached}
-                        onRefresh={this._onRefresh}
+                        contentContainerStyle={styles.listContainerStyle}
                         ItemSeparatorComponent={this._renderSeparator}
+                        renderSectionHeader={this._renderSectionHeader}
                         ListHeaderComponent={this._renderHeaderComponent}
                     />
                     : <SpinnerLoading isVisible={true}/>
                 }
+                {!maskHidden ? (
+                    <Animated.View
+                        style={[styles.dropDownMenuContainer, { opacity: this.opacity, }]}
+                    >
+                        <DropDownMenu
+                            ref={v => this.dropDownMenu = v}
+                            style={styles.dropDownMenu}
+                            onClose={this._onClose}
+                            renderContentComponent={this._renderContentComponent}
+                            contentHeight={this.contentHeight}
+                            titleArray={['职位']}
+                            exData={[1]}
+                        />
+                    </Animated.View>
+                ) : null}
                 <TouchableOpacity
                     style={styles.btnView}
                     onPress={() => RouterHelper.navigate('平台分配工作', 'AutoGetWork')}
@@ -240,6 +412,7 @@ export default class Work extends Component {
     }
 }
 
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -247,7 +420,7 @@ const styles = StyleSheet.create({
     },
     headerView: {
         flex: 1,
-        paddingHorizontal: 15,
+        paddingRight: 15,
         width: SCREEN_WIDTH,
         flexDirection: 'row',
         alignItems: 'center',
@@ -262,12 +435,13 @@ const styles = StyleSheet.create({
         // backgroundColor: '#f60',
     },
     headerLeftView: {
-        // left: 15,
-        // position: 'absolute',
+        left: 15,
+        position: 'absolute',
         flexDirection: 'row',
         alignItems: 'center',
     },
     headerTitle: {
+        flex: 1,
         color: '#333',
         fontSize: FontSize(14),
     },
@@ -279,6 +453,7 @@ const styles = StyleSheet.create({
         flex: 1,
         height: 35,
         marginHorizontal: 10,
+        marginLeft: 75,
         borderRadius: 18,
         overflow: 'hidden',
         flexDirection: 'row',
@@ -312,17 +487,25 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#fff',
     },
+    listContainerStyle: {
+        minHeight: __IOS__ ? 100 : SCREEN_HEIGHT + SCREEN_WIDTH * 0.452,
+    },
     listHeaderComponent: {
-        backgroundColor: '#f8f8f8',
+        borderBottomWidth: 10,
+        borderColor: '#e5e5e5',
+        backgroundColor: '#123',
     },
     horLine: {
         marginVertical: 5,
         backgroundColor: '#d9d9d9',
     },
-
+    sortHorLine: {
+        height: 10,
+        backgroundColor: '#e5e5e5',
+    },
     listSortBtnView: {
         flex: 1,
-        marginTop: 10,
+        // marginTop: 10,
         flexDirection: 'row',
         alignItems: 'center',
         height: ScaleSize(90),
@@ -337,27 +520,36 @@ const styles = StyleSheet.create({
         backgroundColor: '#d9d9d9',
     },
     sortBtnItemView: {
-        // flex: 1,
+        flex: 1,
         height: 55,
-        paddingHorizontal: 5,
+        // overflow: 'hidden',
+        // paddingHorizontal: 5,
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
         // backgroundColor: '#f60',
     },
+    sortBtnItemOne: {},
+    sortBtnItemTwo: {
+        flex: 2,
+    },
+    sortBtnItemThree: {
+        flex: 1.5,
+    },
     sortBtnItemName: {
+        // flex: 1,
         color: '#666',
-        fontSize: FontSize(12),
+        fontSize: FontSize(13),
     },
     imageContainer: {
         alignItems: 'center',
-        width: ScaleSize(25),
-        height: ScaleSize(25),
+        width: ScaleSize(24),
+        height: ScaleSize(24),
         justifyContent: 'center',
     },
     sortBtnIcon: {
-        marginLeft: 5,
-        height: ScaleSize(25),
+        marginLeft: 3,
+        height: ScaleSize(24),
         resizeMode: 'contain',
     },
     btnView: {
@@ -369,5 +561,52 @@ const styles = StyleSheet.create({
         width: ScaleSize(110),
         height: ScaleSize(110),
         resizeMode: 'contain',
+    },
+    
+    // 下拉菜单
+    dropDownMenuView: {
+        flex: 1,
+        flexWrap: 'wrap',
+        flexDirection: 'row',
+        // alignItems: 'center',
+        // justifyContent: 'center',
+        backgroundColor: '#fff',
+        borderBottomLeftRadius: 4,
+        borderBottomRightRadius: 4,
+    },
+    dropDownMenuContext: {
+        color: '#fff'
+    },
+    dropDownMenuContainer: {
+        position: 'absolute',
+        left: 0,
+        right: 0,
+        bottom: 0,
+        top: CusTheme.statusBarHeight + CusTheme.navBarContentHeight + ScaleSize(90) - 1,
+    },
+    dropDownMenu: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+    },
+    positionBtnView: {
+        height: 30,
+        borderRadius: 4,
+        marginVertical: 3,
+        marginHorizontal: 8,
+        borderColor: '#999',
+        borderWidth: CusTheme.minPixel,
+    },
+    positionBtnViewCur: {
+        borderColor: CusTheme.themeColor,
+    },
+    positionTitleStyle: {
+        color: '#999',
+        fontSize: FontSize(12),
+    },
+    positionTitleStyleCur: {
+        color: CusTheme.themeColor,
     },
 });

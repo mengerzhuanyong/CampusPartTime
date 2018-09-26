@@ -53,7 +53,8 @@ export default class AutoGetWork extends Component {
 
     loadNetData = async () => {
         const {workStore} = this.props;
-        let result = await workStore.requestPlatformTimes(ServicesApi.job_platform_time);
+        let url = ServicesApi.job_platform_time;
+        let result = await workStore.requestPlatformTimes(url);
         // console.log(result);
     };
 
@@ -90,7 +91,7 @@ export default class AutoGetWork extends Component {
         let {getTimesArray, onSubmitPlatformTimes} = workStore;
         let url = ServicesApi.job_submit_platform_time;
         let data = {
-            getTimesArray
+            free_time: getTimesArray,
         };
         let result = await onSubmitPlatformTimes(url, data);
         // console.log(result);

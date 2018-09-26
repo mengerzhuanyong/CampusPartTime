@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
     orderItemView: {
         marginVertical: 10,
         paddingVertical: 5,
-        // paddingHorizontal: 15,
+        marginHorizontal: 10,
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',

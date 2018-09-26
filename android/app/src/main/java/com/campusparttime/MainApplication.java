@@ -9,6 +9,8 @@ import android.support.multidex.MultiDex;
 import com.facebook.react.ReactApplication;
 import com.ocetnik.timer.BackgroundTimerPackage;
 import com.learnium.RNDeviceInfo.RNDeviceInfo;
+
+import org.lovebing.reactnative.baidumap.BaiduMapPackage;
 import org.reactnative.camera.RNCameraPackage;
 import com.jadsonlourenco.RNShakeEvent.RNShakeEventPackage;
 import com.puti.paylib.PayReactPackage;
@@ -87,6 +89,7 @@ public class MainApplication extends Application implements ReactApplication {
             new ReactVideoPackage(),
             new SplashScreenReactPackage(),
             new RNSpinkitPackage(),
+            new BaiduMapPackage(getApplicationContext()),
             new JSharePackage(SHUTDOWN_TOAST, SHUTDOWN_LOG),
             new JPushPackage(SHUTDOWN_TOAST, SHUTDOWN_LOG)
       );

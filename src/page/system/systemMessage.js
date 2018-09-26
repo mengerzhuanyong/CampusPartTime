@@ -150,7 +150,8 @@ export default class SystemMessage extends Component {
 
     emptyMessage = async (page) => {
         const {systemStore} = this.props;
-        let result = await systemStore.emptyMessage(ServicesApi.emptyMessage, {});
+        let url = ServicesApi.emptyMessage;
+        let result = await systemStore.emptyMessage(url, {});
         if (result && result.code === 1) {
             this.loadNetData();
         } else {
@@ -168,12 +169,13 @@ export default class SystemMessage extends Component {
 
     requestDataSource = async (page) => {
         const {systemStore} = this.props;
+        let url = ServicesApi.systemMessage;
         let data = {
             page,
             page_size: this.pageSize,
         };
 
-        let result = await systemStore.requestDataSource(ServicesApi.systemMessage, data);
+        let result = await systemStore.requestDataSource(url, data);
         let endStatus = false;
         if (result && result.code === 1) {
             endStatus = result.data.list_data.length < data.page_size;
@@ -228,7 +230,7 @@ export default class SystemMessage extends Component {
             <View style={styles.container}>
                 <NavigationBar
                     title={pageTitle}
-                    rightView={this.renderHeaderRightView()}
+                    renderRightAction={this.renderHeaderRightView()}
                 />
                 <View style={styles.content}>
                     {systemStore.loading && systemStore.dataSource.length === 0 ?

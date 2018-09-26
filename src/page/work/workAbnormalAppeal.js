@@ -25,18 +25,28 @@ import SegmentedView from '../../component/segmentedView'
 import LRComponent from '../login/LRComponent'
 import SpinnerLoading from '../../component/common/SpinnerLoading';
 import dismissKeyboard from 'dismissKeyboard' // 键盘miss的方法
-import {observer, inject} from 'mobx-react';
 import SegmentedControlTab from '../../component/common/SegmentedControlTab'
 import {Button} from 'teaset'
+import {observer, inject} from 'mobx-react';
 
-
+@inject('loginStore', 'mineStore', 'workStore')
+@observer
 export default class WorkAbnormalAppeal extends Component {
 
     constructor(props) {
         super(props);
+        let {params} = this.props.navigation.state;
         this.state = {
             listData: [1, 2, 3, 4],
+            item: params && params.item ? params.item : {},
+            description: '',
+            reason: '',
+            photos: [],
         };
+    }
+
+    componentDidMount() {
+        console.log(this.state.item)
     }
 
     renderHeaderRightView = () => {
@@ -50,12 +60,76 @@ export default class WorkAbnormalAppeal extends Component {
         )
     };
 
-    submitFoo = () => {
+    submitFoo = async () => {
+        let {item, description, reason, photos} = this.state;
+        const {workStore} = this.props;
+        let url = ServicesApi.add_appeal;
+        let data = {
+            work_id: item.id,
+            description,
+            reason,
+            photos,
+        };
+        try {
+            let result = await workStore.onSubmitAbnormalAppeal(url, data);
+            ToastManager.show(result.msg);
+            if (result && result.code === 1) {
+                RouterHelper.goBack();
+            }
+        } catch (e) {
+            console.log(e);
+        }
+    };
 
+    handleImage = async () => {
+        let result = await ImagePickerManager.showMultipleImagePicker({imageCount: 1, quality: 70, enableBase64: true});
+        if (result.code === 1) {
+            let url = ServicesApi.upload;
+            let data = result.data[0].path;
+            let upRes = await FetchData.upload(url, data);
+            if (upRes && upRes.code === 1) {
+                let images = this.state.photos.concat(upRes.data);
+                this.setState({
+                    photos: images,
+                });
+            } else {
+                Toast.toastShort('上传失败，请稍后重试');
+            }
+        }
+    };
+
+    deleteImageItem = (index) => {
+        let {photos} = this.state;
+        photos.splice(index, 1);
+        this.setState({photos});
+    };
+
+    renderImagesView = (data) => {
+        if (!data || data.length < 1) {
+            return;
+        }
+        let images = data.map((obj, index) => {
+            return (
+                <TouchableOpacity
+                    style={styles.uploadItemView}
+                    key={obj+index}
+                    onPress={() => this.deleteImageItem(index)}
+                >
+                    <View style={styles.deleteBtnView}>
+                        <Image source={Images.icon_delete} style={styles.deleteIcon}/>
+                    </View>
+                    <Image
+                        source={Images.img_goods1}
+                        style={[CusTheme.uploadIcon, styles.uploadItemImage]}
+                    />
+                </TouchableOpacity>
+            );
+        });
+        return images;
     };
 
     render() {
-        let {loading, listData} = this.state;
+        let {loading, listData, item, photos} = this.state;
         let {params} = this.props.navigation.state;
         let pageTitle = params && params.pageTitle ? params.pageTitle : '异常申诉';
         return (
@@ -66,11 +140,10 @@ export default class WorkAbnormalAppeal extends Component {
                 <ScrollView style={styles.content}>
                     <View style={[styles.contentItemView, styles.orderGoodsInfoView]}>
                         <View style={styles.orderGoodsPicView}>
-                            <Image source={Images.img_goods1} style={styles.orderGoodsPic}/>
+                            <Image source={item.illustration ? {uri: item.illustration} : Images.img_goods1} style={styles.orderGoodsPic}/>
                         </View>
                         <View style={styles.orderGoodsTitleView}>
-                            <Text style={styles.orderGoodsTitle}>苹果iPhone X 64G 黑色</Text>
-                            <Text style={styles.orderGoodsPrices}>2200工分</Text>
+                            <Text style={styles.orderGoodsTitle} numberOfLines={3}>{item.name}</Text>
                         </View>
                     </View>
                     <View style={[styles.contentItemView, styles.orderUserInfoView]}>
@@ -82,13 +155,15 @@ export default class WorkAbnormalAppeal extends Component {
                                 multiline={true}
                                 style={styles.inputItem}
                                 ref={v => this.input = v}
-                                keyboardType={'numeric'}
+                                // keyboardType={'numeric'}
                                 underlineColorAndroid={'rgba(0, 0, 0, 0)'}
                                 placeholder={'请描述异常情况'}
                                 placeholderTextColor={'#999'}
                                 // returnKeyType={'done'}
                                 onChangeText={(text) => {
-
+                                    this.setState({
+                                        description: text
+                                    });
                                 }}
                             />
                         </View>
@@ -102,32 +177,23 @@ export default class WorkAbnormalAppeal extends Component {
                                 multiline={true}
                                 style={styles.inputItem}
                                 ref={v => this.input = v}
-                                keyboardType={'numeric'}
+                                // keyboardType={'numeric'}
                                 underlineColorAndroid={'rgba(0, 0, 0, 0)'}
                                 placeholder={'请输入您的申诉原因'}
                                 placeholderTextColor={'#999'}
                                 // returnKeyType={'done'}
                                 onChangeText={(text) => {
-
+                                    this.setState({
+                                        reason: text
+                                    });
                                 }}
                             />
                         </View>
                         <View style={[styles.uploadImageView]}>
+                            {this.renderImagesView(photos)}
                             <TouchableOpacity
                                 style={styles.uploadItemView}
-                                onPress={() => {}}
-                            >
-                                <View style={styles.deleteBtnView}>
-                                    <Image source={Images.icon_delete} style={styles.deleteIcon}/>
-                                </View>
-                                <Image
-                                    source={Images.img_goods1}
-                                    style={[CusTheme.uploadIcon, styles.uploadItemImage]}
-                                />
-                            </TouchableOpacity>
-                            <TouchableOpacity
-                                style={styles.uploadItemView}
-                                onPress={() => {}}
+                                onPress={this.handleImage}
                             >
                                 <Image source={Images.icon_camera} style={styles.uploadIcon}/>
                                 <Text style={styles.uploadTips}>上传截图</Text>
@@ -180,16 +246,16 @@ const styles = StyleSheet.create({
     },
     orderGoodsPicView: {
         marginRight: 15,
-        width: ScaleSize(240),
+        width: ScaleSize(200),
     },
     orderGoodsPic: {
-        width: ScaleSize(240),
-        height: ScaleSize(190),
+        width: ScaleSize(200),
+        height: ScaleSize(160),
         resizeMode: 'contain',
     },
     orderGoodsTitleView: {
         flex: 1,
-        height: ScaleSize(230),
+        height: ScaleSize(160),
         justifyContent: 'space-around',
     },
     orderGoodsTitle: {

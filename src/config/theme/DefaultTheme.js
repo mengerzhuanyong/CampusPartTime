@@ -12,6 +12,7 @@ export default {
     isIPhoneX: Theme.isIPhoneX,
     fitIPhoneXTop: 44,
     fitIPhoneXBottom: 34,
+    navBarContentHeight: 44,
     pageBackgroundColor: '#f7f7f7',
     themeColor: themeColor,
     minPixel: 1 / PixelRatio.get(),
@@ -121,6 +122,10 @@ export default {
         width: scaleSize(35),
         height: scaleSize(35),
         resizeMode: 'contain',
+    },
+    headerBtnName: {
+        color: '#fff',
+        fontSize: fontSize(13),
     },
 
     emptyComponentView: {

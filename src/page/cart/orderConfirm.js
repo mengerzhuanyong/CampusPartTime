@@ -62,19 +62,26 @@ export default class OrderConfirm extends Component {
 
     loadNetData = async () => {
         const {shopStore} = this.props;
+        let url = ServicesApi.workGoodsDetails;
         let data = {
             id: this.state.item.id,
         };
-        let result = await shopStore.requestGoodsDetail(ServicesApi.workGoodsDetails, data);
+        let result = await shopStore.requestGoodsDetail(url, data);
         // console.log(result);
     };
 
     onSubmitOrderConfirm = async (type) => {
         const {shopStore} = this.props;
+        let {cartGoodsInfo} = shopStore;
+        let url = ServicesApi.workGoodsDetails;
         let data = {
             id: this.state.item.id,
         };
-        let result = await shopStore.onSubmitOrderConfirm(ServicesApi.workGoodsDetails, data);
+        if (cartGoodsInfo.buy_available !== 1) {
+            let reason = type === 1 ? '余额不足，无法购买' : '积分不足无法购买';
+            ToastManager.show(reason);
+        }
+        let result = await shopStore.onSubmitOrderConfirm(url, data);
         // console.log(result);
         if (result && result.code === 1) {
             RouterHelper.navigate('', 'OrderSubmit');

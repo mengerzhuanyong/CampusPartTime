@@ -6,12 +6,13 @@
 
 'use strict';
 import React from 'react'
-import { View, StyleSheet, NetInfo } from 'react-native'
+import { View, StyleSheet, NetInfo, PermissionsAndroid, Platform } from 'react-native'
 import SplashScreen from 'react-native-splash-screen'
 import DeviceInfo from 'react-native-device-info'
 import JPushModule from 'jpush-react-native'
 import JShareModule from 'jshare-react-native'
 import XPay from 'react-native-puti-pay'
+import {Geolocation} from 'react-native-baidu-map'
 import Navigation from './router/Navigation'
 import { getDeviceInfo } from './util/Tool'
 import { observer, inject } from 'mobx-react'
@@ -22,6 +23,7 @@ export default class Index extends React.Component {
 
     constructor(props) {
         super(props);
+        this.state = {};
     }
 
     componentDidMount() {
@@ -67,7 +69,7 @@ export default class Index extends React.Component {
                 // 未登录
                 this.timer1 = setTimeout(() => {
                     RouterHelper.reset('', 'Login');
-                    SplashScreen.hide();
+                    // SplashScreen.hide();
                 }, 600);
             } else {
                 // 已经登录
@@ -75,15 +77,15 @@ export default class Index extends React.Component {
                 loginStore.saveUserInfo(localRes.data);
                 this.timer2 = setTimeout(() => {
                     RouterHelper.reset('', 'Tab');
-                    // RouterHelper.reset('', 'Work');
-                    SplashScreen.hide();
+                    // RouterHelper.reset('', 'MineWorkDetail');
+                    // SplashScreen.hide();
                 }, 600);
             }
         } else {
             // 第一次安装app
             this.timer3 = setTimeout(() => {
             //     RouterHelper.reset('', 'Login');
-                SplashScreen.hide();
+                // SplashScreen.hide();
             }, 600);
         }
     };

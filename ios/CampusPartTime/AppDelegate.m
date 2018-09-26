@@ -22,6 +22,7 @@
 #import <UIKit/UIKit.h>
 #import <AVFoundation/AVFoundation.h>  // import
 #import <React/RCTLinkingManager.h>
+#import "RCTBaiduMapViewManager.h"
 
 @implementation AppDelegate
 
@@ -52,7 +53,7 @@
                                                initialProperties:nil
                                                    launchOptions:launchOptions];
   rootView.backgroundColor = [[UIColor alloc] initWithRed:1.0f green:1.0f blue:1.0f alpha:1];
-
+  [RCTBaiduMapViewManager initSDK:@"nBikqYOuK567UaAA4Me9Ga1f4tyXTio3"];
   self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
   UIViewController *rootViewController = [UIViewController new];
   rootViewController.view = rootView;
@@ -61,7 +62,7 @@
   
  [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryAmbient error:nil];  // allow
   
-  [RNSplashScreen show];  // here
+//  [RNSplashScreen show];  // here
   
   return YES;
 }

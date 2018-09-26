@@ -50,11 +50,12 @@ export default class WorkDetail extends Component {
 
     loadNetData = async () => {
         const {workStore} = this.props;
+        let url = ServicesApi.jobDetails;
         let data = {
             id: this.state.item.id,
         };
 
-        let result = await workStore.requestWorkDetail(ServicesApi.jobDetails, data);
+        let result = await workStore.requestWorkDetail(url, data);
         // console.log(result);
     };
 

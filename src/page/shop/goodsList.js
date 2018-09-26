@@ -178,6 +178,7 @@ export default class GoodsList extends Component {
         return (
             <GoodsItem
                 item={item}
+                onPress={() => RouterHelper.navigate(item.name, 'GoodsDetail', {item})}
                 {...this.props}
             />
         );

@@ -50,8 +50,13 @@ export default class SendSMS extends PureComponent {
 
     getVerificationCode = async (mobile, type) => {
         type = type === 'register' ? 1 : 2;
+        let url = ServicesApi.getVerificationCode;
+        let data = {
+            mobile,
+            type,
+        };
         if (checkMobile(mobile)) {
-            let result = await Services.post(ServicesApi.getVerificationCode, {mobile, type});
+            let result = await Services.post(url, data, true);
             if (result.code === 1) {
                 this.countDownTimer();
                 ToastManager.show('验证码已发送，请注意查收！', 'center');
@@ -67,41 +72,6 @@ export default class SendSMS extends PureComponent {
                 ]
             })
         }
-    };
-
-    sendSMS = (mobile, type) => {
-        // console.log(mobile);
-        if (!mobile) {
-            ToastManager.show('手机号不能为空', 'center');
-            return false;
-        }
-        if (!checkPhone(mobile)) {
-            ToastManager.show('phone', 'center');
-            return;
-        }
-        let url = NetApi.sendSMS;
-        let smsType = type === 'register' ? 1 : 0;
-        let data = {
-            type: smsType,
-            mobile: mobile,
-        };
-        // this.countDownTimer();
-        // console.log(url, data);
-        // return;
-        this.netRequest.fetchPost(url, data)
-            .then(result => {
-                if (result && result.code === 1) {
-                    this.countDownTimer();
-                    ToastManager.show('验证码已发送，请注意查收！', 'center');
-                } else {
-                    ToastManager.show(result.msg, 'center');
-                }
-                // console.log('验证码', result);
-            })
-            .catch(error => {
-                ToastManager.show('服务器请求失败，请稍后重试！', 'center');
-                // console.log('登录出错', error);
-            })
     };
 
     // 验证码倒计时

@@ -26,6 +26,7 @@ export default class MineStore extends BaseStore {
         };
         this.myWorkPoints = {};
         this.myWorkPointsDetail = [];
+        this.myWorkIncomeDetail = [];
         this.pointsInfo = {};
         this.pointsDetail = [];
         this.creditInfo = [];
@@ -37,6 +38,7 @@ export default class MineStore extends BaseStore {
     @observable myCredits;
     @observable myWorkPoints;
     @observable myWorkPointsDetail;
+    @observable myWorkIncomeDetail;
     @observable pointsInfo;
     @observable pointsDetail;
     @observable creditInfo;
@@ -50,25 +52,33 @@ export default class MineStore extends BaseStore {
     // 会员中心首页
     @action
     requestDataSource = async (url) => {
-        this.loading = true;
+
         const result = await this.getRequest(url, true);
         if (result.code === 1) {
             runInAction(() => {
-                this.loading = false;
+                // 
                 this.dataSource = result.data;
             });
         }
         return result;
     };
 
+    // 签到
+    @action
+    onSubmitSingIn = async (url) => {
+
+        const result = await this.getRequest(url, true);
+        
+        return result;
+    };
+
     // 我的资料
     @action
     requestMyProfile = async (url) => {
-        this.loading = true;
+
         const result = await this.getRequest(url, true);
         if (result.code === 1) {
             runInAction(() => {
-                this.loading = false;
                 this.myProfile = result.data;
             });
         }
@@ -78,12 +88,11 @@ export default class MineStore extends BaseStore {
     // 手机实名认证
     @action
     onCertificationMobile = async (url, data) => {
-        this.loading = true;
+
         let newStatus = this.myProfile;
         const result = await this.postRequest(url, data, true);
         if (result.code === 1) {
             runInAction(() => {
-                this.loading = false;
                 newStatus.mobile_status = result.data;
                 this.myProfile = newStatus;
             });
@@ -94,13 +103,27 @@ export default class MineStore extends BaseStore {
     // 身份证认证
     @action
     onSubmitIdCardVerify = async (url, data) => {
-        this.loading = true;
+
         let newStatus = this.myProfile;
         const result = await this.postRequest(url, data, true);
         if (result.code === 1) {
             runInAction(() => {
-                this.loading = false;
                 newStatus.id_card_status = result.data;
+                this.myProfile = newStatus;
+            });
+        }
+        return result;
+    };
+
+    // 微信认证
+    @action
+    onSubmitBindWeChat = async (url, data) => {
+
+        let newStatus = this.myProfile;
+        const result = await this.postRequest(url, data, true);
+        if (result.code === 1) {
+            runInAction(() => {
+                newStatus.is_wechat = 2;
                 this.myProfile = newStatus;
             });
         }
@@ -110,11 +133,10 @@ export default class MineStore extends BaseStore {
     // 信用额度
     @action
     getMyCredits = async (url) => {
-        this.loading = true;
+
         const result = await this.getRequest(url, true);
         if (result.code === 1) {
             runInAction(() => {
-                this.loading = false;
                 this.myCredits = result.data;
             });
         }
@@ -124,24 +146,43 @@ export default class MineStore extends BaseStore {
     // 工分明细
     @action
     requestWorkPoints = async (url, data) => {
-        this.loading = true;
+
         const result = await this.postRequest(url, data, true);
         if (result.code === 1) {
             runInAction(() => {
-                this.loading = false;
                 if (data.page === 1) {
                     this.myWorkPoints = result.data;
                     this.myWorkPointsDetail = result.data.list_data;
                 } else {
+                    let temp = this.myWorkPointsDetail;
                     if (result.data.list_data.length !== 0) {
-                        this.myWorkPointsDetail = this.myWorkPointsDetail.concat(result.data.list_data);
+                        this.myWorkPointsDetail = temp.concat(result.data.list_data);
                     }
                 }
             })
         } else {
             runInAction(() => {
-                this.loading = false;
                 this.myWorkPointsDetail = [];
+            })
+        }
+        return result;
+    };
+
+    // 兼职收入明细
+    @action
+    requestWorkIncome = async (url, data) => {
+
+        const result = await this.postRequest(url, data, true);
+        if (result.code === 1) {
+            runInAction(() => {
+                if (data.page === 1) {
+                    this.myWorkIncomeDetail = result.data.list_data;
+                } else {
+                    let temp = this.myWorkIncomeDetail;
+                    if (result.data.list_data.length !== 0) {
+                        this.myWorkIncomeDetail = temp.concat(result.data.list_data);
+                    }
+                }
             })
         }
         return result;
@@ -150,23 +191,22 @@ export default class MineStore extends BaseStore {
     // 积分明细
     @action
     requestPointDetail = async (url, data) => {
-        this.loading = true;
+
         const result = await this.postRequest(url, data, true);
         if (result.code === 1) {
             runInAction(() => {
-                this.loading = false;
                 if (data.page === 1) {
                     this.pointsInfo = result.data;
                     this.pointsDetail = result.data.list_data;
                 } else {
+                    let temp = this.pointsDetail;
                     if (result.data.list_data.length !== 0) {
-                        this.pointsDetail = this.pointsDetail.concat(result.data.list_data)
+                        this.pointsDetail = temp.concat(result.data.list_data)
                     }
                 }
             })
         } else {
             runInAction(() => {
-                this.loading = false;
                 this.pointsInfo = {};
                 this.pointsDetail = [];
             })
@@ -177,23 +217,22 @@ export default class MineStore extends BaseStore {
     // 诚信体系
     @action
     requestCreditDetail = async (url, data) => {
-        this.loading = true;
+
         const result = await this.postRequest(url, data, true);
         if (result.code === 1) {
             runInAction(() => {
-                this.loading = false;
                 if (data.page === 1) {
                     this.creditInfo = result.data;
                     this.creditDetail = result.data.list_data;
                 } else {
+                    let temp = this.creditDetail;
                     if (result.data.list_data.length !== 0) {
-                        this.creditDetail = this.creditDetail.concat(result.data.list_data)
+                        this.creditDetail = temp.concat(result.data.list_data)
                     }
                 }
             })
         } else {
             runInAction(() => {
-                this.loading = false;
                 this.creditInfo = {};
                 this.creditDetail = [];
             })

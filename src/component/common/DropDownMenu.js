@@ -1,20 +1,22 @@
 'use strict';
-
-import React, {PureComponent} from 'react';
+//import liraries
+import React, { PureComponent } from 'react';
 import { Animated, Image, StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback, View, Easing } from 'react-native';
 import PropTypes from 'prop-types'
 
 
+// create a component
 class DropDownMenu extends PureComponent {
 
     constructor(props) {
         super(props);
+        console.log(props.titleArray);
         this.state = { activeIndex: -1, visible: false }
     }
 
     static propTypes = {
         titleArray: PropTypes.array,
-        renderContentComponent: PropTypes.func.isRequired,
+        // renderContentComponent: PropTypes.func.isRequired,
         contentHeight: PropTypes.func.isRequired,
 
     };
@@ -36,7 +38,8 @@ class DropDownMenu extends PureComponent {
     };
 
     _onClose = () => {
-        this.close();
+        this.close()
+        console.log('asd')
         this.props.onClose && this.props.onClose()
     };
 
@@ -50,15 +53,15 @@ class DropDownMenu extends PureComponent {
 
     render() {
         const { children, renderContentComponent, contentHeight, style, onClose, ...others } = this.props;
-         // console.log('render');
+        console.log('render', this.state.activeIndex);
         return (
             <View style={[styles.container, style]}>
-                <MenuBar
+                {1 > 2 ?<MenuBar
                     onPress={this._onPressBar}
                     visible={this.state.visible}
                     activeIndex={this.state.activeIndex}
                     {...others}
-                />
+                /> : null}
                 {children}
                 <ContentContainer
                     ref={this._captureRef}
@@ -114,15 +117,16 @@ class MenuBar extends PureComponent {
         }
         this.setState({ activeIndex });
         this.props.onPress && this.props.onPress(activeIndex);
-         // console.log('zzz');
+        console.log('zzz');
     };
 
     render() {
         const { titleArray, visible } = this.props;
+        console.log('MenuBar');
         return (
             <View style={styles.barContainer}>
                 {titleArray.map((item, index) => {
-                    let color = this.state.activeIndex === index ? '#1c67ff' : '#2e2e2e';
+                    let color = this.state.activeIndex === index ? '#1c67ff' : '#2e2e2e'
                     return (
                         <TouchableOpacity
                             key={index}
@@ -138,7 +142,7 @@ class MenuBar extends PureComponent {
                                     <Image
                                         style={styles.rankingArrow}
                                         resizeMode={'contain'}
-                                        source={Images.rankingArrow}
+                                        source={Images.icon_home_drown}
                                     />
                                 </Animated.View>
                             </View>
@@ -173,7 +177,7 @@ class ContentContainer extends PureComponent {
     };
 
     // static getDerivedStateFromProps(nextProps, prevState) {
-    //      // console.log('getDerivedStateFromProps--->',nextProps, prevState);
+    //     console.log('getDerivedStateFromProps--->',nextProps, prevState);
     //     if (prevState.visible !== nextProps.visible) {
     //         return {
     //             isVisible: nextProps.visible,
@@ -184,7 +188,7 @@ class ContentContainer extends PureComponent {
     // }
 
     // componentDidUpdate(prevProps, prevState) {
-    //      // console.log('componentDidUpdate-------->',prevProps, prevState, this.state);
+    //     console.log('componentDidUpdate-------->',prevProps, prevState, this.state);
     //     if (prevProps.visible !== this.state.isVisible) {
     //         this.startAnimated(this.state.isVisible);
     //     }
@@ -268,13 +272,15 @@ class ContentContainer extends PureComponent {
     }
 }
 
+// define your styles
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        // backgroundColor: '#f50',
     },
     contentContainer: {
         position: 'absolute',
-        top: ScaleSize(90), // 距离的顶部便宜
+        top: 0, // ScaleSize(90), // 距离的顶部便宜
         right: 0,
         left: 0,
         bottom: 0,
@@ -289,22 +295,20 @@ const styles = StyleSheet.create({
         backgroundColor: 'rgba(0, 0, 0, 0.5)',
     },
     barContainer: {
-        // flex: 1,
-        flexDirection: 'row',
-        alignItems: 'center',
         height: ScaleSize(90),
-        paddingHorizontal: 15,
+        backgroundColor: '#FFFFFF',
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        alignItems: 'center',
+        borderBottomWidth: StyleSheet.hairlineWidth,
         borderColor: '#eef0f2',
-        backgroundColor: '#fff',
-        justifyContent: 'space-between',
-        borderBottomWidth: CusTheme.minPixel,
     },
     bar: {
         flexDirection: 'row',
         alignItems: 'center'
     },
     barTitle: {
-        fontSize: FontSize(13),
+        fontSize: FontSize(15),
         color: '#2e2e2e'
     },
     arrowContainer: {
@@ -319,4 +323,5 @@ const styles = StyleSheet.create({
     }
 });
 
+//make this component available to the app
 export default DropDownMenu;

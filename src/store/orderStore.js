@@ -13,7 +13,7 @@ export default class OrderStore extends BaseStore {
 
     constructor(params) {
         super(params);
-        this.loading = true;
+
         this.orderDetail = {
             order_data: {},
             goods_data: {},
@@ -32,9 +32,9 @@ export default class OrderStore extends BaseStore {
     // 订单列表
     @action
     requestDataSource = async (url, data, status) => {
-        this.loading = true;
+
         const result = await this.postRequest(url, data, true);
-        this.loading = false;
+        
         if (result.code === 1) {
             runInAction(() => {
                 if (data.page === 1) {
@@ -56,12 +56,10 @@ export default class OrderStore extends BaseStore {
         const result = await this.postRequest(url, data, true);
         if (result.code === 1) {
             runInAction(() => {
-                this.loading = false;
                 this.orderDetail = result.data;
             })
         } else {
             runInAction(() => {
-                this.loading = false;
                 this.orderDetail = {};
             })
         }

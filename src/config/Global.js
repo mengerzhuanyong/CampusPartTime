@@ -15,7 +15,7 @@ import {
 } from '../util/Tool'
 import CusTheme from './theme/Theme'
 import Images from './manager/ImageManager'
-// import Services from '../util/Services'
+import FetchData from '../util/Services'
 import Services from '../util/utilRequest'
 import MenuManager from './manager/MenuManager'
 import ToastManager from './manager/ToastManager'
@@ -72,6 +72,9 @@ global.StorageManager = StorageManager;
 
 // 网络请求
 global.Services = new Services();
+
+// 网络请求
+global.FetchData = FetchData;
 
 // 网络接口
 global.ServicesApi = ServicesApi;

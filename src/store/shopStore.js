@@ -39,7 +39,7 @@ export default class ShopStore extends BaseStore {
 
     // 商品分类
     getGoodsCategory = async (url, data) => {
-        this.loading = true;
+
         const result = await this.postRequest(url, data, true);
         if (result.code === 1) {
             runInAction(() => {
@@ -52,11 +52,10 @@ export default class ShopStore extends BaseStore {
     // 换购首页
     @action
     requestDataSource = async (url, data) => {
-        this.loading = true;
+
         const result = await this.postRequest(url, data, true);
         if (result.code === 1) {
             runInAction(() => {
-                this.loading = false;
                 if (data.page === 1) {
                     this.dataSource = result.data.list_data;
                 } else {
@@ -67,7 +66,6 @@ export default class ShopStore extends BaseStore {
             })
         } else {
             runInAction(() => {
-                this.loading = false;
                 this.dataSource = [];
             })
         }
@@ -77,11 +75,10 @@ export default class ShopStore extends BaseStore {
     // 商品列表
     @action
     requestGoodsList = async (url, data) => {
-        this.loading = true;
+
         const result = await this.postRequest(url, data, true);
         if (result.code === 1) {
             runInAction(() => {
-                this.loading = false;
                 if (data.page === 1) {
                     this.goodsList = result.data.list_data;
                 } else {
@@ -98,16 +95,14 @@ export default class ShopStore extends BaseStore {
     // 商品详情页
     @action
     requestGoodsDetail = async (url, data) => {
-        this.loading = true;
+
         const result = await this.postRequest(url, data, true);
         if (result.code === 1) {
             runInAction(() => {
-                this.loading = false;
                 this.goodsDetail = result.data;
             })
         } else {
             runInAction(() => {
-                this.loading = false;
                 this.goodsDetail = {};
             })
         }
@@ -117,16 +112,14 @@ export default class ShopStore extends BaseStore {
     // 加入购物车
     @action
     onSubmitOrderToCart = async (url, data) => {
-        this.loading = true;
+
         const result = await this.postRequest(url, data, true);
         if (result.code === 1) {
             runInAction(() => {
-                this.loading = false;
                 this.cartGoodsInfo = result.data;
             })
         } else {
             runInAction(() => {
-                this.loading = false;
                 this.cartGoodsInfo = {};
             })
         }
@@ -136,16 +129,14 @@ export default class ShopStore extends BaseStore {
     // 确认换购
     @action
     onSubmitOrderConfirm = async (url, data) => {
-        this.loading = true;
+
         const result = await this.postRequest(url, data, true);
         if (result.code === 1) {
             runInAction(() => {
-                this.loading = false;
                 // this.cartGoodsInfo = result.data;
             })
         } else {
             runInAction(() => {
-                this.loading = false;
                 // this.cartGoodsInfo = {};
             })
         }
@@ -155,16 +146,14 @@ export default class ShopStore extends BaseStore {
     // 提交订单
     @action
     onSubmitOrder = async (url, data) => {
-        this.loading = true;
+
         const result = await this.postRequest(url, data, true);
         if (result.code === 1) {
             runInAction(() => {
-                this.loading = false;
                 // this.cartGoodsInfo = result.data;
             })
         } else {
             runInAction(() => {
-                this.loading = false;
                 // this.cartGoodsInfo = {};
             })
         }

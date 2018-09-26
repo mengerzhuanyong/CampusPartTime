@@ -3,7 +3,7 @@ import React from 'react'
 import { FlatList, SectionList } from 'react-native'
 import PropTypes from 'prop-types'
 import HeaderLoading from './HeaderLoading';
-import FooterLoding from './FooterLoding'
+import FooterLoading from './FooterLoading'
 import EmptyView from './EmptyView';
 
 // 上拉刷新的状态
@@ -17,6 +17,8 @@ const EndReachedStatus = {
 class ListView extends React.PureComponent {
 
     static propTypes = {
+        data: PropTypes.oneOfType([PropTypes.array, PropTypes.object]).isRequired,
+        extraData: PropTypes.any,
         listType: PropTypes.oneOf(['FlatList', 'SectionList']),
 
         initialNumToRender: PropTypes.number,
@@ -36,22 +38,20 @@ class ListView extends React.PureComponent {
     };
 
     static defaultProps = {
+        data: [],
         listType: 'FlatList',
         initialNumToRender: 8,
         initialRefresh: true,
         enableRefresh: true,
         enableLoadMore: true,
 
-        refreshableColors: ['green'],
+        refreshableColors: ['#43a4fe'],
         refreshableTitle: '  正在加载...',
     };
 
     constructor(props) {
         super(props);
-        this.state = {
-            isRefreshing: props.initialRefresh,
-            isEndReached: false,
-        };
+        this.state = { isRefreshing: props.initialRefresh, isEndReached: false };
         if (__IOS__) {
             // 解决列表初始化时显示刷新按钮导致的bug
             // this._currentEndReachedStatus = props.data.length === 0 && props.initialRefresh ? EndReachedStatus.FIRST_LOADED : EndReachedStatus.WAITING_LOADING;
@@ -62,12 +62,13 @@ class ListView extends React.PureComponent {
         this._currentContentSize = { contentWidth: 0, contentHeight: 0 }
         this._currentListSize = { width: 0, height: 0 }
         this._currentContentOffset = { x: 0, y: 0 }
+
     };
 
     componentWillUnmount() {
         clearTimeout(this.refreshTime)
         clearTimeout(this.endReachedTime)
-    }
+    };
 
     setNativeProps(props) {
         if (this._listRef) {
@@ -148,7 +149,7 @@ class ListView extends React.PureComponent {
 
     startRefresh = () => {
         if (!this.state.isRefreshing) {
-            // console.log('startRefresh')
+            console.log('startRefresh')
             if (this._currentEndReachedStatus === EndReachedStatus.ALL_LOADED) {
                 this._currentEndReachedStatus = EndReachedStatus.WAITING_LOADING
             }
@@ -176,7 +177,7 @@ class ListView extends React.PureComponent {
         ) {
             return;
         }
-        // console.log('_onEndReached', this._currentEndReachedStatus)
+        console.log('_onEndReached', this._currentEndReachedStatus)
         if (this._currentEndReachedStatus === EndReachedStatus.FIRST_LOADED) {
             this._currentEndReachedStatus = EndReachedStatus.WAITING_LOADING
             return;
@@ -197,7 +198,7 @@ class ListView extends React.PureComponent {
 
     startEndReached = () => {
         if (!this.state.isEndReached) {
-            // console.log('startEndReached');
+            console.log('startEndReached');
             this._currentEndReachedStatus = EndReachedStatus.START_LOADED;
             this.setState({ isEndReached: true }, () => {
                 // 问题所在，不能显示到视图最底层
@@ -236,7 +237,7 @@ class ListView extends React.PureComponent {
 
     _onLayout = (event) => {
         const { onLayout } = this.props
-        if (event.nativeEvent.layout.height !== 0 && event.nativeEvent.layout.width !== 0) {
+        if (event.nativeEvent.layout.height != 0 && event.nativeEvent.layout.width != 0) {
             this._currentListSize = { width: event.nativeEvent.layout.width, height: event.nativeEvent.layout.height }
         }
         onLayout && onLayout(event)
@@ -263,8 +264,9 @@ class ListView extends React.PureComponent {
     _renderFooterLoading = () => {
         const { isEndReached } = this.state;
         const status = this._currentEndReachedStatus === EndReachedStatus.ALL_LOADED;
+        console.log('_renderFooterLoading', this._currentEndReachedStatus, isEndReached)
         return (
-            <FooterLoding loading={isEndReached} allLoad={status} />
+            <FooterLoading loading={isEndReached} allLoad={status} />
         );
     };
 
@@ -277,7 +279,7 @@ class ListView extends React.PureComponent {
     };
 
     _rednerFlatList = () => {
-        const { data, onRefresh, onEndReached, onLayout, onContentSizeChange, enableRefresh, enableLoadMore, ...others } = this.props;
+        const { data, extraData, onRefresh, onEndReached, onLayout, onContentSizeChange, enableRefresh, enableLoadMore, ...others } = this.props;
         return (
             <FlatList
                 ref={this._captureRef}
@@ -286,8 +288,9 @@ class ListView extends React.PureComponent {
                 onScroll={this._onScroll}
                 onContentSizeChange={this._onContentSizeChange}
                 ListEmptyComponent={this._renderEmptyView}
-                ListFooterComponent={enableLoadMore ? this._renderFooterLoading : null}
                 refreshControl={enableRefresh ? this._renderRefreshLoading() : null}
+                ListFooterComponent={enableLoadMore ? this._renderFooterLoading : null}
+                extraData={this.state}  // 
                 {...others}
                 onEndReachedThreshold={0.1} // 必须在{...}后面，否则就会出问题。也不知道是为什么，
                 onEndReached={this._onEndReached}
@@ -303,10 +306,12 @@ class ListView extends React.PureComponent {
                 onLayout={this._onLayout}
                 sections={data}
                 onScroll={this._onScroll}
+                stickySectionHeadersEnabled={true} // 安卓sction黏着
                 onContentSizeChange={this._onContentSizeChange}
                 refreshControl={enableRefresh ? this._renderRefreshLoading() : null}
                 ListFooterComponent={enableLoadMore ? this._renderFooterLoading : null}
                 ListEmptyComponent={this._renderEmptyView}
+                extraData={this.state}
                 {...others}
                 onEndReachedThreshold={0.1} // 必须在{...}后面，否则就会出问题。也不知道是为什么，
                 onEndReached={this._onEndReached}

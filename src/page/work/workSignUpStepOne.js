@@ -64,11 +64,12 @@ export default class WorkSignUpStepOne extends Component {
 
     loadNetData = async () => {
         const {workStore} = this.props;
+        let url = ServicesApi.job_application_time;
         let data = {
             id: this.state.item.id,
         };
 
-        let result = await workStore.requestWorkTimes(ServicesApi.job_application_time, data);
+        let result = await workStore.requestWorkTimes(url, data);
         this.flatList && this.flatListRef.stopRefresh();
     };
 

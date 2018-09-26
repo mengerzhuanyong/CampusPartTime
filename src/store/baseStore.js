@@ -13,7 +13,6 @@ configure({ enforceActions: true });
 export default class BaseStore {
 
     constructor(params) {
-        this.loading = false;
         this.error = { isError: '', errorMsg: '' };
     }
 

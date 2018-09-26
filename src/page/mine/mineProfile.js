@@ -18,6 +18,7 @@ import {
 } from 'react-native'
 import NavigationBar from '../../component/navigation/NavigationBar'
 import {Button, Carousel, ListRow} from 'teaset'
+import JShareModule from 'jshare-react-native'
 
 import {HorizontalLine, VerticalLine} from "../../component/common/commonLine";
 import {inject, observer} from "mobx-react/index";
@@ -46,7 +47,8 @@ export default class MineProfile extends Component {
 
     loadNetData = async () => {
         const {mineStore} = this.props;
-        let result = await mineStore.requestMyProfile(ServicesApi.my_details);
+        let url = ServicesApi.my_details;
+        let result = await mineStore.requestMyProfile(url);
     };
 
     renderStatusView = (status) => {
@@ -56,6 +58,51 @@ export default class MineProfile extends Component {
                 <Text style={styles.statusTitle}>{status === 2 ? '已认证' : '未认证'}</Text>
             </View>
         );
+    };
+
+    onBindWeChat = async () => {
+        let url = ServicesApi.bindWeChat;
+        let param = {
+            platform: "wechat_session"
+        };
+        JShareModule.isWeChatInstalled((isInstalled) => {
+            if (isInstalled) {
+                JShareModule.getSocialUserInfo(param, (map) => {
+                    console.log(param, url, map);
+                    this.onSubmitUserInfo(url, map);
+                }, (errorCode) => {
+                    // console.log(errorCode);
+                    this.cleanAuthWithPlatform();
+                });
+            } else {
+                toastShort('您当前没有安装微信，请您安装微信之后再试');
+            }
+        });
+    };
+
+    onSubmitUserInfo = async (url, data) => {
+        const {mineStore} = this.props;
+        try {
+            let result = await mineStore.onSubmitBindWeChat(url, data);
+            if (result.code === 1) {
+                this.loadNetData();
+            } else {
+                this.cleanAuthWithPlatform();
+            }
+        } catch (e) {
+            this.cleanAuthWithPlatform();
+        }
+    };
+
+    cleanAuthWithPlatform = () => {
+        let param = {
+            platform: "wechat_session"
+        };
+        JShareModule.cancelAuthWithPlatform(param, (code) => {
+            // console.log(code);
+        }, (errorCode) => {
+            // console.log(errorCode);
+        });
     };
 
     render() {
@@ -134,6 +181,17 @@ export default class MineProfile extends Component {
                             accessory={<Image source={Images.icon_arrow_right}
                                               style={[CusTheme.contentRightIcon, {}]}/>}
                             onPress={() => myProfile.mobile_status === 1 && RouterHelper.navigate('手机号实名认证', 'CertificationMobile', {})}
+                            // bottomSeparator={'none'}
+                        />
+                        <ListRow
+                            style={styles.contentTitleView}
+                            title={'认证微信号'}
+                            detail={this.renderStatusView(myProfile.mobile_status)}
+                            titleStyle={CusTheme.contentTitle}
+                            icon={<Image source={Images.icon_user_wechat} style={[CusTheme.contentTitleIcon, {width: ScaleSize(40), height: ScaleSize(40)}]}/>}
+                            accessory={<Image source={Images.icon_arrow_right}
+                                              style={[CusTheme.contentRightIcon, {}]}/>}
+                            onPress={() => myProfile.mobile_status !== 1 && this.onBindWeChat()}
                             bottomSeparator={'none'}
                         />
                     </View>

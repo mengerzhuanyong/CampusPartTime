@@ -104,18 +104,19 @@ export default class MineWorkDetail extends Component {
         ToastManager.showCustom('打卡中。。。');
         const {workStore} = this.props;
         let url = ServicesApi.job_sign;
+        let {lat, lng} = global;
         let data = {
+            lat,
+            lng,
             data: res.data,
-            lat: 35.1515151,
-            lng: 120.21212121,
         };
         try {
             let result = await workStore.onSubmitPunchCard(url, data);
             this.timer = setTimeout(() => {
                 if (result.code === 1) {
-                    ToastManager.success('打卡成功');
+                    ToastManager.success(result.msg);
                 } else {
-                    ToastManager.success('打卡失败');
+                    ToastManager.fail(result.msg);
                 }
             }, 1000);
         } catch (e) {
@@ -126,11 +127,11 @@ export default class MineWorkDetail extends Component {
         }
     };
 
-    renderHeaderRightView = () => {
+    renderHeaderRightView = (item) => {
         return (
             <TouchableOpacity
-                style={[CusTheme.headerButtonView, styles.headerRightView]}
-                onPress={() => RouterHelper.navigate('异常申诉', 'WorkAbnormalAppeal', {})}
+                style={[styles.headerRightView]}
+                onPress={() => RouterHelper.navigate('异常申诉', 'WorkAbnormalAppeal', {item})}
             >
                 <Text style={CusTheme.headerBtnName}>异常申诉</Text>
             </TouchableOpacity>
@@ -147,7 +148,7 @@ export default class MineWorkDetail extends Component {
             <View style={styles.container}>
                 <NavigationBar
                     title={pageTitle}
-                    rightView={this.renderHeaderRightView()}
+                    renderRightAction={this.renderHeaderRightView(item)}
                 />
                 <ScrollView style={styles.content}>
                     <View style={[styles.contentItemView, styles.orderGoodsInfoView]}>
@@ -204,12 +205,14 @@ const styles = StyleSheet.create({
         backgroundColor: '#eee',
     },
     headerRightView: {
-        top: -22,
-        right: 10,
-        position: 'absolute',
+        // top: -22,
+        // right: 10,
+        // position: 'absolute',
+        height: CusTheme.navBarHeight,
         alignItems: 'center',
         justifyContent: 'center',
         // backgroundColor: '#123',
+        marginRight: 15,
     },
 
     contentItemView: {

@@ -149,6 +149,12 @@ const isNumber = (val) => {
     }
 };
 
+const checkFloat = (num) => {
+    const floatRule = /^-?([1-9]\d*\.\d*|0\.\d*[1-9]\d*|0?\.0+|0)$/;         // 匹配浮点数
+    let status = floatRule.test(num);
+    return status;
+};
+
 /**
  * 检测字符串是否为空
  * @param s
@@ -326,4 +332,5 @@ export {
     clearTimer,
     getDeviceInfo,
     addCustomProps,
+    checkFloat,
 }

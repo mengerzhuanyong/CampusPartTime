@@ -168,7 +168,9 @@ const styles = StyleSheet.create({
         fontSize: FontSize(13),
     },
     navBarItemView: {
+        flex: 1,
         width: SCREEN_WIDTH,
+        // height: SCREEN_HEIGHT,
         // backgroundColor: '#123',
     },
 });

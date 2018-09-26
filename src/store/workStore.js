@@ -25,7 +25,10 @@ export default class WorkStore extends BaseStore {
         this.server_mobile = '';
         this.platform_time_list = [];
         this.platform_time_option = [];
-        this.platform_work_tips = '';
+        this.platform_work_tips = {
+            title: '',
+            content: '',
+        };
         this.work_nav_arr = ['已报名工作（0）', '正在进行工作（0）'];
         this.workBenchData = [];
         this.workBenchDetail = {
@@ -79,11 +82,10 @@ export default class WorkStore extends BaseStore {
     // 工作首页 - 列表
     @action
     requestDataSource = async (url, data) => {
-        this.loading = true;
+
         const result = await this.postRequest(url, data, true);
         if (result.code === 1) {
             runInAction(() => {
-                this.loading = false;
                 if (data.page === 1) {
                     this.dataSource = result.data.list_data;
                 } else {
@@ -95,7 +97,6 @@ export default class WorkStore extends BaseStore {
             })
         } else {
             runInAction(() => {
-                this.loading = false;
                 this.dataSource = [];
             })
         }
@@ -105,16 +106,14 @@ export default class WorkStore extends BaseStore {
     // 工作详情
     @action
     requestWorkDetail = async (url, data) => {
-        this.loading = true;
+
         const result = await this.postRequest(url, data, true);
         if (result.code === 1) {
             runInAction(() => {
-                this.loading = false;
                 this.workDetail = result.data;
             })
         } else {
             runInAction(() => {
-                this.loading = false;
                 this.workDetail = {};
             })
         }
@@ -124,17 +123,15 @@ export default class WorkStore extends BaseStore {
     // 工作详情 - 工作报名时间
     @action
     requestWorkTimes = async (url, data) => {
-        this.loading = true;
+
         const result = await this.postRequest(url, data, true);
         if (result.code === 1) {
             runInAction(() => {
-                this.loading = false;
                 this.sign_id = result.data.sign_id;
                 this.time_list = result.data.time_list;
             })
         } else {
             runInAction(() => {
-                this.loading = false;
                 this.sign_id = 0;
                 this.time_list = [];
             })
@@ -224,18 +221,16 @@ export default class WorkStore extends BaseStore {
     // 平台分配工作 - 获取报名时间
     @action
     requestPlatformTimes = async (url) => {
-        this.loading = true;
+
         const result = await this.getRequest(url, true);
         if (result.code === 1) {
             runInAction(() => {
-                this.loading = false;
                 this.platform_time_list = result.data.time_list;
                 this.platform_time_option = result.data.time_option;
                 this.platform_work_tips = result.data.platform_work_tips;
             })
         } else {
             runInAction(() => {
-                this.loading = false;
                 this.platform_time_list = [];
                 this.platform_time_option = [];
                 this.platform_work_tips = '';
@@ -277,7 +272,6 @@ export default class WorkStore extends BaseStore {
         const result = await this.postRequest(url, data, true);
         if (result.code === 1) {
             runInAction(() => {
-                this.loading = false;
                 if (data.page === 1) {
                     this.workBenchData = result.data.list_data;
                 } else {
@@ -295,7 +289,7 @@ export default class WorkStore extends BaseStore {
     @action
     requestWorkBenchDetail = async (url, data) => {
         const result = await this.postRequest(url, data, true);
-        this.loading = false;
+        
         if (result.code === 1) {
             runInAction(() => {
                 this.workBenchDetail = result.data;
@@ -307,6 +301,13 @@ export default class WorkStore extends BaseStore {
     // 打卡
     @action
     onSubmitPunchCard = async (url, data) => {
+        const result = await this.postRequest(url, data, true);
+        return result;
+    };
+
+    // 打卡
+    @action
+    onSubmitAbnormalAppeal = async (url, data) => {
         const result = await this.postRequest(url, data, true);
         return result;
     };
