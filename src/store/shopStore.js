@@ -14,7 +14,9 @@ export default class ShopStore extends BaseStore {
     constructor(params) {
         super(params);
         this.goodsNavigation = [];
+        this.pointGoodsCategory = [];
         this.dataSource = [];
+        this.pointDataSource = [];
         this.goodsList = [];
         this.goodsDetail = {};
         this.cartGoodsInfo = {};
@@ -22,7 +24,9 @@ export default class ShopStore extends BaseStore {
     }
 
     @observable goodsNavigation;
+    @observable pointGoodsCategory;
     @observable dataSource;
+    @observable pointDataSource;
     @observable goodsList;
     @observable goodsDetail;
     @observable cartGoodsInfo;
@@ -32,9 +36,20 @@ export default class ShopStore extends BaseStore {
     get getDataSource() {
         return toJS(this.dataSource);
     }
+
+    @computed
+    get getPointDataSource() {
+        return toJS(this.pointDataSource);
+    }
+
     @computed
     get getGoodsDetail() {
         return toJS(this.goodsDetail);
+    }
+
+    @computed
+    get getCartGoodsInfo() {
+        return toJS(this.cartGoodsInfo);
     }
 
     // 商品分类
@@ -61,6 +76,42 @@ export default class ShopStore extends BaseStore {
                 } else {
                     if (result.data.list_data.length !== 0) {
                         this.dataSource = this.dataSource.concat(result.data.list_data);
+                    }
+                }
+            })
+        } else {
+            runInAction(() => {
+                this.dataSource = [];
+            })
+        }
+        return result;
+    };
+
+    // 商品分类
+    getPointGoodsCategory = async (url, data) => {
+
+        const result = await this.postRequest(url, data, true);
+        if (result.code === 1) {
+            runInAction(() => {
+                this.pointGoodsCategory = result.data;
+            })
+        }
+        return result;
+    };
+
+    // 积分列表
+    @action
+    requestPointDataSource = async (url, data) => {
+
+        const result = await this.postRequest(url, data, true);
+        if (result.code === 1) {
+            runInAction(() => {
+                if (data.page === 1) {
+                    this.pointDataSource = result.data.list_data;
+                } else {
+                    let temp = this.pointDataSource;
+                    if (result.data.list_data.length !== 0) {
+                        this.pointDataSource = temp.concat(result.data.list_data);
                     }
                 }
             })
@@ -131,15 +182,7 @@ export default class ShopStore extends BaseStore {
     onSubmitOrderConfirm = async (url, data) => {
 
         const result = await this.postRequest(url, data, true);
-        if (result.code === 1) {
-            runInAction(() => {
-                // this.cartGoodsInfo = result.data;
-            })
-        } else {
-            runInAction(() => {
-                // this.cartGoodsInfo = {};
-            })
-        }
+
         return result;
     };
 

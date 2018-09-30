@@ -7,6 +7,7 @@ class ToastManager {
     static customKey = null;
 
     static show = (text) => {
+        text = text === 'error' ? '服务器请求失败，请稍后重试' : text;
         Toast.show({
             text: text,
             option: CusTheme.toastOptions

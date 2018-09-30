@@ -52,6 +52,7 @@ export default class Home extends Component {
         super(props);
         this.state = {
             loading: false,
+            refreshing: false,
             type: 1,
         };
         this.page = 1;
@@ -62,11 +63,21 @@ export default class Home extends Component {
     }
 
     componentWillUnmount() {
+        let timers = [this.timer1];
+        ClearTimer(timers);
     }
 
     loadNetData = () => {
         this.requestDataSource();
         this.getResource();
+    };
+
+    onRefresh = () => {
+        this.setState({refreshing: true});
+        this.loadNetData();
+        this.timer1 = setTimeout(() => {
+            this.setState({refreshing: false});
+        }, 1000);
     };
 
     requestDataSource = async () => {
@@ -134,7 +145,7 @@ export default class Home extends Component {
             listView = data.map((item, index) => {
                 return <HomeGoodsItem
                     item={item}
-                    onPress={() => RouterHelper.navigate(item.name, 'GoodsDetail', {item})}
+                    onPress={() => RouterHelper.navigate(item.name, 'PointGoodsDetail', {item})}
                     key={'goods' + index}
                     {...this.props}
                 />;
@@ -144,7 +155,7 @@ export default class Home extends Component {
     };
 
     render() {
-        let {loading} = this.state;
+        let {loading, refreshing} = this.state;
         let {homeStore, resourceStore} = this.props;
         let {hot_goods, hot_jobs, hot_point_goods} = homeStore.getDataSource;
         let {banner_data, notice_data, has_message} = resourceStore.getHomeDataSource;
@@ -164,8 +175,8 @@ export default class Home extends Component {
                     refreshControl={
                         <RefreshControl
                             title='Loading...'
-                            refreshing={loading}
-                            onRefresh={this.loadNetData}
+                            refreshing={refreshing}
+                            onRefresh={this.onRefresh}
                             tintColor="#0398ff"
                             colors={['#0398ff']}
                             progressBackgroundColor="#fff"
@@ -227,11 +238,11 @@ export default class Home extends Component {
                                              style={[CusTheme.contentTitleIcon, {tintColor: '#ffb04a'}]}/>}
                                 detail={'更多 >>'}
                                 accessory={'none'}
-                                onPress={() => RouterHelper.navigate('积分兑换热榜', 'GoodsList')}
+                                onPress={() => RouterHelper.navigate('积分商城', 'PointShop')}
                             />
                             <View style={[styles.contentItemConView, styles.contentExchangeShopView]}>
                                 <ScrollView style={styles.listRowContent} horizontal={true}>
-                                    {this.renderListView(1, hot_point_goods)}
+                                    {this.renderListView(3, hot_point_goods)}
                                 </ScrollView>
                                 <View style={styles.contentRightIconView}>
                                     <Image source={Images.icon_arrow_right_list} style={styles.arrowIcon}/>

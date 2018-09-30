@@ -13,6 +13,7 @@ import {
     Image,
     TextInput,
     StyleSheet,
+    KeyboardAvoidingView
 } from 'react-native'
 
 import {observer, inject} from 'mobx-react'
@@ -34,8 +35,8 @@ export default class Login extends Component {
             open: false
         };
         this.inputData = {
-            mobile: '15066886007',
-            password: '123123',
+            mobile: '', // '15066886007',
+            password: '', // '123123',
         }
     }
 
@@ -92,63 +93,65 @@ export default class Login extends Component {
                     style={styles.navigationBarStyle}
                     rightViewOnPress={this.renderHeaderRightView}
                 />
-                <View style={styles.loginContent}>
-                    <View style={styles.inputItemView}>
-                        <Image source={Images.icon_user_sign} style={styles.inputIcon}/>
-                        <TextInput
-                            maxLength={11}
-                            style={styles.inputItem}
-                            ref={v => this.input = v}
-                            keyboardType={'numeric'}
-                            underlineColorAndroid={'rgba(0, 0, 0, 0)'}
-                            placeholder={'请输入手机号'}
-                            placeholderTextColor={'#fff'}
-                            returnKeyType={'done'}
-                            clearButtonMode='while-editing'
-                            onChangeText={this._onChangeUserName}
+                <KeyboardAvoidingView style={styles.loginContent}>
+                    <View style={styles.loginContent}>
+                        <View style={styles.inputItemView}>
+                            <Image source={Images.icon_user_sign} style={styles.inputIcon}/>
+                            <TextInput
+                                maxLength={11}
+                                style={styles.inputItem}
+                                ref={v => this.input = v}
+                                keyboardType={'numeric'}
+                                underlineColorAndroid={'rgba(0, 0, 0, 0)'}
+                                placeholder={'请输入手机号'}
+                                placeholderTextColor={'#fff'}
+                                returnKeyType={'done'}
+                                clearButtonMode='while-editing'
+                                onChangeText={this._onChangeUserName}
+                            />
+                        </View>
+                        <HorizontalLine lineStyle={styles.verLine}/>
+                        <View style={styles.inputItemView}>
+                            <Image source={Images.icon_lock} style={styles.inputIcon}/>
+                            <TextInput
+                                // maxLength={12}
+                                style={styles.inputItem}
+                                ref={v => this.input = v}
+                                // keyboardType={'numeric'}
+                                underlineColorAndroid={'rgba(0, 0, 0, 0)'}
+                                placeholder={'请输入密码'}
+                                secureTextEntry={true}
+                                placeholderTextColor={'#fff'}
+                                returnKeyType={'done'}
+                                clearButtonMode='while-editing'
+                                onChangeText={this._onChangePassword}
+                            />
+                        </View>
+                        <HorizontalLine lineStyle={styles.verLine}/>
+                        <Button
+                            onPress={this._doLogin}
+                            style={[styles.btnItem, styles.signBtnItem]}
+                            titleStyle={[styles.btnItemTitle, styles.signBtnItemTitle]}
+                            title={'登录'}
                         />
-                    </View>
-                    <HorizontalLine lineStyle={styles.verLine}/>
-                    <View style={styles.inputItemView}>
-                        <Image source={Images.icon_lock} style={styles.inputIcon}/>
-                        <TextInput
-                            // maxLength={12}
-                            style={styles.inputItem}
-                            ref={v => this.input = v}
-                            // keyboardType={'numeric'}
-                            underlineColorAndroid={'rgba(0, 0, 0, 0)'}
-                            placeholder={'请输入密码'}
-                            secureTextEntry={true}
-                            placeholderTextColor={'#fff'}
-                            returnKeyType={'done'}
-                            clearButtonMode='while-editing'
-                            onChangeText={this._onChangePassword}
+                        <Button
+                            onPress={this._onNavigateRegister}
+                            style={[styles.btnItem, styles.registerBtnItem]}
+                            titleStyle={[styles.btnItemTitle, styles.registerBtnItemTitle]}
+                            title={'注册'}
                         />
-                    </View>
-                    <HorizontalLine lineStyle={styles.verLine}/>
-                    <Button
-                        onPress={this._doLogin}
-                        style={[styles.btnItem, styles.signBtnItem]}
-                        titleStyle={[styles.btnItemTitle, styles.signBtnItemTitle]}
-                        title={'登录'}
-                    />
-                    <Button
-                        onPress={this._onNavigateRegister}
-                        style={[styles.btnItem, styles.registerBtnItem]}
-                        titleStyle={[styles.btnItemTitle, styles.registerBtnItemTitle]}
-                        title={'注册'}
-                    />
-                    <View style={styles.otherBtnView}>
-                        <Text
+                        <View style={styles.otherBtnView}>
+                            {/*<Text
                             style={styles.otherBtnItem}
                             onPress={this._guestLogin}
-                        >游客登录</Text>
-                        <Text
-                            style={styles.otherBtnItem}
-                            onPress={this._onNavigateRecoverPwd}
-                        >忘记密码？</Text>
+                        >游客登录</Text>*/}
+                            <Text
+                                style={styles.otherBtnItem}
+                                onPress={this._onNavigateRecoverPwd}
+                            >忘记密码？</Text>
+                        </View>
                     </View>
-                </View>
+                </KeyboardAvoidingView>
             </Container>
         );
     }
@@ -210,10 +213,12 @@ const styles = StyleSheet.create({
         height: 50,
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'space-between',
+        justifyContent: 'flex-end',
+        // justifyContent: 'space-between',
     },
     otherBtnItem: {
         color: '#fff',
+        // width: FontSize(11),
         fontSize: FontSize(11),
     },
 });

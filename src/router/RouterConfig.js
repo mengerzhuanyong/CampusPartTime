@@ -55,14 +55,13 @@ import Setting from '../page/system/setting'
 import ShareApp from '../page/system/shareApp'
 import SystemMessage from '../page/system/systemMessage'
 
-
-import VideoPage from '../page/common/videoPage'
-import Chat from '../page/common/chat'
 import WorkPunchCard from "../page/work/workPunchCard"
 import Search from "../page/common/search"
 
+import PointShop from "../page/shop/pointShop"
 import GoodsList from "../page/shop/goodsList"
 import GoodsDetail from "../page/shop/goodsDetail"
+import PointGoodsDetail from "../page/shop/pointGoodsDetail"
 
 import OrderConfirm from "../page/cart/orderConfirm"
 import OrderSubmit from "../page/cart/orderSubmit"
@@ -74,7 +73,8 @@ import AddressEdit from "../page/address/addressEdit"
 
 
 import WorkDetail from "../page/work/workDetail"
-import OrderReturn from "../page/order/orderReturn";
+import OrderReturn from "../page/order/orderReturn"
+
 
 const TabNavigator = createBottomTabNavigator({
     Home: {
@@ -110,7 +110,7 @@ const TabNavigator = createBottomTabNavigator({
         })
     },
 }, {
-    initialRouteName: 'Work',
+    initialRouteName: 'Home',
     tabBarOptions: {
         showIcon: true,
         indicatorStyle: {height: 0},
@@ -138,8 +138,10 @@ const StackNavigator = createStackNavigator(configRouter({
 
     Search: {screen: Search},
 
+    PointShop: {screen: PointShop},
     GoodsList: {screen: GoodsList},
     GoodsDetail: {screen: GoodsDetail},
+    PointGoodsDetail: {screen: PointGoodsDetail},
 
     AutoGetWork: {screen: AutoGetWork},
     WorkDetail: {screen: WorkDetail},

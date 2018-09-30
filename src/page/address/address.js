@@ -177,7 +177,7 @@ export default class Address extends Component {
             updateContent(item);
             RouterHelper.goBack();
         } else {
-            Toast.toastShort(result.msg);
+            ToastManager.show(result.msg);
         }
     };
 
@@ -207,7 +207,7 @@ export default class Address extends Component {
             id: item.id,
         };
         let result = await addressStore.onSubmitAddress(url, data);
-        Toast.toastShort(result.msg);
+        ToastManager.show(result.msg);
         if (result && result.code === 1) {
             this._onRefresh();
         }

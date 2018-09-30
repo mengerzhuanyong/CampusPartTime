@@ -72,6 +72,15 @@ export default class MineStore extends BaseStore {
         return result;
     };
 
+    // 提现
+    @action
+    onSubmitWithdraw = async (url, data) => {
+
+        const result = await this.postRequest(url, data, true);
+
+        return result;
+    };
+
     // 我的资料
     @action
     requestMyProfile = async (url) => {
@@ -127,6 +136,15 @@ export default class MineStore extends BaseStore {
                 this.myProfile = newStatus;
             });
         }
+        return result;
+    };
+
+    // 提现
+    @action
+    onSubmitEmergency = async (url, data) => {
+
+        const result = await this.postRequest(url, data, true);
+
         return result;
     };
 

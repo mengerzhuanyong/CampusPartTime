@@ -103,7 +103,7 @@ class ActionsManager {
         }
     }
 
-    static showShareModule(params) {
+    static showShareModule(params, callBack = () => {}) {
         const {moduleTitle, type, url, title, text} = params;
         const _moduleTitle = moduleTitle ? moduleTitle : '分享APP';
         ActionsManager.showShare(_moduleTitle, (item) => {
@@ -142,16 +142,17 @@ class ActionsManager {
                         break;
                     case 'unknown':
                         // ToastManager.show('分享成功，未知状态!');
-                        ActionsManager.getSharePoints(item);
+                        ActionsManager.getSharePoints(item, callBack);
                         break;
                     default:
-                        ActionsManager.getSharePoints(item);
+                        ActionsManager.getSharePoints(item, callBack);
                         // ToastManager.show('分享成功!');
                         break;
                 }
             }, (error) => {
                 console.log(error);
                 ToastManager.show('未安装客户端，分享失败');
+                // ActionsManager.getSharePoints(item, callBack);
             });
         })
     }
@@ -164,13 +165,20 @@ class ActionsManager {
         }
     }
 
-    static async getSharePoints(type) {
+    static async getSharePoints(type, callBack = () => {}) {
         let url = ServicesApi.share_get_point;
         let data = {type};
-        let result = await Services.post(url, data, true);
-        if (result && result.code !== 1) {
+        try {
+            let result = await Services.post(url, data, true);
+            if (result.code === 1) {
+                callBack();
+            } else {
+                ToastManager.hide();
+                ToastManager.show(result.msg);
+            }
+        } catch (e) {
             ToastManager.hide();
-            ToastManager.show(result.msg);
+            ToastManager.show('error');
         }
     }
 }

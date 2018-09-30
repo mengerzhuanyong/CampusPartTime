@@ -13,7 +13,9 @@ import {
     Image,
     TextInput,
     StyleSheet,
+    ScrollView,
     TouchableOpacity,
+    KeyboardAvoidingView
 } from 'react-native'
 
 import {observer, inject} from 'mobx-react'
@@ -33,10 +35,10 @@ export default class RecoverPwd extends PureComponent {
         super(props);
         this.state = {
             open: false,
-            mobile: '15066886007',
-            code: '123123',
-            password: '123123',
-            re_password: '123123',
+            mobile: '', // '15066886007',
+            code: '', // '123123',
+            password: '', // '123123',
+            re_password: '', // '123123',
         };
     }
 
@@ -78,6 +80,7 @@ export default class RecoverPwd extends PureComponent {
 
 
     render() {
+        let {mobile} = this.state;
         return (
             <Container style={styles.container}>
                 <Image source={Images.img_bg_login} style={CusTheme.containerBackgroundImage}/>
@@ -87,85 +90,86 @@ export default class RecoverPwd extends PureComponent {
                     backgroundImage={null}
                     rightViewOnPress={this.renderHeaderRightView}
                 />
-                <View style={styles.loginContent}>
-                    <View style={styles.inputItemView}>
-                        <Image source={Images.icon_user_sign} style={styles.inputIcon}/>
-                        <TextInput
-                            style={styles.inputItem}
-                            ref={v => this.input = v}
-                            keyboardType={'numeric'}
-                            underlineColorAndroid={'rgba(0, 0, 0, 0)'}
-                            placeholder={'请输入手机号'}
-                            placeholderTextColor={'#fff'}
-                            returnKeyType={'done'}
-                            clearButtonMode='while-editing'
-                            onChangeText={(text) => this.setState({mobile: text})}
+                <KeyboardAvoidingView style={styles.loginContent}>
+                    <ScrollView style={styles.loginContent}>
+                        <View style={styles.inputItemView}>
+                            <Image source={Images.icon_user_sign} style={styles.inputIcon}/>
+                            <TextInput
+                                style={styles.inputItem}
+                                ref={v => this.input = v}
+                                keyboardType={'numeric'}
+                                underlineColorAndroid={'rgba(0, 0, 0, 0)'}
+                                placeholder={'请输入手机号'}
+                                placeholderTextColor={'#fff'}
+                                returnKeyType={'done'}
+                                maxLength={11}
+                                clearButtonMode='while-editing'
+                                onChangeText={(text) => this.setState({mobile: text})}
+                            />
+                        </View>
+                        <HorizontalLine lineStyle={styles.horLine}/>
+                        <View style={styles.inputItemView}>
+                            <Image source={Images.icon_mobile_cur} style={styles.inputIcon}/>
+                            <TextInput
+                                style={styles.inputItem}
+                                ref={v => this.input = v}
+                                keyboardType={'numeric'}
+                                underlineColorAndroid={'rgba(0, 0, 0, 0)'}
+                                placeholder={'请输入验证码'}
+                                maxLength={6}
+                                placeholderTextColor={'#fff'}
+                                returnKeyType={'done'}
+                                clearButtonMode='while-editing'
+                                onChangeText={(text) => this.setState({code: text})}
+                            />
+                            <SendSMS
+                                mobile={mobile}
+                                type={'register'}
+                                style={styles.getCodeView}
+                                lineStyle={styles.verLine}
+                                titleStyle={styles.getCodeCon}
+                                {...this.props}
+                            />
+                        </View>
+                        <HorizontalLine lineStyle={styles.horLine}/>
+                        <View style={styles.inputItemView}>
+                            <Image source={Images.icon_lock} style={styles.inputIcon}/>
+                            <TextInput
+                                style={styles.inputItem}
+                                ref={v => this.input = v}
+                                underlineColorAndroid={'rgba(0, 0, 0, 0)'}
+                                placeholder={'请输入密码'}
+                                secureTextEntry={true}
+                                placeholderTextColor={'#fff'}
+                                returnKeyType={'done'}
+                                clearButtonMode='while-editing'
+                                onChangeText={(text) => this.setState({password: text})}
+                            />
+                        </View>
+                        <HorizontalLine lineStyle={styles.horLine}/>
+                        <View style={styles.inputItemView}>
+                            <Image source={Images.icon_lock} style={styles.inputIcon}/>
+                            <TextInput
+                                style={styles.inputItem}
+                                ref={v => this.input = v}
+                                underlineColorAndroid={'rgba(0, 0, 0, 0)'}
+                                placeholder={'请再次确认您的密码'}
+                                secureTextEntry={true}
+                                placeholderTextColor={'#fff'}
+                                returnKeyType={'done'}
+                                clearButtonMode='while-editing'
+                                onChangeText={(text) => this.setState({re_password: text})}
+                            />
+                        </View>
+                        <HorizontalLine lineStyle={styles.horLine}/>
+                        <Button
+                            onPress={this.onSubmitFoo}
+                            style={[styles.btnItem, styles.registerBtnItem]}
+                            titleStyle={[styles.btnItemTitle, styles.registerBtnItemTitle]}
+                            title={'立即找回'}
                         />
-                    </View>
-                    <HorizontalLine lineStyle={styles.horLine}/>
-                    <View style={styles.inputItemView}>
-                        <Image source={Images.icon_mobile_cur} style={styles.inputIcon}/>
-                        <TextInput
-                            style={styles.inputItem}
-                            ref={v => this.input = v}
-                            keyboardType={'numeric'}
-                            underlineColorAndroid={'rgba(0, 0, 0, 0)'}
-                            placeholder={'请输入验证码'}
-                            secureTextEntry={true}
-                            placeholderTextColor={'#fff'}
-                            returnKeyType={'done'}
-                            clearButtonMode='while-editing'
-                            onChangeText={(text) => this.setState({code: text})}
-                        />
-                        <SendSMS
-                            mobile={'mobile'}
-                            type={'register'}
-                            style={styles.getCodeView}
-                            lineStyle={styles.verLine}
-                            titleStyle={styles.getCodeCon}
-                            {...this.props}
-                        />
-                    </View>
-                    <HorizontalLine lineStyle={styles.horLine}/>
-                    <View style={styles.inputItemView}>
-                        <Image source={Images.icon_lock} style={styles.inputIcon}/>
-                        <TextInput
-                            style={styles.inputItem}
-                            ref={v => this.input = v}
-                            keyboardType={'numeric'}
-                            underlineColorAndroid={'rgba(0, 0, 0, 0)'}
-                            placeholder={'请输入密码'}
-                            secureTextEntry={true}
-                            placeholderTextColor={'#fff'}
-                            returnKeyType={'done'}
-                            clearButtonMode='while-editing'
-                            onChangeText={(text) => this.setState({password: text})}
-                        />
-                    </View>
-                    <HorizontalLine lineStyle={styles.horLine}/>
-                    <View style={styles.inputItemView}>
-                        <Image source={Images.icon_lock} style={styles.inputIcon}/>
-                        <TextInput
-                            style={styles.inputItem}
-                            ref={v => this.input = v}
-                            keyboardType={'numeric'}
-                            underlineColorAndroid={'rgba(0, 0, 0, 0)'}
-                            placeholder={'请再次确认您的密码'}
-                            secureTextEntry={true}
-                            placeholderTextColor={'#fff'}
-                            returnKeyType={'done'}
-                            clearButtonMode='while-editing'
-                            onChangeText={(text) => this.setState({re_password: text})}
-                        />
-                    </View>
-                    <HorizontalLine lineStyle={styles.horLine}/>
-                    <Button
-                        onPress={this.onSubmitFoo}
-                        style={[styles.btnItem, styles.registerBtnItem]}
-                        titleStyle={[styles.btnItemTitle, styles.registerBtnItemTitle]}
-                        title={'立即找回'}
-                    />
-                </View>
+                    </ScrollView>
+                </KeyboardAvoidingView>
             </Container>
         );
     }

@@ -130,7 +130,7 @@ export default class MineWorkPoints extends Component {
     };
 
     _renderListItem = ({item, index}) => {
-        console.log(item, index);
+        // console.log(item, index);
         return (
             <View style={styles.detailInfoItemView}>
                 <View style={styles.detailInfoItemTopView}>
@@ -301,7 +301,7 @@ const styles = StyleSheet.create({
     detailInfoItemTopView: {},
     detailInfoItemTitle: {
         color: '#333',
-        fontSize: FontSize(15),
+        fontSize: FontSize(13),
     },
     detailInfoItemBotView: {
         marginTop: 10,

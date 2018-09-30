@@ -80,7 +80,7 @@ export default class AddressEdit extends Component {
             address,
         };
         let result = await addressStore.onSubmitAddress(url, data);
-        Toast.toastShort(result.msg);
+        ToastManager.show(result.msg);
         if (result && result.code === 1) {
             let _url = ServicesApi.address_list;
             let _data = {

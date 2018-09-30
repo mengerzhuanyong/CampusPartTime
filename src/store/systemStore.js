@@ -16,15 +16,29 @@ export default class SystemStore extends BaseStore {
 
         this.dataSource = [];
         this.appShareParams = '';
+        this.systemInfo = '';
     }
 
     @observable dataSource;
     @observable appShareParams;
+    @observable systemInfo;
 
     @computed
     get getDataSource() {
         return toJS(this.dataSource);
     }
+
+    // 分享APP
+    @action
+    getSystemInfomation = async (url) => {
+        const result = await this.getRequest(url, true);
+        if (result && result.code === 1) {
+            runInAction(() => {
+                this.systemInfo = result.data;
+            });
+        }
+        return result;
+    };
 
     // 请求数据列表
     @action
@@ -67,9 +81,11 @@ export default class SystemStore extends BaseStore {
     @action
     getAppShareParams = async (url) => {
         const result = await this.getRequest(url, true);
-        runInAction(() => {
-            this.appShareParams = result.data;
-        });
+        if (result && result.code === 1) {
+            runInAction(() => {
+                this.appShareParams = result.data;
+            });
+        }
         return result;
     };
 

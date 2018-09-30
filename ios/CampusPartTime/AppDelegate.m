@@ -62,7 +62,7 @@
   
  [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryAmbient error:nil];  // allow
   
-//  [RNSplashScreen show];  // here
+  [RNSplashScreen show];  // here
   
   return YES;
 }

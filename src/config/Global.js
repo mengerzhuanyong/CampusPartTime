@@ -27,6 +27,7 @@ import InteractionManager from './manager/InteractionManager';
 import RouterHelper from '../router/RouterHelper'
 import ServicesApi from './ServicesApi'
 import Constant from './Constant'
+import StatusCode from './StatusCode'
 import moment from 'moment'
 import 'moment/locale/zh-cn'
 import StorageManager from "./manager/StorageManager"
@@ -81,6 +82,9 @@ global.ServicesApi = ServicesApi;
 
 // 系统常量
 global.Constant = Constant;
+
+// 状态码
+global.StatusCode = StatusCode;
 
 // 事件处理
 global.Moment = moment;

@@ -62,7 +62,7 @@ export default class HotNewsComponent extends Component {
                     style={styles.noticeItemView}
                     key={"notice_" + index}
                     activeOpacity={1}
-                    onPress={() => RouterHelper.navigate('消息', 'SystemMessage')}
+                    // onPress={() => RouterHelper.navigate('消息', 'SystemMessage')}
                 >
                     <Text style={styles.noticeContext} numberOfLines={1}>{item.content}{item.content}</Text>
                 </TouchableOpacity>

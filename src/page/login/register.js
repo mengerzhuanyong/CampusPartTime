@@ -15,9 +15,11 @@ import {
     TextInput,
     StyleSheet,
     TouchableOpacity,
+    ScrollView,
+    KeyboardAvoidingView,
 } from 'react-native'
 import {observer, inject} from 'mobx-react'
-import { Button } from 'teaset';
+import {Button} from 'teaset';
 import NavigationBar from '../../component/navigation/NavigationBar'
 import Container from '../../component/common/Container'
 import {HorizontalLine, VerticalLine} from '../../component/common/commonLine'
@@ -32,18 +34,34 @@ export default class Register extends Component {
         super(props);
         this.state = {
             agree: 0,
-        };
-        this.inputData = {
-            mobile: '15066886007',
-            password: '123123',
-            re_password: '123123',
-            code: '123123',
+            mobile: '', // '15066886007',
+            password: '', // '123123',
+            re_password: '', // '123123',
+            code: '', // '123123',
         }
+    }
+
+    componentDidMount() {
+        this.loadNetData();
     }
 
     componentWillUnmount() {
         const timers = [this.timer];
         ClearTimer(timers)
+    }
+
+    loadNetData = async () => {
+        let url = ServicesApi.protocol;
+        try {
+            let result = await Services.get(url, true);
+            if (result.code === 1) {
+                this.setState({
+                    link: result.data,
+                });
+            }
+        } catch (e) {
+            ToastManager.show('error');
+        }
     }
 
     _onNavigateBack = () => {
@@ -52,8 +70,7 @@ export default class Register extends Component {
 
     _doRegister = async () => {
         const {loginStore} = this.props;
-        let {agree} = this.state;
-        let {mobile, password, re_password, code} = this.inputData;
+        let {agree, mobile, password, re_password, code} = this.state;
         if (!checkMobile(mobile)) {
             ToastManager.show('您输入的手机号错误，请检查后重新输入！');
             return;
@@ -99,111 +116,130 @@ export default class Register extends Component {
     };
 
     render() {
-        let {agree} = this.state;
-        let {mobile, password, re_password, code} = this.inputData;
+        let {agree, link, mobile, password, re_password, code} = this.state;
         return (
             <Container style={styles.container}>
-                <Image source={Images.img_bg_login} style={CusTheme.containerBackgroundImage} />
+                <Image source={Images.img_bg_login} style={CusTheme.containerBackgroundImage}/>
                 <NavigationBar
                     title={'注册'}
                     style={styles.navigationBarStyle}
                     backgroundImage={null}
                     rightViewOnPress={this.renderHeaderRightView}
                 />
-                <View style={styles.loginContent}>
-                    <View style={styles.inputItemView}>
-                        <Image source={Images.icon_user_sign} style={styles.inputIcon} />
-                        <TextInput
-                            style={styles.inputItem}
-                            ref={v => this.input = v}
-                            keyboardType={'numeric'}
-                            underlineColorAndroid={'rgba(0, 0, 0, 0)'}
-                            placeholder={'请输入手机号'}
-                            placeholderTextColor={'#fff'}
-                            returnKeyType={'done'}
-                            clearButtonMode='while-editing'
-                            onChangeText={(text) => this.inputData['mobile'] = text}
-                        />
-                    </View>
-                    <HorizontalLine lineStyle={styles.horLine} />
-                    <View style={styles.inputItemView}>
-                        <Image source={Images.icon_mobile_cur} style={styles.inputIcon} />
-                        <TextInput
-                            style={styles.inputItem}
-                            ref={v => this.input = v}
-                            keyboardType={'numeric'}
-                            underlineColorAndroid={'rgba(0, 0, 0, 0)'}
-                            placeholder={'请输入验证码'}
-                            secureTextEntry={true}
-                            placeholderTextColor={'#fff'}
-                            returnKeyType={'done'}
-                            clearButtonMode='while-editing'
-                            onChangeText={(text) => this.inputData['code'] = text}
-                        />
-                        <SendSMS
-                            type={'register'}
-                            mobile={this.inputData['mobile']}
-                        />
-                    </View>
-                    <HorizontalLine lineStyle={styles.horLine} />
-                    <View style={styles.inputItemView}>
-                        <Image source={Images.icon_lock} style={styles.inputIcon} />
-                        <TextInput
-                            style={styles.inputItem}
-                            ref={v => this.input = v}
-                            keyboardType={'numeric'}
-                            underlineColorAndroid={'rgba(0, 0, 0, 0)'}
-                            placeholder={'请输入密码'}
-                            secureTextEntry={true}
-                            placeholderTextColor={'#fff'}
-                            returnKeyType={'done'}
-                            clearButtonMode='while-editing'
-                            onChangeText={(text) => this.inputData['password'] = text}
-                        />
-                    </View>
-                    <HorizontalLine lineStyle={styles.horLine} />
-                    <View style={styles.inputItemView}>
-                        <Image source={Images.icon_lock} style={styles.inputIcon} />
-                        <TextInput
-                            style={styles.inputItem}
-                            ref={v => this.input = v}
-                            keyboardType={'numeric'}
-                            underlineColorAndroid={'rgba(0, 0, 0, 0)'}
-                            placeholder={'请再次确认您的密码'}
-                            secureTextEntry={true}
-                            placeholderTextColor={'#fff'}
-                            returnKeyType={'done'}
-                            clearButtonMode='while-editing'
-                            onChangeText={(text) => this.inputData['re_password'] = text}
-                        />
-                    </View>
-                    <HorizontalLine lineStyle={styles.horLine} />
+                <KeyboardAvoidingView style={styles.loginContent}>
+                    <ScrollView style={styles.loginContent}>
+                        <View style={styles.inputItemView}>
+                            <Image source={Images.icon_user_sign} style={styles.inputIcon}/>
+                            <TextInput
+                                style={styles.inputItem}
+                                ref={v => this.input = v}
+                                keyboardType={'numeric'}
+                                underlineColorAndroid={'rgba(0, 0, 0, 0)'}
+                                placeholder={'请输入手机号'}
+                                maxLength={11}
+                                placeholderTextColor={'#fff'}
+                                returnKeyType={'done'}
+                                clearButtonMode='while-editing'
+                                onChangeText={(text) => {
+                                    this.setState({
+                                        mobile: text
+                                    })
+                                }}
+                            />
+                        </View>
+                        <HorizontalLine lineStyle={styles.horLine}/>
+                        <View style={styles.inputItemView}>
+                            <Image source={Images.icon_mobile_cur} style={styles.inputIcon}/>
+                            <TextInput
+                                style={styles.inputItem}
+                                ref={v => this.input = v}
+                                keyboardType={'numeric'}
+                                underlineColorAndroid={'rgba(0, 0, 0, 0)'}
+                                placeholder={'请输入验证码'}
+                                maxLength={6}
+                                placeholderTextColor={'#fff'}
+                                returnKeyType={'done'}
+                                clearButtonMode='while-editing'
+                                onChangeText={(text) => {
+                                    this.setState({
+                                        code: text
+                                    })
+                                }}
+                            />
+                            <SendSMS
+                                type={'register'}
+                                mobile={mobile}
+                            />
+                        </View>
+                        <HorizontalLine lineStyle={styles.horLine}/>
+                        <View style={styles.inputItemView}>
+                            <Image source={Images.icon_lock} style={styles.inputIcon}/>
+                            <TextInput
+                                style={styles.inputItem}
+                                ref={v => this.input = v}
+                                keyboardType={'numeric'}
+                                underlineColorAndroid={'rgba(0, 0, 0, 0)'}
+                                placeholder={'请输入密码'}
+                                secureTextEntry={true}
+                                placeholderTextColor={'#fff'}
+                                returnKeyType={'done'}
+                                clearButtonMode='while-editing'
+                                onChangeText={(text) => {
+                                    this.setState({
+                                        password: text
+                                    })
+                                }}
+                            />
+                        </View>
+                        <HorizontalLine lineStyle={styles.horLine}/>
+                        <View style={styles.inputItemView}>
+                            <Image source={Images.icon_lock} style={styles.inputIcon}/>
+                            <TextInput
+                                style={styles.inputItem}
+                                ref={v => this.input = v}
+                                keyboardType={'numeric'}
+                                underlineColorAndroid={'rgba(0, 0, 0, 0)'}
+                                placeholder={'请再次确认您的密码'}
+                                secureTextEntry={true}
+                                placeholderTextColor={'#fff'}
+                                returnKeyType={'done'}
+                                clearButtonMode='while-editing'
+                                onChangeText={(text) => {
+                                    this.setState({
+                                        re_password: text
+                                    })
+                                }}
+                            />
+                        </View>
+                        <HorizontalLine lineStyle={styles.horLine}/>
                         <TouchableOpacity
                             style={styles.protocolView}
                             onPress={this.pushAgreeProtocol}
                         >
-                            <Image source={agree === 1 ? Images.icon_checked : Images.icon_check} style={styles.iconCheck} />
+                            <Image source={agree === 1 ? Images.icon_checked : Images.icon_check}
+                                   style={styles.iconCheck}/>
                             <Text style={styles.protocolTitle}>我以阅读并同意</Text>
                             <TouchableOpacity
                                 style={styles.protocolIconView}
-                                onPress={() => RouterHelper.navigate('用户协议', 'CommonWebPage')}
+                                onPress={() => RouterHelper.navigate('用户协议', 'CommonWebPage', {url: link})}
                             >
                                 <Text style={styles.protocolCon}>《校园空兼用户协议》</Text>
                             </TouchableOpacity>
                         </TouchableOpacity>
-                    <Button
-                        onPress={this._doRegister}
-                        style={[styles.btnItem, styles.registerBtnItem]}
-                        titleStyle={[styles.btnItemTitle, styles.registerBtnItemTitle]}
-                        title={'立即注册'}
-                    />
-                    <Button
-                        onPress={this._onNavigateBack}
-                        style={[styles.btnItem, styles.signBtnItem]}
-                        titleStyle={[styles.btnItemTitle, styles.signBtnItemTitle]}
-                        title={'已有账号，立即登录 >>'}
-                    />
-                </View>
+                        <Button
+                            onPress={this._doRegister}
+                            style={[styles.btnItem, styles.registerBtnItem]}
+                            titleStyle={[styles.btnItemTitle, styles.registerBtnItemTitle]}
+                            title={'立即注册'}
+                        />
+                        <Button
+                            onPress={this._onNavigateBack}
+                            style={[styles.btnItem, styles.signBtnItem]}
+                            titleStyle={[styles.btnItemTitle, styles.signBtnItemTitle]}
+                            title={'已有账号，立即登录 >>'}
+                        />
+                    </ScrollView>
+                </KeyboardAvoidingView>
             </Container>
         );
     }
@@ -268,8 +304,7 @@ const styles = StyleSheet.create({
         color: '#fff',
         fontSize: FontSize(12),
     },
-    registerBtnItemTitle: {
-    },
+    registerBtnItemTitle: {},
     otherBtnView: {
         height: 50,
         flexDirection: 'row',

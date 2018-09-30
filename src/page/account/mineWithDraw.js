@@ -7,7 +7,7 @@
 
 'use strict';
 
-import React, { Component } from 'react'
+import React, {Component} from 'react'
 import {
     Animated,
     ScrollView,
@@ -19,7 +19,7 @@ import {
     TextInput,
     ImageBackground,
     TouchableOpacity,
-    TouchableWithoutFeedback,
+    TouchableWithoutFeedback, KeyboardAvoidingView,
 } from 'react-native'
 
 import NavigationBar from '../../component/navigation/NavigationBar'
@@ -46,18 +46,20 @@ export default class MineWithDraw extends Component {
 
     constructor(props) {
         super(props);
-        this.state =  {
+        this.state = {
             type: 1,
             money: '',
             allMoney: '0',
             minMoney: '100',
+            alipayAccount: '',
+            alipayName: '',
         };
     }
 
-    componentDidMount(){
+    componentDidMount() {
     }
 
-    componentWillUnmount(){
+    componentWillUnmount() {
         let timers = [this.timer];
         ClearTimer(timers);
     }
@@ -65,25 +67,96 @@ export default class MineWithDraw extends Component {
     onSelectPaymentMethod = (type) => {
         this.setState({type});
     };
-    
-    submitWithdraw = async () => {
+
+    onSubmitWithdraw = async () => {
         const {mineStore} = this.props;
-        let {type, money} = this.state;
-        let url = ServicesApi.jobs;
+        let {type, money, alipayAccount, alipayName} = this.state;
+        let url = ServicesApi.mineAccountWithdraw;
         let data = {
             type,
             money,
+            alipay_account: alipayAccount,
+            alipay_name: alipayName,
         };
-        let result = await mineStore.requestMyProfile(url, data);
-        if (result && result.code === 1) {
-            this.timer = setTimeout(() => {
-                RouterHelper.goBack();
-            }, 600);
+        if (mineStore.dataSource.is_wechat_status === 1) {
+            const params = {
+                title: '温馨提示',
+                detail: '提现到微信，需要预先绑定微信',
+                actions: [
+                    {
+                        title: '取消',
+                        onPress: () => {
+                        },
+                    },
+                    {
+                        title: '立即绑定',
+                        onPress: () => RouterHelper.navigate('我的资料', 'MineProfile'),
+                    }
+                ]
+            };
+            AlertManager.show(params);
+            return;
+        }
+        try {
+            let result = await mineStore.onSubmitWithdraw(url, data);
+            ToastManager.show(result.msg);
+            if (result && result.code === 1) {
+                let _url = ServicesApi.mine;
+                let _data = await mineStore.requestDataSource(_url);
+                this.timer = setTimeout(() => {
+                    RouterHelper.goBack();
+                }, 600);
+            }
+        } catch (e) {
+            console.log(e);
+            ToastManager.show('error');
         }
 
     };
 
-    render(){
+    renderAccountView = (type) => {
+        if (type === 1) {
+            return null;
+        }
+        return (
+            <View style={styles.mineTopContainer}>
+                <View style={styles.contentTitleView}>
+                    <Text style={styles.contentTitle}>账户信息</Text>
+                </View>
+                <HorizontalLine lineStyle={styles.horLine}/>
+                <View style={styles.accountInfoItem}>
+                    <TextInput
+                        style={[styles.inputItemCon, styles.accountInput]}
+                        placeholder="请输入支付宝账号"
+                        placeholderTextColor='#888'
+                        underlineColorAndroid={'transparent'}
+                        keyboardType={'email-address'}
+                        onChangeText={(text) => {
+                            this.setState({
+                                alipayAccount: text
+                            })
+                        }}
+                    />
+                </View>
+                <HorizontalLine lineStyle={styles.horLine}/>
+                <View style={styles.accountInfoItem}>
+                    <TextInput
+                        style={[styles.inputItemCon, styles.accountInput]}
+                        placeholder="请输入账户姓名"
+                        placeholderTextColor='#888'
+                        underlineColorAndroid={'transparent'}
+                        onChangeText={(text) => {
+                            this.setState({
+                                alipayName: text
+                            })
+                        }}
+                    />
+                </View>
+            </View>
+        );
+    };
+
+    render() {
         let {mineStore} = this.props;
         let {dataSource} = mineStore;
         let {type, money, allMoney, minMoney} = this.state;
@@ -94,93 +167,102 @@ export default class MineWithDraw extends Component {
                 <NavigationBar
                     title={pageTitle}
                 />
-                <ScrollView style={styles.content}>
-                    <View style={styles.mineTopContainer}>
-                        <View style={styles.contentTitleView}>
-                            <Text style={styles.contentTitle}>请选择提现方式</Text>
-                        </View>
-                        <HorizontalLine lineStyle={styles.horLine} />
-                        <TouchableOpacity 
-                            style={styles.accountInfoItem}
-                            onPress={() => this.onSelectPaymentMethod(1)}
-                        >
-                            <View style={styles.accountInfoItem}>
-                                <Image source={Images.icon_wechat} style={styles.accountIcon}/>
-                                <Text style={styles.accountTitle}>提现到微信</Text>
+                <KeyboardAvoidingView style={styles.content}>
+                    <ScrollView
+                        style={styles.scrollContent}
+                        keyboardShouldPersistTaps={'handled'}
+                    >
+                        <View style={styles.mineTopContainer}>
+                            <View style={styles.contentTitleView}>
+                                <Text style={styles.contentTitle}>请选择提现方式</Text>
                             </View>
-                            <View style={styles.selectBtnView}>
-                                <Image source={type === 1 ? Images.icon_selected : Images.icon_select} style={styles.selectBtnIcon}/>
-                            </View>
-                        </TouchableOpacity>
-                        <HorizontalLine lineStyle={styles.horLine} />
-                        <TouchableOpacity 
-                            style={styles.accountInfoItem}
-                            onPress={() => this.onSelectPaymentMethod(2)}
-                        >
-                            <View style={styles.accountInfoItem}>
-                                <Image source={Images.icon_alipay} style={styles.accountIcon}/>
-                                <Text style={styles.accountTitle}>提现到支付宝</Text>
-                            </View>
-                            <View style={styles.selectBtnView}>
-                                <Image source={type === 2 ? Images.icon_selected : Images.icon_select} style={styles.selectBtnIcon}/>
-                            </View>
-                        </TouchableOpacity>
-                    </View>
-                    <View style={styles.mineMiddleContainer}>
-                        <Text style={styles.containerTitle}>提现金额</Text>
-                        <View style={styles.containerContent}>
-                            <Text style={styles.moneyIcon}>¥</Text>
-                            <TextInput
-                                value = {money}
-                                style = {styles.inputItemCon}
-                                placeholder = "输入提现金额"
-                                placeholderTextColor = '#fff'
-                                underlineColorAndroid = {'transparent'}
-                                keyboardType = {'numeric'}
-                                onChangeText = {(text)=>{
-                                    this.setState({
-                                        money: text
-                                    });
-                                }}
-                            />
-                            {money !== '' && <TouchableOpacity
-                                style = {CusTheme.inputBtnView}
-                                onPress = {() => {
-                                    this.setState({
-                                        money: '',
-                                    })
-                                }}
-                            >
-                                <Image source={Images.icon_close} style={CusTheme.inputBtnIcon} />
-                            </TouchableOpacity>}
-                        </View>
-                        <HorizontalLine lineStyle={styles.horLine} />
-                        <View style={styles.containerBotView}>
-                            <Text style={[styles.leftTitle, styles.containerTitle]}>可用余额 {parseFloat(dataSource.balance).toFixed(2)}元</Text>
+                            <HorizontalLine lineStyle={styles.horLine}/>
                             <TouchableOpacity
-                                onPress={() => {
-                                    let status = parseFloat(dataSource.balance).toFixed(2) - parseFloat(minMoney).toFixed(2);
-                                    if (status >= 0) {
-                                        this.setState({
-                                            money: parseFloat(dataSource.balance).toFixed(2)
-                                        });
-                                    } else {
-                                        let msg = '余额不足' + minMoney + '元，无法提交申请';
-                                        ToastManager.show(msg, 'center');
-                                    }
-                                }}
+                                style={styles.accountInfoItem}
+                                onPress={() => this.onSelectPaymentMethod(1)}
                             >
-                                <Text style={styles.rightTitle}>全部提现</Text>
+                                <View style={styles.accountInfoItem}>
+                                    <Image source={Images.icon_wechat} style={styles.accountIcon}/>
+                                    <Text style={styles.accountTitle}>提现到微信</Text>
+                                </View>
+                                <View style={styles.selectBtnView}>
+                                    <Image source={type === 1 ? Images.icon_selected : Images.icon_select}
+                                           style={styles.selectBtnIcon}/>
+                                </View>
+                            </TouchableOpacity>
+                            <HorizontalLine lineStyle={styles.horLine}/>
+                            <TouchableOpacity
+                                style={styles.accountInfoItem}
+                                onPress={() => this.onSelectPaymentMethod(2)}
+                            >
+                                <View style={styles.accountInfoItem}>
+                                    <Image source={Images.icon_alipay} style={styles.accountIcon}/>
+                                    <Text style={styles.accountTitle}>提现到支付宝</Text>
+                                </View>
+                                <View style={styles.selectBtnView}>
+                                    <Image source={type === 2 ? Images.icon_selected : Images.icon_select}
+                                           style={styles.selectBtnIcon}/>
+                                </View>
                             </TouchableOpacity>
                         </View>
-                    </View>
-                    <Button
-                        title={'提现'}
-                        style={[CusTheme.btnView, styles.btnView]}
-                        titleStyle={[CusTheme.btnName, styles.btnName]}
-                        onPress={this.submitWithdraw}
-                    />
-                </ScrollView>
+                        {this.renderAccountView(type)}
+                        <View style={styles.mineMiddleContainer}>
+                            <Text style={styles.containerTitle}>提现金额</Text>
+                            <View style={styles.containerContent}>
+                                <Text style={styles.moneyIcon}>¥</Text>
+                                <TextInput
+                                    value={money}
+                                    style={styles.inputItemCon}
+                                    placeholder="输入提现金额"
+                                    placeholderTextColor='#fff'
+                                    underlineColorAndroid={'transparent'}
+                                    keyboardType={'numeric'}
+                                    onChangeText={(text) => {
+                                        this.setState({
+                                            money: text
+                                        });
+                                    }}
+                                />
+                                {money !== '' && <TouchableOpacity
+                                    style={CusTheme.inputBtnView}
+                                    onPress={() => {
+                                        this.setState({
+                                            money: '',
+                                        })
+                                    }}
+                                >
+                                    <Image source={Images.icon_close} style={CusTheme.inputBtnIcon}/>
+                                </TouchableOpacity>}
+                            </View>
+                            <HorizontalLine lineStyle={styles.horLine}/>
+                            <View style={styles.containerBotView}>
+                                <Text
+                                    style={[styles.leftTitle, styles.containerTitle]}>可用余额 {parseFloat(dataSource.balance).toFixed(2)}元</Text>
+                                <TouchableOpacity
+                                    onPress={() => {
+                                        let status = parseFloat(dataSource.balance).toFixed(2) - parseFloat(minMoney).toFixed(2);
+                                        if (status >= 0) {
+                                            this.setState({
+                                                money: parseFloat(dataSource.balance).toFixed(2)
+                                            });
+                                        } else {
+                                            let msg = '余额不足' + minMoney + '元，无法提交申请';
+                                            ToastManager.show(msg, 'center');
+                                        }
+                                    }}
+                                >
+                                    <Text style={styles.rightTitle}>全部提现</Text>
+                                </TouchableOpacity>
+                            </View>
+                        </View>
+                        <Button
+                            title={'提现'}
+                            style={[CusTheme.btnView, styles.btnView]}
+                            titleStyle={[CusTheme.btnName, styles.btnName]}
+                            onPress={this.onSubmitWithdraw}
+                        />
+                    </ScrollView>
+                </KeyboardAvoidingView>
             </View>
         );
     }
@@ -193,6 +275,9 @@ const styles = StyleSheet.create({
         backgroundColor: '#f7f8f9',
     },
     content: {
+        flex: 1,
+    },
+    scrollContent: {
         flex: 1,
         paddingTop: 10,
         backgroundColor: '#f7f8f9',
@@ -282,6 +367,5 @@ const styles = StyleSheet.create({
     btnView: {
         margin: 30,
     },
-    btnName: {
-    },
+    btnName: {},
 });

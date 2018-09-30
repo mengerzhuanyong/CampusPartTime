@@ -63,7 +63,7 @@ class TimeContent extends React.PureComponent {
         let startTime = this.data[startTimeIndex];
         let endTime = this.data[endTimeIndex];
         if (startTimeIndex > endTimeIndex) {
-            Toast.toastShort('结束时间不能小于开始时间，请重新选择');
+            ToastManager.show('结束时间不能小于开始时间，请重新选择');
         } else {
             onPress && onPress([startTime, endTime]);
             // console.log(startTime, endTime);

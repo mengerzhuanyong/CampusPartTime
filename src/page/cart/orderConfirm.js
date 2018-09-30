@@ -52,6 +52,7 @@ export default class OrderConfirm extends Component {
         let {params} = this.props.navigation.state;
         this.state = {
             item: params && params.item ? params.item : {id: 1},
+            flag: params && params.flag ? params.flag : 'work',
             listData: [1, 2, 3, 4],
         };
     }
@@ -61,8 +62,9 @@ export default class OrderConfirm extends Component {
     }
 
     loadNetData = async () => {
+        let {flag} = this.state;
         const {shopStore} = this.props;
-        let url = ServicesApi.workGoodsDetails;
+        let url = flag === 'point' ? ServicesApi.point_goods_details : ServicesApi.workGoodsDetails;
         let data = {
             id: this.state.item.id,
         };
@@ -71,21 +73,15 @@ export default class OrderConfirm extends Component {
     };
 
     onSubmitOrderConfirm = async (type) => {
-        const {shopStore} = this.props;
+        let {flag} = this.state;
+        let {shopStore} = this.props;
         let {cartGoodsInfo} = shopStore;
-        let url = ServicesApi.workGoodsDetails;
-        let data = {
-            id: this.state.item.id,
-        };
+
         if (cartGoodsInfo.buy_available !== 1) {
-            let reason = type === 1 ? '余额不足，无法购买' : '积分不足无法购买';
-            ToastManager.show(reason);
+            ToastManager.show(cartGoodsInfo.reason);
+            return;
         }
-        let result = await shopStore.onSubmitOrderConfirm(url, data);
-        // console.log(result);
-        if (result && result.code === 1) {
-            RouterHelper.navigate('', 'OrderSubmit');
-        }
+        RouterHelper.navigate('', 'OrderSubmit');
     };
 
     renderDescription = (data) => {
@@ -95,10 +91,10 @@ export default class OrderConfirm extends Component {
         let descriptions = data.map((item, index) => {
             let iconView = null;
             if (item.icon === 1) {
-                iconView = <Image source={Images.icon_checked} style={styles.iconCheck} />
+                iconView = <Image source={Images.icon_checked} style={styles.iconCheck}/>
             }
             if (item.icon === 2) {
-                iconView = <Image source={Images.icon_checked} style={[styles.iconCheck, styles.iconCheckGray]} />
+                iconView = <Image source={Images.icon_checked} style={[styles.iconCheck, styles.iconCheckGray]}/>
             }
             return (
                 <View style={styles.goodsUserInfoConItem} key={'desc_' + index}>
@@ -267,8 +263,7 @@ const styles = StyleSheet.create({
     },
     goodsUserPhone: {},
 
-    goodsInfoView: {
-    },
+    goodsInfoView: {},
     goodsInfoTopView: {
         flex: 1,
         // height: 100,

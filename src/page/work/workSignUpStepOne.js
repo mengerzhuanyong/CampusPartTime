@@ -70,7 +70,7 @@ export default class WorkSignUpStepOne extends Component {
         };
 
         let result = await workStore.requestWorkTimes(url, data);
-        this.flatList && this.flatListRef.stopRefresh();
+        this.flatListRef && this.flatListRef.stopRefresh();
     };
 
     // 下拉刷新
@@ -124,7 +124,7 @@ export default class WorkSignUpStepOne extends Component {
         let selected = !selectVisible && !selectStatus;
         const params = {
             title: '温馨提示',
-            detail: '当前时间您已有工作，无法选择',
+            detail: item.reason,
             actions: [
                 {title: '确定',}
             ]
@@ -160,14 +160,18 @@ export default class WorkSignUpStepOne extends Component {
     };
 
     onSubmitTimes = async () => {
-        const {onSubmitTimes, sign_id, work_time} = this.props.workStore;
+        const {onSubmitTimes, sign_id, getWorkTime} = this.props.workStore;
         let {item: {id}} = this.state;
         let url = ServicesApi.job_application_submit;
         let data = {
             id,
             sign_id,
-            work_time,
+            work_time: getWorkTime,
         };
+        if (getWorkTime.length < 1) {
+            ToastManager.show('请选择工作时间');
+            return;
+        }
         let result = await onSubmitTimes(url, data);
         if (result.code === 1) {
             RouterHelper.navigate('确认信息', 'WorkSignUpStepTwo');

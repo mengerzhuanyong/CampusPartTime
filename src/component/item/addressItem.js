@@ -134,7 +134,9 @@ export default class AddressItem extends React.PureComponent {
 const styles = StyleSheet.create({
     container: {
         padding: 15,
-        marginTop: 10,
+        borderRadius: 5,
+        marginVertical: 5,
+        marginHorizontal: 10,
         flexDirection: 'row',
         alignItems: 'center',
         backgroundColor: '#fff',

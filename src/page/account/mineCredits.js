@@ -66,7 +66,7 @@ export default class MineCredits extends Component {
         let {mineStore} = this.props;
         let {myCredits} = mineStore;
         if (myCredits.id_verify === 1) {
-            RouterHelper.navigate('芝麻信用认证', 'CertificationMobile', {});
+            RouterHelper.navigate('芝麻信用认证', 'CommonWebPage', {url: myCredits.link});
         }
     };
 
@@ -229,8 +229,10 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
     },
     userAccountItemView: {
+        flex: 1,
         flexDirection: 'row',
         alignItems: 'center',
+        justifyContent: 'center',
     },
     verLine: {
         height: 20,

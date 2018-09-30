@@ -6,7 +6,7 @@
 
 'use strict';
 
-import React, { Component } from 'react'
+import React, {Component} from 'react'
 import {
     Text,
     View,
@@ -15,6 +15,7 @@ import {
     ScrollView,
     StyleSheet,
     TouchableOpacity,
+    KeyboardAvoidingView,
 } from 'react-native'
 import {Button} from 'teaset'
 import NavigationBar from '../../component/navigation/NavigationBar'
@@ -30,13 +31,13 @@ export default class CertificationMobile extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            realname: '马运东1',
-            mobile: '15066886007',
-            id_number: '370826199009223238',
+            realname: '', // '马运东',
+            mobile: '', // '15066886007',
+            id_number: '', // '370826199009223238',
         };
     }
 
-    componentWillUnmount(){
+    componentWillUnmount() {
         let timers = [this.timer];
         ClearTimer(timers);
     }
@@ -53,7 +54,7 @@ export default class CertificationMobile extends Component {
         };
         let result = await onCertificationMobile(url, data);
         // console.log(result);
-        Toast.toastShort(result.msg);
+        ToastManager.show(result.msg);
         if (result && result.code === 1) {
             this.timer = setTimeout(() => {
                 RouterHelper.goBack();
@@ -69,62 +70,69 @@ export default class CertificationMobile extends Component {
                 <NavigationBar
                     title={pageTitle}
                 />
-                <ScrollView style={styles.content}>
-                    <View style={styles.userInfoItemView}>
-                        <Image source={Images.icon_user_line} style={styles.userInfoItemIcon} />
-                        <Text style={styles.userInfoItemTitle}>姓名：</Text>
-                        <TextInput
-                            style={styles.userInfoItemInput}
-                            underlineColorAndroid={'rgba(0, 0, 0, 0)'}
-                            placeholder={'请输入姓名'}
-                            keyboardType={'numeric'}
-                            returnKeyType={'done'}
-                            onChangeText={(text) => {
-                                this.setState({
-                                    relname: text
-                                });
-                            }}
+                <KeyboardAvoidingView style={styles.content}>
+                    <ScrollView
+                        style={styles.scrollContent}
+                        keyboardShouldPersistTaps={'handled'}
+                    >
+                        <View style={styles.userInfoItemView}>
+                            <Image source={Images.icon_user_line} style={styles.userInfoItemIcon}/>
+                            <Text style={styles.userInfoItemTitle}>姓名：</Text>
+                            <TextInput
+                                style={styles.userInfoItemInput}
+                                underlineColorAndroid={'rgba(0, 0, 0, 0)'}
+                                placeholder={'请输入姓名'}
+                                // keyboardType={'numeric'}
+                                returnKeyType={'done'}
+                                onChangeText={(text) => {
+                                    this.setState({
+                                        realname: text
+                                    });
+                                }}
+                            />
+                        </View>
+                        <View style={styles.userInfoItemView}>
+                            <Image source={Images.icon_telephone} style={styles.userInfoItemIcon}/>
+                            <Text style={styles.userInfoItemTitle}>手机号：</Text>
+                            <TextInput
+                                style={styles.userInfoItemInput}
+                                underlineColorAndroid={'rgba(0, 0, 0, 0)'}
+                                placeholder={'请输入手机号'}
+                                keyboardType={'numeric'}
+                                returnKeyType={'done'}
+                                maxLength={11}
+                                onChangeText={(text) => {
+                                    this.setState({
+                                        mobile: text,
+                                    });
+                                }}
+                            />
+                        </View>
+                        <View style={styles.userInfoItemView}>
+                            <Image source={Images.icon_user_card} style={styles.userInfoItemIcon}/>
+                            <Text style={styles.userInfoItemTitle}>身份证号码：</Text>
+                            <TextInput
+                                style={styles.userInfoItemInput}
+                                underlineColorAndroid={'rgba(0, 0, 0, 0)'}
+                                placeholder={'请输入身份证号码'}
+                                // keyboardType={'numeric'}
+                                returnKeyType={'done'}
+                                maxLength={18}
+                                onChangeText={(text) => {
+                                    this.setState({
+                                        id_number: text,
+                                    });
+                                }}
+                            />
+                        </View>
+                        <Button
+                            title={'立即认证'}
+                            style={styles.submitBtnView}
+                            titleStyle={styles.submitBtnName}
+                            onPress={this.onCertificationMobile}
                         />
-                    </View>
-                    <View style={styles.userInfoItemView}>
-                        <Image source={Images.icon_telephone} style={styles.userInfoItemIcon} />
-                        <Text style={styles.userInfoItemTitle}>手机号：</Text>
-                        <TextInput
-                            style={styles.userInfoItemInput}
-                            underlineColorAndroid={'rgba(0, 0, 0, 0)'}
-                            placeholder={'请输入手机号'}
-                            keyboardType={'numeric'}
-                            returnKeyType={'done'}
-                            onChangeText={(text) => {
-                                this.setState({
-                                    mobile: text,
-                                });
-                            }}
-                        />
-                    </View>
-                    <View style={styles.userInfoItemView}>
-                        <Image source={Images.icon_user_card} style={styles.userInfoItemIcon} />
-                        <Text style={styles.userInfoItemTitle}>身份证号码：</Text>
-                        <TextInput
-                            style={styles.userInfoItemInput}
-                            underlineColorAndroid={'rgba(0, 0, 0, 0)'}
-                            placeholder={'请输入身份证号码'}
-                            keyboardType={'numeric'}
-                            returnKeyType={'done'}
-                            onChangeText={(text) => {
-                                this.setState({
-                                    id_number: text,
-                                });
-                            }}
-                        />
-                    </View>
-                    <Button
-                        title={'立即认证'}
-                        style={styles.submitBtnView}
-                        titleStyle={styles.submitBtnName}
-                        onPress={this.onCertificationMobile}
-                    />
-                </ScrollView>
+                    </ScrollView>
+                </KeyboardAvoidingView>
             </View>
         );
     }
@@ -137,8 +145,10 @@ const styles = StyleSheet.create({
     },
     content: {
         flex: 1,
-        paddingTop: 20,
-        paddingHorizontal: 15,
+    },
+    scrollContent: {
+        flex: 1,
+        padding: 15,
     },
     uploadItemView: {
         padding: 20,

@@ -4,6 +4,7 @@
  * @大梦
  */
 
+
 'use strict';
 
 import React, {Component} from 'react';
@@ -29,6 +30,7 @@ import {observer, inject} from 'mobx-react';
 import SegmentedControlTab from '../../component/common/SegmentedControlTab'
 import {Button} from 'teaset'
 import WorkPunchCard from "./workPunchCard";
+import Container from "../../component/common/Container";
 
 @inject('loginStore', 'mineStore', 'workStore')
 @observer
@@ -145,7 +147,7 @@ export default class MineWorkDetail extends Component {
         let {params} = this.props.navigation.state;
         let pageTitle = params && params.pageTitle ? params.pageTitle : '工作详情';
         return (
-            <View style={styles.container}>
+            <Container style={styles.container}>
                 <NavigationBar
                     title={pageTitle}
                     renderRightAction={this.renderHeaderRightView(item)}
@@ -194,7 +196,7 @@ export default class MineWorkDetail extends Component {
                         onPress={() => RouterHelper.navigate('打卡', 'WorkPunchCard', {item, onSubmitPunchCard: (res) => this.onSubmitPunchCard(res)})}
                     />
                 </ScrollView>
-            </View>
+            </Container>
         );
     }
 }

@@ -4,9 +4,10 @@
  * @大梦
  */
 
+
 'use strict';
 
-import React, { Component } from 'react'
+import React, {Component} from 'react'
 import {
     Text,
     View,
@@ -15,6 +16,7 @@ import {
     ScrollView,
     StyleSheet,
     TouchableOpacity,
+    KeyboardAvoidingView,
 } from 'react-native'
 import {Button} from 'teaset'
 import NavigationBar from '../../component/navigation/NavigationBar'
@@ -49,15 +51,20 @@ export default class CertificationIDCard extends Component {
         };
     }
 
+    componentWillUnmount() {
+        let timers = [this.timer1,];
+        ClearTimer(timers);
+    }
+
     handlerImages = async (type) => {
-        if (type === 1) {
-            this.setState({uploading1: true});
-        } else {
-            this.setState({uploading2: true});
-        }
         let result = await ImagePickerManager.showMultipleImagePicker(options);
-        // console.log(result);
+        console.log(result);
         if (result.code === 1) {
+            if (type === 1) {
+                this.setState({uploading1: true});
+            } else {
+                this.setState({uploading2: true});
+            }
             let data = {
                 image: result.data[0].base64,
             };
@@ -80,7 +87,19 @@ export default class CertificationIDCard extends Component {
             image_1,
             image_2,
         };
-        let result = await onSubmitIdCardVerify(url, data);
+        try {
+            let result = await onSubmitIdCardVerify(url, data);
+            ToastManager.show(result.msg);
+            if (result.code === 1) {
+                let _url = ServicesApi.my_details;
+                let _result = await mineStore.requestMyProfile(_url);
+                this.timer1 = setTimeout(() => {
+                    RouterHelper.goBack();
+                }, 600);
+            }
+        } catch (e) {
+
+        }
     };
 
     render() {
@@ -92,88 +111,94 @@ export default class CertificationIDCard extends Component {
                 <NavigationBar
                     title={pageTitle}
                 />
-                <ScrollView style={styles.content}>
-                    <TouchableOpacity
-                        style={styles.uploadItemView}
-                        onPress={() => this.handlerImages(1)}
+                <KeyboardAvoidingView style={styles.content}>
+                    <ScrollView
+                        style={styles.scrollContent}
+                        keyboardShouldPersistTaps={'handled'}
                     >
-                        {image_1 !== '' ?
-                            <Image source={{uri: image_1}} style={styles.uploadImage} />
-                            :
-                            <View style={styles.uploadContent}>
-                            {uploading1 ?
-                                <SpinnerLoading isVisible={uploading1} />
+                        <TouchableOpacity
+                            style={styles.uploadItemView}
+                            onPress={() => this.handlerImages(1)}
+                        >
+                            {image_1 !== '' ?
+                                <Image source={{uri: image_1}} style={styles.uploadImage}/>
                                 :
-                                <View style={styles.uploadContentTips}>
-                                    <Image source={Images.icon_plus} style={styles.uploadIcon} />
-                                    <Text style={styles.uploadBtnName}>手持证件照</Text>
+                                <View style={styles.uploadContent}>
+                                    {uploading1 ?
+                                        <SpinnerLoading isVisible={uploading1}/>
+                                        :
+                                        <View style={styles.uploadContentTips}>
+                                            <Image source={Images.icon_plus} style={styles.uploadIcon}/>
+                                            <Text style={styles.uploadBtnName}>手持证件照</Text>
+                                        </View>
+                                    }
                                 </View>
                             }
-                            </View>
-                        }
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                        style={styles.uploadItemView}
-                        onPress={() => this.handlerImages(2)}
-                    >
-                        {image_2 !== '' ?
-                            <Image source={{uri: image_2}} style={styles.uploadImage} />
-                            :
-                            <View style={styles.uploadContent}>
-                                {uploading2 ?
-                                    <SpinnerLoading isVisible={uploading2} />
-                                    :
-                                    <View style={styles.uploadContentTips}>
-                                        <Image source={Images.icon_plus} style={styles.uploadIcon} />
-                                        <Text style={styles.uploadBtnName}>身份证正面照</Text>
-                                    </View>
-                                }
-                            </View>
-                        }
-                    </TouchableOpacity>
-                    <View style={styles.userInfoTipsView}>
-                        <Image source={Images.icon_notice} style={styles.userInfoTipsIcon} />
-                        <Text style={styles.userInfoTipsText}>请输入您的身份信息</Text>
-                    </View>
-                    <View style={styles.userInfoItemView}>
-                        <Image source={Images.icon_user_line} style={styles.userInfoItemIcon} />
-                        <Text style={styles.userInfoItemTitle}>姓名：</Text>
-                        <TextInput
-                            style={styles.userInfoItemInput}
-                            underlineColorAndroid={'rgba(0, 0, 0, 0)'}
-                            placeholder={'请输入您的姓名'}
-                            keyboardType={'numeric'}
-                            returnKeyType={'done'}
-                            onChangeText={(text) => {
-                                this.setState({
-                                    realname: text,
-                                });
-                            }}
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            style={styles.uploadItemView}
+                            onPress={() => this.handlerImages(2)}
+                        >
+                            {image_2 !== '' ?
+                                <Image source={{uri: image_2}} style={styles.uploadImage}/>
+                                :
+                                <View style={styles.uploadContent}>
+                                    {uploading2 ?
+                                        <SpinnerLoading isVisible={uploading2}/>
+                                        :
+                                        <View style={styles.uploadContentTips}>
+                                            <Image source={Images.icon_plus} style={styles.uploadIcon}/>
+                                            <Text style={styles.uploadBtnName}>身份证正面照</Text>
+                                        </View>
+                                    }
+                                </View>
+                            }
+                        </TouchableOpacity>
+                        <View style={styles.userInfoTipsView}>
+                            <Image source={Images.icon_notice} style={styles.userInfoTipsIcon}/>
+                            <Text style={styles.userInfoTipsText}>请输入您的身份信息</Text>
+                        </View>
+                        <View style={styles.userInfoItemView}>
+                            <Image source={Images.icon_user_line} style={styles.userInfoItemIcon}/>
+                            <Text style={styles.userInfoItemTitle}>姓名：</Text>
+                            <TextInput
+                                style={styles.userInfoItemInput}
+                                underlineColorAndroid={'rgba(0, 0, 0, 0)'}
+                                placeholder={'请输入您的姓名'}
+                                // keyboardType={'numeric'}
+                                returnKeyType={'done'}
+                                onChangeText={(text) => {
+                                    this.setState({
+                                        realname: text,
+                                    });
+                                }}
+                            />
+                        </View>
+                        <View style={styles.userInfoItemView}>
+                            <Image source={Images.icon_user_card} style={styles.userInfoItemIcon}/>
+                            <Text style={styles.userInfoItemTitle}>身份证号：</Text>
+                            <TextInput
+                                style={styles.userInfoItemInput}
+                                underlineColorAndroid={'rgba(0, 0, 0, 0)'}
+                                placeholder={'请输入您的身份证号'}
+                                // keyboardType={'numeric'}
+                                maxLength={18}
+                                returnKeyType={'done'}
+                                onChangeText={(text) => {
+                                    this.setState({
+                                        id_number: text
+                                    });
+                                }}
+                            />
+                        </View>
+                        <Button
+                            title={'提交认证'}
+                            style={styles.submitBtnView}
+                            titleStyle={styles.submitBtnName}
+                            onPress={this.onSubmitIdCardVerify}
                         />
-                    </View>
-                    <View style={styles.userInfoItemView}>
-                        <Image source={Images.icon_user_card} style={styles.userInfoItemIcon} />
-                        <Text style={styles.userInfoItemTitle}>身份证号：</Text>
-                        <TextInput
-                            style={styles.userInfoItemInput}
-                            underlineColorAndroid={'rgba(0, 0, 0, 0)'}
-                            placeholder={'请输入您的身份证号'}
-                            // keyboardType={'numeric'}
-                            returnKeyType={'done'}
-                            onChangeText={(text) => {
-                                this.setState({
-                                    id_number: text
-                                });
-                            }}
-                        />
-                    </View>
-                    <Button
-                        title={'提交认证'}
-                        style={styles.submitBtnView}
-                        titleStyle={styles.submitBtnName}
-                        onPress={this.onSubmitIdCardVerify}
-                    />
-                </ScrollView>
+                    </ScrollView>
+                </KeyboardAvoidingView>
             </View>
         );
     }
@@ -185,6 +210,9 @@ const styles = StyleSheet.create({
         backgroundColor: '#eee',
     },
     content: {
+        flex: 1,
+    },
+    scrollContent: {
         flex: 1,
         paddingTop: 20,
         paddingHorizontal: 15,

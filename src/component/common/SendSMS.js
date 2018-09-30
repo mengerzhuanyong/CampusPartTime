@@ -23,7 +23,7 @@ export default class SendSMS extends PureComponent {
         super(props);
         this.state = {
             seconds: 60,
-            mobile: props.mobile,
+            mobile: this.props.mobile,
             secureTextEntry: true,
             codeAlreadySend: false,
         };
@@ -49,6 +49,7 @@ export default class SendSMS extends PureComponent {
     }
 
     getVerificationCode = async (mobile, type) => {
+        console.log(mobile);
         type = type === 'register' ? 1 : 2;
         let url = ServicesApi.getVerificationCode;
         let data = {

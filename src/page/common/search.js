@@ -41,6 +41,7 @@ import {HorizontalLine, VerticalLine} from '../../component/common/commonLine'
 import JobItem from "../../component/item/jobItem";
 import GoodsItem from "../../component/item/goodsItem";
 import SpinnerLoading from "../../component/common/SpinnerLoading";
+import PointGoodsItem from "../../component/item/pointGoodsItem";
 
 @inject('searchStore', 'workStore', 'shopStore')
 @observer
@@ -92,6 +93,7 @@ export default class Search extends Component {
             return;
         }
         this.setState({
+            keyword,
             firstLoading: false,
         });
         let keyResult = await searchStore.onSaveKeyWords(type, keyword);
@@ -160,6 +162,7 @@ export default class Search extends Component {
                         ref={v => this.input = v}
                         underlineColorAndroid={'rgba(0, 0, 0, 0)'}
                         placeholder={type === 1 ? '搜索兼职' : '搜索商品'}
+                        defaultValue={keyword}
                         // secureTextEntry={true}
                         placeholderTextColor={'#999'}
                         returnKeyType={'search'}
@@ -228,9 +231,9 @@ export default class Search extends Component {
                 />;
                 break;
             case 3:
-                itemView = <GoodsItem
+                itemView = <PointGoodsItem
                     item={item}
-                    onPress={() => RouterHelper.navigate('商品详情', 'GoodsDetail', {item})}
+                    onPress={() => RouterHelper.navigate('商品详情', 'PointGoodsDetail', {item})}
                     {...this.props}
                 />;
                 break;

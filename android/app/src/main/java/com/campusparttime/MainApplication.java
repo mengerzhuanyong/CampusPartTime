@@ -61,9 +61,9 @@ public class MainApplication extends Application implements ReactApplication {
   }
 
   // 是否关闭 Log，默认不关闭
-  private static boolean SHUTDOWN_LOG = false;
+  private static boolean SHUTDOWN_LOG = true;
   // 是否关闭 toast，默认不关闭
-  private static boolean SHUTDOWN_TOAST = false;
+  private static boolean SHUTDOWN_TOAST = true;
 
   private final ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {
     @Override

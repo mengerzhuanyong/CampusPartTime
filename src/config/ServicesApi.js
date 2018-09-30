@@ -37,6 +37,8 @@ module.exports = {
     register: 'register',
     // 忘记密码
     retrievePassword: 'forget',
+    // 用户协议
+    protocol: 'protocol',
 
     // 工作首页
     job_list: 'job_list',
@@ -71,11 +73,19 @@ module.exports = {
     point_goods_payment: 'point_goods_payment',
     // 积分商城首页
     point_goods_list: 'point_goods_list',
+    // 积分商品详情
+    point_goods_details: 'point_goods_details',
+    // 积分商品购买页面
+    point_goods_buy: 'point_goods_buy',
 
     // 会员中心首页
     mine: 'my_index',
+    // 更新头像
+    updateAvatar: 'reset_avatar',
     // 会员中心首页
     check_in: 'check_in',
+    // 提现
+    mineAccountWithdraw: 'cash',
     // 信用额度
     my_credit: 'my_credit',
     // 工分明细
@@ -135,15 +145,13 @@ module.exports = {
     share_get_point: 'share_get_point',
     // 重置密码
     reset_password: 'reset_password',
-    // 积分商品详情
-    point_goods_details: 'point_goods_details',
-    // 积分商品购买页面
-    point_goods_buy: 'point_goods_buy',
     // 身份证照片验证（上传正面照的时候调用这个接口）
     id_verify_photo: 'id_verify_photo',
     // 我的工作报名详情
     my_job_application_details: 'my_job_application_details',
 
+    // 设置信息
+    systemSetting: 'system_setting',
     // 我的消息
     systemMessage: 'my_news',
     // 清空消息

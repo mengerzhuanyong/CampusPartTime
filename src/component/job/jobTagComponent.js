@@ -18,16 +18,16 @@ export default class JobTagComponent extends PureComponent {
         this.state = {};
     }
 
-    static propTypes = {
-        ...ViewPropTypes,
-        title: PropTypes.oneOfType([PropTypes.element, PropTypes.string, PropTypes.number]),
-        style: View.propTypes.style,
-        titleStyle: Text.propTypes.style,
-        activeTitleStyle: Text.propTypes.style,
-        active: PropTypes.bool,
-        badge: PropTypes.oneOfType([PropTypes.element, PropTypes.string, PropTypes.number]),
-        onAddWidth: PropTypes.func,
-    };
+    // static propTypes = {
+    //     ...ViewPropTypes,
+    //     title: PropTypes.oneOfType([PropTypes.element, PropTypes.string, PropTypes.number]),
+    //     style: View.propTypes.style,
+    //     titleStyle: Text.propTypes.style,
+    //     activeTitleStyle: Text.propTypes.style,
+    //     active: PropTypes.bool,
+    //     badge: PropTypes.oneOfType([PropTypes.element, PropTypes.string, PropTypes.number]),
+    //     onAddWidth: PropTypes.func,
+    // };
 
     static defaultProps = {
         ...View.defaultProps,

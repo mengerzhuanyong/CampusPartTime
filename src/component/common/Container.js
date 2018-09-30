@@ -1,5 +1,5 @@
 /**
- * 校园空兼 - 
+ * 校园空兼 - Container
  * https://menger.me
  * @大梦
  */
@@ -12,9 +12,10 @@ import PropTypes from 'prop-types'
 
 
 /**
-    // 每个页面最外层的View，
-    // 不建议在拆分后的组件上使用这个组件，因为耦合度很高，容易造成不必要的Bug。
-    // 每个拆分后的组件处理自己的事情就够了，这个组件用来处理页面最外层的事情
+ * 注意：
+ * 每个页面最外层的View，
+ * 不建议在拆分后的组件上使用这个组件，因为耦合度很高，容易造成不必要的Bug。
+ * 每个拆分后的组件处理自己的事情就够了，这个组件用来处理页面最外层的事情
 */
 class Container extends React.PureComponent {
 
@@ -38,9 +39,9 @@ class Container extends React.PureComponent {
 
     };
 
-    _onPresssContainer = () => {
+    _onPressContainer = () => {
         Keyboard.dismiss()
-        // console.log('_onPresssContainer')
+        // console.log('_onPressContainer')
     };
 
     buildProps = () => {
@@ -60,7 +61,10 @@ class Container extends React.PureComponent {
         const {children, style, keyboardShouldPersistTaps} = this.props;
         const {iphoneXStyle} = this.buildProps();
         return (
-            <TouchableWithoutFeedback disabled={!keyboardShouldPersistTaps} onPress={this._onPresssContainer}>
+            <TouchableWithoutFeedback
+                disabled={!keyboardShouldPersistTaps}
+                onPress={this._onPressContainer}
+            >
                 <View style={[styles.container, iphoneXStyle, style]}>
                     {children}
                 </View>

@@ -114,18 +114,28 @@ export default class Shop extends Component {
             page_size: this.pageSize,
         };
 
-        let result = await shopStore.requestDataSource(url, data);
-        let endStatus = false;
-        if (result && result.code === 1) {
-            endStatus = result.data.list_data.length < data.page_size;
-        } else {
-            endStatus = true;
+        try {
+            let result = await shopStore.requestDataSource(url, data);
+            let endStatus = false;
+            if (result && result.code === 1) {
+                endStatus = result.data.list_data.length < data.page_size;
+            } else {
+                endStatus = true;
+            }
+            this.setState({
+                ready: true
+            });
+            this.flatListRef && this.flatListRef.stopRefresh();
+            this.flatListRef && this.flatListRef.stopEndReached({allLoad: endStatus});
+        } catch (e) {
+            this.setState({
+                ready: true
+            });
+            this.flatListRef && this.flatListRef.stopRefresh();
+            this.flatListRef && this.flatListRef.stopEndReached({allLoad: true});
+            ToastManager.show('error');
         }
-        this.setState({
-            ready: true
-        });
-        this.flatListRef && this.flatListRef.stopRefresh();
-        this.flatListRef && this.flatListRef.stopEndReached({allLoad: endStatus});
+
     };
 
     _onRefresh = (stopRefresh) => {
@@ -146,9 +156,12 @@ export default class Shop extends Component {
         return (
 
             <View style={styles.headerComponentView}>
-                <View style={styles.navContentView}>
+                <ScrollView
+                    style={styles.navContentView}
+                    horizontal={true}
+                >
                     {this.renderNavigationContentView()}
-                </View>
+                </ScrollView>
                 <ListRow
                     style={styles.contentTitleView}
                     title={'热门换购'}
@@ -236,7 +249,7 @@ export default class Shop extends Component {
                             ItemSeparatorComponent={this._renderSeparator}
                             ListHeaderComponent={this._renderHeaderComponent}
                         />
-                        : <SpinnerLoading/>
+                        : <SpinnerLoading isVisible={true} />
                     }
                 </View>
             </View>
@@ -309,13 +322,14 @@ const styles = StyleSheet.create({
         paddingVertical: 20,
         paddingHorizontal: 10,
         flexDirection: 'row',
-        alignItems: 'center',
+        // alignItems: 'center',
         backgroundColor: '#fff',
         borderBottomWidth: 10,
         borderColor: '#eee',
-        justifyContent: 'space-between',
+        // justifyContent: 'space-between',
     },
     navItemView: {
+        width: (SCREEN_WIDTH - 20) / 5,
         alignItems: 'center',
         justifyContent: 'center',
     },

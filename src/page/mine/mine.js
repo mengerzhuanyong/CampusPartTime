@@ -19,7 +19,7 @@ import {
     TextInput,
     ImageBackground,
     TouchableOpacity,
-    TouchableWithoutFeedback,
+    TouchableWithoutFeedback, RefreshControl,
 } from 'react-native'
 
 import NavigationBar from '../../component/navigation/NavigationBar'
@@ -30,13 +30,26 @@ import ActionsManager from "../../config/manager/ActionsManager";
 import SpinnerLoading from "../../component/common/SpinnerLoading";
 
 
+const options = {
+    imageCount: 1,             // 最大选择图片数目，默认6
+    isCamera: true,            // 是否允许用户在内部拍照，默认true
+    isCrop: true,             // 是否允许裁剪，默认false
+    CropW: ~~(SCREEN_WIDTH * 0.6),    // 裁剪宽度，默认屏幕宽度60%
+    CropH: ~~(SCREEN_WIDTH * 0.6),    // 裁剪高度，默认屏幕宽度60%
+    showCropFrame: true,       // 是否显示裁剪区域，默认true
+    showCropGrid: false,       // 是否隐藏裁剪区域网格，默认false
+    quality: 70,                // 压缩质量
+    enableBase64: true,
+};
+
 @inject('loginStore', 'mineStore', 'systemStore')
 @observer
 export default class Mine extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            loading: false
+            loading: false,
+            refreshing: false,
         };
         this.page = 0
     }
@@ -45,11 +58,24 @@ export default class Mine extends Component {
         this.requestDataSource();
     }
 
+    componentWillUnmount() {
+        let timers = [this.timer1];
+        ClearTimer(timers);
+    }
+
     requestDataSource = async () => {
         const {mineStore} = this.props;
         let url = ServicesApi.mine;
         let data = await mineStore.requestDataSource(url);
         this.setState({loading: true});
+    };
+
+    onRefresh = () => {
+        this.setState({refreshing: true});
+        this.requestDataSource();
+        this.timer1 = setTimeout(() => {
+            this.setState({refreshing: false});
+        }, 1000);
     };
 
     renderNavigationBarView = (status) => {
@@ -73,7 +99,7 @@ export default class Mine extends Component {
         const {mineStore} = this.props;
         let url = ServicesApi.check_in;
         let result = await mineStore.onSubmitSingIn(url);
-        Toast.toastShort(result.msg);
+        ToastManager.show(result.msg);
         if (result && result.code === 1) {
             this.requestDataSource();
         }
@@ -92,28 +118,58 @@ export default class Mine extends Component {
             if (result && result.code === 1) {
                 ActionsManager.showShareModule(result.data);
             } else {
-                Toast.toastShort(result.msg);
+                ToastManager.show(result.msg);
             }
         } catch (e) {
             console.log(e);
-            Toast.toastShort('error');
+            ToastManager.show('error');
+        }
+    };
+
+    handleImage = async () => {
+        let result = await ImagePickerManager.showMultipleImagePicker(options);
+        if (result.code === 1) {
+            let url = ServicesApi.updateAvatar;
+            let data = result.data[0].path;
+            try {
+                let upRes = await FetchData.upload(url, data);
+                if (upRes && upRes.code === 1) {
+                    this.onRefresh();
+                } else {
+                    ToastManager.show(result.msg);
+                }
+            } catch (e) {
+                ToastManager.show('error');
+            }
         }
     };
 
     render() {
-        let {loading} = this.state;
+        let {loading, refreshing} = this.state;
         let {mineStore} = this.props;
         let {dataSource} = mineStore;
 
-        if (mineStore.loading) {
-            return <SpinnerLoading isVisible={mineStore.loading}/>
-        }
+        // if (mineStore.loading) {
+        //     return <SpinnerLoading isVisible={mineStore.loading}/>
+        // }
         return (
-            <ScrollView style={styles.container}>
+            <ScrollView
+                style={styles.container}
+                refreshControl={
+                    <RefreshControl
+                        title='Loading...'
+                        refreshing={refreshing}
+                        onRefresh={this.onRefresh}
+                        tintColor="#0398ff"
+                        colors={['#0398ff']}
+                        progressBackgroundColor="#fff"
+                    />
+                }
+            >
                 <NavigationBar
                     title={this.renderNavigationBarView(dataSource.has_message)}
                     style={styles.navigationBarStyle}
-                    statusBarStyle={'light-content'}
+                    statusBarStyle={'dark-content'}
                     renderLeftAction={null}
                     backgroundImage={Images.img_bg_nav_bar}
                 />
@@ -122,9 +178,12 @@ export default class Mine extends Component {
                     source={Images.img_bg_mine}
                     resizeMode={'cover'}
                 >
-                    <View style={[styles.contentTopItemView, styles.userAvatarView]}>
-                        <Image source={dataSource.avatar ? {uri: dataSource.avatar} : Images.img_avatar_default} style={styles.userAvatar}/>
-                    </View>
+                    <TouchableOpacity
+                        style={[styles.contentTopItemView, styles.userAvatarView]}
+                        onPress={this.handleImage}
+                    >
+                        <Image source={dataSource.avatar !== '' ? {uri: dataSource.avatar} : Images.img_avatar_default} style={styles.userAvatar}/>
+                    </TouchableOpacity>
                     <View style={[styles.contentTopItemView, styles.userNameView]}>
                         <Text style={styles.userName}>{dataSource.nickname}</Text>
                         {dataSource.is_signend === 2 ?
@@ -300,7 +359,7 @@ const styles = StyleSheet.create({
         height: ScaleSize(160),
         borderRadius: ScaleSize(80),
         overflow: 'hidden',
-        backgroundColor: '#f50'
+        backgroundColor: 'transparent'
     },
     userAvatar: {
         width: ScaleSize(160),
@@ -316,8 +375,8 @@ const styles = StyleSheet.create({
         fontSize: FontSize(15),
     },
     signInView: {
-        minWidth: 60,
-        // height: 30,
+        minWidth: 80,
+        height: 24,
         paddingVertical: 3,
         paddingHorizontal: 5,
         marginLeft: 20,

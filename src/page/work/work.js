@@ -72,7 +72,7 @@ export default class Work extends Component {
     }
 
     componentWillUnmount() {
-        let timers = [this.timer1, this.timer2];
+        let timers = [this.timer1, this.timer2, this.timer3, this.timer4, this.timer5];
         ClearTimer(timers);
     }
 
@@ -187,7 +187,7 @@ export default class Work extends Component {
     };
 
     _onClose = () => {
-        setTimeout(() => {
+        this.timer5 = setTimeout(() => {
             this.setState({maskHidden: true});
         }, 500);
     };
@@ -314,27 +314,27 @@ export default class Work extends Component {
                 />
             )
         })
-            return (
-                <View style={[styles.dropDownMenuView,]}>
-                    <Button
-                        title={'全部'}
-                        style={[styles.positionBtnView, sortPositionId === 0 && styles.positionBtnViewCur]}
-                        titleStyle={[styles.positionTitleStyle, sortPositionId === 0 && styles.positionTitleStyleCur]}
-                        onPress={() => {
-                                this.setState({
-                                    sortPosition: '职位',
-                                    sortPositionId: 0,
-                                    maskHidden: true,
-                                    // ready: false,
-                                }, () => this._onRefresh());
-                            // this._onClose();
-                            this.timer4 = setTimeout(() => {
-                            }, 600);
-                        }}
-                    />
-                    {itemView}
-                </View>
-            );
+        return (
+            <View style={[styles.dropDownMenuView,]}>
+                <Button
+                    title={'全部'}
+                    style={[styles.positionBtnView, sortPositionId === 0 && styles.positionBtnViewCur]}
+                    titleStyle={[styles.positionTitleStyle, sortPositionId === 0 && styles.positionTitleStyleCur]}
+                    onPress={() => {
+                            this.setState({
+                                sortPosition: '职位',
+                                sortPositionId: 0,
+                                maskHidden: true,
+                                // ready: false,
+                            }, () => this._onRefresh());
+                        // this._onClose();
+                        this.timer4 = setTimeout(() => {
+                        }, 600);
+                    }}
+                />
+                {itemView}
+            </View>
+        );
     };
 
     contentHeight = (selectIndex) => {
@@ -397,7 +397,7 @@ export default class Work extends Component {
                             renderContentComponent={this._renderContentComponent}
                             contentHeight={this.contentHeight}
                             titleArray={['职位']}
-                            exData={[1]}
+                            exData={['1']}
                         />
                     </Animated.View>
                 ) : null}

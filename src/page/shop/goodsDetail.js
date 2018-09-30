@@ -82,7 +82,7 @@ export default class GoodsDetail extends Component {
         let result = await shopStore.onSubmitOrderToCart(url, data);
         // console.log(result);
         if (result && result.code === 1) {
-            RouterHelper.navigate('订单确认', 'OrderConfirm', {d: 'OrderConfirm'});
+            RouterHelper.navigate('订单确认', 'OrderConfirm', {flag: 'work'});
         }
     };
 

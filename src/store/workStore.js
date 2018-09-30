@@ -60,6 +60,11 @@ export default class WorkStore extends BaseStore {
     }
 
     @computed
+    get getWorkTime() {
+        return toJS(this.work_time);
+    }
+
+    @computed
     get getOnSelectTimeItem() {
         return this.time_list.slice();
     }
@@ -129,11 +134,7 @@ export default class WorkStore extends BaseStore {
             runInAction(() => {
                 this.sign_id = result.data.sign_id;
                 this.time_list = result.data.time_list;
-            })
-        } else {
-            runInAction(() => {
-                this.sign_id = 0;
-                this.time_list = [];
+                this.work_time = result.data.work_time;
             })
         }
         return result;
@@ -144,6 +145,7 @@ export default class WorkStore extends BaseStore {
     onSelectTimeItem = (index, item) => {
         let times = this.time_list.slice();
         let work_time = this.work_time.slice();
+        console.log('work_time------>1', work_time);
         let value = item.selected === 1 ? 2 : 1;
         let id = item.id;
         if (value === 2) {
@@ -151,7 +153,7 @@ export default class WorkStore extends BaseStore {
         } else {
             work_time.splice(work_time.findIndex(i => i === id), 1);
         }
-        // console.log(work_time);
+        console.log('work_time------>2', work_time);
         times[index].selected = value;
         this.time_list = times;
         this.work_time = work_time;

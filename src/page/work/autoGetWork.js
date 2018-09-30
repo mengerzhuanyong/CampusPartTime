@@ -95,8 +95,8 @@ export default class AutoGetWork extends Component {
         };
         let result = await onSubmitPlatformTimes(url, data);
         // console.log(result);
+        ToastManager.show(result.msg);
         if (result && result.code === 1) {
-            Toast.toastShort(result.msg);
             RouterHelper.goBack();
         }
     };
@@ -129,7 +129,7 @@ export default class AutoGetWork extends Component {
         this.timer2 = setTimeout(() => {
             // 调用停止刷新
             this.loadNetData();
-            this.flatList && this.flatListRef.stopRefresh();
+            this.flatListRef && this.flatListRef.stopRefresh();
         }, 500);
     };
 
@@ -275,7 +275,7 @@ const styles = StyleSheet.create({
     timeItemTitleView: {},
     timeItemTitle: {
         color: '#333',
-        fontSize: FontSize(14),
+        fontSize: FontSize(13),
     },
     timeItemDetailView: {
         flexDirection: 'row',
@@ -291,7 +291,7 @@ const styles = StyleSheet.create({
     },
     timeBtnName: {
         color: '#555',
-        fontSize: FontSize(13),
+        fontSize: FontSize(12),
     },
 
     btnView: {

@@ -20,6 +20,7 @@ import {
     TextInput,
     ImageBackground,
     TouchableOpacity,
+    KeyboardAvoidingView,
     TouchableWithoutFeedback,
 } from 'react-native'
 
@@ -94,129 +95,131 @@ export default class MineSettingPassWord extends Component {
                 <NavigationBar
                     title={pageTitle}
                 />
-                <ScrollView style={styles.content}>
-                    <View style={styles.loginContent}>
-                        <View style={styles.inputItemView}>
-                            <Image source={Images.icon_user_sign} style={styles.inputIcon}/>
-                            <TextInput
-                                style={styles.inputItem}
-                                ref={v => this.input = v}
-                                keyboardType={'numeric'}
-                                underlineColorAndroid={'rgba(0, 0, 0, 0)'}
-                                placeholder={'请输入手机号'}
-                                placeholderTextColor={'#999'}
-                                returnKeyType={'done'}
-                                maxLength={11}
-                                onChangeText={(text) => {
-                                    this.setState({
-                                        mobile: text
-                                    })
-                                }}
-                            />
-                        </View>
-                        <HorizontalLine lineStyle={styles.horLine}/>
-                        <View style={styles.inputItemView}>
-                            <Image source={Images.icon_mobile_cur} style={styles.inputIcon}/>
-                            <TextInput
-                                style={styles.inputItem}
-                                ref={v => this.input = v}
-                                keyboardType={'numeric'}
-                                underlineColorAndroid={'rgba(0, 0, 0, 0)'}
-                                placeholder={'请输入6位验证码'}
-                                placeholderTextColor={'#999'}
-                                returnKeyType={'done'}
-                                maxLength={6}
-                                clearButtonMode='while-editing'
-                                onChangeText={(text) => {
-                                    this.setState({
-                                        code: text
-                                    })
-                                }}
-                            />
-                            <SendSMS
-                                mobile={mobile}
-                                type={'public'}
-                                style={styles.getCodeView}
-                                lineStyle={styles.getCodeLine}
-                                titleStyle={styles.getCodeTitle}
-                                {...this.props}
-                            />
-                        </View>
-                        <HorizontalLine lineStyle={styles.horLine}/>
-                        <View style={styles.inputItemView}>
-                            <Image source={Images.icon_lock} style={styles.inputIcon}/>
-                            <TextInput
-                                style={styles.inputItem}
-                                ref={v => this.input = v}
-                                keyboardType={'numeric'}
-                                secureTextEntry={secureTextEntry}
-                                underlineColorAndroid={'rgba(0, 0, 0, 0)'}
-                                placeholder={'请输入密码'}
-                                placeholderTextColor={'#999'}
-                                returnKeyType={'done'}
-                                maxLength={12}
-                                onChangeText={(text) => {
-                                    this.setState({
-                                        password: text
-                                    })
-                                }}
-                            />
-                            {password ?
-                                <InputRightButton
-                                    type={inputType}
-                                    submitFoo={() => {
-                                        inputType = secureTextEntry ? 'text' : 'password';
+                <KeyboardAvoidingView style={styles.content}>
+                    <ScrollView style={styles.content}>
+                        <View style={styles.loginContent}>
+                            <View style={styles.inputItemView}>
+                                <Image source={Images.icon_user_sign} style={styles.inputIcon}/>
+                                <TextInput
+                                    style={styles.inputItem}
+                                    ref={v => this.input = v}
+                                    keyboardType={'numeric'}
+                                    underlineColorAndroid={'rgba(0, 0, 0, 0)'}
+                                    placeholder={'请输入手机号'}
+                                    placeholderTextColor={'#999'}
+                                    returnKeyType={'done'}
+                                    maxLength={11}
+                                    onChangeText={(text) => {
                                         this.setState({
-                                            inputType: inputType,
-                                            secureTextEntry: !secureTextEntry,
-                                        });
+                                            mobile: text
+                                        })
                                     }}
                                 />
-                                : null
-                            }
-                        </View>
-                        <HorizontalLine lineStyle={styles.horLine}/>
-                        <View style={styles.inputItemView}>
-                            <Image source={Images.icon_lock} style={styles.inputIcon}/>
-                            <TextInput
-                                style={styles.inputItem}
-                                ref={v => this.input = v}
-                                keyboardType={'numeric'}
-                                secureTextEntry={secureTextEntry}
-                                underlineColorAndroid={'rgba(0, 0, 0, 0)'}
-                                placeholder={'请再次输入密码'}
-                                placeholderTextColor={'#999'}
-                                returnKeyType={'done'}
-                                maxLength={12}
-                                onChangeText={(text) => {
-                                    this.setState({
-                                        re_password: text
-                                    })
-                                }}
-                            />
-                            {password ?
-                                <InputRightButton
-                                    type={inputType}
-                                    submitFoo={() => {
-                                        inputType = secureTextEntry ? 'text' : 'password';
+                            </View>
+                            <HorizontalLine lineStyle={styles.horLine}/>
+                            <View style={styles.inputItemView}>
+                                <Image source={Images.icon_mobile_cur} style={styles.inputIcon}/>
+                                <TextInput
+                                    style={styles.inputItem}
+                                    ref={v => this.input = v}
+                                    keyboardType={'numeric'}
+                                    underlineColorAndroid={'rgba(0, 0, 0, 0)'}
+                                    placeholder={'请输入6位验证码'}
+                                    placeholderTextColor={'#999'}
+                                    returnKeyType={'done'}
+                                    maxLength={6}
+                                    clearButtonMode='while-editing'
+                                    onChangeText={(text) => {
                                         this.setState({
-                                            inputType: inputType,
-                                            secureTextEntry: !secureTextEntry,
-                                        });
+                                            code: text
+                                        })
                                     }}
                                 />
-                                : null
-                            }
-                        </View>
+                                <SendSMS
+                                    mobile={mobile}
+                                    type={'public'}
+                                    style={styles.getCodeView}
+                                    lineStyle={styles.getCodeLine}
+                                    titleStyle={styles.getCodeTitle}
+                                    {...this.props}
+                                />
+                            </View>
+                            <HorizontalLine lineStyle={styles.horLine}/>
+                            <View style={styles.inputItemView}>
+                                <Image source={Images.icon_lock} style={styles.inputIcon}/>
+                                <TextInput
+                                    style={styles.inputItem}
+                                    ref={v => this.input = v}
+                                    keyboardType={'numeric'}
+                                    secureTextEntry={secureTextEntry}
+                                    underlineColorAndroid={'rgba(0, 0, 0, 0)'}
+                                    placeholder={'请输入密码'}
+                                    placeholderTextColor={'#999'}
+                                    returnKeyType={'done'}
+                                    maxLength={12}
+                                    onChangeText={(text) => {
+                                        this.setState({
+                                            password: text
+                                        })
+                                    }}
+                                />
+                                {password ?
+                                    <InputRightButton
+                                        type={inputType}
+                                        submitFoo={() => {
+                                            inputType = secureTextEntry ? 'text' : 'password';
+                                            this.setState({
+                                                inputType: inputType,
+                                                secureTextEntry: !secureTextEntry,
+                                            });
+                                        }}
+                                    />
+                                    : null
+                                }
+                            </View>
+                            <HorizontalLine lineStyle={styles.horLine}/>
+                            <View style={styles.inputItemView}>
+                                <Image source={Images.icon_lock} style={styles.inputIcon}/>
+                                <TextInput
+                                    style={styles.inputItem}
+                                    ref={v => this.input = v}
+                                    keyboardType={'numeric'}
+                                    secureTextEntry={secureTextEntry}
+                                    underlineColorAndroid={'rgba(0, 0, 0, 0)'}
+                                    placeholder={'请再次输入密码'}
+                                    placeholderTextColor={'#999'}
+                                    returnKeyType={'done'}
+                                    maxLength={12}
+                                    onChangeText={(text) => {
+                                        this.setState({
+                                            re_password: text
+                                        })
+                                    }}
+                                />
+                                {password ?
+                                    <InputRightButton
+                                        type={inputType}
+                                        submitFoo={() => {
+                                            inputType = secureTextEntry ? 'text' : 'password';
+                                            this.setState({
+                                                inputType: inputType,
+                                                secureTextEntry: !secureTextEntry,
+                                            });
+                                        }}
+                                    />
+                                    : null
+                                }
+                            </View>
 
-                    </View>
-                    <Button
-                        title={'立即修改'}
-                        style={[CusTheme.btnView, styles.btnView]}
-                        titleStyle={[CusTheme.btnName, styles.btnName]}
-                        onPress={this.onSubmitFoo}
-                    />
-                </ScrollView>
+                        </View>
+                        <Button
+                            title={'立即修改'}
+                            style={[CusTheme.btnView, styles.btnView]}
+                            titleStyle={[CusTheme.btnName, styles.btnName]}
+                            onPress={this.onSubmitFoo}
+                        />
+                    </ScrollView>
+                </KeyboardAvoidingView>
             </View>
         );
     }

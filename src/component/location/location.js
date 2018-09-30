@@ -116,18 +116,18 @@ export default class Location extends PureComponent {
             });
         }, 500);
         if (!data) {
-            Toast.toastShort('定位失败，请稍后重试');
+            ToastManager.show('定位失败，请稍后重试');
             return;
         }
         let location = checkFloat(data.latitude);
         if (location) {
             global.lat = data.latitude;
             global.lng = data.longitude;
-            global.district = data.district;
+            global.district = data.district || data.city;
             this.setState({
                 lat: data.latitude,
                 lng: data.longitude,
-                district: data.district,
+                district: data.district || data.city,
             });
             this.postLocation(data.latitude, data.longitude);
         }

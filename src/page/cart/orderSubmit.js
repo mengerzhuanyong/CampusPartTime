@@ -49,9 +49,11 @@ export default class OrderSubmit extends Component {
     constructor(props) {
         super(props);
         const {shopStore} = this.props;
-        let {cartGoodsInfo} = shopStore;
+        let {getCartGoodsInfo} = shopStore;
+        let {params} = this.props.navigation.state;
         this.state = {
-            address: cartGoodsInfo && cartGoodsInfo.address ? cartGoodsInfo.address : {
+            flag: params && params.flag ? params.flag : 'work',
+            address: getCartGoodsInfo && getCartGoodsInfo.address ? getCartGoodsInfo.address : {
                 id: '',
                 username: '',
                 mobile: '',
@@ -80,28 +82,32 @@ export default class OrderSubmit extends Component {
 
     onSubmitOrder = async (type) => {
         const {shopStore} = this.props;
-        let {message} = this.state;
-        let url = ServicesApi.work_goods_payment;
+        let {message, flag, address} = this.state;
+        let receiver_info = address;
+        receiver_info.address = address.area + address.address;
+        let url = flag === 'point' ? ServicesApi.point_goods_payment : ServicesApi.work_goods_payment;
         let data = {
-            goods_id: shopStore.cartGoodsInfo.id,
-            type: shopStore.cartGoodsInfo.type,
-            receiver_info: {
-                username: '',
-                mobile: '',
-                address: '',
-            },
+            goods_id: shopStore.getCartGoodsInfo.id,
+            type: shopStore.getCartGoodsInfo.type,
+            receiver_info,
             message,
         };
-        let result = await shopStore.onSubmitOrder(url, data);
-        // console.log(result);
-        if (result && result.code === 1) {
-            RouterHelper.navigate('换购完成', 'OrderCompleted');
+        try {
+            let result = await shopStore.onSubmitOrder(url, data);
+            // console.log(result);
+            if (result && result.code === 1) {
+                RouterHelper.navigate('换购完成', 'OrderCompleted');
+            } else {
+                ToastManager.show(result.msg);
+            }
+        } catch (e) {
+            ToastManager.show('网络请求失败，请稍后重试');
         }
     };
 
     render() {
         const {shopStore} = this.props;
-        let {cartGoodsInfo} = shopStore;
+        let {getCartGoodsInfo} = shopStore;
         let {loading, address} = this.state;
         let {params} = this.props.navigation.state;
         let pageTitle = params && params.pageTitle ? params.pageTitle : '订单详情';
@@ -113,11 +119,11 @@ export default class OrderSubmit extends Component {
                 <ScrollView style={styles.content}>
                     <View style={[styles.contentItemView, styles.orderGoodsInfoView]}>
                         <View style={styles.orderGoodsPicView}>
-                            <Image source={Images.img_goods1} style={styles.orderGoodsPic}/>
+                            <Image source={getCartGoodsInfo.illustration.length > 0 ? {uri: getCartGoodsInfo.illustration[0]} : Images.img_goods1} style={styles.orderGoodsPic}/>
                         </View>
                         <View style={styles.orderGoodsTitleView}>
-                            <Text style={styles.orderGoodsTitle}>{cartGoodsInfo.name}</Text>
-                            <Text style={styles.orderGoodsPrices}>{cartGoodsInfo.cart_price}</Text>
+                            <Text style={styles.orderGoodsTitle}>{getCartGoodsInfo.name}</Text>
+                            <Text style={styles.orderGoodsPrices}>{getCartGoodsInfo.cart_price}</Text>
                         </View>
                     </View>
                     <TouchableOpacity
@@ -134,7 +140,7 @@ export default class OrderSubmit extends Component {
                         <Image source={Images.icon_arrow_right} style={styles.iconArrowStyle} />
                     </TouchableOpacity>
                     <View style={[styles.contentItemView, styles.orderStatusInfoView]}>
-                        <Text style={styles.orderStatusInfoItem}>交易状态：等待收货</Text>
+                        {/*<Text style={styles.orderStatusInfoItem}>交易状态：等待收货</Text>*/}
                         <Text style={styles.orderStatusInfoItem}>用户留言：</Text>
                         <TextInput
                             style={styles.inputItem}

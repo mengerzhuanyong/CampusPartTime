@@ -93,7 +93,7 @@ export default class WorkAbnormalAppeal extends Component {
                     photos: images,
                 });
             } else {
-                Toast.toastShort('上传失败，请稍后重试');
+                ToastManager.show('上传失败，请稍后重试');
             }
         }
     };

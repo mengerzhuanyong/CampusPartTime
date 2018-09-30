@@ -108,7 +108,10 @@ export default class SystemMessage extends Component {
         return navigation;
     };
 
-    renderHeaderRightView = () => {
+    renderHeaderRightView = (data) => {
+        if (!data || data.length < 1) {
+            return null;
+        }
         return (
             <TouchableOpacity
                 style={[CusTheme.headerButtonView, styles.headerRightView]}
@@ -155,7 +158,7 @@ export default class SystemMessage extends Component {
         if (result && result.code === 1) {
             this.loadNetData();
         } else {
-            Toast.toastShort(result.msg);
+            ToastManager.show(result.msg);
         }
     };
 
@@ -230,7 +233,7 @@ export default class SystemMessage extends Component {
             <View style={styles.container}>
                 <NavigationBar
                     title={pageTitle}
-                    renderRightAction={this.renderHeaderRightView()}
+                    renderRightAction={this.renderHeaderRightView(systemStore.getDataSource)}
                 />
                 <View style={styles.content}>
                     {systemStore.loading && systemStore.dataSource.length === 0 ?
@@ -240,7 +243,7 @@ export default class SystemMessage extends Component {
                             style={styles.listContent}
                             initialRefresh={false}
                             ref={this._captureRef}
-                            data={systemStore.dataSource}
+                            data={systemStore.getDataSource}
                             removeClippedSubviews={false}
                             renderItem={this._renderListItem}
                             keyExtractor={this._keyExtractor}
@@ -248,6 +251,7 @@ export default class SystemMessage extends Component {
                             onRefresh={this._onRefresh}
                             ItemSeparatorComponent={this._renderSeparator}
                             ListHeaderComponent={this._renderHeaderComponent}
+                            ListEmptyComponent={this._renderEmptyComponent}
                         />
                     }
                 </View>

@@ -104,10 +104,12 @@ export default class MineWorkList extends Component {
         this.flatListRef && this.flatListRef.stopEndReached({allLoad: endStatus});
     };
 
-    _onRefresh = (stopRefresh) => {
+    _onRefresh = async (stopRefresh) => {
         this.page = 1;
-        let {type} = this.props;
+        let {type, workStore} = this.props;
         this.requestDataSource(this.page, type);
+        let url = ServicesApi.workNavigation;
+        let result = await workStore.requestWorkNavigation(url);
     };
 
     _onEndReached = (stopEndReached) => {

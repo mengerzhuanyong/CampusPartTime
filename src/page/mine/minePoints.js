@@ -82,13 +82,17 @@ export default class MinePoints extends Component {
         try {
             let result = await systemStore.getAppShareParams(url);
             if (result && result.code === 1) {
-                ActionsManager.showShareModule(result.data);
+                // let params = {
+                //     result.data,
+                //     callBack: {() => this._onRefresh()},
+                // };
+                ActionsManager.showShareModule(result.data, () => this._onRefresh());
             } else {
-                Toast.toastShort(result.msg);
+                ToastManager.show(result.msg);
             }
         } catch (e) {
             console.log(e);
-            Toast.toastShort('error');
+            ToastManager.show('error');
         }
     };
 
@@ -122,27 +126,14 @@ export default class MinePoints extends Component {
         return `z_${index}`
     };
 
-    // 上拉加载
-    _onEndReached = () => {
-        this.timer1 = setTimeout(() => {
-            let dataTemp = this.state.listData;
-            let allLoad = false;
-            //模拟数据加载完毕,即page > 0,
-            if (this.page < 2) {
-                this.setState({ data: dataTemp.concat(this.state.listData) });
-            }
-            // allLoad 当全部加载完毕后可以设置此属性，默认为false
-            this.flatListRef.stopEndReached({ allLoad: this.page === 2 });
-            this.page++;
-        }, 500);
+    _onRefresh = (stopRefresh) => {
+        this.page = 1;
+        this.requestDataSource(this.page);
     };
 
-    // 下拉刷新
-    _onRefresh = () => {
-        this.timer2 = setTimeout(() => {
-            // 调用停止刷新
-            this.flatListRef.stopRefresh()
-        }, 500);
+    _onEndReached = (stopEndReached) => {
+        this.page++;
+        this.requestDataSource(this.page);
     };
 
     _renderSeparator = () => {
@@ -214,7 +205,7 @@ export default class MinePoints extends Component {
                     title={pageTitle}
                     style={{backgroundColor: 'transparent'}}
                     // backgroundImage={Images.img_bg_nav_bar2}
-                    backgroundImage={null}
+                    // backgroundImage={null}
                 />
                 <View style={styles.content}>
                     <FlatListView

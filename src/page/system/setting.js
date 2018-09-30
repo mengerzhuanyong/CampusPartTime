@@ -26,7 +26,7 @@ import NavigationBar from '../../component/navigation/NavigationBar'
 import {ListRow, Button} from 'teaset'
 import {observer, inject} from "mobx-react";
 
-@inject('loginStore')
+@inject('loginStore', 'systemStore')
 @observer
 export default class Setting extends Component {
 
@@ -37,6 +37,17 @@ export default class Setting extends Component {
             customerMobile: '400-500-6666',
         };
     }
+
+    componentDidMount() {
+        this.requestDataSource();
+    }
+
+    requestDataSource = async () => {
+        const {systemStore} = this.props;
+        let url = ServicesApi.systemSetting;
+        let data = await systemStore.getSystemInfomation(url);
+        this.setState({loading: true});
+    };
 
     clearCache = () => {
         this.setState({
@@ -84,6 +95,8 @@ export default class Setting extends Component {
     };
 
     render() {
+        const {systemStore} = this.props;
+        let {systemInfo} = systemStore;
         let {cacheSize, customerMobile} = this.state;
         let {params} = this.props.navigation.state;
         let pageTitle = params && params.pageTitle ? params.pageTitle : '设置';
@@ -116,7 +129,7 @@ export default class Setting extends Component {
                             titleStyle={CusTheme.contentTitle}
                             detail={''}
                             accessory={<Image source={Images.icon_arrow_right} style={[CusTheme.contentRightIcon, {}]} />}
-                            onPress={() => RouterHelper.navigate('关于我们', 'CommonWebPage', {})}
+                            onPress={() => RouterHelper.navigate('关于我们', 'CommonWebPage', {url: systemInfo.link_about})}
                         />
                         <ListRow
                             style={styles.contentTitleView}
@@ -124,15 +137,15 @@ export default class Setting extends Component {
                             titleStyle={CusTheme.contentTitle}
                             detail={''}
                             accessory={<Image source={Images.icon_arrow_right} style={[CusTheme.contentRightIcon, {}]} />}
-                            onPress={() => RouterHelper.navigate('帮助中心', 'CommonWebPage', {})}
+                            onPress={() => RouterHelper.navigate('帮助中心', 'CommonWebPage', {url: systemInfo.link_help})}
                         />
                         <ListRow
                             style={styles.contentTitleView}
                             title={'联系客服'}
                             titleStyle={CusTheme.contentTitle}
-                            detail={customerMobile}
-                            accessory={<Image source={Images.icon_arrow_right} style={[CusTheme.contentRightIcon, {}]} />}
-                            onPress={() => this.makeCall(customerMobile)}
+                            detail={systemInfo.customer_mobile}
+                            accessory={null}
+                            onPress={() => this.makeCall(systemInfo.customer_mobile)}
                             bottomSeparator={'none'}
                         />
                     </View>
@@ -141,17 +154,17 @@ export default class Setting extends Component {
                             style={styles.contentTitleView}
                             title={'清理缓存'}
                             titleStyle={CusTheme.contentTitle}
-                            detail={cacheSize}
-                            accessory={<Image source={Images.icon_arrow_right} style={[CusTheme.contentRightIcon, {}]} />}
+                            detail={systemInfo.cache_size}
+                            accessory={null}
                             onPress={this.clearCache}
                         />
                         <ListRow
                             style={styles.contentTitleView}
                             title={'检查更新'}
                             titleStyle={CusTheme.contentTitle}
-                            detail={'当前版本：1.0.0'}
-                            accessory={<Image source={Images.icon_arrow_right} style={[CusTheme.contentRightIcon, {}]} />}
-                            onPress={() => RouterHelper.navigate('检查更新', 'ShareApp', {})}
+                            detail={systemInfo.version_code}
+                            // accessory={<Image source={Images.icon_arrow_right} style={[CusTheme.contentRightIcon, {}]} />}
+                            // onPress={() => RouterHelper.navigate('检查更新', 'ShareApp', {})}
                             bottomSeparator={'none'}
                         />
                     </View>

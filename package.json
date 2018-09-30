@@ -36,7 +36,7 @@
         "react-native-spinkit": "^1.1.1",
         "react-native-splash-screen": "^3.0.6",
         "react-native-storage": "^0.2.2",
-        "react-native-syan-image-picker": "^0.1.6",
+        "react-native-syan-image-picker": "^0.1.7",
         "react-native-video": "^2.0.0",
         "react-navigation": "^2.2.0",
         "redux": "^4.0.0",

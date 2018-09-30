@@ -17,7 +17,7 @@ import Navigation from './router/Navigation'
 import { getDeviceInfo } from './util/Tool'
 import { observer, inject } from 'mobx-react'
 
-@inject('appStore', 'loginStore')
+@inject('appStore', 'loginStore', 'mineStore')
 @observer
 export default class Index extends React.Component {
 
@@ -69,24 +69,40 @@ export default class Index extends React.Component {
                 // 未登录
                 this.timer1 = setTimeout(() => {
                     RouterHelper.reset('', 'Login');
-                    // SplashScreen.hide();
+                    SplashScreen.hide();
                 }, 600);
             } else {
                 // 已经登录
-                // console.log(localRes);
-                loginStore.saveUserInfo(localRes.data);
-                this.timer2 = setTimeout(() => {
-                    RouterHelper.reset('', 'Tab');
-                    // RouterHelper.reset('', 'MineWorkDetail');
-                    // SplashScreen.hide();
-                }, 600);
+                console.log(localRes);
+                global.token = localRes.data.token;
+                this.checkTokenStatus(localRes);
             }
         } else {
             // 第一次安装app
             this.timer3 = setTimeout(() => {
             //     RouterHelper.reset('', 'Login');
-                // SplashScreen.hide();
+                SplashScreen.hide();
             }, 600);
+        }
+    };
+
+    checkTokenStatus = async (localRes) => {
+        let url = ServicesApi.mine;
+        let {loginStore, mineStore} = this.props;
+        try {
+            let result = await mineStore.requestDataSource(url);
+            if (result && result.code === 1) {
+                loginStore.saveUserInfo(localRes.data);
+                this.timer2 = setTimeout(() => {
+                    RouterHelper.reset('', 'Tab');
+                    // RouterHelper.reset('', 'PointShop');
+                    SplashScreen.hide();
+                }, 600);
+            }
+        } catch (e) {
+            console.log(e);
+            loginStore.cleanUserInfo();
+            SplashScreen.hide();
         }
     };
 

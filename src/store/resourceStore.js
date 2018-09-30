@@ -14,6 +14,7 @@ export default class ResourceStore extends BaseStore {
     constructor(params) {
         super(params);
         this.navigationArray = [];
+        this.pointGoodsCategory = [];
         this.workNavigation = [];
         this.homeDataSource = {};
         this.workDataSource = {};
@@ -21,6 +22,7 @@ export default class ResourceStore extends BaseStore {
     }
 
     @observable navigationArray;
+    @observable pointGoodsCategory;
     @observable workNavigation;
     @observable homeDataSource;
     @observable workDataSource;
@@ -94,7 +96,19 @@ export default class ResourceStore extends BaseStore {
         return result;
     };
 
-    // 商品分类
+    // 积分商品分类
+    getPointGoodsCategory = async (url, data) => {
+
+        const result = await this.postRequest(url, data, true);
+        if (result.code === 1) {
+            runInAction(() => {
+                this.pointGoodsCategory = result.data;
+            })
+        }
+        return result;
+    };
+
+    // 工作分类
     getWorkCategory = async (url, data) => {
 
         const result = await this.postRequest(url, data, true);

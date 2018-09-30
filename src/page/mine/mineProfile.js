@@ -14,7 +14,7 @@ import {
     Image,
     ScrollView,
     StyleSheet,
-    ImageBackground,
+    ImageBackground, RefreshControl,
 } from 'react-native'
 import NavigationBar from '../../component/navigation/NavigationBar'
 import {Button, Carousel, ListRow} from 'teaset'
@@ -33,6 +33,7 @@ export default class MineProfile extends Component {
         super(props);
         this.state = {
             loading: true,
+            refreshing: false,
         };
     }
 
@@ -48,7 +49,19 @@ export default class MineProfile extends Component {
     loadNetData = async () => {
         const {mineStore} = this.props;
         let url = ServicesApi.my_details;
-        let result = await mineStore.requestMyProfile(url);
+        try {
+            let result = await mineStore.requestMyProfile(url);
+        } catch (e) {
+            ToastManager.show('error');
+        }
+    };
+
+    onRefresh = () => {
+        this.setState({refreshing: true});
+        this.loadNetData();
+        this.timer1 = setTimeout(() => {
+            this.setState({refreshing: false});
+        }, 1000);
     };
 
     renderStatusView = (status) => {
@@ -108,7 +121,7 @@ export default class MineProfile extends Component {
     render() {
         let {mineStore} = this.props;
         let {myProfile} = mineStore;
-        let {loading} = this.state;
+        let {loading, refreshing} = this.state;
         let {params} = this.props.navigation.state;
         let pageTitle = params && params.pageTitle ? params.pageTitle : '我的资料';
         return (
@@ -118,7 +131,19 @@ export default class MineProfile extends Component {
                     style={{backgroundColor: 'transparent'}}
                     backgroundImage={Images.img_bg_nav_bar}
                 />
-                <View style={styles.content}>
+                <ScrollView
+                    style={styles.content}
+                    refreshControl={
+                        <RefreshControl
+                            title='Loading...'
+                            refreshing={refreshing}
+                            onRefresh={this.onRefresh}
+                            tintColor="#0398ff"
+                            colors={['#0398ff']}
+                            progressBackgroundColor="#fff"
+                        />
+                    }
+                >
                     <ImageBackground
                         style={styles.contentTopView}
                         source={Images.img_bg_mine}
@@ -132,7 +157,7 @@ export default class MineProfile extends Component {
                         <View style={[styles.contentTopItemView, styles.userInfoView]}>
                             <Text style={styles.userName}>{myProfile.user_info.username}</Text>
                             <View style={styles.studentInfoView}>
-                                <Text style={styles.studentInfoText}>{myProfile.user_info.grade || '已毕业'}</Text>
+                                <Text style={styles.studentInfoText}>{myProfile.user_info.grade}</Text>
                                 <Text style={styles.studentInfoText}>{myProfile.user_info.school}</Text>
                             </View>
                         </View>
@@ -186,16 +211,16 @@ export default class MineProfile extends Component {
                         <ListRow
                             style={styles.contentTitleView}
                             title={'认证微信号'}
-                            detail={this.renderStatusView(myProfile.mobile_status)}
+                            detail={this.renderStatusView(myProfile.is_wechat_status)}
                             titleStyle={CusTheme.contentTitle}
                             icon={<Image source={Images.icon_user_wechat} style={[CusTheme.contentTitleIcon, {width: ScaleSize(40), height: ScaleSize(40)}]}/>}
                             accessory={<Image source={Images.icon_arrow_right}
                                               style={[CusTheme.contentRightIcon, {}]}/>}
-                            onPress={() => myProfile.mobile_status !== 1 && this.onBindWeChat()}
+                            onPress={() => myProfile.is_wechat_status === 1 && this.onBindWeChat()}
                             bottomSeparator={'none'}
                         />
                     </View>
-                </View>
+                </ScrollView>
             </View>
         );
     }
