@@ -109,7 +109,7 @@ export default class OrderDetail extends Component {
                 <ScrollView style={styles.content}>
                     <View style={[styles.contentItemView, styles.orderGoodsInfoView]}>
                         <View style={styles.orderGoodsPicView}>
-                            <Image source={Images.img_goods1} style={styles.orderGoodsPic}/>
+                            <Image source={orderDetail.goods_data.img_url ? {uri: orderDetail.goods_data.img_url} : Images.img_goods1} style={styles.orderGoodsPic}/>
                         </View>
                         <View style={styles.orderGoodsTitleView}>
                             <Text style={styles.orderGoodsTitle}>{orderDetail.goods_data.name}</Text>

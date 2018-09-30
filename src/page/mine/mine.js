@@ -42,7 +42,7 @@ const options = {
     enableBase64: true,
 };
 
-@inject('loginStore', 'mineStore', 'systemStore')
+@inject('loginStore', 'mineStore', 'systemStore', 'homeStore')
 @observer
 export default class Mine extends Component {
     constructor(props) {
@@ -146,7 +146,7 @@ export default class Mine extends Component {
 
     render() {
         let {loading, refreshing} = this.state;
-        let {mineStore} = this.props;
+        let {mineStore, homeStore} = this.props;
         let {dataSource} = mineStore;
 
         // if (mineStore.loading) {
@@ -167,7 +167,7 @@ export default class Mine extends Component {
                 }
             >
                 <NavigationBar
-                    title={this.renderNavigationBarView(dataSource.has_message)}
+                    title={this.renderNavigationBarView(homeStore.has_message)}
                     style={styles.navigationBarStyle}
                     statusBarStyle={'dark-content'}
                     renderLeftAction={null}
@@ -201,7 +201,7 @@ export default class Mine extends Component {
                         }
                     </View>
                     <View style={[styles.contentTopItemView, styles.userAccountView]}>
-                        <Text style={styles.userAccountInfo}>剩余工分: {dataSource.work_point}</Text>
+                        <Text style={styles.userAccountInfo}>应还工分: {dataSource.work_point}</Text>
                         <VerticalLine lineStyle={styles.verLine} />
                         <Text style={styles.userAccountInfo}>我的余额: {dataSource.balance}</Text>
                     </View>

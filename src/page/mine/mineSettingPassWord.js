@@ -29,10 +29,9 @@ import {ListRow, Button} from 'teaset'
 import {HorizontalLine} from "../../component/common/commonLine";
 import SendSMS from "../../component/common/SendSMS";
 import InputRightButton from "../../component/common/InputRightButton";
-import {checkMobile} from "../../util/Tool";
 import {inject, observer} from "mobx-react/index";
 
-@inject('loginStore')
+@inject('loginStore', 'mineStore')
 @observer
 export default class MineSettingPassWord extends Component {
 
@@ -41,10 +40,10 @@ export default class MineSettingPassWord extends Component {
         this.state = {
             inputType: 'password',
             secureTextEntry: true,
-            mobile: '15066886007',
-            code: '123123',
-            password: '123123',
-            re_password: '123123',
+            mobile: '', // '15066886007',
+            code: '', // '123123',
+            password: '', // '123123',
+            re_password: '', // '123123',
         };
     }
 
@@ -56,10 +55,10 @@ export default class MineSettingPassWord extends Component {
     onSubmitFoo = async () => {
         const {loginStore} = this.props;
         const {mobile, code, password, re_password} = this.state;
-        if (!checkMobile(mobile)) {
-            ToastManager.show('您输入的手机号错误，请检查后重新输入！');
-            return;
-        }
+        // if (!CheckMobile(mobile)) {
+        //     ToastManager.show('您输入的手机号错误，请检查后重新输入！');
+        //     return;
+        // }
         if (code === '') {
             ToastManager.show('请输入手机验证码');
             return;
@@ -70,6 +69,10 @@ export default class MineSettingPassWord extends Component {
         }
         if (re_password === '') {
             ToastManager.show('请再次输入密码');
+            return;
+        }
+        if (re_password !== password) {
+            ToastManager.show('两次输入密码不一致，请重新输入');
             return;
         }
         let url = ServicesApi.retrievePassword;
@@ -87,6 +90,8 @@ export default class MineSettingPassWord extends Component {
 
 
     render() {
+        let {loginStore} = this.props;
+        let {userInfo} = loginStore;
         let {mobile, password, inputType, secureTextEntry} = this.state;
         let {params} = this.props.navigation.state;
         let pageTitle = params && params.pageTitle ? params.pageTitle : '修改密码';
@@ -101,6 +106,7 @@ export default class MineSettingPassWord extends Component {
                             <View style={styles.inputItemView}>
                                 <Image source={Images.icon_user_sign} style={styles.inputIcon}/>
                                 <TextInput
+                                    defaultValue={userInfo.mobile}
                                     style={styles.inputItem}
                                     ref={v => this.input = v}
                                     keyboardType={'numeric'}
@@ -109,6 +115,7 @@ export default class MineSettingPassWord extends Component {
                                     placeholderTextColor={'#999'}
                                     returnKeyType={'done'}
                                     maxLength={11}
+                                    editable={false}
                                     onChangeText={(text) => {
                                         this.setState({
                                             mobile: text
@@ -136,7 +143,7 @@ export default class MineSettingPassWord extends Component {
                                     }}
                                 />
                                 <SendSMS
-                                    mobile={mobile}
+                                    mobile={userInfo.mobile}
                                     type={'public'}
                                     style={styles.getCodeView}
                                     lineStyle={styles.getCodeLine}

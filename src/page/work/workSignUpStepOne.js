@@ -154,6 +154,14 @@ export default class WorkSignUpStepOne extends Component {
         );
     };
 
+    _renderEmptyComponent = () => {
+        return (
+            <View style={CusTheme.emptyContent}>
+                <Text style={CusTheme.emptyContext}>暂无可报名的时间段</Text>
+            </View>
+        )
+    }
+
     onSelectTimeItem = (index, item) => {
         const {onSelectTimeItem} = this.props.workStore;
         onSelectTimeItem(index, item);
@@ -202,6 +210,7 @@ export default class WorkSignUpStepOne extends Component {
                         keyExtractor={this._keyExtractor}
                         ItemSeparatorComponent={this._renderSeparator}
                         ListHeaderComponent={this._renderHeaderComponent}
+                        ListEmptyComponent={this._renderEmptyComponent}
                     />
                 </View>
                 <Button

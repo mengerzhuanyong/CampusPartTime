@@ -43,7 +43,7 @@ import GoodsItem from "../../component/item/goodsItem";
 import MessageItem from "../../component/item/messageItem";
 import SpinnerLoading from "../../component/common/SpinnerLoading";
 
-@inject('loginStore', 'systemStore')
+@inject('loginStore', 'systemStore', 'homeStore')
 @observer
 export default class SystemMessage extends Component {
     constructor(props) {
@@ -151,6 +151,13 @@ export default class SystemMessage extends Component {
         })
     };
 
+    loadMessageInfo = async () => {
+        const {homeStore} = this.props;
+        let url = ServicesApi.index;
+        let data = {};
+        let result = await homeStore.requestDataSource(url, data);
+    };
+
     emptyMessage = async (page) => {
         const {systemStore} = this.props;
         let url = ServicesApi.emptyMessage;
@@ -181,6 +188,7 @@ export default class SystemMessage extends Component {
         let result = await systemStore.requestDataSource(url, data);
         let endStatus = false;
         if (result && result.code === 1) {
+            this.loadMessageInfo();
             endStatus = result.data.list_data.length < data.page_size;
         } else {
             endStatus = true;

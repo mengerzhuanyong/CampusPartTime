@@ -58,6 +58,10 @@ export default class EmergencyContact extends Component {
             ToastManager.show('请输入联系人手机号');
             return;
         }
+        if (!CheckMobile(mobile1) || (!CheckMobile(mobile2)) && mobile2 !== '') {
+            ToastManager.show('您输入的手机号错误，请检查后重新输入！');
+            return;
+        }
         try {
             let result = await mineStore.onSubmitEmergency(url, data);
             ToastManager.show(result.msg);

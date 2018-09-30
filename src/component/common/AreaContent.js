@@ -69,7 +69,7 @@ class AreaContent extends React.PureComponent {
         ActionsManager.hide();
     };
     _onPressCancel = () => {
-        ActionsManager.hide()
+        ActionsManager.hide();
     };
     render() {
         return (

@@ -158,11 +158,11 @@ export default class Home extends Component {
         let {loading, refreshing} = this.state;
         let {homeStore, resourceStore} = this.props;
         let {hot_goods, hot_jobs, hot_point_goods} = homeStore.getDataSource;
-        let {banner_data, notice_data, has_message} = resourceStore.getHomeDataSource;
+        let {banner_data, notice_data} = resourceStore.getHomeDataSource;
         return (
             <View style={styles.container}>
                 <NavigationBar
-                    title={this.renderNavigationBarView(has_message)}
+                    title={this.renderNavigationBarView(homeStore.has_message)}
                     style={{
                         backgroundColor: '#fff',
                     }}

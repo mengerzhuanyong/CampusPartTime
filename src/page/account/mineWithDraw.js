@@ -38,6 +38,7 @@ import PayManager from '../../config/manager/PayManager'
 import Stepper from '../../component/common/Stepper'
 import {QRscanner} from 'react-native-qr-scanner'
 import {HorizontalLine, VerticalLine} from '../../component/common/commonLine'
+import {checkFloat} from "../../util/Tool";
 
 
 @inject('loginStore', 'mineStore')
@@ -78,7 +79,21 @@ export default class MineWithDraw extends Component {
             alipay_account: alipayAccount,
             alipay_name: alipayName,
         };
-        if (mineStore.dataSource.is_wechat_status === 1) {
+
+        if (type === 2 && alipayAccount === '') {
+            ToastManager.show('请输入支付宝账号');
+            return;
+        }
+        if (type === 2 && alipayName === '') {
+            ToastManager.show('请输入支付宝账户姓名');
+            return;
+        }
+        if (money === '' || !checkFloat(money)) {
+            ToastManager.show('提现金额输入有误，请重新输入');
+            return;
+        }
+
+        if (mineStore.dataSource.is_wechat_status === 1 && type === 1) {
             const params = {
                 title: '温馨提示',
                 detail: '提现到微信，需要预先绑定微信',

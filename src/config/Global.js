@@ -10,7 +10,7 @@
 // 项目中的图片可以通过Images.xxx 获取
 import { Platform, Text } from 'react-native'
 import {
-    scaleSize, fontSize, isMobile, checkMobile, checkPassword, isEmpty, containsChinese,
+    scaleSize, fontSize, checkMobile, checkPassword, isEmpty, containsChinese,
     clearTimer
 } from '../util/Tool'
 import CusTheme from './theme/Theme'
@@ -121,3 +121,6 @@ global.ScaleSize = scaleSize;
 
 // 清楚定时器
 global.ClearTimer = clearTimer;
+
+// 验证手机号
+global.CheckMobile = checkMobile;

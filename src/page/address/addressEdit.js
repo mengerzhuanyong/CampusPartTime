@@ -79,6 +79,10 @@ export default class AddressEdit extends Component {
             area,
             address,
         };
+        if (!CheckMobile(mobile)) {
+            ToastManager.show('您输入的手机号错误，请检查后重新输入！');
+            return;
+        }
         let result = await addressStore.onSubmitAddress(url, data);
         ToastManager.show(result.msg);
         if (result && result.code === 1) {

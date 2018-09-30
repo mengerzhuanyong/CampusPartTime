@@ -59,6 +59,7 @@ export default class OrderItem extends React.PureComponent {
                             title={'查看详情'}
                             style={[styles.orderBtnItem, styles.orderInfoRightCon]}
                             titleStyle={styles.orderBtnItemName}
+                            onPress={onPushToDetail}
                         />
                     </View>
                 </View>

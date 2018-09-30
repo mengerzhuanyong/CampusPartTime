@@ -221,5 +221,13 @@ export default {
         width: scaleSize(50),
         height: scaleSize(50),
         resizeMode: 'contain',
-    }
+    },
+    emptyContent: {
+        marginTop: 20,
+        alignItems: 'center',
+    },
+    emptyContext: {
+        color: '#999',
+        fontSize: fontSize(14),
+    },
 }

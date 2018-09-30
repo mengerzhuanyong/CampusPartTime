@@ -14,9 +14,11 @@ export default class HomeStore extends BaseStore {
     constructor(params) {
         super(params);
         this.dataSource = '';
+        this.has_message = 0;
     }
 
     @observable dataSource;
+    @observable has_message;
 
     @computed
     get getDataSource() {
@@ -26,10 +28,11 @@ export default class HomeStore extends BaseStore {
     @action
     requestDataSource = async (url, data) => {
 
-        const result = await this.postRequest(url, data);
+        const result = await this.postRequest(url, data, true);
         if (result.code === 1) {
             runInAction(() => {
                 this.dataSource = result.data;
+                this.has_message = result.data.has_message;
             });
         }
         return result;

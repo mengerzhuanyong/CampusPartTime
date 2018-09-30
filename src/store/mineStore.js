@@ -31,6 +31,7 @@ export default class MineStore extends BaseStore {
         this.pointsDetail = [];
         this.creditInfo = [];
         this.creditDetail = [];
+        this.idCardInfo = {};
     }
 
     @observable dataSource;
@@ -43,6 +44,7 @@ export default class MineStore extends BaseStore {
     @observable pointsDetail;
     @observable creditInfo;
     @observable creditDetail;
+    @observable idCardInfo;
 
     @computed
     get getDataSource() {
@@ -104,6 +106,18 @@ export default class MineStore extends BaseStore {
             runInAction(() => {
                 newStatus.mobile_status = result.data;
                 this.myProfile = newStatus;
+            });
+        }
+        return result;
+    };
+
+    // 身份证识别
+    @action
+    onSubmitIdCardOCR = async (url, data) => {
+        const result = await this.postRequest(url, data, true);
+        if (result.code === 1) {
+            runInAction(() => {
+                this.idCardInfo = result.data;
             });
         }
         return result;

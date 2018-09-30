@@ -52,6 +52,10 @@ export default class CertificationMobile extends Component {
             mobile,
             id_number,
         };
+        if (!CheckMobile(mobile)) {
+            ToastManager.show('您输入的手机号错误，请检查后重新输入！');
+            return;
+        }
         let result = await onCertificationMobile(url, data);
         // console.log(result);
         ToastManager.show(result.msg);

@@ -111,12 +111,12 @@ const isMobile = (mobile) => {
  */
 const checkMobile = (mobile) => {
     if (isEmpty(mobile)) {
-        // Toast.fail('请输入手机号');
+        // Toast.show('请输入手机号');
         return false;
     }
     if (!isMobile(mobile)) {
         // alert('mobile');
-        // Toast.fail('请输入正确的手机号');
+        // Toast.show('请输入正确的手机号');
         return false;
     }
     return true;

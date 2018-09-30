@@ -106,6 +106,9 @@ module.exports = {
 
     // 文件上传
     upload: 'upload',
+
+    // 身份证照片验证（上传正面照的时候调用这个接口）
+    id_verify_photo: 'id_verify_photo',
     // 身份证认证
     id_verify: 'id_verify',
     // 绑定紧急联系人
@@ -145,8 +148,6 @@ module.exports = {
     share_get_point: 'share_get_point',
     // 重置密码
     reset_password: 'reset_password',
-    // 身份证照片验证（上传正面照的时候调用这个接口）
-    id_verify_photo: 'id_verify_photo',
     // 我的工作报名详情
     my_job_application_details: 'my_job_application_details',
 

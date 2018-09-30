@@ -48,7 +48,7 @@ import DropDownMenu from '../../component/common/DropDownMenu';
 import Location from "../../component/location/location";
 
 const headerHeight = 172;
-@inject('loginStore', 'workStore', 'resourceStore')
+@inject('loginStore', 'workStore', 'resourceStore', 'homeStore')
 @observer
 export default class Work extends Component {
     constructor(props) {
@@ -61,6 +61,8 @@ export default class Work extends Component {
             sortPositionId: 0,
             sortType: '', // 1: need_count 2: price 3: ''
             sortOrderType: 1,
+            sortArea: '黄岛区',
+            location: ['山东', '青岛', '黄岛区'],
         };
         this.page = 1;
         this.pageSize = 10;
@@ -162,11 +164,12 @@ export default class Work extends Component {
     };
 
     requestDataSource = async (page) => {
-        let {sortPositionId, sortType, sortOrderType} = this.state;
+        let {sortArea, location, sortPositionId, sortType, sortOrderType} = this.state;
         const {workStore} = this.props;
         let url = ServicesApi.job_list;
         let data = {
             page,
+            location,
             sort: sortType,
             position: sortPositionId,
             sort_column: sortOrderType,
@@ -201,6 +204,16 @@ export default class Work extends Component {
         this.startOpacityAnimated(index);
     };
 
+    pickerArea = () => {
+        ActionsManager.showArea((info) => {
+            console.log(info);
+            this.setState({
+                location: info,
+                sortArea: info[2],
+            }, this._onRefresh());
+        });
+    };
+
     _onRefresh = (stopRefresh) => {
         this.page = 1;
         this.requestDataSource(this.page);
@@ -232,9 +245,17 @@ export default class Work extends Component {
     };
 
     _renderSectionHeader = ({section}) => {
-        let {sortPosition, sortPositionId, sortType, sortOrderType,} = this.state;
+        let {sortArea, sortPosition, sortPositionId, sortType, sortOrderType,} = this.state;
         return (
             <View style={styles.listSortBtnView}>
+                <TouchableOpacity
+                    style={[styles.sortBtnItemView, styles.sortBtnItemOne]}
+                    onPress={this.pickerArea}
+                >
+                    <Text style={styles.sortBtnItemName} numberOfLines={1}>{sortArea}</Text>
+                    <Image source={Images.icon_arrow_down} style={styles.sortBtnIcon}/>
+                </TouchableOpacity>
+                <VerticalLine lineStyle={styles.sortVerLine}/>
                 <TouchableOpacity
                     style={[styles.sortBtnItemView, styles.sortBtnItemOne]}
                     onPress={() => this._onPressItem(0)}
@@ -254,7 +275,7 @@ export default class Work extends Component {
                         }, () => this._onRefresh());
                     }}
                 >
-                    <Text style={styles.sortBtnItemName} numberOfLines={1}>按剩余人数排序</Text>
+                    <Text style={styles.sortBtnItemName} numberOfLines={1}>人数</Text>
                     <Image source={Images.icon_sort} style={styles.sortBtnIcon}/>
                 </TouchableOpacity>
                 <VerticalLine lineStyle={styles.sortVerLine}/>
@@ -269,7 +290,7 @@ export default class Work extends Component {
                         }, () => this._onRefresh());
                     }}
                 >
-                    <Text style={styles.sortBtnItemName} numberOfLines={1}>按工分排序</Text>
+                    <Text style={styles.sortBtnItemName} numberOfLines={1}>工分</Text>
                     <Image source={Images.icon_sort} style={styles.sortBtnIcon}/>
                 </TouchableOpacity>
             </View>
@@ -342,7 +363,7 @@ export default class Work extends Component {
     };
 
     render() {
-        const {workStore, resourceStore} = this.props;
+        const {workStore, resourceStore, homeStore} = this.props;
         let {getWorkDataSource} = resourceStore;
         const {ready, maskHidden} = this.state;
         console.log('workStore.dataSource----->',workStore.getDataSource);
@@ -359,7 +380,7 @@ export default class Work extends Component {
         return (
             <View style={styles.container}>
                 <NavigationBar
-                    title={this.renderNavigationBarView(getWorkDataSource.has_message)}
+                    title={this.renderNavigationBarView(homeStore.has_message)}
                     style={{
                         backgroundColor: '#fff',
                     }}
@@ -531,10 +552,10 @@ const styles = StyleSheet.create({
     },
     sortBtnItemOne: {},
     sortBtnItemTwo: {
-        flex: 2,
+        // flex: 2,
     },
     sortBtnItemThree: {
-        flex: 1.5,
+        // flex: 1.5,
     },
     sortBtnItemName: {
         // flex: 1,

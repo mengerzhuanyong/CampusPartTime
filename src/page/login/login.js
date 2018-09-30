@@ -35,8 +35,8 @@ export default class Login extends Component {
             open: false
         };
         this.inputData = {
-            mobile: '', // '15066886007',
-            password: '', // '123123',
+            mobile: '15066886007', // '15066886007',
+            password: '123123', // '123123',
         }
     }
 

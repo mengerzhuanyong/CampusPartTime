@@ -16,16 +16,13 @@ import ShareContent from '../../component/common/ShareContent';
 import CusTheme from '../theme/Theme';
 import JShareModule from 'jshare-react-native'
 import TimeContent from "../../component/common/TimeContent";
-import {inject, observer} from "mobx-react/index";
 
-@inject('systemStore')
-@observer
 class ActionsManager {
 
-    static pullViewRefs = [];
+    static pullViewRefs = []
 
     /** 参数
-     * const params = {
+     const params = {
         actions: [
             { title: 'Say hello', onPress: () => alert('Hello') },
             { title: 'Do nothing' },
@@ -35,72 +32,18 @@ class ActionsManager {
             title: 'Cancel'
         }
      }
-     **/
+     */
 
-        // 先使用teaset自带的组件，后续自定义组件
-    static show = (params) => {
-        const actions = params.actions;
-        const cancelAction = params.cancelAction;
-        ActionSheet.show(actions, cancelAction);
-    };
-
-    static showShare(moduleTitle, func) {
-        this.pullViewRefs = bouncer(this.pullViewRefs.slice()); // 过滤
-        if (this.pullViewRefs.length === 0) {
-            Overlay.show(
-                <Overlay.PullView
-                    ref={v => this.pullViewRefs.push(v)}
-                    side={'bottom'}
-                    modal={false}
-                    rootTransform={'none'}
-                    containerStyle={CusTheme.bgTransparentStyle}
-                    onCloseRequest={() => this.hide()}
-                >
-                    <ShareContent moduleTitle={moduleTitle} onPress={func}/>
-                </Overlay.PullView>
-            )
-        }
+    static show(params, option = {}) {
+        this.showPullView(<ActionContent {...params} />, option)
     }
 
-    static showTime(times, start, end, func) {
-        this.pullViewRefs = bouncer(this.pullViewRefs.slice()); // 过滤
-        if (this.pullViewRefs.length === 0) {
-            Overlay.show(
-                <Overlay.PullView
-                    ref={v => this.pullViewRefs.push(v)}
-                    side={'bottom'}
-                    modal={false}
-                    rootTransform={'none'}
-                    containerStyle={CusTheme.bgTransparentStyle}
-                    onCloseRequest={() => this.hide()}
-                >
-                    <TimeContent
-                        onPress={func}
-                        data={times}
-                        startTime={start}
-                        endTime={end}
-                    />
-                </Overlay.PullView>
-            )
-        }
+    static showShare(moduleTitle, func) {
+        this.showPullView(<ShareContent moduleTitle={moduleTitle} onPress={func} />, {})
     }
 
     static showArea(func) {
-        this.pullViewRefs = bouncer(this.pullViewRefs.slice()); // 过滤
-        if (this.pullViewRefs.length === 0) {
-            Overlay.show(
-                <Overlay.PullView
-                    ref={v => this.pullViewRefs.push(v)}
-                    side={'bottom'}
-                    modal={false}
-                    rootTransform={'none'}
-                    containerStyle={CusTheme.bgTransparentStyle}
-                    onCloseRequest={() => this.hide()}
-                >
-                    <AreaContent onPress={func}/>
-                </Overlay.PullView>
-            )
-        }
+        this.showPullView(<AreaContent onPress={func} />, {})
     }
 
     static showShareModule(params, callBack = () => {}) {
@@ -157,11 +100,30 @@ class ActionsManager {
         })
     }
 
+    static showPullView(component, option) {
+        this.pullViewRefs = bouncer(this.pullViewRefs.slice()) // 过滤
+        if (this.pullViewRefs.length === 0) {
+            Overlay.show(
+                <Overlay.PullView
+                    ref={v => this.pullViewRefs.push(v)}
+                    side={'bottom'}
+                    modal={false}
+                    rootTransform={'none'}
+                    containerStyle={{ backgroundColor: 'transparent', }}
+                    onCloseRequest={() => this.hide()}
+                    {...option}
+                >
+                    {component}
+                </Overlay.PullView>
+            )
+        }
+    }
+
     static hide() {
-        this.pullViewRefs = bouncer(this.pullViewRefs.slice()); // 过滤
+        this.pullViewRefs = bouncer(this.pullViewRefs.slice()) // 过滤
         if (this.pullViewRefs.length > 0) {
-            const lastRef = this.pullViewRefs.pop();
-            lastRef.close();
+            const lastRef = this.pullViewRefs.pop()
+            lastRef.close()
         }
     }
 
@@ -182,6 +144,5 @@ class ActionsManager {
         }
     }
 }
-
 
 export default ActionsManager;

@@ -85,9 +85,32 @@ export default class WorkDetail extends Component {
         return descriptions;
     };
 
-    signUpWork = () => {
+    signUpWork = (status) => {
         let {item} = this.state;
-        RouterHelper.navigate('选择时间', 'WorkSignUpStepOne', {item});
+        if (status === 1) {
+            RouterHelper.navigate('选择时间', 'WorkSignUpStepOne', {item});
+        }
+        if (status === 2) {
+            RouterHelper.reset('', 'Login');
+        }
+        if (status === 3) {
+            const params = {
+                title: '温馨提示',
+                detail: '您还没有认证学籍信息，无法报名',
+                actions: [
+                    {
+                        title: '取消',
+                        onPress: () => {
+                        },
+                    },
+                    {
+                        title: '立即认证',
+                        onPress: () => RouterHelper.navigate('我的资料', 'MineProfile'),
+                    }
+                ]
+            };
+            AlertManager.show(params);
+        }
     };
 
     render() {
@@ -139,11 +162,11 @@ export default class WorkDetail extends Component {
                     </View>
                 </ScrollView>
                 <Button
-                    title={workDetail.sign_available === 1 ? '报名' : '已报名'}
+                    title={'立即报名'}
                     style={[CusTheme.btnView, styles.btnView]}
                     titleStyle={[CusTheme.btnName, styles.btnName]}
                     onPress={() => {
-                        workDetail.sign_available === 1 && this.signUpWork();
+                        this.signUpWork(workDetail.sign_available);
                     }}
                 />
             </View>
