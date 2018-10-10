@@ -29,13 +29,15 @@ export default class EmergencyContact extends Component {
 
     constructor(props) {
         super(props);
+        const {mineStore} = this.props;
+        let {myProfile} = mineStore;
         this.state = {
-            realname1: '',
-            relationship1: '',
-            mobile1: '',
-            realname2: '',
-            relationship2: '',
-            mobile2: '',
+            realname1: myProfile.contact_detail.realname1 ? myProfile.contact_detail.realname1 : '',
+            relationship1: myProfile.contact_detail.relationship1 ? myProfile.contact_detail.relationship1 : '',
+            mobile1: myProfile.contact_detail.mobile1 ? myProfile.contact_detail.mobile1 : '',
+            realname2: myProfile.contact_detail.realname2 ? myProfile.contact_detail.realname2 : '',
+            relationship2: myProfile.contact_detail.relationship2 ? myProfile.contact_detail.relationship2 : '',
+            mobile2: myProfile.contact_detail.mobile2 ? myProfile.contact_detail.mobile2 : '',
         };
     }
 
@@ -73,7 +75,7 @@ export default class EmergencyContact extends Component {
         } catch (e) {
             ToastManager.show('error');
         }
-    }
+    };
 
     render() {
         let {mineStore} = this.props;
@@ -85,11 +87,11 @@ export default class EmergencyContact extends Component {
                 <NavigationBar
                     title={pageTitle}
                 />
-                <KeyboardAvoidingView style={styles.content}>
-                    <ScrollView
-                        style={styles.scrollContent}
-                        keyboardShouldPersistTaps={'handled'}
-                    >
+                <ScrollView
+                    style={styles.scrollContent}
+                    keyboardShouldPersistTaps={'handled'}
+                >
+                    <KeyboardAvoidingView style={styles.content}>
                         <View style={styles.userInfoTipsView}>
                             <Text style={styles.userInfoTipsText}>紧急联系人1：</Text>
                         </View>
@@ -206,8 +208,8 @@ export default class EmergencyContact extends Component {
                             titleStyle={styles.submitBtnName}
                             onPress={this.submitFoo}
                         />
-                    </ScrollView>
-                </KeyboardAvoidingView>
+                    </KeyboardAvoidingView>
+                </ScrollView>
             </Container>
         );
     }
@@ -216,10 +218,11 @@ export default class EmergencyContact extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#eee',
+        backgroundColor: '#f1f1f1',
     },
     content: {
         flex: 1,
+        // backgroundColor: '#123',
     },
     scrollContent: {
         flex: 1,
@@ -288,7 +291,7 @@ const styles = StyleSheet.create({
         height: 45,
         borderWidth: 0,
         marginTop: 40,
-        marginBottom: 20,
+        marginBottom: 40,
         backgroundColor: CusTheme.themeColor,
     },
     submitBtnName: {

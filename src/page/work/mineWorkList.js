@@ -56,6 +56,7 @@ export default class MineWorkList extends Component {
     componentWillReceiveProps(nextProps) {
         // console.log('componentWillReceiveProps---->', nextProps);
         if (nextProps.type !== this.props.type) {
+            this.page = 1;
             this.requestDataSource(this.page, nextProps.type);
         }
     }
@@ -200,9 +201,11 @@ const styles = StyleSheet.create({
     headerComponentView: {},
     // 列表区
     listContent: {
-        paddingHorizontal: 10,
         width: SCREEN_WIDTH,
         backgroundColor: '#fff',
+    },
+    horLine: {
+        marginVertical: 5,
     },
     btnView: {
         height: 45,

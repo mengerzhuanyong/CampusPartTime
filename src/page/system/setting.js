@@ -150,17 +150,17 @@ export default class Setting extends Component {
                         />
                     </View>
                     <View style={[styles.contentItemView, styles.lastContentItemView]}>
-                        <ListRow
+                        {/*<ListRow
                             style={styles.contentTitleView}
                             title={'清理缓存'}
                             titleStyle={CusTheme.contentTitle}
                             detail={systemInfo.cache_size}
                             accessory={null}
                             onPress={this.clearCache}
-                        />
+                        />*/}
                         <ListRow
                             style={styles.contentTitleView}
-                            title={'检查更新'}
+                            title={'当前版本'}
                             titleStyle={CusTheme.contentTitle}
                             detail={systemInfo.version_code}
                             // accessory={<Image source={Images.icon_arrow_right} style={[CusTheme.contentRightIcon, {}]} />}

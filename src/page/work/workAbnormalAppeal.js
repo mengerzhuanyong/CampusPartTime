@@ -42,6 +42,7 @@ export default class WorkAbnormalAppeal extends Component {
             description: '',
             reason: '',
             photos: [],
+            uploading: false,
         };
     }
 
@@ -84,9 +85,11 @@ export default class WorkAbnormalAppeal extends Component {
     handleImage = async () => {
         let result = await ImagePickerManager.showMultipleImagePicker({imageCount: 1, quality: 70, enableBase64: true});
         if (result.code === 1) {
+            this.setState({uploading: true});
             let url = ServicesApi.upload;
             let data = result.data[0].path;
             let upRes = await FetchData.upload(url, data);
+            this.setState({uploading: false});
             if (upRes && upRes.code === 1) {
                 let images = this.state.photos.concat(upRes.data);
                 this.setState({
@@ -119,7 +122,7 @@ export default class WorkAbnormalAppeal extends Component {
                         <Image source={Images.icon_delete} style={styles.deleteIcon}/>
                     </View>
                     <Image
-                        source={Images.img_goods1}
+                        source={{uri: obj}}
                         style={[CusTheme.uploadIcon, styles.uploadItemImage]}
                     />
                 </TouchableOpacity>
@@ -129,7 +132,7 @@ export default class WorkAbnormalAppeal extends Component {
     };
 
     render() {
-        let {loading, listData, item, photos} = this.state;
+        let {loading, listData, uploading, item, photos} = this.state;
         let {params} = this.props.navigation.state;
         let pageTitle = params && params.pageTitle ? params.pageTitle : '异常申诉';
         return (
@@ -191,6 +194,9 @@ export default class WorkAbnormalAppeal extends Component {
                         </View>
                         <View style={[styles.uploadImageView]}>
                             {this.renderImagesView(photos)}
+                            {uploading && <View style={[styles.uploadItemView, styles.uploadItemViewBorder]}>
+                                <SpinnerLoading isVisible={uploading}/>
+                            </View>}
                             <TouchableOpacity
                                 style={[styles.uploadItemView, styles.uploadItemViewBorder]}
                                 onPress={this.handleImage}

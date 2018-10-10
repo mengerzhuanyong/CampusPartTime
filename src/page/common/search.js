@@ -133,7 +133,7 @@ export default class Search extends Component {
             this.setState({
                 ready: true
             });
-        }, 600);
+        }, 500);
         this.flatListRef && this.flatListRef.stopRefresh();
         this.flatListRef && this.flatListRef.stopEndReached({allLoad: endStatus});
 

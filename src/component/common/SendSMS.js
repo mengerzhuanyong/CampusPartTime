@@ -11,7 +11,7 @@ import {
     Text,
     View,
     StyleSheet,
-    TouchableOpacity,
+    TouchableOpacity, Keyboard,
 } from 'react-native'
 
 import {VerticalLine} from './commonLine'
@@ -36,6 +36,7 @@ export default class SendSMS extends PureComponent {
         style: null,
         titleStyle: null,
         lineStyle: null,
+        dismiss: () => Keyboard.dismiss(),
     };
 
     componentWillReceiveProps(nextProps) {
@@ -50,6 +51,8 @@ export default class SendSMS extends PureComponent {
 
     getVerificationCode = async (mobile, type) => {
         console.log(mobile);
+        let {dismiss} = this.props;
+        dismiss && dismiss();
         type = type === 'register' ? 1 : 2;
         let url = ServicesApi.getVerificationCode;
         let data = {
@@ -92,7 +95,7 @@ export default class SendSMS extends PureComponent {
     };
 
     render() {
-        let {type, style, titleStyle, lineStyle} = this.props;
+        let {type, style, titleStyle, lineStyle,} = this.props;
         let {mobile, seconds, codeAlreadySend} = this.state;
         if (!codeAlreadySend) {
             return (

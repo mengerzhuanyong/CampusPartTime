@@ -42,6 +42,7 @@ import {HorizontalLine} from '../../component/common/commonLine'
 import GoodsItem from "../../component/item/goodsItem";
 import GoodsCarousel from "../../component/shop/GoodsCarousel"
 import GoodsTagComponent from "../../component/shop/goodsTagComponent";
+import SpinnerLoading from "../../component/common/SpinnerLoading";
 
 
 @inject('loginStore', 'shopStore')
@@ -61,10 +62,8 @@ export default class GoodsDetail extends Component {
     componentDidMount() {
         this.loadNetData();
         this.timer1 = setTimeout(() => {
-            this.setState({
-                ready: true,
-            });
-        }, 600);
+            this.setState({ready: true});
+        }, 200);
     }
 
     componentWillUnmount() {

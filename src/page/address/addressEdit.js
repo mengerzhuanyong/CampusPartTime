@@ -18,7 +18,7 @@ import {
     TextInput,
     ImageBackground,
     TouchableOpacity,
-    TouchableWithoutFeedback,
+    TouchableWithoutFeedback, KeyboardAvoidingView, Keyboard,
 } from 'react-native'
 
 import NavigationBar from '../../component/navigation/NavigationBar'
@@ -51,7 +51,7 @@ export default class AddressEdit extends Component {
         this.state = {
             item: params && params.item ? params.item : {},
             username: params && params.item ? params.item.username : '',
-            mobile:params && params.item ? params.item.mobile : '',
+            mobile: params && params.item ? params.item.mobile : '',
             area: params && params.item ? params.item.area : [],
             address: params && params.item ? params.item.address : '',
         };
@@ -61,6 +61,7 @@ export default class AddressEdit extends Component {
     }
 
     pickerArea = () => {
+        Keyboard.dismiss();
         ActionsManager.showArea((info) => {
             this.setState({
                 area: info
@@ -106,71 +107,79 @@ export default class AddressEdit extends Component {
                 <NavigationBar
                     title={pageTitle}
                 />
-                <View style={styles.content}>
-                    <View style={[styles.addressAddItemView]}>
-                        <TextInput
-                            style={styles.inputItemCon}
-                            placeholder="请输入联系人姓名"
-                            defaultValue={username}
-                            placeholderTextColor='#555'
-                            underlineColorAndroid={'transparent'}
-                            onChangeText={(text) => {
-                                this.setState({
-                                    username: text,
-                                });
-                            }}
-                        />
-                    </View>
-                    <HorizontalLine lineStyle={styles.horLine}/>
-                    <View style={[styles.addressAddItemView]}>
-                        <TextInput
-                            style={styles.inputItemCon}
-                            placeholder="请输入联系人电话"
-                            placeholderTextColor='#555'
-                            defaultValue={mobile}
-                            customKeyboardType="numberKeyBoard"
-                            underlineColorAndroid={'transparent'}
-                            onChangeText={(text) => {
-                                this.setState({
-                                    mobile: text,
-                                });
-                            }}
-                        />
-                    </View>
-                    <HorizontalLine lineStyle={styles.horLine}/>
-                    <View style={[styles.addressAddItemView]}>
-                        <TouchableOpacity
-                            style={styles.itemContentView}
-                            onPress={this.pickerArea}
-                        >
-                            <Text style={[styles.areaContext]}>{area.length > 0 ? area : '请选择所在省市'}</Text>
-                            <Image source={Images.icon_arrow_right} style={styles.arrowIcon}/>
-                        </TouchableOpacity>
-                    </View>
-                    <HorizontalLine lineStyle={styles.horLine}/>
-                    <View style={[styles.addressAddItemView]}>
-                        <TextInput
-                            style={styles.inputItemCon}
-                            placeholder="请输入详细地址"
-                            defaultValue={address}
-                            placeholderTextColor='#555'
-                            underlineColorAndroid={'transparent'}
-                            onChangeText={(text) => {
-                                this.setState({
-                                    address: text,
-                                });
-                            }}
-                        />
-                    </View>
-                    <View style={styles.multiBtnView}>
-                        <Button
-                            title={'确定'}
-                            style={[CusTheme.btnView, styles.btnView]}
-                            titleStyle={[CusTheme.btnName, styles.btnName]}
-                            onPress={this.onSubmitAddress}
-                        />
-                    </View>
-                </View>
+                <KeyboardAvoidingView style={styles.content}>
+                    <ScrollView
+                        style={styles.content}
+                        keyboardShouldPersistTaps={'handled'}
+                    >
+                        <View style={[styles.addressAddItemView]}>
+                            <TextInput
+                                style={styles.inputItemCon}
+                                placeholder="请输入联系人姓名"
+                                defaultValue={username}
+                                placeholderTextColor='#555'
+                                underlineColorAndroid={'transparent'}
+                                onChangeText={(text) => {
+                                    this.setState({
+                                        username: text,
+                                    });
+                                }}
+                            />
+                        </View>
+                        <HorizontalLine lineStyle={styles.horLine}/>
+                        <View style={[styles.addressAddItemView]}>
+                            <TextInput
+                                style={styles.inputItemCon}
+                                placeholder="请输入联系人电话"
+                                placeholderTextColor='#555'
+                                keyboardType={'numeric'}
+                                returnKeyType={'done'}
+                                maxLength={11}
+                                defaultValue={mobile}
+                                customKeyboardType="numberKeyBoard"
+                                underlineColorAndroid={'transparent'}
+                                onChangeText={(text) => {
+                                    this.setState({
+                                        mobile: text,
+                                    });
+                                }}
+                            />
+                        </View>
+                        <HorizontalLine lineStyle={styles.horLine}/>
+                        <View style={[styles.addressAddItemView]}>
+                            <TouchableOpacity
+                                style={styles.itemContentView}
+                                onPress={this.pickerArea}
+                            >
+                                <Text style={[styles.areaContext]}>{area.length > 0 ? area : '请选择所在省市'}</Text>
+                                <Image source={Images.icon_arrow_right} style={styles.arrowIcon}/>
+                            </TouchableOpacity>
+                        </View>
+                        <HorizontalLine lineStyle={styles.horLine}/>
+                        <View style={[styles.addressAddItemView]}>
+                            <TextInput
+                                style={styles.inputItemCon}
+                                placeholder="请输入详细地址"
+                                defaultValue={address}
+                                placeholderTextColor='#555'
+                                underlineColorAndroid={'transparent'}
+                                onChangeText={(text) => {
+                                    this.setState({
+                                        address: text,
+                                    });
+                                }}
+                            />
+                        </View>
+                        <View style={styles.multiBtnView}>
+                            <Button
+                                title={'确定'}
+                                style={[CusTheme.btnView, styles.btnView]}
+                                titleStyle={[CusTheme.btnName, styles.btnName]}
+                                onPress={this.onSubmitAddress}
+                            />
+                        </View>
+                    </ScrollView>
+                </KeyboardAvoidingView>
             </View>
         );
     }

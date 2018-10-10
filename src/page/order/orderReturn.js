@@ -96,7 +96,6 @@ export default class OrderReturn extends Component {
                                     multiline={true}
                                     style={styles.inputItem}
                                     ref={v => this.input = v}
-                                    keyboardType={'numeric'}
                                     underlineColorAndroid={'rgba(0, 0, 0, 0)'}
                                     placeholder={'请输入您的申诉原因'}
                                     placeholderTextColor={'#999'}

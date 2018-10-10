@@ -43,7 +43,7 @@ export default class MineProfile extends Component {
             this.setState({
                 loading: false
             });
-        }, 600);
+        }, 500);
     }
 
     loadNetData = async () => {

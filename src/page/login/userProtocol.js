@@ -4,7 +4,7 @@ import { View, Text, StyleSheet, WebView } from 'react-native';
 import NavigationBar from '../../components/NavigationBar';
 class UserProtocol extends React.PureComponent {
 
-    con
+
     render() {
         return (
             <View style={styles.container}>

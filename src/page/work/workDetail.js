@@ -41,11 +41,20 @@ export default class WorkDetail extends Component {
         this.state = {
             item: params && params.item ? params.item : {id: 1},
             listData: [1, 2, 3, 4],
+            ready: false,
         };
     }
 
     componentDidMount() {
         this.loadNetData();
+        this.timer2 = setTimeout(() => {
+            this.setState({ready: true});
+        }, 200);
+    }
+
+    componentWillUnmount() {
+        let timers = [this.timer, this.timer1, this.timer2];
+        ClearTimer(timers);
     }
 
     loadNetData = async () => {
@@ -114,7 +123,7 @@ export default class WorkDetail extends Component {
     };
 
     render() {
-        let {loading, listData} = this.state;
+        let {loading, listData, ready} = this.state;
         const {workStore} = this.props;
         let {workDetail} = workStore;
         let {params} = this.props.navigation.state;
@@ -125,50 +134,56 @@ export default class WorkDetail extends Component {
                     title={pageTitle}
                     // rightView={this.renderHeaderRightView()}
                 />
-                <ScrollView style={styles.content}>
-                    <View style={[styles.contentItemView,]}>
-                        <View style={[styles.contentTitleView, styles.orderGoodsInfoView]}>
-                            <Text style={styles.orderGoodsTitle}>{workDetail.name}</Text>
-                            <JobTagComponent
-                                style={styles.tagsContainer}
-                                tagsData={workDetail.tags}
-                                {...this.props}
-                            />
-                        </View>
-                        <Text style={styles.orderGoodsPrices}>{workDetail.price}工分/h</Text>
-                        <Text style={styles.orderGoodsNum}>报名人数：{workDetail.sign_count}/{workDetail.total_count}</Text>
-                    </View>
+                {ready ?
+                    <View style={styles.content}>
+                        <ScrollView style={styles.content}>
+                            <View style={[styles.contentItemView,]}>
+                                <View style={[styles.contentTitleView, styles.orderGoodsInfoView]}>
+                                    <Text style={styles.orderGoodsTitle}>{workDetail.name}</Text>
+                                    <JobTagComponent
+                                        style={styles.tagsContainer}
+                                        tagsData={workDetail.tags}
+                                        {...this.props}
+                                    />
+                                </View>
+                                <Text style={styles.orderGoodsPrices}>{workDetail.price}工分/h</Text>
+                                <Text
+                                    style={styles.orderGoodsNum}>报名人数：{workDetail.sign_count}/{workDetail.total_count}</Text>
+                            </View>
 
-                    <View style={[styles.contentItemView, styles.orderUserInfoView]}>
-                        <View style={[styles.contentTitleView]}>
-                            <Text style={styles.contentTitle}>职位描述</Text>
-                        </View>
-                        <View style={styles.orderUserInfoCon}>
-                            {this.renderWorKDescription(workDetail.description)}
+                            <View style={[styles.contentItemView, styles.orderUserInfoView]}>
+                                <View style={[styles.contentTitleView]}>
+                                    <Text style={styles.contentTitle}>职位描述</Text>
+                                </View>
+                                <View style={styles.orderUserInfoCon}>
+                                    {this.renderWorKDescription(workDetail.description)}
 
-                            {/*<View style={styles.orderUserInfoConItem}>
+                                    {/*<View style={styles.orderUserInfoConItem}>
                                 <Text style={[styles.orderUserInfoConItemTitle]}>【入职要求】</Text>
                                 <Text style={[styles.orderUserInfoConItemValue]}>形象好、气质佳、阳光开朗、男女不限！</Text>
                             </View>*/}
-                        </View>
+                                </View>
+                            </View>
+                            <View style={[styles.contentItemView, styles.orderStatusInfoView]}>
+                                <View style={[styles.contentTitleView]}>
+                                    <Text style={styles.contentTitle}>工作时间</Text>
+                                </View>
+                                <Text style={styles.orderStatusInfoItem}>开始时间：{workDetail.time_start}</Text>
+                                <Text style={styles.orderStatusInfoItem}>结束时间：{workDetail.time_end}</Text>
+                                <Text style={styles.orderStatusInfoItem}>工作时间段：{workDetail.time_dur}</Text>
+                            </View>
+                        </ScrollView>
+                        <Button
+                            title={'立即报名'}
+                            style={[CusTheme.btnView, styles.btnView]}
+                            titleStyle={[CusTheme.btnName, styles.btnName]}
+                            onPress={() => {
+                                this.signUpWork(workDetail.sign_available);
+                            }}
+                        />
                     </View>
-                    <View style={[styles.contentItemView, styles.orderStatusInfoView]}>
-                        <View style={[styles.contentTitleView]}>
-                            <Text style={styles.contentTitle}>工作时间</Text>
-                        </View>
-                        <Text style={styles.orderStatusInfoItem}>开始时间：{workDetail.time_start}</Text>
-                        <Text style={styles.orderStatusInfoItem}>结束时间：{workDetail.time_end}</Text>
-                        <Text style={styles.orderStatusInfoItem}>工作时间段：{workDetail.time_dur}</Text>
-                    </View>
-                </ScrollView>
-                <Button
-                    title={'立即报名'}
-                    style={[CusTheme.btnView, styles.btnView]}
-                    titleStyle={[CusTheme.btnName, styles.btnName]}
-                    onPress={() => {
-                        this.signUpWork(workDetail.sign_available);
-                    }}
-                />
+                    : <SpinnerLoading isVisible={true}/>
+                }
             </View>
         );
     }
@@ -176,6 +191,10 @@ export default class WorkDetail extends Component {
 
 const styles = StyleSheet.create({
     container: {
+        flex: 1,
+        backgroundColor: '#eee',
+    },
+    content: {
         flex: 1,
         backgroundColor: '#eee',
     },

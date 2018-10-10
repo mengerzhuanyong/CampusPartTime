@@ -113,7 +113,7 @@ export default class CertificationIDCard extends Component {
                 let _result = await mineStore.requestMyProfile(_url);
                 this.timer1 = setTimeout(() => {
                     RouterHelper.goBack();
-                }, 600);
+                }, 500);
             }
         } catch (e) {
 

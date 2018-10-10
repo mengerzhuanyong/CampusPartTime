@@ -51,7 +51,7 @@ export default class MineJobItem extends PureComponent {
                 </View>
                 <View style={styles.jobInfoView}>
                     <View style={[styles.jobInfoItemView, styles.jobInfoTitleView]}>
-                        <Text style={styles.jobInfoTitle}>{item.name}</Text>
+                        <Text style={styles.jobInfoTitle} numberOfLines={2}>{item.name}</Text>
                         <JobTagComponent
                             tagsData={item.tags}
                             {...this.props}
@@ -76,11 +76,13 @@ export default class MineJobItem extends PureComponent {
 const styles = StyleSheet.create({
 
     jobItemView: {
-        paddingLeft: 15,
-        marginVertical: 15,
+        paddingVertical: 5,
+        paddingHorizontal: 15,
+        marginVertical: 5,
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
+        // backgroundColor: '#123',
     },
     jobItemPicView: {
         width: 80,
@@ -114,10 +116,11 @@ const styles = StyleSheet.create({
         // backgroundColor: '#123',
     },
     jobInfoTitle: {
+        flex: 1,
         color: '#333',
         marginRight: 10,
         marginBottom: 5,
-        fontSize: FontSize(14),
+        fontSize: FontSize(13),
     },
     jobInfoTagIcon: {
         width: scaleSize(28),

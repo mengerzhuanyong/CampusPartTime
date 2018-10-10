@@ -76,6 +76,7 @@ class AreaContent extends React.PureComponent {
     };
 
     render() {
+        let {enableAll} = this.props;
         return (
             <View style={styles.container}>
                 <View style={styles.actionContainer}>
@@ -87,24 +88,24 @@ class AreaContent extends React.PureComponent {
                     </TouchableOpacity>
                 </View>
                 <View style={styles.wheelContainer}>
-                    {/*<Wheel
-                        style={styles.wheelStyle}
+                    {!enableAll && <Wheel
+                        style={[styles.wheelStyle, enableAll && styles.wheelStyleCur]}
                         itemStyle={styles.itemStyle}
                         index={this.state.provinceIndex}
                         items={this.state.province}
                         // defaultIndex={this.years.findIndex((item) => item === currentYear)}
                         onChange={this._onProChange}
-                    />
-                    <Wheel
-                        style={styles.wheelStyle}
+                    />}
+                    {!enableAll && <Wheel
+                        style={[styles.wheelStyle, enableAll && styles.wheelStyleCur]}
                         itemStyle={styles.itemStyle}
                         index={this.state.cityIndex}
                         items={this.state.city}
                         // defaultIndex={this.months.findIndex((item) => item === currentMounth)}
                         onChange={this._onCityChange}
-                    />*/}
+                    />}
                     <Wheel
-                        style={styles.wheelStyle}
+                        style={[styles.wheelStyle, enableAll && styles.wheelStyleCur]}
                         itemStyle={styles.itemStyle}
                         index={this.state.areaIndex}
                         items={this.state.area}
@@ -130,7 +131,10 @@ const styles = StyleSheet.create({
     },
     wheelStyle: {
         height: 180,
-        width: CusTheme.screen_width, // / 3,
+        width: CusTheme.screen_width / 3,
+    },
+    wheelStyleCur: {
+        width: CusTheme.screen_width,
     },
     itemStyle: {
         textAlign: "center",

@@ -55,6 +55,7 @@ export default class MineOrderList extends Component {
     componentWillReceiveProps(nextProps) {
         // console.log('componentWillReceiveProps---->', nextProps);
         if (nextProps.type !== this.props.type) {
+            this.page = 1;
             this.requestDataSource(this.page, nextProps.type, nextProps.status);
         }
     }

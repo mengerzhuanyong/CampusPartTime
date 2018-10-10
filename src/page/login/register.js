@@ -16,7 +16,7 @@ import {
     StyleSheet,
     TouchableOpacity,
     ScrollView,
-    KeyboardAvoidingView,
+    KeyboardAvoidingView, Keyboard,
 } from 'react-native'
 import {observer, inject} from 'mobx-react'
 import {Button} from 'teaset';
@@ -126,8 +126,11 @@ export default class Register extends Component {
                     backgroundImage={null}
                     rightViewOnPress={this.renderHeaderRightView}
                 />
-                <KeyboardAvoidingView style={styles.loginContent}>
-                    <ScrollView style={styles.loginContent}>
+                <KeyboardAvoidingView style={styles.content}>
+                    <ScrollView
+                        style={styles.loginContent}
+                        keyboardShouldPersistTaps={'handled'}
+                    >
                         <View style={styles.inputItemView}>
                             <Image source={Images.icon_user_sign} style={styles.inputIcon}/>
                             <TextInput
@@ -169,6 +172,7 @@ export default class Register extends Component {
                             <SendSMS
                                 type={'register'}
                                 mobile={mobile}
+                                dismiss={() => Keyboard.dismiss()}
                             />
                         </View>
                         <HorizontalLine lineStyle={styles.horLine}/>
@@ -177,7 +181,7 @@ export default class Register extends Component {
                             <TextInput
                                 style={styles.inputItem}
                                 ref={v => this.input = v}
-                                keyboardType={'numeric'}
+                                // keyboardType={'numeric'}
                                 underlineColorAndroid={'rgba(0, 0, 0, 0)'}
                                 placeholder={'请输入密码'}
                                 secureTextEntry={true}
@@ -197,7 +201,7 @@ export default class Register extends Component {
                             <TextInput
                                 style={styles.inputItem}
                                 ref={v => this.input = v}
-                                keyboardType={'numeric'}
+                                // keyboardType={'numeric'}
                                 underlineColorAndroid={'rgba(0, 0, 0, 0)'}
                                 placeholder={'请再次确认您的密码'}
                                 secureTextEntry={true}
@@ -250,6 +254,9 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#fff'
     },
+    content: {
+        flex: 1,
+    },
     navigationBarStyle: {
         borderBottomWidth: CusTheme.minPixel,
         borderBottomColor: '#fff',
@@ -260,8 +267,9 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
     },
     loginContent: {
+        flex: 1,
         padding: 20,
-        marginTop: ScaleSize(80),
+        paddingTop: ScaleSize(140),
     },
     inputItemView: {
         height: 50,

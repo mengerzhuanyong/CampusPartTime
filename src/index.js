@@ -70,7 +70,7 @@ export default class Index extends React.Component {
                 this.timer1 = setTimeout(() => {
                     RouterHelper.reset('', 'Login');
                     SplashScreen.hide();
-                }, 600);
+                }, 500);
             } else {
                 // 已经登录
                 console.log(localRes);
@@ -82,7 +82,7 @@ export default class Index extends React.Component {
             this.timer3 = setTimeout(() => {
             //     RouterHelper.reset('', 'Login');
                 SplashScreen.hide();
-            }, 600);
+            }, 500);
         }
     };
 
@@ -97,7 +97,7 @@ export default class Index extends React.Component {
                     RouterHelper.reset('', 'Tab');
                     // RouterHelper.reset('', 'PointShop');
                     SplashScreen.hide();
-                }, 600);
+                }, 500);
             }
         } catch (e) {
             console.log(e);

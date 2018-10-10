@@ -44,7 +44,7 @@ export default class CertificationStudent extends Component {
                 <View style={styles.content}>
                     {myProfile.edu_detail.map((item, index) => {
                         return (
-                            <View style={styles.contentItemView} key={'student_info_'+index}>
+                            <View style={[styles.contentItemView, index > 0 && styles.contentItemViewBorder]} key={'student_info_'+index}>
                                 <Text style={styles.contentTitle}>{item.title}:</Text>
                                 <Text style={styles.contentContext}>{item.value}</Text>
                             </View>
@@ -62,17 +62,19 @@ const styles = StyleSheet.create({
     },
     content: {
         flex: 1,
-
+        backgroundColor: '#f1f1f1',
     },
     contentItemView: {
         height: 45,
         flexDirection: 'row',
         alignItems: 'center',
         paddingHorizontal: 30,
-        // backgroundColor: '#fff',
-        borderBottomWidth: 1,
+        backgroundColor: '#fff',
         borderColor: '#ddd',
         justifyContent: 'space-between',
+    },
+    contentItemViewBorder: {
+        borderTopWidth: CusTheme.minPixel,
     },
     contentTitle: {
         // flex: 1,
@@ -80,8 +82,8 @@ const styles = StyleSheet.create({
         color: '#333',
         marginRight: 15,
         // textAlign: 'right',
-        borderRightWidth: 1,
-        borderColor: '#ddd',
+        // borderRightWidth: 1,
+        // borderColor: '#ddd',
     },
     contentContext: {
         // flex: 3,

@@ -62,7 +62,7 @@ export default class CertificationMobile extends Component {
         if (result && result.code === 1) {
             this.timer = setTimeout(() => {
                 RouterHelper.goBack();
-            }, 600);
+            }, 500);
         }
     };
 
@@ -223,6 +223,7 @@ const styles = StyleSheet.create({
     userInfoItemInput: {
         flex: 1,
         height: 45,
+        color: '#555',
     },
     submitBtnView: {
         height: 45,

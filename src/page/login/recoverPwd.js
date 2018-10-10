@@ -15,7 +15,7 @@ import {
     StyleSheet,
     ScrollView,
     TouchableOpacity,
-    KeyboardAvoidingView
+    KeyboardAvoidingView, Keyboard
 } from 'react-native'
 
 import {observer, inject} from 'mobx-react'
@@ -90,8 +90,11 @@ export default class RecoverPwd extends PureComponent {
                     backgroundImage={null}
                     rightViewOnPress={this.renderHeaderRightView}
                 />
-                <KeyboardAvoidingView style={styles.loginContent}>
-                    <ScrollView style={styles.loginContent}>
+                <KeyboardAvoidingView style={styles.content}>
+                    <ScrollView
+                        style={styles.loginContent}
+                        keyboardShouldPersistTaps={'handled'}
+                    >
                         <View style={styles.inputItemView}>
                             <Image source={Images.icon_user_sign} style={styles.inputIcon}/>
                             <TextInput
@@ -128,6 +131,7 @@ export default class RecoverPwd extends PureComponent {
                                 style={styles.getCodeView}
                                 lineStyle={styles.verLine}
                                 titleStyle={styles.getCodeCon}
+                                dismiss={() => Keyboard.dismiss()}
                                 {...this.props}
                             />
                         </View>
@@ -180,6 +184,9 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#fff'
     },
+    content: {
+        flex: 1,
+    },
     navigationBarStyle: {
         borderBottomWidth: CusTheme.minPixel,
         borderBottomColor: '#fff',
@@ -190,8 +197,9 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
     },
     loginContent: {
+        flex: 1,
         padding: 20,
-        marginTop: ScaleSize(80),
+        paddingTop: ScaleSize(140),
     },
     inputItemView: {
         height: 50,

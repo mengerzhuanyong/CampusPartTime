@@ -203,7 +203,7 @@ export default class MinePoints extends Component {
             <View style={styles.container}>
                 <NavigationBar
                     title={pageTitle}
-                    style={{backgroundColor: 'transparent'}}
+                    style={{backgroundColor: '#67c590'}}
                     // backgroundImage={Images.img_bg_nav_bar2}
                     // backgroundImage={null}
                 />

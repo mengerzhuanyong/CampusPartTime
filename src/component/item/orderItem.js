@@ -118,7 +118,7 @@ const styles = StyleSheet.create({
     orderInfoPrices: {
         fontSize: 13,
         color: '#ed3126',
-        textAlign: 'right',
+        // textAlign: 'right',
         // fontSize: FontSize(12),
     },
     orderInfoSubtitleView: {},

@@ -120,7 +120,7 @@ export default class MineWithDraw extends Component {
                 let _data = await mineStore.requestDataSource(_url);
                 this.timer = setTimeout(() => {
                     RouterHelper.goBack();
-                }, 600);
+                }, 500);
             }
         } catch (e) {
             console.log(e);

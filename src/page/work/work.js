@@ -212,7 +212,7 @@ export default class Work extends Component {
                 location: info,
                 sortArea: info[2],
             }, () => this._onRefresh());
-        });
+        }, true);
     };
 
     _onRefresh = (stopRefresh) => {

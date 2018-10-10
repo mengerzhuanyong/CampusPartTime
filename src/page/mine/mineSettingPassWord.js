@@ -21,7 +21,7 @@ import {
     ImageBackground,
     TouchableOpacity,
     KeyboardAvoidingView,
-    TouchableWithoutFeedback,
+    TouchableWithoutFeedback, Keyboard,
 } from 'react-native'
 
 import NavigationBar from '../../component/navigation/NavigationBar'
@@ -101,7 +101,10 @@ export default class MineSettingPassWord extends Component {
                     title={pageTitle}
                 />
                 <KeyboardAvoidingView style={styles.content}>
-                    <ScrollView style={styles.content}>
+                    <ScrollView
+                        style={styles.content}
+                        keyboardShouldPersistTaps={'handled'}
+                    >
                         <View style={styles.loginContent}>
                             <View style={styles.inputItemView}>
                                 <Image source={Images.icon_user_sign} style={styles.inputIcon}/>
@@ -148,6 +151,7 @@ export default class MineSettingPassWord extends Component {
                                     style={styles.getCodeView}
                                     lineStyle={styles.getCodeLine}
                                     titleStyle={styles.getCodeTitle}
+                                    dismiss={() => Keyboard.dismiss()}
                                     {...this.props}
                                 />
                             </View>

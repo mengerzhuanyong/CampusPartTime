@@ -43,7 +43,7 @@ class ActionsManager {
         this.showPullView(<ShareContent moduleTitle={moduleTitle} onPress={func} />, {})
     }
 
-    static showArea(func, enableAll = true) {
+    static showArea(func, enableAll = false) {
         this.showPullView(<AreaContent onPress={func} enableAll={enableAll} />, {})
     }
 

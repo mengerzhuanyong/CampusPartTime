@@ -151,7 +151,7 @@ export default class PointShop extends Component {
                         }, () => this._onRefresh());
                         // this._onClose();
                         this.timer3 = setTimeout(() => {
-                        }, 600);
+                        }, 500);
                     }}
                 />
             )
@@ -171,7 +171,7 @@ export default class PointShop extends Component {
                             }, () => this._onRefresh());
                         // this._onClose();
                         this.timer4 = setTimeout(() => {
-                        }, 600);
+                        }, 500);
                     }}
                 />
                 {itemView}

@@ -19,7 +19,7 @@ import {
     StyleSheet,
     ImageBackground,
     TouchableOpacity,
-    TouchableWithoutFeedback,
+    TouchableWithoutFeedback, Linking,
 } from 'react-native';
 import NavigationBar from '../../component/navigation/NavigationBar'
 import SegmentedView from '../../component/segmentedView'
@@ -46,15 +46,19 @@ export default class MineWorkDetail extends Component {
                 user_info: {},
             },
             punchCardStatus: false,
+            ready: false,
         };
     }
     
     componentDidMount() {
         this.requestOrderDetail();
+        this.timer2 = setTimeout(() => {
+            this.setState({ready: true});
+        }, 200);
     }
 
     componentWillUnmount() {
-        let timers = [this.timer, this.timer1];
+        let timers = [this.timer, this.timer1, this.timer2];
         ClearTimer(timers);
     }
 
@@ -117,6 +121,7 @@ export default class MineWorkDetail extends Component {
             this.timer = setTimeout(() => {
                 if (result.code === 1) {
                     ToastManager.success(result.msg);
+                    this.requestOrderDetail();
                 } else {
                     ToastManager.fail(result.msg);
                 }
@@ -185,8 +190,23 @@ export default class MineWorkDetail extends Component {
         )
     };
 
+    makeCall = (mobile) => {
+        let url = 'tel: ' + mobile;
+        Linking.canOpenURL(url)
+            .then(supported => {
+                if (!supported) {
+                    // console.log('Can\'t handle url: ' + url);
+                } else {
+                    return Linking.openURL(url);
+                }
+            })
+            .catch((err)=>{
+                // console.log('An error occurred', err)
+            });
+    };
+
     render() {
-        let {loading, item} = this.state;
+        let {loading, item, ready} = this.state;
         console.log('item', item);
         const {workStore} = this.props;
         let {workBenchDetail} = workStore;
@@ -198,59 +218,65 @@ export default class MineWorkDetail extends Component {
                     title={pageTitle}
                     renderRightAction={this.renderHeaderRightView(item)}
                 />
-                <ScrollView style={styles.content}>
-                    <View style={[styles.contentItemView, styles.orderGoodsInfoView]}>
-                        <Text style={styles.orderGoodsTitle}>工作状态：</Text>
-                        <Text style={styles.orderGoodsTitle}>{workBenchDetail.sign_status_text}</Text>
-                    </View>
-                    <View style={[styles.contentItemView, styles.orderUserInfoView]}>
-                        <View style={[styles.contentTitleView]}>
-                           <Text style={styles.contentTitle}>【个人信息】</Text>
+                {ready ?
+
+                    <ScrollView style={styles.content}>
+                        <View style={[styles.contentItemView, styles.orderGoodsInfoView]}>
+                            <Text style={styles.orderGoodsTitle}>工作状态：</Text>
+                            <Text style={styles.orderGoodsTitle}>{workBenchDetail.sign_status_text}</Text>
                         </View>
-                        <View style={styles.goodsUserInfoCon}>
-                            <View style={styles.goodsUserInfoConItem}>
-                                <Text style={[styles.goodsUserInfoTitle]}>姓名：</Text>
-                                <Text style={[styles.goodsUserInfoText]}>{workBenchDetail.user_info.username}</Text>
+                        <View style={[styles.contentItemView, styles.orderUserInfoView]}>
+                            <View style={[styles.contentTitleView]}>
+                                <Text style={styles.contentTitle}>【个人信息】</Text>
                             </View>
-                            <View style={styles.goodsUserInfoConItem}>
-                                <Text style={[styles.goodsUserInfoTitle]}>学校：</Text>
-                                <Text style={[styles.goodsUserInfoText]}>{workBenchDetail.user_info.school}</Text>
-                            </View>
-                            <View style={styles.goodsUserInfoConItem}>
-                                <Text style={[styles.goodsUserInfoTitle]}>年级：</Text>
-                                <Text style={[styles.goodsUserInfoText]}>{workBenchDetail.user_info.grade}</Text>
-                            </View>
-                            <View style={styles.goodsUserInfoConItem}>
-                                <Text style={[styles.goodsUserInfoTitle]}>电话：</Text>
-                                <Text style={[styles.goodsUserInfoText]}>{workBenchDetail.user_info.mobile}</Text>
+                            <View style={styles.goodsUserInfoCon}>
+                                <View style={styles.goodsUserInfoConItem}>
+                                    <Text style={[styles.goodsUserInfoTitle]}>姓名：</Text>
+                                    <Text style={[styles.goodsUserInfoText]}>{workBenchDetail.user_info.username}</Text>
+                                </View>
+                                <View style={styles.goodsUserInfoConItem}>
+                                    <Text style={[styles.goodsUserInfoTitle]}>学校：</Text>
+                                    <Text style={[styles.goodsUserInfoText]}>{workBenchDetail.user_info.school}</Text>
+                                </View>
+                                <View style={styles.goodsUserInfoConItem}>
+                                    <Text style={[styles.goodsUserInfoTitle]}>年级：</Text>
+                                    <Text style={[styles.goodsUserInfoText]}>{workBenchDetail.user_info.grade}</Text>
+                                </View>
+                                <View style={styles.goodsUserInfoConItem}>
+                                    <Text style={[styles.goodsUserInfoTitle]}>电话：</Text>
+                                    <Text style={[styles.goodsUserInfoText]}>{workBenchDetail.user_info.mobile}</Text>
+                                </View>
                             </View>
                         </View>
-                    </View>
-                    <View style={[styles.contentItemView, styles.orderStatusInfoView]}>
-                        <View style={[styles.contentTitleView]}>
-                            <Text style={styles.contentTitle}>【工作信息】</Text>
+                        <View style={[styles.contentItemView, styles.orderStatusInfoView]}>
+                            <View style={[styles.contentTitleView]}>
+                                <Text style={styles.contentTitle}>【工作信息】</Text>
+                            </View>
+                            <Text style={styles.orderStatusInfoItem}>工作名称：{workBenchDetail.job_info.name}</Text>
+                            <Text style={styles.orderStatusInfoItem}>工作时间：{workBenchDetail.job_info.work_time}</Text>
+                            <Text style={styles.orderStatusInfoItem}
+                                  onPress={() => this.makeCall(workBenchDetail.job_info.server_mobile)}
+                            >工作人员电话：{workBenchDetail.job_info.server_mobile}</Text>
+                            <Text style={styles.orderStatusInfoItem}>工作地点：{workBenchDetail.job_info.address}</Text>
                         </View>
-                        <Text style={styles.orderStatusInfoItem}>工作名称：{workBenchDetail.job_info.name}</Text>
-                        <Text style={styles.orderStatusInfoItem}>工作时间：{workBenchDetail.job_info.work_time}</Text>
-                        <Text style={styles.orderStatusInfoItem}>工作人员电话：{workBenchDetail.job_info.server_mobile}</Text>
-                        <Text style={styles.orderStatusInfoItem}>工作地点：{workBenchDetail.job_info.address}</Text>
-                    </View>
-                    <Button
-                        title={item.status === 1 ? '取消报名' : '打卡'}
-                        style={[CusTheme.btnView, styles.btnView]}
-                        titleStyle={[CusTheme.btnName, styles.btnName]}
-                        onPress={() => {
-                            if (item.status === 1) {
-                                this.onCancelConfirm();
-                            } else {
-                                RouterHelper.navigate('打卡', 'WorkPunchCard', {
-                                    item,
-                                    onSubmitPunchCard: (res) => this.onSubmitPunchCard(res)
-                                });
-                            }
-                        }}
-                    />
-                </ScrollView>
+                        <Button
+                            title={item.status === 1 ? '取消报名' : '打卡'}
+                            style={[CusTheme.btnView, styles.btnView]}
+                            titleStyle={[CusTheme.btnName, styles.btnName]}
+                            onPress={() => {
+                                if (item.status === 1) {
+                                    this.onCancelConfirm();
+                                } else {
+                                    RouterHelper.navigate('打卡', 'WorkPunchCard', {
+                                        item,
+                                        onSubmitPunchCard: (res) => this.onSubmitPunchCard(res)
+                                    });
+                                }
+                            }}
+                        />
+                    </ScrollView>
+                    : <SpinnerLoading isVisible={true}/>
+                }
             </Container>
         );
     }

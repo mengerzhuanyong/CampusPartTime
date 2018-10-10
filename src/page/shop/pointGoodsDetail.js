@@ -42,6 +42,7 @@ import {HorizontalLine} from '../../component/common/commonLine'
 import GoodsItem from "../../component/item/goodsItem";
 import GoodsCarousel from "../../component/shop/GoodsCarousel"
 import GoodsTagComponent from "../../component/shop/goodsTagComponent";
+import SpinnerLoading from "../../component/common/SpinnerLoading";
 
 
 @inject('loginStore', 'shopStore')
@@ -59,6 +60,14 @@ export default class PointGoodsDetail extends Component {
 
     componentDidMount() {
         this.loadNetData();
+        this.timer1 = setTimeout(() => {
+            this.setState({ready: true});
+        }, 200);
+    }
+
+    componentWillUnmount() {
+        let timers = [this.timer1, this.timer2];
+        ClearTimer(timers);
     }
 
     loadNetData = async () => {
@@ -108,7 +117,7 @@ export default class PointGoodsDetail extends Component {
     };
 
     render() {
-        let {loading, listData} = this.state;
+        let {loading, listData, ready} = this.state;
         const {shopStore} = this.props;
         let {getGoodsDetail} = shopStore;
         // console.log(getGoodsDetail.illustration);
@@ -119,44 +128,47 @@ export default class PointGoodsDetail extends Component {
                 <NavigationBar
                     title={pageTitle}
                 />
-                <ScrollView style={styles.content}>
-                    <View style={styles.contentTopView}>
-                        <GoodsCarousel
-                            bannerData={getGoodsDetail.illustration}
-                            {...this.props}
-                        />
-                    </View>
-                    <View style={[styles.contentItemView, styles.goodsInfoView]}>
-                        <View style={[styles.goodsInfoTopView]}>
-                            <View style={[styles.goodsInfoTitleView]}>
-                                <Text style={styles.goodsTitle}>{getGoodsDetail.name}</Text>
-                                <GoodsTagComponent
-                                    tagsData={getGoodsDetail.tags}
-                                    {...this.props}
-                                />
+                {ready ?
+                    <ScrollView style={styles.content}>
+                        <View style={styles.contentTopView}>
+                            <GoodsCarousel
+                                bannerData={getGoodsDetail.illustration}
+                                {...this.props}
+                            />
+                        </View>
+                        <View style={[styles.contentItemView, styles.goodsInfoView]}>
+                            <View style={[styles.goodsInfoTopView]}>
+                                <View style={[styles.goodsInfoTitleView]}>
+                                    <Text style={styles.goodsTitle}>{getGoodsDetail.name}</Text>
+                                    <GoodsTagComponent
+                                        tagsData={getGoodsDetail.tags}
+                                        {...this.props}
+                                    />
+                                </View>
+                                <View style={styles.goodsInfoPriceView}>
+                                    <Text style={styles.goodsInfoPriceValue}>{getGoodsDetail.point_str}</Text>
+                                </View>
                             </View>
-                            <View style={styles.goodsInfoPriceView}>
-                                <Text style={styles.goodsInfoPriceValue}>{getGoodsDetail.point_str}</Text>
+                        </View>
+                        <View style={[styles.contentItemView, styles.goodsUserInfoView]}>
+                            <View style={[styles.contentTitleView]}>
+                                <Text style={styles.contentTitle}>【商品介绍】</Text>
+                            </View>
+                            <View style={styles.goodsUserInfoCon}>
+                                {this.renderDescription(getGoodsDetail.description)}
                             </View>
                         </View>
-                    </View>
-                    <View style={[styles.contentItemView, styles.goodsUserInfoView]}>
-                        <View style={[styles.contentTitleView]}>
-                            <Text style={styles.contentTitle}>【商品介绍】</Text>
+                        <View style={styles.multiBtnView}>
+                            <Button
+                                title={'立即兑换'}
+                                style={[CusTheme.btnView, styles.btnView]}
+                                titleStyle={[CusTheme.btnName, styles.btnName]}
+                                onPress={() => this.onSubmitOrderToCart(2)}
+                            />
                         </View>
-                        <View style={styles.goodsUserInfoCon}>
-                            {this.renderDescription(getGoodsDetail.description)}
-                        </View>
-                    </View>
-                    <View style={styles.multiBtnView}>
-                        <Button
-                            title={'立即兑换'}
-                            style={[CusTheme.btnView, styles.btnView]}
-                            titleStyle={[CusTheme.btnName, styles.btnName]}
-                            onPress={() => this.onSubmitOrderToCart(2)}
-                        />
-                    </View>
-                </ScrollView>
+                    </ScrollView>
+                    : <SpinnerLoading isVisible={true}/>
+                }
             </View>
         );
     }

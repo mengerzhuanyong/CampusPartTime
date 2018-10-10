@@ -51,10 +51,8 @@ export default class OrderDetail extends Component {
     componentDidMount() {
         this.requestOrderDetail();
         this.timer1 = setTimeout(() => {
-            this.setState({
-                ready: true,
-            });
-        }, 600);
+            this.setState({ready: true});
+        }, 200);
     }
 
     componentWillUnmount() {
@@ -80,7 +78,8 @@ export default class OrderDetail extends Component {
             actions: [
                 {
                     title: '取消',
-                    onPress: () => {},
+                    onPress: () => {
+                    },
                 },
                 {
                     title: '确定',
@@ -89,7 +88,7 @@ export default class OrderDetail extends Component {
             ]
         };
         AlertManager.show(params);
-    }
+    };
 
     submitPickUpOrder = async (item) => {
         const {orderStore} = this.props;
@@ -102,7 +101,7 @@ export default class OrderDetail extends Component {
         if (result && result.code === 1) {
             this.requestOrderDetail();
         }
-    }
+    };
     
     render() {
         let {loading, item, ready} = this.state;

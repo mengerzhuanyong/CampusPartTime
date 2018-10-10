@@ -64,6 +64,7 @@ export default class SystemMessage extends Component {
                 {id: 4, title: '外设', icon: Images.icon_nav_mouse,},
                 {id: 5, title: '单反', icon: Images.icon_nav_camera,},
             ],
+            ready: false,
         };
         this.page = 1;
         this.pageSize = 10;
@@ -73,7 +74,7 @@ export default class SystemMessage extends Component {
         this.loadNetData();
     }
 
-    componentWillUnmount(){
+    componentWillUnmount() {
         let timers = [this.timer1, this.timer2];
         ClearTimer(timers);
     }
@@ -148,7 +149,10 @@ export default class SystemMessage extends Component {
     loadNetData = () => {
         InteractionManager.runAfterInteractions(() => {
             this.requestDataSource(this.page);
-        })
+            this.timer1 = setTimeout(() => {
+                this.setState({ready: true});
+            }, 200);
+        });
     };
 
     loadMessageInfo = async () => {
@@ -233,7 +237,7 @@ export default class SystemMessage extends Component {
     };
 
     render() {
-        let {loading, listData} = this.state;
+        let {loading, listData, ready} = this.state;
         const {systemStore} = this.props;
         let {params} = this.props.navigation.state;
         let pageTitle = params && params.pageTitle ? params.pageTitle : '消息';
@@ -244,9 +248,7 @@ export default class SystemMessage extends Component {
                     renderRightAction={this.renderHeaderRightView(systemStore.getDataSource)}
                 />
                 <View style={styles.content}>
-                    {systemStore.loading && systemStore.dataSource.length === 0 ?
-                        <SpinnerLoading isVisible={systemStore.loading} />
-                        :
+                    {ready ?
                         <FlatListView
                             style={styles.listContent}
                             initialRefresh={false}
@@ -261,6 +263,7 @@ export default class SystemMessage extends Component {
                             ListHeaderComponent={this._renderHeaderComponent}
                             ListEmptyComponent={this._renderEmptyComponent}
                         />
+                        : <SpinnerLoading isVisible={true} />
                     }
                 </View>
             </View>

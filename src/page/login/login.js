@@ -13,7 +13,7 @@ import {
     Image,
     TextInput,
     StyleSheet,
-    KeyboardAvoidingView
+    KeyboardAvoidingView, ScrollView
 } from 'react-native'
 
 import {observer, inject} from 'mobx-react'
@@ -35,8 +35,8 @@ export default class Login extends Component {
             open: false
         };
         this.inputData = {
-            mobile: '15066886007', // '15066886007',
-            password: '123123', // '123123',
+            mobile: '', // '15066886007',
+            password: '', // '123123',
         }
     }
 
@@ -93,8 +93,11 @@ export default class Login extends Component {
                     style={styles.navigationBarStyle}
                     rightViewOnPress={this.renderHeaderRightView}
                 />
-                <KeyboardAvoidingView style={styles.loginContent}>
-                    <View style={styles.loginContent}>
+                <KeyboardAvoidingView style={styles.content}>
+                    <ScrollView
+                        style={styles.loginContent}
+                        keyboardShouldPersistTaps={'handled'}
+                    >
                         <View style={styles.inputItemView}>
                             <Image source={Images.icon_user_sign} style={styles.inputIcon}/>
                             <TextInput
@@ -150,7 +153,7 @@ export default class Login extends Component {
                                 onPress={this._onNavigateRecoverPwd}
                             >忘记密码？</Text>
                         </View>
-                    </View>
+                    </ScrollView>
                 </KeyboardAvoidingView>
             </Container>
         );
@@ -162,6 +165,9 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#fff'
     },
+    content: {
+        flex: 1,
+    },
     navigationBarStyle: {
         backgroundColor: 'transparent',
     },
@@ -170,8 +176,9 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
     },
     loginContent: {
+        flex: 1,
         padding: 20,
-        marginTop: ScaleSize(80),
+        paddingTop: ScaleSize(140),
     },
     inputItemView: {
         height: 50,
