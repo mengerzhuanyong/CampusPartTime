@@ -44,11 +44,22 @@ export default class OrderDetail extends Component {
                 order_data: {},
                 goods_data: {},
             },
+            ready: false,
         };
     }
     
     componentDidMount() {
         this.requestOrderDetail();
+        this.timer1 = setTimeout(() => {
+            this.setState({
+                ready: true,
+            });
+        }, 600);
+    }
+
+    componentWillUnmount() {
+        let timers = [this.timer1, this.timer2];
+        ClearTimer(timers);
     }
 
     requestOrderDetail = async () => {
@@ -61,8 +72,6 @@ export default class OrderDetail extends Component {
         };
         let result = await orderStore.requestOrderDetail(url, data);
     };
-
-
 
     confirmPickUpOrder = (item) => {
         const params = {
@@ -96,7 +105,7 @@ export default class OrderDetail extends Component {
     }
     
     render() {
-        let {loading, item} = this.state;
+        let {loading, item, ready} = this.state;
         const {orderStore} = this.props;
         let {orderDetail} = orderStore;
         let {params} = this.props.navigation.state;
@@ -106,41 +115,45 @@ export default class OrderDetail extends Component {
                 <NavigationBar
                     title={pageTitle}
                 />
-                <ScrollView style={styles.content}>
-                    <View style={[styles.contentItemView, styles.orderGoodsInfoView]}>
-                        <View style={styles.orderGoodsPicView}>
-                            <Image source={orderDetail.goods_data.img_url ? {uri: orderDetail.goods_data.img_url} : Images.img_goods1} style={styles.orderGoodsPic}/>
+                {ready ?
+                    <ScrollView style={styles.content}>
+                        <View style={[styles.contentItemView, styles.orderGoodsInfoView]}>
+                            <View style={styles.orderGoodsPicView}>
+                                <Image source={orderDetail.goods_data.img_url ? {uri: orderDetail.goods_data.img_url} : Images.img_goods1} style={styles.orderGoodsPic}/>
+                            </View>
+                            <View style={styles.orderGoodsTitleView}>
+                                <Text style={styles.orderGoodsTitle}>{orderDetail.goods_data.name}</Text>
+                                <Text style={styles.orderGoodsPrices}>{orderDetail.goods_data.price}</Text>
+                            </View>
                         </View>
-                        <View style={styles.orderGoodsTitleView}>
-                            <Text style={styles.orderGoodsTitle}>{orderDetail.goods_data.name}</Text>
-                            <Text style={styles.orderGoodsPrices}>{orderDetail.goods_data.price}</Text>
+                        <View style={[styles.contentItemView, styles.orderUserInfoView]}>
+                            <View style={styles.orderUserInfoCon}>
+                                <Text style={[styles.orderUserName, styles.orderUserInfoText]}>收货人：{orderDetail.order_data.member_name}</Text>
+                                <Text style={[styles.orderUserPhone, styles.orderUserInfoText]}>{orderDetail.order_data.mobile}</Text>
+                            </View>
+                            <Text style={[styles.orderUserAddress, styles.orderUserInfoText]}>{orderDetail.order_data.address}</Text>
                         </View>
-                    </View>
-                    <View style={[styles.contentItemView, styles.orderUserInfoView]}>
-                        <View style={styles.orderUserInfoCon}>
-                            <Text style={[styles.orderUserName, styles.orderUserInfoText]}>收货人：{orderDetail.order_data.member_name}</Text>
-                            <Text style={[styles.orderUserPhone, styles.orderUserInfoText]}>{orderDetail.order_data.mobile}</Text>
+                        <View style={[styles.contentItemView, styles.orderStatusInfoView]}>
+                            <Text style={styles.orderStatusInfoItem}>交易状态：{orderDetail.order_data.status_name}</Text>
+                            <Text style={styles.orderStatusInfoItem}>下单时间：{orderDetail.order_data.create_time}</Text>
+                            {orderDetail.order_data.pay_balance > 0 && <Text style={styles.orderStatusInfoItem}>支付金额：¥{parseFloat(orderDetail.order_data.pay_balance).toFixed(2)}</Text>}
+                            {item.type === 1 && <Text style={styles.orderStatusInfoItem}>还需偿还工分：{orderDetail.order_data.pay_work_point}</Text>}
                         </View>
-                        <Text style={[styles.orderUserAddress, styles.orderUserInfoText]}>{orderDetail.order_data.address}</Text>
-                    </View>
-                    <View style={[styles.contentItemView, styles.orderStatusInfoView]}>
-                        <Text style={styles.orderStatusInfoItem}>交易状态：{orderDetail.order_data.status_name}</Text>
-                        <Text style={styles.orderStatusInfoItem}>下单时间：{orderDetail.order_data.create_time}</Text>
-                        {item.type === 1 && <Text style={styles.orderStatusInfoItem}>还需偿还工分：{orderDetail.order_data.pay_work_point}</Text>}
-                    </View>
-                    <Button
-                        title={orderDetail.order_data.status === 1 ? '确认收货' : '申请退换货'}
-                        style={[CusTheme.btnView, styles.btnView]}
-                        titleStyle={[CusTheme.btnName, styles.btnName]}
-                        onPress={() => {
-                            if (orderDetail.order_data.status === 1) {
-                                this.confirmPickUpOrder(item);
-                            } else {
-                                RouterHelper.navigate('申请退换货', 'MineRepayment', {flag: 'order'});
-                            }
-                        }}
-                    />
-                </ScrollView>
+                        <Button
+                            title={orderDetail.order_data.status === 1 ? '确认收货' : '申请退换货'}
+                            style={[CusTheme.btnView, styles.btnView]}
+                            titleStyle={[CusTheme.btnName, styles.btnName]}
+                            onPress={() => {
+                                if (orderDetail.order_data.status === 1) {
+                                    this.confirmPickUpOrder(item);
+                                } else {
+                                    RouterHelper.navigate('申请退换货', 'MineRepayment', {flag: 'order'});
+                                }
+                            }}
+                        />
+                    </ScrollView>
+                    : <SpinnerLoading isVisible={true} />
+                }
             </View>
         );
     }

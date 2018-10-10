@@ -38,7 +38,7 @@ import PayManager from '../../config/manager/PayManager'
 import Stepper from '../../component/common/Stepper'
 import {QRscanner} from 'react-native-qr-scanner'
 import {HorizontalLine, VerticalLine} from '../../component/common/commonLine'
-import {checkFloat} from "../../util/Tool";
+import {checkFloat, isNumber} from "../../util/Tool";
 
 
 @inject('loginStore', 'mineStore')
@@ -88,7 +88,7 @@ export default class MineWithDraw extends Component {
             ToastManager.show('请输入支付宝账户姓名');
             return;
         }
-        if (money === '' || !checkFloat(money)) {
+        if (money === '' || !isNumber(money)) {
             ToastManager.show('提现金额输入有误，请重新输入');
             return;
         }
@@ -171,6 +171,17 @@ export default class MineWithDraw extends Component {
         );
     };
 
+    renderRightAction = () => {
+        return (
+            <Button
+                title={'余额明细'}
+                style={styles.headerRightView}
+                titleStyle={styles.headerRightTitle}
+                onPress={() => RouterHelper.navigate('余额明细', 'MineAccountDetail')}
+            />
+        );
+    };
+
     render() {
         let {mineStore} = this.props;
         let {dataSource} = mineStore;
@@ -181,6 +192,7 @@ export default class MineWithDraw extends Component {
             <View style={styles.container}>
                 <NavigationBar
                     title={pageTitle}
+                    renderRightAction={() => this.renderRightAction()}
                 />
                 <KeyboardAvoidingView style={styles.content}>
                     <ScrollView
@@ -288,6 +300,13 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#f7f8f9',
+    },
+    headerRightView: {
+        borderWidth: 0,
+        backgroundColor: 'transparent',
+    },
+    headerRightTitle: {
+        color: '#fff',
     },
     content: {
         flex: 1,

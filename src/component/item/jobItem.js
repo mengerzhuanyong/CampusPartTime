@@ -60,7 +60,7 @@ export default class JobItem extends PureComponent {
                 </View>
                 <View style={styles.jobInfoView}>
                     <View style={[styles.jobInfoItemView, styles.jobInfoTitleView]}>
-                        <Text style={styles.jobInfoTitle}>{item.name}</Text>
+                        <Text style={styles.jobInfoTitle} numberOfLines={2}>{item.name}</Text>
                         <JobTagComponent
                             tagsData={item.tags}
                             {...this.props}
@@ -78,11 +78,11 @@ export default class JobItem extends PureComponent {
                     <View style={styles.jobInfoItemView}>
                         <View style={styles.jobInfoLeftView}>
                             <Image source={Images.icon_user} style={[styles.jobInfoIcon]} />
-                            <Text style={styles.jobInfoContext}>报名人数</Text>
+                            <Text style={styles.jobInfoContextTitle}>报名人数</Text>
                             <Text style={styles.jobInfoContext}>{item.sign_count}/{item.total_count}</Text>
                         </View>
                         <View style={styles.jobInfoRightView}>
-                            <Text style={styles.jobInfoContext}>{item.work_point}</Text>
+                            <Text style={[styles.jobInfoContext, {textAlign: 'right'}]}>{item.work_point}</Text>
                         </View>
                     </View>
                 </View>
@@ -100,6 +100,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
+        // backgroundColor: '#123',
     },
     jobItemPicView: {
         width: 80,
@@ -107,7 +108,7 @@ const styles = StyleSheet.create({
         marginRight: 10,
         borderRadius: 5,
         overflow: 'hidden',
-        backgroundColor: '#f60',
+        // backgroundColor: '#f60',
     },
     jobItemPic: {
         width: 80,
@@ -132,10 +133,11 @@ const styles = StyleSheet.create({
         // backgroundColor: '#123',
     },
     jobInfoTitle: {
+        flex: 1,
         color: '#333',
         marginRight: 10,
         marginBottom: 5,
-        fontSize: FontSize(14),
+        fontSize: FontSize(13),
     },
     jobInfoIcon: {
         width: ScaleSize(28),
@@ -178,11 +180,17 @@ const styles = StyleSheet.create({
     },
     jobInfoPrice: {
         color: '#ed3126',
-        fontSize: FontSize(15),
+        fontSize: FontSize(13),
     },
-    jobInfoContext: {
+    jobInfoContextTitle: {
         color: '#999',
         marginLeft: 5,
-        fontSize: FontSize(12),
+        fontSize: FontSize(11),
+    },
+    jobInfoContext: {
+        flex: 1,
+        color: '#999',
+        marginLeft: 5,
+        fontSize: FontSize(11),
     },
 });

@@ -70,7 +70,6 @@ export default class BannerComponent extends Component {
                         <ImageBackground
                             style={styles.headBackImage}
                             resizeMode={'contain'}
-                            // source={Images.img_banner}
                             source={item.illustration ? {uri: item.illustration} : Images.img_banner}
                         />
                     </TouchableOpacity>
@@ -83,6 +82,11 @@ export default class BannerComponent extends Component {
 
     render() {
         const {bannerData} = this.state;
+        // <ScrollView
+        //     style={[styles.container]}
+        //     removeClippedSubviews={false}
+        // >
+        // </ScrollView>
         return (
             <View style={styles.container}>
                 <Carousel

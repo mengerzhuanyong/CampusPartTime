@@ -192,7 +192,7 @@ export default class WorkAbnormalAppeal extends Component {
                         <View style={[styles.uploadImageView]}>
                             {this.renderImagesView(photos)}
                             <TouchableOpacity
-                                style={styles.uploadItemView}
+                                style={[styles.uploadItemView, styles.uploadItemViewBorder]}
                                 onPress={this.handleImage}
                             >
                                 <Image source={Images.icon_camera} style={styles.uploadIcon}/>
@@ -303,30 +303,37 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     uploadItemView: {
-        borderWidth: 1,
         marginRight: 15,
-        borderRadius: 3,
-        borderColor: '#ddd',
-        borderStyle: 'dashed',
         width: ScaleSize(180),
         height: ScaleSize(180),
         alignItems: 'center',
         justifyContent: 'center',
+        // backgroundColor: '#f60',
+        padding: ScaleSize(14),
+    },
+    uploadItemViewBorder: {
+        width: ScaleSize(166),
+        height: ScaleSize(166),
+        padding: 0,
+        borderWidth: 1,
+        borderRadius: 3,
+        borderColor: '#ddd',
+        borderStyle: 'dashed',
     },
     deleteBtnView: {
         position: 'absolute',
-        top: -7,
-        right: -7,
+        top: 0,
+        right: 0,
         zIndex: 5,
     },
     deleteIcon: {
-        width: 14,
-        height: 14,
+        width: ScaleSize(28),
+        height: ScaleSize(28),
         resizeMode: 'contain',
     },
     uploadItemImage: {
-        width: ScaleSize(180),
-        height: ScaleSize(180),
+        width: ScaleSize(166),
+        height: ScaleSize(166),
         resizeMode: 'cover',
         borderRadius: 3,
     },

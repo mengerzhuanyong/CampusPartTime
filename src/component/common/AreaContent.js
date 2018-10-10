@@ -1,16 +1,18 @@
-'use strict'
-import React, { Component } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
-import { Wheel, Button } from 'teaset';
-import { fontSize } from '../../util/Tool'
+'use strict';
+import React, {Component} from 'react';
+import {View, Text, StyleSheet, TouchableOpacity, Dimensions} from 'react-native';
+import {Wheel, Button} from 'teaset';
+import {fontSize} from '../../util/Tool'
 import CusTheme from '../../config/Theme'
+import AreaData from '../../asset/json/area.json'
+import AreaDataAll from '../../asset/json/areaAll.json'
 
 class AreaContent extends React.PureComponent {
 
     constructor(props) {
         super(props);
-        this.data = [];
-        this.data = require('../../asset/json/area.json');
+        let {enableAll} = this.props;
+        this.data = enableAll ? AreaDataAll : AreaData;
         let len = this.data.length;
         let province = [], city = [], area = [];
         this.data.map((item, index) => {
@@ -22,8 +24,9 @@ class AreaContent extends React.PureComponent {
                 });
             }
         });
-        this.state = { province, provinceIndex: 0, city: city, cityIndex: 0, area: area, areaIndex: 0 }
+        this.state = {province, provinceIndex: 0, city: city, cityIndex: 0, area: area, areaIndex: 0}
     }
+
     componentDidMount() {
 
     }
@@ -71,6 +74,7 @@ class AreaContent extends React.PureComponent {
     _onPressCancel = () => {
         ActionsManager.hide();
     };
+
     render() {
         return (
             <View style={styles.container}>
@@ -83,7 +87,7 @@ class AreaContent extends React.PureComponent {
                     </TouchableOpacity>
                 </View>
                 <View style={styles.wheelContainer}>
-                    <Wheel
+                    {/*<Wheel
                         style={styles.wheelStyle}
                         itemStyle={styles.itemStyle}
                         index={this.state.provinceIndex}
@@ -98,7 +102,7 @@ class AreaContent extends React.PureComponent {
                         items={this.state.city}
                         // defaultIndex={this.months.findIndex((item) => item === currentMounth)}
                         onChange={this._onCityChange}
-                    />
+                    />*/}
                     <Wheel
                         style={styles.wheelStyle}
                         itemStyle={styles.itemStyle}
@@ -126,7 +130,7 @@ const styles = StyleSheet.create({
     },
     wheelStyle: {
         height: 180,
-        width: CusTheme.screen_width / 3,
+        width: CusTheme.screen_width, // / 3,
     },
     itemStyle: {
         textAlign: "center",

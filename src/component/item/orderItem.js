@@ -51,7 +51,7 @@ export default class OrderItem extends React.PureComponent {
                 <View style={styles.orderInfoView}>
                     <View style={[styles.orderInfoItemView, styles.orderInfoTitleView]}>
                         <Text style={[styles.orderInfoTitle, styles.orderInfoLeftCon]} numberOfLines={2}>{item.name}</Text>
-                        <Text style={[styles.orderInfoPrices, styles.orderInfoRightCon]} numberOfLines={2}>{item.price}</Text>
+                        <Text style={[styles.orderInfoPrices, styles.orderInfoRightCon]} numberOfLines={2}>实付：{item.pay_str}</Text>
                     </View>
                     <View style={[styles.orderInfoItemView, styles.orderInfoSubtitleView]}>
                         <Text style={[styles.orderInfoNo, styles.orderInfoLeftCon]} numberOfLines={2}>订单编号：{item.order_no}</Text>
@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
         marginRight: 10,
         borderRadius: 5,
         overflow: 'hidden',
-        backgroundColor: '#f60',
+        // backgroundColor: '#f60',
     },
     orderItemPic: {
         width: ScaleSize(150),

@@ -19,8 +19,8 @@ import {
 } from 'react-native'
 import {Button} from 'teaset'
 import NavigationBar from '../../component/navigation/NavigationBar'
+import Container from '../../component/common/Container'
 import DropDownMenu from '../../component/common/DropDownMenu';
-import Container from '../../component/common/Container';
 import {inject, observer} from "mobx-react/index";
 
 @inject('loginStore', 'mineStore')
@@ -76,10 +76,12 @@ export default class EmergencyContact extends Component {
     }
 
     render() {
+        let {mineStore} = this.props;
+        let {myProfile} = mineStore;
         let {params} = this.props.navigation.state;
         let pageTitle = params && params.pageTitle ? params.pageTitle : '绑定紧急联系人';
         return (
-            <View style={styles.container}>
+            <Container style={styles.container}>
                 <NavigationBar
                     title={pageTitle}
                 />
@@ -100,6 +102,7 @@ export default class EmergencyContact extends Component {
                                 placeholder={'请输入联系人姓名'}
                                 // keyboardType={'numeric'}
                                 returnKeyType={'done'}
+                                defaultValue={myProfile.contact_detail.realname1}
                                 onChangeText={(text) => {
                                     this.setState({
                                         realname1: text,
@@ -116,6 +119,7 @@ export default class EmergencyContact extends Component {
                                 placeholder={'父亲/母亲/老师/班长等'}
                                 // keyboardType={'numeric'}
                                 returnKeyType={'done'}
+                                defaultValue={myProfile.contact_detail.relationship1}
                                 onChangeText={(text) => {
                                     this.setState({
                                         relationship1: text,
@@ -133,6 +137,7 @@ export default class EmergencyContact extends Component {
                                 keyboardType={'numeric'}
                                 returnKeyType={'done'}
                                 maxLength={11}
+                                defaultValue={myProfile.contact_detail.mobile1}
                                 onChangeText={(text) => {
                                     this.setState({
                                         mobile1: text,
@@ -152,6 +157,7 @@ export default class EmergencyContact extends Component {
                                 placeholder={'请输入联系人姓名'}
                                 // keyboardType={'numeric'}
                                 returnKeyType={'done'}
+                                defaultValue={myProfile.contact_detail.realname2}
                                 onChangeText={(text) => {
                                     this.setState({
                                         realname2: text,
@@ -168,6 +174,7 @@ export default class EmergencyContact extends Component {
                                 placeholder={'父亲/母亲/老师/班长等'}
                                 // keyboardType={'numeric'}
                                 returnKeyType={'done'}
+                                defaultValue={myProfile.contact_detail.relationship2}
                                 onChangeText={(text) => {
                                     this.setState({
                                         relationship2: text,
@@ -185,6 +192,7 @@ export default class EmergencyContact extends Component {
                                 keyboardType={'numeric'}
                                 returnKeyType={'done'}
                                 maxLength={11}
+                                defaultValue={myProfile.contact_detail.mobile2}
                                 onChangeText={(text) => {
                                     this.setState({
                                         mobile2: text,
@@ -193,14 +201,14 @@ export default class EmergencyContact extends Component {
                             />
                         </View>
                         <Button
-                            title={'立即绑定'}
+                            title={myProfile.contact_status === 1 ? '立即绑定' : '立即修改'}
                             style={styles.submitBtnView}
                             titleStyle={styles.submitBtnName}
                             onPress={this.submitFoo}
                         />
                     </ScrollView>
                 </KeyboardAvoidingView>
-            </View>
+            </Container>
         );
     }
 }
@@ -278,8 +286,9 @@ const styles = StyleSheet.create({
     },
     submitBtnView: {
         height: 45,
-        marginVertical: 40,
         borderWidth: 0,
+        marginTop: 40,
+        marginBottom: 20,
         backgroundColor: CusTheme.themeColor,
     },
     submitBtnName: {

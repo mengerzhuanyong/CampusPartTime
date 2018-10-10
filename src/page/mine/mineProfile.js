@@ -169,9 +169,11 @@ export default class MineProfile extends Component {
                             detail={this.renderStatusView(myProfile.id_card_status)}
                             titleStyle={CusTheme.contentTitle}
                             icon={<Image source={Images.icon_user_card} style={[CusTheme.contentTitleIcon, {}]}/>}
-                            accessory={<Image source={Images.icon_arrow_right}
-                                              style={[CusTheme.contentRightIcon, {}]}/>}
-                            onPress={() => myProfile.id_card_status === 1 && RouterHelper.navigate('身份证认证', 'CertificationIDCard', {})}
+                            accessory={<Image source={Images.icon_arrow_right} style={[CusTheme.contentRightIcon, {}]} />}
+                            onPress={() => {
+                                // myProfile.id_card_status === 1 && 
+                                RouterHelper.navigate('身份证认证', 'CertificationIDCard', {})
+                            }}
                         />
                         <ListRow
                             style={styles.contentTitleView}
@@ -179,23 +181,29 @@ export default class MineProfile extends Component {
                             detail={this.renderStatusView(myProfile.student_status)}
                             titleStyle={CusTheme.contentTitle}
                             icon={<Image source={Images.icon_school_roll} style={[CusTheme.contentTitleIcon, {}]}/>}
-                            accessory={<Image source={Images.icon_arrow_right}
-                                              style={[CusTheme.contentRightIcon, {}]}/>}
-                            onPress={() => myProfile.student_status === 1 && RouterHelper.navigate('学籍资料认证', 'CommonWebPage', {
-                                url: myProfile.student_url,
-                                style: styles.webViewStyle
-                            })}
+                            accessory={<Image source={Images.icon_arrow_right} style={[CusTheme.contentRightIcon, {}]} />}
+                            onPress={() => {
+                                if (myProfile.student_status === 1) {
+                                    RouterHelper.navigate('学籍资料认证', 'CommonWebPage', {
+                                        url: myProfile.student_url,
+                                        style: styles.webViewStyle
+                                    })
+                                } else {
+                                    RouterHelper.navigate('学籍资料信息', 'CertificationStudent')
+                                }
+                            }}
                         />
                         <ListRow
                             style={styles.contentTitleView}
                             title={'绑定紧急联系人'}
                             detail={this.renderStatusView(myProfile.contact_status)}
                             titleStyle={CusTheme.contentTitle}
-                            icon={<Image source={Images.icon_user_contact}
-                                         style={[CusTheme.contentTitleIcon, {}]}/>}
-                            accessory={<Image source={Images.icon_arrow_right}
-                                              style={[CusTheme.contentRightIcon, {}]}/>}
-                            onPress={() => myProfile.contact_status === 1 && RouterHelper.navigate('绑定紧急联系人', 'EmergencyContact', {})}
+                            icon={<Image source={Images.icon_user_contact} style={[CusTheme.contentTitleIcon, {}]}/>}
+                            accessory={<Image source={Images.icon_arrow_right} style={[CusTheme.contentRightIcon, {}]} />}
+                            onPress={() => {
+                                // myProfile.contact_status === 1 && 
+                                RouterHelper.navigate('绑定紧急联系人', 'EmergencyContact', {})
+                            }}
                         />
                         <ListRow
                             style={styles.contentTitleView}
@@ -203,10 +211,11 @@ export default class MineProfile extends Component {
                             detail={this.renderStatusView(myProfile.mobile_status)}
                             titleStyle={CusTheme.contentTitle}
                             icon={<Image source={Images.icon_mobile} style={[CusTheme.contentTitleIcon, {}]}/>}
-                            accessory={<Image source={Images.icon_arrow_right}
-                                              style={[CusTheme.contentRightIcon, {}]}/>}
-                            onPress={() => myProfile.mobile_status === 1 && RouterHelper.navigate('手机号实名认证', 'CertificationMobile', {})}
-                            // bottomSeparator={'none'}
+                            accessory={<Image source={Images.icon_arrow_right} style={[CusTheme.contentRightIcon, {}]} />}
+                            onPress={() => {
+                                // myProfile.mobile_status === 1 && 
+                                RouterHelper.navigate('手机号实名认证', 'CertificationMobile', {})
+                            }}
                         />
                         <ListRow
                             style={styles.contentTitleView}
@@ -214,9 +223,10 @@ export default class MineProfile extends Component {
                             detail={this.renderStatusView(myProfile.is_wechat_status)}
                             titleStyle={CusTheme.contentTitle}
                             icon={<Image source={Images.icon_user_wechat} style={[CusTheme.contentTitleIcon, {width: ScaleSize(40), height: ScaleSize(40)}]}/>}
-                            accessory={<Image source={Images.icon_arrow_right}
-                                              style={[CusTheme.contentRightIcon, {}]}/>}
-                            onPress={() => myProfile.is_wechat_status === 1 && this.onBindWeChat()}
+                            accessory={<Image source={Images.icon_arrow_right} style={[CusTheme.contentRightIcon, {}]} />}
+                            onPress={() => {
+                                myProfile.is_wechat_status === 1 && this.onBindWeChat();
+                            }}
                             bottomSeparator={'none'}
                         />
                     </View>

@@ -145,17 +145,18 @@ export default class MineWorkList extends Component {
             <MineJobItem
                 item={item}
                 onPushToDetail={() => this.onPushToDetail(item)}
+                onCallBack={() => this._onRefresh()}
                 {...this.props}
             />
         );
     };
 
     onPushToDetail = (item) => {
-        if (item.status === 2) {
-            RouterHelper.navigate('工作详情', 'MineWorkDetail', {item});
-        } else {
-            RouterHelper.navigate('确认信息', 'WorkSignUpStepThree', {item, flag: 'workspace'});
-        }
+        // if (item.status === 2) {
+            RouterHelper.navigate('工作详情', 'MineWorkDetail', {item, onCallBack: () => this._onRefresh()});
+        // } else {
+        //     RouterHelper.navigate('确认信息', 'WorkSignUpStepThree', {item, flag: 'workspace', onCallBack: () => this._onRefresh()});
+        // }
     };
 
     render() {

@@ -230,4 +230,17 @@ export default {
         color: '#999',
         fontSize: fontSize(14),
     },
+    contentTipsView: {
+        marginBottom: 30,
+        paddingVertical: 5,
+        // paddingHorizontal: 15,
+        // backgroundColor: '#f1f100',
+    },
+    contentTipsViewMargin: {
+        marginTop: 20,
+    },
+    contentTipsCon: {
+        color: '#f00',
+        lineHeight: 20,
+    },
 }

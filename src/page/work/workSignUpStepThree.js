@@ -46,8 +46,10 @@ export default class WorkSignUpStepThree extends Component {
     }
 
     componentWillUnmount() {
+        let {params} = this.props.navigation.state;
         let timers = [this.timer1, this.timer2];
         ClearTimer(timers);
+        params && params.onCallBack && params.onCallBack();
     }
 
     clearCache = () => {
@@ -72,25 +74,63 @@ export default class WorkSignUpStepThree extends Component {
             });
     };
 
+    onCancelConfirm = () => {
+        const params = {
+            title: '温馨提示',
+            detail: '确定要取消报名吗？',
+            actions: [
+                {
+                    title: '取消',
+                    onPress: () => {},
+                },
+                {
+                    title: '确定',
+                    onPress: this.onCancelApply,
+                }
+            ]
+        };
+        AlertManager.show(params);
+    };
+
     onCancelApply = async () => {
         const {workStore} = this.props;
         let {item, flag} = this.state;
+        let {params} = this.props.navigation.state;
         let {onCancelApply, sign_id} = workStore;
         let url = ServicesApi.job_application_cancel;
+        let time = 0;
         if (flag === 'workspace') {
             sign_id = item.id;
+            // time = 600;
         }
         let data = {
             sign_id,
         };
-        let result = await onCancelApply(url, data);
-        if (result.code === 1) {
-            RouterHelper.goBack('WorkDetail');
+        try {
+            let result = await onCancelApply(url, data);
+            ToastManager.show(result.msg);
+            if (result.code === 1) {
+                this.timer1 = setTimeout(() => {
+                    if (flag === 'workspace') {
+                       RouterHelper.goBack();
+                       params && params.onCallBack && params.onCallBack();
+                    } else {
+                        RouterHelper.goBack('WorkDetail');
+                    }
+                }, time);
+            }
+        } catch (e) {
+            ToastManager.show('error');
         }
     };
 
     confirm = () => {
-        RouterHelper.popToTop();
+        let {flag} = this.state;
+        if (flag === 'workspace') {
+           RouterHelper.goBack();
+        } else {
+            RouterHelper.popToTop();
+        }
     };
 
     render() {
@@ -133,7 +173,7 @@ export default class WorkSignUpStepThree extends Component {
                         title={'取消报名'}
                         style={[CusTheme.btnView, styles.btnView]}
                         titleStyle={[CusTheme.btnName, styles.btnName]}
-                        onPress={this.onCancelApply}
+                        onPress={this.onCancelConfirm}
                     />
                     <Button
                         title={'确认'}

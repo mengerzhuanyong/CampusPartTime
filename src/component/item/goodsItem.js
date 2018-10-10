@@ -104,7 +104,7 @@ const styles = StyleSheet.create({
         marginRight: 10,
         borderRadius: 5,
         overflow: 'hidden',
-        backgroundColor: '#f60',
+        // backgroundColor: '#f60',
     },
     goodsItemPic: {
         width: scaleSize(300),

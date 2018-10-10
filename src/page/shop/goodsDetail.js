@@ -54,11 +54,22 @@ export default class GoodsDetail extends Component {
         this.state = {
             item: params && params.item ? params.item : {id: 1},
             listData: [1, 2, 3, 4],
+            ready: false,
         };
     }
 
     componentDidMount() {
         this.loadNetData();
+        this.timer1 = setTimeout(() => {
+            this.setState({
+                ready: true,
+            });
+        }, 600);
+    }
+
+    componentWillUnmount() {
+        let timers = [this.timer1, this.timer2];
+        ClearTimer(timers);
     }
 
     loadNetData = async () => {
@@ -102,7 +113,7 @@ export default class GoodsDetail extends Component {
     };
 
     render() {
-        let {loading, listData} = this.state;
+        let {loading, listData, ready} = this.state;
         const {shopStore} = this.props;
         let {getGoodsDetail} = shopStore;
         // console.log(getGoodsDetail.illustration);
@@ -113,56 +124,59 @@ export default class GoodsDetail extends Component {
                 <NavigationBar
                     title={pageTitle}
                 />
-                <ScrollView style={styles.content}>
-                    <View style={styles.contentTopView}>
-                        <GoodsCarousel
-                            bannerData={getGoodsDetail.illustration}
-                            {...this.props}
-                        />
-                    </View>
-                    <View style={[styles.contentItemView, styles.goodsInfoView]}>
-                        <View style={[styles.goodsInfoTopView]}>
-                            <View style={[styles.goodsInfoTitleView]}>
-                                <Text style={styles.goodsTitle}>{getGoodsDetail.name}</Text>
-                                <GoodsTagComponent
-                                    tagsData={getGoodsDetail.tags}
-                                    {...this.props}
-                                />
+                {ready ?
+                    <ScrollView style={styles.content}>
+                        <View style={styles.contentTopView}>
+                            <GoodsCarousel
+                                bannerData={getGoodsDetail.illustration}
+                                {...this.props}
+                            />
+                        </View>
+                        <View style={[styles.contentItemView, styles.goodsInfoView]}>
+                            <View style={[styles.goodsInfoTopView]}>
+                                <View style={[styles.goodsInfoTitleView]}>
+                                    <Text style={styles.goodsTitle}>{getGoodsDetail.name}</Text>
+                                    <GoodsTagComponent
+                                        tagsData={getGoodsDetail.tags}
+                                        {...this.props}
+                                    />
+                                </View>
+                                <View style={styles.goodsInfoPriceView}>
+                                    <Text style={styles.goodsInfoPriceTips}>¥</Text>
+                                    <Text style={styles.goodsInfoPriceValue}>{getGoodsDetail.price}</Text>
+                                    <Text style={styles.goodsInfoPriceTips}>元</Text>
+                                </View>
                             </View>
-                            <View style={styles.goodsInfoPriceView}>
-                                <Text style={styles.goodsInfoPriceTips}>¥</Text>
-                                <Text style={styles.goodsInfoPriceValue}>{getGoodsDetail.price}</Text>
-                                <Text style={styles.goodsInfoPriceTips}>元</Text>
+                            <View style={styles.goodsInfoWorkPointsView}>
+                                <Text style={styles.goodsInfoWorkPoints}>折算工分：</Text>
+                                <Text style={styles.goodsInfoWorkPoints}>{getGoodsDetail.work_point}</Text>
                             </View>
                         </View>
-                        <View style={styles.goodsInfoWorkPointsView}>
-                            <Text style={styles.goodsInfoWorkPoints}>折算工分：</Text>
-                            <Text style={styles.goodsInfoWorkPoints}>{getGoodsDetail.work_point}</Text>
+                        <View style={[styles.contentItemView, styles.goodsUserInfoView]}>
+                            <View style={[styles.contentTitleView]}>
+                                <Text style={styles.contentTitle}>【商品介绍】</Text>
+                            </View>
+                            <View style={styles.goodsUserInfoCon}>
+                                {this.renderDescription(getGoodsDetail.description)}
+                            </View>
                         </View>
-                    </View>
-                    <View style={[styles.contentItemView, styles.goodsUserInfoView]}>
-                        <View style={[styles.contentTitleView]}>
-                            <Text style={styles.contentTitle}>【商品介绍】</Text>
+                        <View style={styles.multiBtnView}>
+                            <Button
+                                title={'余额换购'}
+                                style={[CusTheme.btnView, styles.btnView]}
+                                titleStyle={[CusTheme.btnName, styles.btnName]}
+                                onPress={() => this.onSubmitOrderToCart(2)}
+                            />
+                            <Button
+                                title={'工分换购'}
+                                style={[CusTheme.btnView, styles.btnView]}
+                                titleStyle={[CusTheme.btnName, styles.btnName]}
+                                onPress={() => this.onSubmitOrderToCart(1)}
+                            />
                         </View>
-                        <View style={styles.goodsUserInfoCon}>
-                            {this.renderDescription(getGoodsDetail.description)}
-                        </View>
-                    </View>
-                    <View style={styles.multiBtnView}>
-                        <Button
-                            title={'余额换购'}
-                            style={[CusTheme.btnView, styles.btnView]}
-                            titleStyle={[CusTheme.btnName, styles.btnName]}
-                            onPress={() => this.onSubmitOrderToCart(2)}
-                        />
-                        <Button
-                            title={'工分换购'}
-                            style={[CusTheme.btnView, styles.btnView]}
-                            titleStyle={[CusTheme.btnName, styles.btnName]}
-                            onPress={() => this.onSubmitOrderToCart(1)}
-                        />
-                    </View>
-                </ScrollView>
+                    </ScrollView>
+                    : <SpinnerLoading isVisible={true} />
+                }
             </View>
         );
     }

@@ -12,6 +12,7 @@ import {View, Text} from 'react-native';
 import {ActionSheet, Overlay, Label} from 'teaset';
 import {fontSize, bouncer} from '../../util/Tool';
 import AreaContent from '../../component/common/AreaContent';
+import AreaContentAll from '../../component/common/AreaContentAll';
 import ShareContent from '../../component/common/ShareContent';
 import CusTheme from '../theme/Theme';
 import JShareModule from 'jshare-react-native'
@@ -19,7 +20,7 @@ import TimeContent from "../../component/common/TimeContent";
 
 class ActionsManager {
 
-    static pullViewRefs = []
+    static pullViewRefs = [];
 
     /** 参数
      const params = {
@@ -42,8 +43,18 @@ class ActionsManager {
         this.showPullView(<ShareContent moduleTitle={moduleTitle} onPress={func} />, {})
     }
 
-    static showArea(func) {
-        this.showPullView(<AreaContent onPress={func} />, {})
+    static showArea(func, enableAll = true) {
+        this.showPullView(<AreaContent onPress={func} enableAll={enableAll} />, {})
+    }
+
+    static showTime(times, start, end, func) {
+        this.showPullView(
+            <TimeContent
+                onPress={func}
+                data={times}
+                startTime={start}
+                endTime={end}
+            />, {});
     }
 
     static showShareModule(params, callBack = () => {}) {
@@ -101,7 +112,7 @@ class ActionsManager {
     }
 
     static showPullView(component, option) {
-        this.pullViewRefs = bouncer(this.pullViewRefs.slice()) // 过滤
+        this.pullViewRefs = bouncer(this.pullViewRefs.slice()); // 过滤
         if (this.pullViewRefs.length === 0) {
             Overlay.show(
                 <Overlay.PullView
@@ -120,10 +131,10 @@ class ActionsManager {
     }
 
     static hide() {
-        this.pullViewRefs = bouncer(this.pullViewRefs.slice()) // 过滤
+        this.pullViewRefs = bouncer(this.pullViewRefs.slice()); // 过滤
         if (this.pullViewRefs.length > 0) {
-            const lastRef = this.pullViewRefs.pop()
-            lastRef.close()
+            const lastRef = this.pullViewRefs.pop();
+            lastRef.close();
         }
     }
 

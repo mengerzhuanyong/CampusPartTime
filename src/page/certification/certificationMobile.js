@@ -67,8 +67,11 @@ export default class CertificationMobile extends Component {
     };
 
     render() {
+        let {mineStore} = this.props;
+        let {myProfile} = mineStore;
         let {params} = this.props.navigation.state;
         let pageTitle = params && params.pageTitle ? params.pageTitle : '手机号实名认证';
+        let status = myProfile.mobile_status === 1;
         return (
             <View style={styles.container}>
                 <NavigationBar
@@ -88,6 +91,8 @@ export default class CertificationMobile extends Component {
                                 placeholder={'请输入姓名'}
                                 // keyboardType={'numeric'}
                                 returnKeyType={'done'}
+                                editable={status}
+                                defaultValue={myProfile.mobile_detail.username}
                                 onChangeText={(text) => {
                                     this.setState({
                                         realname: text
@@ -105,6 +110,8 @@ export default class CertificationMobile extends Component {
                                 keyboardType={'numeric'}
                                 returnKeyType={'done'}
                                 maxLength={11}
+                                editable={status}
+                                defaultValue={myProfile.mobile_detail.mobile}
                                 onChangeText={(text) => {
                                     this.setState({
                                         mobile: text,
@@ -122,6 +129,8 @@ export default class CertificationMobile extends Component {
                                 // keyboardType={'numeric'}
                                 returnKeyType={'done'}
                                 maxLength={18}
+                                editable={status}
+                                defaultValue={myProfile.mobile_detail.id_number}
                                 onChangeText={(text) => {
                                     this.setState({
                                         id_number: text,
@@ -129,12 +138,15 @@ export default class CertificationMobile extends Component {
                                 }}
                             />
                         </View>
-                        <Button
+                        {status && <Button
                             title={'立即认证'}
                             style={styles.submitBtnView}
                             titleStyle={styles.submitBtnName}
                             onPress={this.onCertificationMobile}
-                        />
+                        />}
+                        <View style={[CusTheme.contentTipsView, CusTheme.contentTipsViewMargin]}>
+                            <Text style={CusTheme.contentTipsCon}>{mineStore.certificationTips}</Text>
+                        </View>
                     </ScrollView>
                 </KeyboardAvoidingView>
             </View>
@@ -214,8 +226,9 @@ const styles = StyleSheet.create({
     },
     submitBtnView: {
         height: 45,
-        marginVertical: 40,
         borderWidth: 0,
+        marginTop: 40,
+        marginBottom: 20,
         backgroundColor: CusTheme.themeColor,
     },
     submitBtnName: {

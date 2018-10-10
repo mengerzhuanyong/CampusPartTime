@@ -39,6 +39,7 @@ import MineWorkPoints from '../page/account/mineWorkPoints'
 import MinePartTimeIncome from '../page/account/minePartTimeIncome'
 import MineRepayment from '../page/account/mineRepayment'
 import MineWithDraw from '../page/account/mineWithDraw'
+import MineAccountDetail from '../page/account/mineAccountDetail'
 
 import MineOrder from '../page/order/mineOrder'
 import OrderDetail from '../page/order/orderDetail'
@@ -111,6 +112,7 @@ const TabNavigator = createBottomTabNavigator({
     },
 }, {
     initialRouteName: 'Home',
+    // initialRouteName: 'Work',
     tabBarOptions: {
         showIcon: true,
         indicatorStyle: {height: 0},
@@ -164,6 +166,7 @@ const StackNavigator = createStackNavigator(configRouter({
     MinePartTimeIncome: {screen: MinePartTimeIncome},
     MineRepayment: {screen: MineRepayment},
     MineWithDraw: {screen: MineWithDraw},
+    MineAccountDetail: {screen: MineAccountDetail},
     
     MineOrder: {screen: MineOrder},
     OrderConfirm: {screen: OrderConfirm},

@@ -88,6 +88,8 @@ module.exports = {
     mineAccountWithdraw: 'cash',
     // 信用额度
     my_credit: 'my_credit',
+    // 余额明细
+    my_account_detail: 'my_account_detail',
     // 工分明细
     my_work_point: 'my_work_point',
     // 兼职收入明细

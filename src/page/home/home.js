@@ -225,7 +225,7 @@ export default class Home extends Component {
                                 accessory={'none'}
                                 onPress={() => RouterHelper.navigate('热门工作推荐', 'Work')}
                             />
-                            <View style={styles.contentItemConView}>
+                            <View style={[styles.contentItemConView, {paddingHorizontal: 0,}]}>
                                 {this.renderListView(2, hot_jobs)}
                             </View>
                         </View>}
@@ -348,7 +348,7 @@ const styles = StyleSheet.create({
         marginRight: 10,
         borderRadius: 5,
         overflow: 'hidden',
-        backgroundColor: '#f60',
+        // backgroundColor: '#f60',
     },
     jobItemPic: {
         width: 80,

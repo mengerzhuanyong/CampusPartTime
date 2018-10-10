@@ -124,7 +124,7 @@ export default class RecoverPwd extends PureComponent {
                             />
                             <SendSMS
                                 mobile={mobile}
-                                type={'register'}
+                                type={'public'}
                                 style={styles.getCodeView}
                                 lineStyle={styles.verLine}
                                 titleStyle={styles.getCodeCon}

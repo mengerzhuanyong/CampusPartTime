@@ -129,7 +129,52 @@ export default class MineWorkDetail extends Component {
         }
     };
 
+    onCancelConfirm = () => {
+        const params = {
+            title: '温馨提示',
+            detail: '确定要取消报名吗？',
+            actions: [
+                {
+                    title: '取消',
+                    onPress: () => {},
+                },
+                {
+                    title: '确定',
+                    onPress: this.onCancelApply,
+                }
+            ]
+        };
+        AlertManager.show(params);
+    };
+
+    onCancelApply = async () => {
+        let {params} = this.props.navigation.state;
+        let {workStore} = this.props;
+        let {item, flag} = this.state;
+        let {onCancelApply} = workStore;
+        let url = ServicesApi.job_application_cancel;
+        let time = 0;
+        let data = {
+            sign_id: item.id,
+        };
+        try {
+            let result = await onCancelApply(url, data);
+            ToastManager.show(result.msg);
+            if (result.code === 1) {
+                this.timer1 = setTimeout(() => {
+                   RouterHelper.goBack();
+                   params && params.onCallBack && params.onCallBack();
+                }, time);
+            }
+        } catch (e) {
+            ToastManager.show('error');
+        }
+    };
+
     renderHeaderRightView = (item) => {
+        if (item.status === 1) {
+            return null;
+        }
         return (
             <TouchableOpacity
                 style={[styles.headerRightView]}
@@ -142,6 +187,7 @@ export default class MineWorkDetail extends Component {
 
     render() {
         let {loading, item} = this.state;
+        console.log('item', item);
         const {workStore} = this.props;
         let {workBenchDetail} = workStore;
         let {params} = this.props.navigation.state;
@@ -190,10 +236,19 @@ export default class MineWorkDetail extends Component {
                         <Text style={styles.orderStatusInfoItem}>工作地点：{workBenchDetail.job_info.address}</Text>
                     </View>
                     <Button
-                        title={'打卡'}
+                        title={item.status === 1 ? '取消报名' : '打卡'}
                         style={[CusTheme.btnView, styles.btnView]}
                         titleStyle={[CusTheme.btnName, styles.btnName]}
-                        onPress={() => RouterHelper.navigate('打卡', 'WorkPunchCard', {item, onSubmitPunchCard: (res) => this.onSubmitPunchCard(res)})}
+                        onPress={() => {
+                            if (item.status === 1) {
+                                this.onCancelConfirm();
+                            } else {
+                                RouterHelper.navigate('打卡', 'WorkPunchCard', {
+                                    item,
+                                    onSubmitPunchCard: (res) => this.onSubmitPunchCard(res)
+                                });
+                            }
+                        }}
                     />
                 </ScrollView>
             </Container>

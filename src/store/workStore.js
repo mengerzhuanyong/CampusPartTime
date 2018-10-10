@@ -129,14 +129,18 @@ export default class WorkStore extends BaseStore {
     @action
     requestWorkTimes = async (url, data) => {
 
-        const result = await this.postRequest(url, data, true);
-        if (result.code === 1) {
-            runInAction(() => {
+    const result = await this.postRequest(url, data, true);
+        runInAction(() => {
+            if (result.code === 1) {
                 this.sign_id = result.data.sign_id;
                 this.time_list = result.data.time_list;
                 this.work_time = result.data.work_time;
-            })
-        }
+            } else {
+                this.sign_id = 0;
+                this.time_list = [];
+                this.work_time = [];
+            }
+        })
         return result;
     };
 
@@ -291,12 +295,16 @@ export default class WorkStore extends BaseStore {
     @action
     requestWorkBenchDetail = async (url, data) => {
         const result = await this.postRequest(url, data, true);
-        
-        if (result.code === 1) {
-            runInAction(() => {
+        runInAction(() => {
+            if (result.code === 1) {
                 this.workBenchDetail = result.data;
-            })
-        }
+            } else {
+                this.workBenchDetail = {
+                    job_info: {},
+                    user_info: {},
+                };
+            }
+        })
         return result;
     };
 
@@ -307,7 +315,7 @@ export default class WorkStore extends BaseStore {
         return result;
     };
 
-    // 打卡
+    // 申诉
     @action
     onSubmitAbnormalAppeal = async (url, data) => {
         const result = await this.postRequest(url, data, true);

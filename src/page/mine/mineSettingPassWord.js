@@ -157,7 +157,6 @@ export default class MineSettingPassWord extends Component {
                                 <TextInput
                                     style={styles.inputItem}
                                     ref={v => this.input = v}
-                                    keyboardType={'numeric'}
                                     secureTextEntry={secureTextEntry}
                                     underlineColorAndroid={'rgba(0, 0, 0, 0)'}
                                     placeholder={'请输入密码'}
@@ -190,7 +189,6 @@ export default class MineSettingPassWord extends Component {
                                 <TextInput
                                     style={styles.inputItem}
                                     ref={v => this.input = v}
-                                    keyboardType={'numeric'}
                                     secureTextEntry={secureTextEntry}
                                     underlineColorAndroid={'rgba(0, 0, 0, 0)'}
                                     placeholder={'请再次输入密码'}

@@ -29,9 +29,12 @@ export default class MineStore extends BaseStore {
         this.myWorkIncomeDetail = [];
         this.pointsInfo = {};
         this.pointsDetail = [];
+        this.accountDetail = [];
         this.creditInfo = [];
         this.creditDetail = [];
         this.idCardInfo = {};
+        this.idCardDetail = {};
+        this.certificationTips = '*温馨提醒：实名认证后的信息不可更改，如有问题请联系客服';
     }
 
     @observable dataSource;
@@ -42,9 +45,12 @@ export default class MineStore extends BaseStore {
     @observable myWorkIncomeDetail;
     @observable pointsInfo;
     @observable pointsDetail;
+    @observable accountDetail;
     @observable creditInfo;
     @observable creditDetail;
     @observable idCardInfo;
+    @observable idCardDetail;
+    @observable certificationTips;
 
     @computed
     get getDataSource() {
@@ -91,6 +97,7 @@ export default class MineStore extends BaseStore {
         if (result.code === 1) {
             runInAction(() => {
                 this.myProfile = result.data;
+                this.certificationTips = result.data.certification_tips;
             });
         }
         return result;
@@ -241,6 +248,26 @@ export default class MineStore extends BaseStore {
             runInAction(() => {
                 this.pointsInfo = {};
                 this.pointsDetail = [];
+            })
+        }
+        return result;
+    };
+
+    // 余额明细
+    @action
+    requestAccountDetail = async (url, data) => {
+
+        const result = await this.postRequest(url, data, true);
+        if (result.code === 1) {
+            runInAction(() => {
+                if (data.page === 1) {
+                    this.accountDetail = result.data.list_data;
+                } else {
+                    let temp = this.accountDetail;
+                    if (result.data.list_data.length !== 0) {
+                        this.accountDetail = temp.concat(result.data.list_data)
+                    }
+                }
             })
         }
         return result;

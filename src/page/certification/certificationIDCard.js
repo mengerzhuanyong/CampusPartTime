@@ -20,6 +20,7 @@ import {
 } from 'react-native'
 import {Button} from 'teaset'
 import NavigationBar from '../../component/navigation/NavigationBar'
+import Container from '../../component/common/Container'
 import {inject, observer} from "mobx-react/index";
 import SpinnerLoading from "../../component/common/SpinnerLoading";
 
@@ -121,12 +122,106 @@ export default class CertificationIDCard extends Component {
 
     render() {
         let {mineStore} = this.props;
-        let {idCardInfo} = mineStore;
+        let {idCardInfo, myProfile} = mineStore;
         let {image_1, image_2, uploading1, uploading2} = this.state;
         let {params} = this.props.navigation.state;
         let pageTitle = params && params.pageTitle ? params.pageTitle : '身份证认证';
+        if (myProfile.id_card_status === 1) {
+            return (
+                <Container style={styles.container}>
+                    <NavigationBar
+                        title={pageTitle}
+                    />
+                    <KeyboardAvoidingView style={styles.content}>
+                        <ScrollView
+                            style={styles.scrollContent}
+                            keyboardShouldPersistTaps={'handled'}
+                        >
+                            <TouchableOpacity
+                                activeOpacity={0.7}
+                                style={styles.uploadItemView}
+                                onPress={() => this.handlerImages(1)}
+                            >
+                                {image_1 !== '' ?
+                                    <Image source={{uri: image_1}} style={styles.uploadImage}/>
+                                    :
+                                    <View style={styles.uploadContent}>
+                                        {uploading1 ?
+                                            <SpinnerLoading isVisible={uploading1}/>
+                                            :
+                                            <View style={styles.uploadContentTips}>
+                                                <Image source={Images.icon_plus} style={styles.uploadIcon}/>
+                                                <Text style={styles.uploadBtnName}>手持证件照</Text>
+                                            </View>
+                                        }
+                                    </View>
+                                }
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                activeOpacity={0.7}
+                                style={styles.uploadItemView}
+                                onPress={() => this.handlerImages(2)}
+                            >
+                                {image_2 !== '' ?
+                                    <Image source={{uri: image_2}} style={styles.uploadImage}/>
+                                    :
+                                    <View style={styles.uploadContent}>
+                                        {uploading2 ?
+                                            <SpinnerLoading isVisible={uploading2}/>
+                                            :
+                                            <View style={styles.uploadContentTips}>
+                                                <Image source={Images.icon_plus} style={styles.uploadIcon}/>
+                                                <Text style={styles.uploadBtnName}>身份证正面照</Text>
+                                            </View>
+                                        }
+                                    </View>
+                                }
+                            </TouchableOpacity>
+                            <View style={styles.userInfoTipsView}>
+                                <Image source={Images.icon_notice} style={styles.userInfoTipsIcon}/>
+                                <Text style={styles.userInfoTipsText}>请确认您的身份信息</Text>
+                            </View>
+                            <View style={styles.userInfoItemView}>
+                                <Image source={Images.icon_user_line} style={styles.userInfoItemIcon}/>
+                                <Text style={styles.userInfoItemTitle}>姓名：</Text>
+                                <TextInput
+                                    style={styles.userInfoItemInput}
+                                    underlineColorAndroid={'rgba(0, 0, 0, 0)'}
+                                    placeholder={'自动识别您的姓名'}
+                                    returnKeyType={'done'}
+                                    editable={false}
+                                    value={idCardInfo.name}
+                                />
+                            </View>
+                            <View style={styles.userInfoItemView}>
+                                <Image source={Images.icon_user_card} style={styles.userInfoItemIcon}/>
+                                <Text style={styles.userInfoItemTitle}>身份证号：</Text>
+                                <TextInput
+                                    style={styles.userInfoItemInput}
+                                    underlineColorAndroid={'rgba(0, 0, 0, 0)'}
+                                    placeholder={'自动识别您的身份证号'}
+                                    maxLength={18}
+                                    returnKeyType={'done'}
+                                    editable={false}
+                                    value={idCardInfo.id_number}
+                                />
+                            </View>
+                            <Button
+                                title={'提交认证'}
+                                style={styles.submitBtnView}
+                                titleStyle={styles.submitBtnName}
+                                onPress={this.onSubmitIdCardVerify}
+                            />
+                            <View style={CusTheme.contentTipsView}>
+                                <Text style={CusTheme.contentTipsCon}>{mineStore.certificationTips}</Text>
+                            </View>
+                        </ScrollView>
+                    </KeyboardAvoidingView>
+                </Container>
+            );
+        }
         return (
-            <View style={styles.container}>
+            <Container style={styles.container}>
                 <NavigationBar
                     title={pageTitle}
                 />
@@ -135,47 +230,15 @@ export default class CertificationIDCard extends Component {
                         style={styles.scrollContent}
                         keyboardShouldPersistTaps={'handled'}
                     >
-                        <TouchableOpacity
-                            style={styles.uploadItemView}
-                            onPress={() => this.handlerImages(1)}
-                        >
-                            {image_1 !== '' ?
-                                <Image source={{uri: image_1}} style={styles.uploadImage}/>
-                                :
-                                <View style={styles.uploadContent}>
-                                    {uploading1 ?
-                                        <SpinnerLoading isVisible={uploading1}/>
-                                        :
-                                        <View style={styles.uploadContentTips}>
-                                            <Image source={Images.icon_plus} style={styles.uploadIcon}/>
-                                            <Text style={styles.uploadBtnName}>手持证件照</Text>
-                                        </View>
-                                    }
-                                </View>
-                            }
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                            style={styles.uploadItemView}
-                            onPress={() => this.handlerImages(2)}
-                        >
-                            {image_2 !== '' ?
-                                <Image source={{uri: image_2}} style={styles.uploadImage}/>
-                                :
-                                <View style={styles.uploadContent}>
-                                    {uploading2 ?
-                                        <SpinnerLoading isVisible={uploading2}/>
-                                        :
-                                        <View style={styles.uploadContentTips}>
-                                            <Image source={Images.icon_plus} style={styles.uploadIcon}/>
-                                            <Text style={styles.uploadBtnName}>身份证正面照</Text>
-                                        </View>
-                                    }
-                                </View>
-                            }
-                        </TouchableOpacity>
+                        <View style={styles.uploadItemView}>
+                            <Image source={{uri: myProfile.id_card_detail.image_1}} style={styles.uploadImage}/>
+                        </View>
+                        <View style={styles.uploadItemView}>
+                            <Image source={{uri: myProfile.id_card_detail.image_2}} style={styles.uploadImage}/>
+                        </View>
                         <View style={styles.userInfoTipsView}>
                             <Image source={Images.icon_notice} style={styles.userInfoTipsIcon}/>
-                            <Text style={styles.userInfoTipsText}>请确认您的身份信息</Text>
+                            <Text style={styles.userInfoTipsText}>您的身份信息</Text>
                         </View>
                         <View style={styles.userInfoItemView}>
                             <Image source={Images.icon_user_line} style={styles.userInfoItemIcon}/>
@@ -184,15 +247,9 @@ export default class CertificationIDCard extends Component {
                                 style={styles.userInfoItemInput}
                                 underlineColorAndroid={'rgba(0, 0, 0, 0)'}
                                 placeholder={'自动识别您的姓名'}
-                                // keyboardType={'numeric'}
                                 returnKeyType={'done'}
                                 editable={false}
-                                value={idCardInfo.name}
-                                onChangeText={(text) => {
-                                    this.setState({
-                                        realname: text,
-                                    });
-                                }}
+                                value={myProfile.id_card_detail.username}
                             />
                         </View>
                         <View style={styles.userInfoItemView}>
@@ -202,27 +259,18 @@ export default class CertificationIDCard extends Component {
                                 style={styles.userInfoItemInput}
                                 underlineColorAndroid={'rgba(0, 0, 0, 0)'}
                                 placeholder={'自动识别您的身份证号'}
-                                // keyboardType={'numeric'}
                                 maxLength={18}
                                 returnKeyType={'done'}
                                 editable={false}
-                                value={idCardInfo.id_number}
-                                onChangeText={(text) => {
-                                    this.setState({
-                                        id_number: text
-                                    });
-                                }}
+                                value={myProfile.id_card_detail.id_number}
                             />
                         </View>
-                        <Button
-                            title={'提交认证'}
-                            style={styles.submitBtnView}
-                            titleStyle={styles.submitBtnName}
-                            onPress={this.onSubmitIdCardVerify}
-                        />
+                        <View style={[CusTheme.contentTipsView, CusTheme.contentTipsViewMargin]}>
+                            <Text style={CusTheme.contentTipsCon}>{mineStore.certificationTips}</Text>
+                        </View>
                     </ScrollView>
                 </KeyboardAvoidingView>
-            </View>
+            </Container>
         );
     }
 }
@@ -314,12 +362,13 @@ const styles = StyleSheet.create({
     },
     submitBtnView: {
         height: 45,
-        marginVertical: 40,
         borderWidth: 0,
+        marginTop: 40,
+        marginBottom: 20,
         backgroundColor: CusTheme.themeColor,
     },
     submitBtnName: {
         color: '#fff',
         fontSize: FontSize(15),
-    }
+    },
 });

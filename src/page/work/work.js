@@ -205,12 +205,13 @@ export default class Work extends Component {
     };
 
     pickerArea = () => {
+        this.setState({maskHidden: true});
         ActionsManager.showArea((info) => {
             console.log(info);
             this.setState({
                 location: info,
                 sortArea: info[2],
-            }, this._onRefresh());
+            }, () => this._onRefresh());
         });
     };
 
@@ -315,51 +316,108 @@ export default class Work extends Component {
             return null;
         }
         let itemView = workNavigation.map((item, index) => {
+            let selected = -1;
+            if (sortPositionId === 0) {
+                selected = -1;
+            } else {
+                let id = parseInt(item.id);
+                selected = sortPositionId.findIndex((i) => i === id);
+            }
             return (
                 <Button
                     key={item.id}
                     title={item.name}
-                    style={[styles.positionBtnView, sortPositionId === item.id && styles.positionBtnViewCur]}
-                    titleStyle={[styles.positionTitleStyle, sortPositionId === item.id && styles.positionTitleStyleCur]}
+                    style={[styles.positionBtnView, selected !== -1 && styles.positionBtnViewCur]}
+                    titleStyle={[styles.positionTitleStyle, selected !== -1 && styles.positionTitleStyleCur]}
                     onPress={() => {
-                            this.setState({
-                                sortPosition: item.name,
-                                sortPositionId: item.id,
-                                maskHidden: true,
-                                // ready: false,
-                            }, () => this._onRefresh());
-                        // this._onClose();
-                        this.timer3 = setTimeout(() => {
-                        }, 600);
+                        this.onPressFilterItem(item);
                     }}
                 />
             )
         })
         return (
             <View style={[styles.dropDownMenuView,]}>
-                <Button
-                    title={'全部'}
-                    style={[styles.positionBtnView, sortPositionId === 0 && styles.positionBtnViewCur]}
-                    titleStyle={[styles.positionTitleStyle, sortPositionId === 0 && styles.positionTitleStyleCur]}
-                    onPress={() => {
-                            this.setState({
-                                sortPosition: '职位',
-                                sortPositionId: 0,
-                                maskHidden: true,
-                                // ready: false,
-                            }, () => this._onRefresh());
-                        // this._onClose();
-                        this.timer4 = setTimeout(() => {
-                        }, 600);
-                    }}
-                />
-                {itemView}
+                <ScrollView style={[styles.dropDownMenuScrollView]}>
+                <View style={[styles.dropDownMenuContent,]}>
+                    <Button
+                        title={'全部'}
+                        style={[styles.positionBtnView, sortPositionId === 0 && styles.positionBtnViewCur]}
+                        titleStyle={[styles.positionTitleStyle, sortPositionId === 0 && styles.positionTitleStyleCur]}
+                        onPress={() => {
+                            let all = {
+                                id: 0,
+                                name: '职位',
+                            };
+                            this.onPressFilterItem(all);
+                        }}
+                    />
+                    {itemView}
+                </View>
+                </ScrollView>
+                <View style={styles.bottomContainer}>
+                    <Button
+                        title={'重置'}
+                        style={styles.button}
+                        onPress={this.onResetFilterPosition}
+                        titleStyle={styles.buttonTitle}
+                    />
+                    <Button
+                        title={'确定'}
+                        style={styles.button}
+                        onPress={this.onSubmitFilterPosition}
+                        titleStyle={styles.buttonTitle}
+                    />
+                </View>
             </View>
         );
     };
 
+    onPressFilterItem = (item) => {
+        let {sortPositionId, sortPosition} = this.state;
+        if (item.id === 0) {
+            this.setState({
+                sortPosition: '职位',
+                sortPositionId: 0,
+                // maskHidden: true,
+            });
+        } else {
+            sortPositionId = sortPositionId === 0 ? [] : sortPositionId;
+            let newSortArray = sortPositionId.slice();
+            let id = parseInt(item.id);
+            let index = newSortArray.findIndex((i) => i === id);
+            console.log('index---->', index);
+            if (index === -1) {
+                newSortArray.push(id);
+            } else {
+                newSortArray.splice(index, 1);
+            }
+            console.log(newSortArray);
+            sortPosition = '职位(' + newSortArray.length + ')';
+            this.setState({
+                sortPosition,
+                sortPositionId: newSortArray,
+                // maskHidden: true,
+            });
+        }
+    }
+
+    onResetFilterPosition = () => {
+        this.setState({
+            sortPosition: '职位',
+            sortPositionId: 0,
+            // maskHidden: true,
+        });
+    };
+
+    onSubmitFilterPosition = () => {
+        this.setState({
+            maskHidden: true,
+        });
+        this._onRefresh();
+    };
+
     contentHeight = (selectIndex) => {
-        return 100;
+        return 200;
     };
 
     render() {
@@ -506,6 +564,7 @@ const styles = StyleSheet.create({
 
     listContent: {
         flex: 1,
+        // paddingHorizontal: 15,
         backgroundColor: '#fff',
     },
     listContainerStyle: {
@@ -587,13 +646,19 @@ const styles = StyleSheet.create({
     // 下拉菜单
     dropDownMenuView: {
         flex: 1,
-        flexWrap: 'wrap',
-        flexDirection: 'row',
         // alignItems: 'center',
         // justifyContent: 'center',
         backgroundColor: '#fff',
         borderBottomLeftRadius: 4,
         borderBottomRightRadius: 4,
+    },
+    dropDownMenuScrollView: {
+        // paddingVertical: 8,
+    },
+    dropDownMenuContent: {
+        marginVertical: 5,
+        flexWrap: 'wrap',
+        flexDirection: 'row',
     },
     dropDownMenuContext: {
         color: '#fff'
@@ -622,12 +687,30 @@ const styles = StyleSheet.create({
     },
     positionBtnViewCur: {
         borderColor: CusTheme.themeColor,
+        backgroundColor: CusTheme.themeColor,
     },
     positionTitleStyle: {
         color: '#999',
         fontSize: FontSize(12),
     },
     positionTitleStyleCur: {
-        color: CusTheme.themeColor,
+        color: '#fff',
+    },
+    bottomContainer: {
+        flexDirection: 'row',
+        marginBottom: ScaleSize(40),
+        marginTop: 10,
+    },
+    button: {
+        flex: 1,
+        borderRadius: 4,
+        borderWidth: 0,
+        backgroundColor: CusTheme.themeColor,
+        height: 30,
+        marginHorizontal: ScaleSize(15),
+    },
+    buttonTitle: {
+        fontSize: FontSize(14),
+        color: "#fff",
     },
 });
