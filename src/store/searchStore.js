@@ -142,7 +142,7 @@ export default class SearchStore extends BaseStore {
                 result = await StorageManager.load(WORK_SEARCH_KEY);
                 runInAction(() => {
                     if (result && result.code === 1) {
-                        console.log(result);
+                        // console.log(result);
                         this.work_search_keys = result.data;
                     }
                 });
@@ -151,7 +151,7 @@ export default class SearchStore extends BaseStore {
                 result = await StorageManager.load(SHOP_SEARCH_KEY);
                 runInAction(() => {
                     if (result && result.code === 1) {
-                        console.log(result);
+                        // console.log(result);
                         this.shop_search_keys = result.data;
                     }
                 });
@@ -160,7 +160,7 @@ export default class SearchStore extends BaseStore {
                 result = await StorageManager.load(POINT_SEARCH_KEY);
                 runInAction(() => {
                     if (result && result.code === 1) {
-                        console.log(result);
+                        // console.log(result);
                         this.point_search_keys = result.data;
                     }
                 });
@@ -169,7 +169,7 @@ export default class SearchStore extends BaseStore {
                 result = await StorageManager.load(WORK_SEARCH_KEY);
                 runInAction(() => {
                     if (result && result.code === 1) {
-                        console.log(result);
+                        // console.log(result);
                         this.work_search_keys = result.data;
                     }
                 });
@@ -203,7 +203,7 @@ export default class SearchStore extends BaseStore {
                 break;
         }
 
-        console.log(keywordsTemp);
+        // console.log(keywordsTemp);
 
         let status = keywordsTemp.findIndex(i => i === keyword);
 
@@ -234,7 +234,7 @@ export default class SearchStore extends BaseStore {
             }
         });
 
-        console.log(SAVE_KEY, keywordsTemp);
+        // console.log(SAVE_KEY, keywordsTemp);
 
         let result = StorageManager.save(SAVE_KEY, keywordsTemp);
         return result;

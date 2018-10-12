@@ -30,6 +30,7 @@ import SegmentedControlTab from '../../component/common/SegmentedControlTab'
 import {Button} from 'teaset'
 import WorkPunchCard from "./workPunchCard";
 import JobTagComponent from "../../component/job/jobTagComponent";
+import UtilMap from '../../util/utilsMap'
 
 @inject('loginStore', 'workStore', 'resourceStore')
 @observer
@@ -122,6 +123,15 @@ export default class WorkDetail extends Component {
         }
     };
 
+    onPushToNavigation = (workDetail) => {
+        if (workDetail && workDetail.address_lat && workDetail.address_lng) {
+            UtilMap.turnToMapApp(workDetail.address_lng, workDetail.address_lat, 'gaode', workDetail.address_name);
+        } else {
+            ToastManager.show('暂未获得该店地址，无法开启导航');
+            return;
+        }
+    }
+
     render() {
         let {loading, listData, ready} = this.state;
         const {workStore} = this.props;
@@ -153,15 +163,26 @@ export default class WorkDetail extends Component {
 
                             <View style={[styles.contentItemView, styles.orderUserInfoView]}>
                                 <View style={[styles.contentTitleView]}>
+                                    <Text style={styles.contentTitle}>工作地点</Text>
+                                </View>
+                                <TouchableOpacity
+                                    style={styles.addressView}
+                                    onPress={() => this.onPushToNavigation(workDetail)}
+                                >
+                                    <View style={[styles.addressView, styles.addressViewCon]}>
+                                        <Image source={Images.icon_place} style={styles.placeIconStyle} />
+                                        <Text style={[styles.orderStatusInfoItem, styles.placeInfoStyle]}>{workDetail.address}</Text>
+                                    </View>
+                                    <Image source={Images.icon_arrow_right} style={styles.placeIconStyle} />
+                                </TouchableOpacity>
+                            </View>
+
+                            <View style={[styles.contentItemView, styles.orderUserInfoView]}>
+                                <View style={[styles.contentTitleView]}>
                                     <Text style={styles.contentTitle}>职位描述</Text>
                                 </View>
                                 <View style={styles.orderUserInfoCon}>
                                     {this.renderWorKDescription(workDetail.description)}
-
-                                    {/*<View style={styles.orderUserInfoConItem}>
-                                <Text style={[styles.orderUserInfoConItemTitle]}>【入职要求】</Text>
-                                <Text style={[styles.orderUserInfoConItemValue]}>形象好、气质佳、阳光开朗、男女不限！</Text>
-                            </View>*/}
                                 </View>
                             </View>
                             <View style={[styles.contentItemView, styles.orderStatusInfoView]}>
@@ -218,6 +239,7 @@ const styles = StyleSheet.create({
     },
     contentTitle: {
         color: '#333',
+        fontWeight: '600',
         fontSize: FontSize(16),
         lineHeight: FontSize(25),
     },
@@ -328,5 +350,27 @@ const styles = StyleSheet.create({
         color: '#666',
         fontSize: FontSize(13),
         lineHeight: FontSize(20),
+    },
+
+    addressView: {
+        flex: 1,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+    },
+    addressViewCon: {
+        marginRight: 10,
+        // backgroundColor: '#123',
+    },
+    placeIconStyle: {
+        width: 20,
+        height: 20,
+        marginRight: 5,
+        resizeMode: 'contain',
+    },
+    placeInfoStyle: {
+        flex: 1,
+        lineHeight: 24,
+        // textDecorationLine: 'underline',
     },
 });

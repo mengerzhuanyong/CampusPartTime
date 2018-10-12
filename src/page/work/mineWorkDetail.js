@@ -31,6 +31,7 @@ import SegmentedControlTab from '../../component/common/SegmentedControlTab'
 import {Button} from 'teaset'
 import WorkPunchCard from "./workPunchCard";
 import Container from "../../component/common/Container";
+import UtilMap from '../../util/utilsMap'
 
 @inject('loginStore', 'mineStore', 'workStore')
 @observer
@@ -205,9 +206,18 @@ export default class MineWorkDetail extends Component {
             });
     };
 
+    onPushToNavigation = (jobInfo) => {
+        if (jobInfo && jobInfo.lat && jobInfo.lng) {
+            UtilMap.turnToMapApp(jobInfo.lng, jobInfo.lat, 'gaode', jobInfo.address);
+        } else {
+            ToastManager.show('暂未获得该店地址，无法开启导航');
+            return;
+        }
+    }
+
     render() {
         let {loading, item, ready} = this.state;
-        console.log('item', item);
+        // console.log('item', item);
         const {workStore} = this.props;
         let {workBenchDetail} = workStore;
         let {params} = this.props.navigation.state;
@@ -254,10 +264,20 @@ export default class MineWorkDetail extends Component {
                             </View>
                             <Text style={styles.orderStatusInfoItem}>工作名称：{workBenchDetail.job_info.name}</Text>
                             <Text style={styles.orderStatusInfoItem}>工作时间：{workBenchDetail.job_info.work_time}</Text>
+                            <Text style={styles.orderStatusInfoItem}>已报名时间：{workBenchDetail.job_info.sign_time}</Text>
                             <Text style={styles.orderStatusInfoItem}
                                   onPress={() => this.makeCall(workBenchDetail.job_info.server_mobile)}
                             >工作人员电话：{workBenchDetail.job_info.server_mobile}</Text>
-                            <Text style={styles.orderStatusInfoItem}>工作地点：{workBenchDetail.job_info.address}</Text>
+                            <View style={styles.addressView}>
+                                <Text style={styles.orderStatusInfoItemTitle}>工作地点：</Text>
+                                <TouchableOpacity
+                                    style={styles.addressView}
+                                    onPress={() => this.onPushToNavigation(workBenchDetail.job_info)}
+                                >
+                                    <Image source={Images.icon_place} style={styles.placeIconStyle} />
+                                    <Text style={[styles.orderStatusInfoItem, styles.placeInfoStyle]}>{workBenchDetail.job_info.address}</Text>
+                                </TouchableOpacity>
+                            </View>
                         </View>
                         <Button
                             title={item.status === 1 ? '取消报名' : '打卡'}
@@ -380,11 +400,34 @@ const styles = StyleSheet.create({
     orderUserAddress: {},
     orderStatusInfoView: {},
     orderStatusInfoItem: {
+        flex: 1,
+        color: '#333',
+        fontSize: FontSize(14),
+        lineHeight: FontSize(25),
+    },
+    orderStatusInfoItemTitle: {
         color: '#333',
         fontSize: FontSize(14),
         lineHeight: FontSize(25),
     },
 
+    addressView: {
+        flex: 1,
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    placeIconStyle: {
+        width: 20,
+        height: 20,
+        marginRight: 5,
+        resizeMode: 'contain',
+    },
+    placeInfoStyle: {
+        lineHeight: 24,
+        fontSize: FontSize(14),
+        textDecorationLine: 'underline',
+    },
+    
     btnView: {
         marginVertical: 40,
         marginHorizontal: 15,

@@ -65,7 +65,7 @@ export default class OrderSubmit extends Component {
     }
 
     updateContent = (data) => {
-        console.log(data);
+        // console.log(data);
         this.setState({
             address: data
         });

@@ -73,7 +73,7 @@ export default class Index extends React.Component {
                 }, 500);
             } else {
                 // 已经登录
-                console.log(localRes);
+                // console.log(localRes);
                 global.token = localRes.data.token;
                 this.checkTokenStatus(localRes);
             }
@@ -100,7 +100,7 @@ export default class Index extends React.Component {
                 }, 500);
             }
         } catch (e) {
-            console.log(e);
+            // console.log(e);
             loginStore.cleanUserInfo();
             SplashScreen.hide();
         }

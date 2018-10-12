@@ -173,7 +173,7 @@ export default class Work extends Component {
     };
 
     _onPressItem = (index) => {
-        console.log(this.flatListRef.contentOffset)
+        // console.log(this.flatListRef.contentOffset)
         if (this.flatListRef.contentOffset.y < headerHeight) {
             const option = { animated: false, itemIndex: 0, sectionIndex: 0, viewOffset: 30, viewPosition: 0 }
             this.flatListRef.scrollToLocation(option)

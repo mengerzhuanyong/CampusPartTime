@@ -104,7 +104,7 @@ class ActionsManager {
                         break;
                 }
             }, (error) => {
-                console.log(error);
+                // console.log(error);
                 ToastManager.show('未安装客户端，分享失败');
                 // ActionsManager.getSharePoints(item, callBack);
             });

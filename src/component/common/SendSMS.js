@@ -50,7 +50,7 @@ export default class SendSMS extends PureComponent {
     }
 
     getVerificationCode = async (mobile, type) => {
-        console.log(mobile);
+        // console.log(mobile);
         let {dismiss} = this.props;
         dismiss && dismiss();
         type = type === 'register' ? 1 : 2;

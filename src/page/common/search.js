@@ -253,7 +253,7 @@ export default class Search extends Component {
     };
 
     renderSearchKeywords = (data) => {
-        console.log(data);
+        // console.log(data);
         if (!data || data.length < 1) {
             return null;
         }
@@ -296,7 +296,7 @@ export default class Search extends Component {
                 dataSource = getWorkDataSource;
                 break;
         }
-        console.log(getWorkSearchKeys, getShopSearchKeys, getPointSearchKeys, dataSource);
+        // console.log(getWorkSearchKeys, getShopSearchKeys, getPointSearchKeys, dataSource);
         return (
             <View style={styles.container}>
                 <NavigationBar

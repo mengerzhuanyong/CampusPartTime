@@ -78,7 +78,7 @@ export default class WorkPunchCard extends Component {
     };
 
     onRead = async (res) => {
-        console.log(res);
+        // console.log(res);
         let {params} = this.props.navigation.state;
         let {onSubmitPunchCard} = params;
         onSubmitPunchCard && onSubmitPunchCard(res);

@@ -149,7 +149,7 @@ export default class WorkStore extends BaseStore {
     onSelectTimeItem = (index, item) => {
         let times = this.time_list.slice();
         let work_time = this.work_time.slice();
-        console.log('work_time------>1', work_time);
+        // console.log('work_time------>1', work_time);
         let value = item.selected === 1 ? 2 : 1;
         let id = item.id;
         if (value === 2) {
@@ -157,7 +157,7 @@ export default class WorkStore extends BaseStore {
         } else {
             work_time.splice(work_time.findIndex(i => i === id), 1);
         }
-        console.log('work_time------>2', work_time);
+        // console.log('work_time------>2', work_time);
         times[index].selected = value;
         this.time_list = times;
         this.work_time = work_time;

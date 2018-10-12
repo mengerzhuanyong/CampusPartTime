@@ -123,7 +123,7 @@ export default class MineWithDraw extends Component {
                 }, 500);
             }
         } catch (e) {
-            console.log(e);
+            // console.log(e);
             ToastManager.show('error');
         }
 

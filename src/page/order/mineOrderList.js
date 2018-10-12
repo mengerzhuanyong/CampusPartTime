@@ -61,9 +61,9 @@ export default class MineOrderList extends Component {
     }
 
     // shouldComponentUpdate(nextProps, nextState) {
-    //     console.log(nextProps, nextState);
+    //     // console.log(nextProps, nextState);
     //     if (nextProps.type === this.props.type && nextProps.status === this.props.status) {
-    //         console.log('shouldComponentUpdate----> false');
+    //         // console.log('shouldComponentUpdate----> false');
     //         return false;
     //     }
     //     return true;
@@ -85,7 +85,7 @@ export default class MineOrderList extends Component {
     requestDataSource = async (page, type, status) => {
         let {orderStore} = this.props;
         // let {type, status} = this.state;
-        console.log('---->',type);
+        // console.log('---->',type);
         let url = ServicesApi.my_orders;
         let data = {
             type,
@@ -157,7 +157,7 @@ export default class MineOrderList extends Component {
         if (!dataSource) {
             return <SpinnerLoading isVisible={true}/>;
         }
-        console.log(dataSource);
+        // console.log(dataSource);
         return (
             <View style={styles.container}>
                 <FlatListView

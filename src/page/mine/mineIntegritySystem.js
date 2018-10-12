@@ -84,7 +84,7 @@ export default class MineIntegritySystem extends Component {
             );
         });
         let content = <View style={styles.alertContent}>{context}</View>;
-        console.log(content);
+        // console.log(content);
         const params = {
             title: '积分规则',
             detail: content,
@@ -185,7 +185,7 @@ export default class MineIntegritySystem extends Component {
                         activeTabTextStyle={styles.activeTabTextStyle}
                         tabsContainerStyle={styles.tabContainer}
                         onTabPress={(index) => {
-                            console.log(index);
+                            // console.log(index);
                             this.setState({
                                 activeTabIndex: index
                             });

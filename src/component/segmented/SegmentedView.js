@@ -42,7 +42,7 @@ class SegmentedView extends React.PureComponent {
     componentWillUnmount() {
         clearTimeout(this.time1)
         clearTimeout(this.time2)
-        console.log(this.time1, this.time2)
+        // console.log(this.time1, this.time2)
     }
 
     setNativeProps(props) {
@@ -182,7 +182,7 @@ class SegmentedView extends React.PureComponent {
 
     render() {
         const { style, onLayout, showSegmentedBar, pointerEvents } = this.props
-        console.log('rednder')
+        // console.log('rednder')
         return (
             <View style={[styles.container, style]} pointerEvents={pointerEvents}>
                 {showSegmentedBar ? this._renderSegmentedBar() : null}

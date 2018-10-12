@@ -10,7 +10,7 @@ class DropDownMenu extends PureComponent {
 
     constructor(props) {
         super(props);
-        console.log(props.titleArray);
+        // console.log(props.titleArray);
         this.state = { activeIndex: -1, visible: false }
     }
 
@@ -39,7 +39,7 @@ class DropDownMenu extends PureComponent {
 
     _onClose = () => {
         this.close()
-        console.log('asd')
+        // console.log('asd')
         this.props.onClose && this.props.onClose()
     };
 
@@ -53,7 +53,7 @@ class DropDownMenu extends PureComponent {
 
     render() {
         const { children, renderContentComponent, contentHeight, style, onClose, ...others } = this.props;
-        console.log('render', this.state.activeIndex);
+        // console.log('render', this.state.activeIndex);
         return (
             <View style={[styles.container, style]}>
                 {1 > 2 ?<MenuBar
@@ -117,12 +117,12 @@ class MenuBar extends PureComponent {
         }
         this.setState({ activeIndex });
         this.props.onPress && this.props.onPress(activeIndex);
-        console.log('zzz');
+        // console.log('zzz');
     };
 
     render() {
         const { titleArray, visible } = this.props;
-        console.log('MenuBar');
+        // console.log('MenuBar');
         return (
             <View style={styles.barContainer}>
                 {titleArray.map((item, index) => {
@@ -177,7 +177,7 @@ class ContentContainer extends PureComponent {
     };
 
     // static getDerivedStateFromProps(nextProps, prevState) {
-    //     console.log('getDerivedStateFromProps--->',nextProps, prevState);
+    //     // console.log('getDerivedStateFromProps--->',nextProps, prevState);
     //     if (prevState.visible !== nextProps.visible) {
     //         return {
     //             isVisible: nextProps.visible,
@@ -188,7 +188,7 @@ class ContentContainer extends PureComponent {
     // }
 
     // componentDidUpdate(prevProps, prevState) {
-    //     console.log('componentDidUpdate-------->',prevProps, prevState, this.state);
+    //     // console.log('componentDidUpdate-------->',prevProps, prevState, this.state);
     //     if (prevProps.visible !== this.state.isVisible) {
     //         this.startAnimated(this.state.isVisible);
     //     }

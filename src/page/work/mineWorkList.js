@@ -62,9 +62,9 @@ export default class MineWorkList extends Component {
     }
 
     // shouldComponentUpdate(nextProps, nextState) {
-    //     console.log(nextProps, nextState);
+    //     // console.log(nextProps, nextState);
     //     if (nextProps.type === this.props.type && nextProps.status === this.props.status) {
-    //         console.log('shouldComponentUpdate----> false');
+    //         // console.log('shouldComponentUpdate----> false');
     //         return false;
     //     }
     //     return true;

@@ -238,7 +238,7 @@ export default class Address extends Component {
         let {ready} = this.state;
         let {params} = this.props.navigation.state;
         let pageTitle = params && params.pageTitle ? params.pageTitle : '我的地址';
-        console.log(getDataSource);
+        // console.log(getDataSource);
         return (
             <View style={styles.container}>
                 <NavigationBar

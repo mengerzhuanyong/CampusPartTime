@@ -47,7 +47,7 @@ export default class Location extends PureComponent {
                 });
             })
             .catch(e => {
-                console.log(e);
+                // console.log(e);
             });
     }
 
@@ -81,11 +81,11 @@ export default class Location extends PureComponent {
 
         return PermissionsAndroid.requestMultiple(permissions)
             .then((result) => {
-                console.log(result);     //结果: granted ,    PermissionsAndroid.RESULTS.GRANTED 也等于 granted
+                // console.log(result);     //结果: granted ,    PermissionsAndroid.RESULTS.GRANTED 也等于 granted
                 return result;
             })
             .catch(error => {
-                console.log('拒绝授权=====>', error);
+                // console.log('拒绝授权=====>', error);
                 return null;
             })
     }
@@ -101,7 +101,7 @@ export default class Location extends PureComponent {
                 });
             }
         } catch (e) {
-            console.log(e);
+            // console.log(e);
         }
     };
 
@@ -111,7 +111,7 @@ export default class Location extends PureComponent {
             canPress: false
         });
         let data = await Geolocation.getCurrentPosition();
-        console.log(data);
+        // console.log(data);
         this.timer1 = setTimeout(() =>{
             this.setState({
                 canPress: true

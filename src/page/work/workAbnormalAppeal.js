@@ -47,7 +47,7 @@ export default class WorkAbnormalAppeal extends Component {
     }
 
     componentDidMount() {
-        console.log(this.state.item)
+        // console.log(this.state.item)
     }
 
     renderHeaderRightView = () => {
@@ -78,7 +78,7 @@ export default class WorkAbnormalAppeal extends Component {
                 RouterHelper.goBack();
             }
         } catch (e) {
-            console.log(e);
+            // console.log(e);
         }
     };
 

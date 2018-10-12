@@ -64,7 +64,7 @@ export default class AddressAdd extends Component {
     pickerArea = () => {
         Keyboard.dismiss();
         ActionsManager.showArea((info) => {
-            console.log(info);
+            // console.log(info);
             this.setState({
                 area: info
             });

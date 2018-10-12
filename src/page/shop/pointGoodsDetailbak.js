@@ -1,5 +1,5 @@
 /**
- * 校园空兼 - GoodsDetail
+ * 校园空兼 - PointGoodsDetail
  * https://menger.me
  * @大梦
  */
@@ -19,7 +19,7 @@ import {
     TextInput,
     ImageBackground,
     TouchableOpacity,
-    TouchableWithoutFeedback, WebView,
+    TouchableWithoutFeedback,
 } from 'react-native'
 
 import NavigationBar from '../../component/navigation/NavigationBar'
@@ -47,7 +47,7 @@ import SpinnerLoading from "../../component/common/SpinnerLoading";
 
 @inject('loginStore', 'shopStore')
 @observer
-export default class GoodsDetail extends Component {
+export default class PointGoodsDetail extends Component {
 
     constructor(props) {
         super(props);
@@ -55,7 +55,6 @@ export default class GoodsDetail extends Component {
         this.state = {
             item: params && params.item ? params.item : {id: 1},
             listData: [1, 2, 3, 4],
-            ready: false,
         };
     }
 
@@ -63,7 +62,7 @@ export default class GoodsDetail extends Component {
         this.loadNetData();
         this.timer1 = setTimeout(() => {
             this.setState({ready: true});
-        }, 400);
+        }, 200);
     }
 
     componentWillUnmount() {
@@ -73,7 +72,7 @@ export default class GoodsDetail extends Component {
 
     loadNetData = async () => {
         const {shopStore} = this.props;
-        let url = ServicesApi.workGoodsDetails;
+        let url = ServicesApi.point_goods_details;
         let data = {
             id: this.state.item.id,
         };
@@ -84,7 +83,7 @@ export default class GoodsDetail extends Component {
     onSubmitOrderToCart = async (type) => {
         const {shopStore} = this.props;
         let {item} = this.state;
-        let url = ServicesApi.work_goods_buy;
+        let url = ServicesApi.point_goods_buy;
         let data = {
             type,
             id: item.id,
@@ -92,7 +91,13 @@ export default class GoodsDetail extends Component {
         let result = await shopStore.onSubmitOrderToCart(url, data);
         // console.log(result);
         if (result && result.code === 1) {
-            RouterHelper.navigate('订单确认', 'OrderConfirm', {flag: 'work'});
+            if (result.data.buy_available === 1) {
+                RouterHelper.navigate('订单提交', 'OrderSubmit', {
+                    flag: 'point',
+                });
+            } else {
+                ToastManager.show('积分不足，无法兑换');
+            }
         }
     };
 
@@ -119,35 +124,52 @@ export default class GoodsDetail extends Component {
         let {params} = this.props.navigation.state;
         let pageTitle = params && params.pageTitle ? params.pageTitle : '商品详情';
         return (
-            <Container style={styles.container}>
+            <View style={styles.container}>
                 <NavigationBar
                     title={pageTitle}
                 />
                 {ready ?
-                    <View style={styles.content}>
-                        <WebView
-                            source={{uri: getGoodsDetail.link}}
-                            startInLoadingState={false}
-                            style={[styles.webContainer]}
-                        />
+                    <ScrollView style={styles.content}>
+                        <View style={styles.contentTopView}>
+                            <GoodsCarousel
+                                bannerData={getGoodsDetail.illustration}
+                                {...this.props}
+                            />
+                        </View>
+                        <View style={[styles.contentItemView, styles.goodsInfoView]}>
+                            <View style={[styles.goodsInfoTopView]}>
+                                <View style={[styles.goodsInfoTitleView]}>
+                                    <Text style={styles.goodsTitle}>{getGoodsDetail.name}</Text>
+                                    <GoodsTagComponent
+                                        tagsData={getGoodsDetail.tags}
+                                        {...this.props}
+                                    />
+                                </View>
+                                <View style={styles.goodsInfoPriceView}>
+                                    <Text style={styles.goodsInfoPriceValue}>{getGoodsDetail.point_str}</Text>
+                                </View>
+                            </View>
+                        </View>
+                        <View style={[styles.contentItemView, styles.goodsUserInfoView]}>
+                            <View style={[styles.contentTitleView]}>
+                                <Text style={styles.contentTitle}>【商品介绍】</Text>
+                            </View>
+                            <View style={styles.goodsUserInfoCon}>
+                                {this.renderDescription(getGoodsDetail.description)}
+                            </View>
+                        </View>
                         <View style={styles.multiBtnView}>
                             <Button
-                                title={'余额换购'}
+                                title={'立即兑换'}
                                 style={[CusTheme.btnView, styles.btnView]}
                                 titleStyle={[CusTheme.btnName, styles.btnName]}
                                 onPress={() => this.onSubmitOrderToCart(2)}
                             />
-                            <Button
-                                title={'工分换购'}
-                                style={[CusTheme.btnView, styles.btnView]}
-                                titleStyle={[CusTheme.btnName, styles.btnName]}
-                                onPress={() => this.onSubmitOrderToCart(1)}
-                            />
                         </View>
-                    </View>
-                    : <SpinnerLoading isVisible={true} />
+                    </ScrollView>
+                    : <SpinnerLoading isVisible={true}/>
                 }
-            </Container>
+            </View>
         );
     }
 }
@@ -157,10 +179,6 @@ const headBackImageW = SCREEN_WIDTH - ScaleSize(14) * 2;
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-    },
-    webContainer: {
-        flex: 1,
-        backgroundColor: '#f1f2f3',
     },
     contentTopView: {
         backgroundColor: '#fff',
@@ -320,10 +338,9 @@ const styles = StyleSheet.create({
         fontSize: FontSize(14),
     },
     goodsInfoPriceValue: {
-        color: '#f00',
+        color: '#f50',
         marginHorizontal: 2,
-        fontSize: FontSize(20),
-        marginBottom: FontSize(3),
+        fontSize: FontSize(15),
     },
     goodsInfoWorkPointsView: {
         marginTop: 10,

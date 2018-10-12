@@ -81,7 +81,7 @@ export default class MineProfile extends Component {
         JShareModule.isWeChatInstalled((isInstalled) => {
             if (isInstalled) {
                 JShareModule.getSocialUserInfo(param, (map) => {
-                    console.log(param, url, map);
+                    // console.log(param, url, map);
                     this.onSubmitUserInfo(url, map);
                 }, (errorCode) => {
                     // console.log(errorCode);

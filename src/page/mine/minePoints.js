@@ -91,7 +91,7 @@ export default class MinePoints extends Component {
                 ToastManager.show(result.msg);
             }
         } catch (e) {
-            console.log(e);
+            // console.log(e);
             ToastManager.show('error');
         }
     };
@@ -103,7 +103,7 @@ export default class MinePoints extends Component {
             );
         });
         let content = <View style={styles.alertContent}>{context}</View>;
-        console.log(content);
+        // console.log(content);
         const params = {
             title: '积分规则',
             detail: content,

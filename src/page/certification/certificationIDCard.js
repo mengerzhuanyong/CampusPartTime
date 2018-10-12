@@ -59,7 +59,7 @@ export default class CertificationIDCard extends Component {
 
     handlerImages = async (type) => {
         let result = await ImagePickerManager.showMultipleImagePicker(options);
-        console.log(result);
+        // console.log(result);
         if (result.code === 1) {
             if (type === 1) {
                 this.setState({uploading1: true});

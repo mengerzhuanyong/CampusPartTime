@@ -61,7 +61,7 @@ export default class ResourceStore extends BaseStore {
         const result = await this.postRequest(url, data, true);
         if (result.code === 1) {
             runInAction(() => {
-                console.log(data);
+                // console.log(data);
                 if (data.type === 1) {
                     this.homeDataSource = result.data;
                 } else {

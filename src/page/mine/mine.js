@@ -121,7 +121,7 @@ export default class Mine extends Component {
                 ToastManager.show(result.msg);
             }
         } catch (e) {
-            console.log(e);
+            // console.log(e);
             ToastManager.show('error');
         }
     };

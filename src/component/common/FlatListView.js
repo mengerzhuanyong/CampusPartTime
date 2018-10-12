@@ -270,7 +270,7 @@ class FlatListView extends React.PureComponent {
     };
     render() {
         const { onRefresh, onEndReached, onLayout, onContentSizeChange, enableRefresh, enableLoadMore, ...others } = this.props;
-        console.log('render');
+        // console.log('render');
         return (
             <FlatList
                 ref={this._captureRef}

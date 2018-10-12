@@ -19,7 +19,7 @@ import {
     TextInput,
     ImageBackground,
     TouchableOpacity,
-    TouchableWithoutFeedback,
+    TouchableWithoutFeedback, WebView,
 } from 'react-native'
 
 import NavigationBar from '../../component/navigation/NavigationBar'
@@ -62,7 +62,7 @@ export default class PointGoodsDetail extends Component {
         this.loadNetData();
         this.timer1 = setTimeout(() => {
             this.setState({ready: true});
-        }, 200);
+        }, 400);
     }
 
     componentWillUnmount() {
@@ -124,40 +124,17 @@ export default class PointGoodsDetail extends Component {
         let {params} = this.props.navigation.state;
         let pageTitle = params && params.pageTitle ? params.pageTitle : '商品详情';
         return (
-            <View style={styles.container}>
+            <Container style={styles.container}>
                 <NavigationBar
                     title={pageTitle}
                 />
                 {ready ?
-                    <ScrollView style={styles.content}>
-                        <View style={styles.contentTopView}>
-                            <GoodsCarousel
-                                bannerData={getGoodsDetail.illustration}
-                                {...this.props}
-                            />
-                        </View>
-                        <View style={[styles.contentItemView, styles.goodsInfoView]}>
-                            <View style={[styles.goodsInfoTopView]}>
-                                <View style={[styles.goodsInfoTitleView]}>
-                                    <Text style={styles.goodsTitle}>{getGoodsDetail.name}</Text>
-                                    <GoodsTagComponent
-                                        tagsData={getGoodsDetail.tags}
-                                        {...this.props}
-                                    />
-                                </View>
-                                <View style={styles.goodsInfoPriceView}>
-                                    <Text style={styles.goodsInfoPriceValue}>{getGoodsDetail.point_str}</Text>
-                                </View>
-                            </View>
-                        </View>
-                        <View style={[styles.contentItemView, styles.goodsUserInfoView]}>
-                            <View style={[styles.contentTitleView]}>
-                                <Text style={styles.contentTitle}>【商品介绍】</Text>
-                            </View>
-                            <View style={styles.goodsUserInfoCon}>
-                                {this.renderDescription(getGoodsDetail.description)}
-                            </View>
-                        </View>
+                    <View style={styles.content}>
+                        <WebView
+                            source={{uri: getGoodsDetail.link}}
+                            startInLoadingState={false}
+                            style={[styles.webContainer]}
+                        />
                         <View style={styles.multiBtnView}>
                             <Button
                                 title={'立即兑换'}
@@ -166,10 +143,10 @@ export default class PointGoodsDetail extends Component {
                                 onPress={() => this.onSubmitOrderToCart(2)}
                             />
                         </View>
-                    </ScrollView>
+                    </View>
                     : <SpinnerLoading isVisible={true}/>
                 }
-            </View>
+            </Container>
         );
     }
 }
@@ -179,6 +156,10 @@ const headBackImageW = SCREEN_WIDTH - ScaleSize(14) * 2;
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+    },
+    webContainer: {
+        flex: 1,
+        backgroundColor: '#f1f2f3',
     },
     contentTopView: {
         backgroundColor: '#fff',

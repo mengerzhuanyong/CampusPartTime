@@ -69,7 +69,7 @@ class AlertContent extends React.PureComponent {
     };
     _renderDetailComponent = () => {
         const {detail, detailStyle} = this.props;
-        console.log(detail);
+        // console.log(detail);
         let detailComponent;
         if (React.isValidElement(detail)) {
             detailComponent = detail

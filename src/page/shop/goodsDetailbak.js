@@ -19,7 +19,7 @@ import {
     TextInput,
     ImageBackground,
     TouchableOpacity,
-    TouchableWithoutFeedback, WebView,
+    TouchableWithoutFeedback,
 } from 'react-native'
 
 import NavigationBar from '../../component/navigation/NavigationBar'
@@ -63,7 +63,7 @@ export default class GoodsDetail extends Component {
         this.loadNetData();
         this.timer1 = setTimeout(() => {
             this.setState({ready: true});
-        }, 400);
+        }, 200);
     }
 
     componentWillUnmount() {
@@ -119,17 +119,46 @@ export default class GoodsDetail extends Component {
         let {params} = this.props.navigation.state;
         let pageTitle = params && params.pageTitle ? params.pageTitle : '商品详情';
         return (
-            <Container style={styles.container}>
+            <View style={styles.container}>
                 <NavigationBar
                     title={pageTitle}
                 />
                 {ready ?
-                    <View style={styles.content}>
-                        <WebView
-                            source={{uri: getGoodsDetail.link}}
-                            startInLoadingState={false}
-                            style={[styles.webContainer]}
-                        />
+                    <ScrollView style={styles.content}>
+                        <View style={styles.contentTopView}>
+                            <GoodsCarousel
+                                bannerData={getGoodsDetail.illustration}
+                                {...this.props}
+                            />
+                        </View>
+                        <View style={[styles.contentItemView, styles.goodsInfoView]}>
+                            <View style={[styles.goodsInfoTopView]}>
+                                <View style={[styles.goodsInfoTitleView]}>
+                                    <Text style={styles.goodsTitle}>{getGoodsDetail.name}</Text>
+                                    <GoodsTagComponent
+                                        tagsData={getGoodsDetail.tags}
+                                        {...this.props}
+                                    />
+                                </View>
+                                <View style={styles.goodsInfoPriceView}>
+                                    <Text style={styles.goodsInfoPriceTips}>¥</Text>
+                                    <Text style={styles.goodsInfoPriceValue}>{getGoodsDetail.price}</Text>
+                                    <Text style={styles.goodsInfoPriceTips}>元</Text>
+                                </View>
+                            </View>
+                            <View style={styles.goodsInfoWorkPointsView}>
+                                <Text style={styles.goodsInfoWorkPoints}>折算工分：</Text>
+                                <Text style={styles.goodsInfoWorkPoints}>{getGoodsDetail.work_point}</Text>
+                            </View>
+                        </View>
+                        <View style={[styles.contentItemView, styles.goodsUserInfoView]}>
+                            <View style={[styles.contentTitleView]}>
+                                <Text style={styles.contentTitle}>【商品介绍】</Text>
+                            </View>
+                            <View style={styles.goodsUserInfoCon}>
+                                {this.renderDescription(getGoodsDetail.description)}
+                            </View>
+                        </View>
                         <View style={styles.multiBtnView}>
                             <Button
                                 title={'余额换购'}
@@ -144,10 +173,10 @@ export default class GoodsDetail extends Component {
                                 onPress={() => this.onSubmitOrderToCart(1)}
                             />
                         </View>
-                    </View>
+                    </ScrollView>
                     : <SpinnerLoading isVisible={true} />
                 }
-            </Container>
+            </View>
         );
     }
 }
@@ -157,10 +186,6 @@ const headBackImageW = SCREEN_WIDTH - ScaleSize(14) * 2;
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-    },
-    webContainer: {
-        flex: 1,
-        backgroundColor: '#f1f2f3',
     },
     contentTopView: {
         backgroundColor: '#fff',

@@ -102,7 +102,7 @@ export default class Work extends Component {
     }
 
     updateAddress = (address) => {
-        console.log(address);
+        // console.log(address);
         this.setState({
             sortArea: address.district || address.city,
             location: [address.province, address.city, address.district],
@@ -216,7 +216,7 @@ export default class Work extends Component {
     pickerArea = () => {
         this.setState({maskHidden: true});
         ActionsManager.showArea((info) => {
-            console.log(info);
+            // console.log(info);
             this.setState({
                 location: info,
                 sortArea: info[2],
@@ -394,13 +394,13 @@ export default class Work extends Component {
             let newSortArray = sortPositionId.slice();
             let id = parseInt(item.id);
             let index = newSortArray.findIndex((i) => i === id);
-            console.log('index---->', index);
+            // console.log('index---->', index);
             if (index === -1) {
                 newSortArray.push(id);
             } else {
                 newSortArray.splice(index, 1);
             }
-            console.log(newSortArray);
+            // console.log(newSortArray);
             sortPosition = '职位(' + newSortArray.length + ')';
             this.setState({
                 sortPosition,
@@ -433,7 +433,7 @@ export default class Work extends Component {
         const {workStore, resourceStore, homeStore} = this.props;
         let {getWorkDataSource} = resourceStore;
         const {ready, maskHidden} = this.state;
-        console.log('workStore.dataSource----->',workStore.getDataSource);
+        // console.log('workStore.dataSource----->',workStore.getDataSource);
         let sectionDataSources = [
             {title: 'sectionTitle', data: workStore.dataSource},
             // {title: 'sectionTitle', data: workStore.dataSource},
