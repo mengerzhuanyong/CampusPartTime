@@ -70,7 +70,7 @@ export default class Work extends Component {
     }
 
     componentDidMount() {
-        this.loadNetData();
+        // this.loadNetData();
     }
 
     componentWillUnmount() {
@@ -101,12 +101,21 @@ export default class Work extends Component {
         }
     }
 
+    updateAddress = (address) => {
+        console.log(address);
+        this.setState({
+            sortArea: address.district || address.city,
+            location: [address.province, address.city, address.district],
+        }, () => this.loadNetData());
+    };
+
     renderNavigationBarView = (status) => {
         return (
             <View style={styles.headerView}>
                 <Location
                     style={styles.headerLeftView}
                     titleStyle={styles.headerIconTitle}
+                    updateAddress={(address) => this.updateAddress(address)}
                 />
                 <TouchableOpacity
                     style={styles.headerTitleView}
@@ -160,7 +169,7 @@ export default class Work extends Component {
     };
 
     _keyExtractor = (item, index) => {
-        return `z_${index}`
+        return `z_${index}`;
     };
 
     requestDataSource = async (page) => {
@@ -573,7 +582,7 @@ const styles = StyleSheet.create({
     listHeaderComponent: {
         borderBottomWidth: 10,
         borderColor: '#e5e5e5',
-        backgroundColor: '#123',
+        // backgroundColor: '#123',
     },
     horLine: {
         marginVertical: 5,
@@ -620,6 +629,8 @@ const styles = StyleSheet.create({
         // flex: 1,
         color: '#666',
         fontSize: FontSize(13),
+        maxWidth: (SCREEN_WIDTH - 90) / 4,
+        // backgroundColor: '#123',
     },
     imageContainer: {
         alignItems: 'center',

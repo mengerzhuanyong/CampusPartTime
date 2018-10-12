@@ -13,8 +13,8 @@
         AppKey="QQ 的 AppKey"/>
 
     <Wechat
-        AppId="微信的 AppId"
-        AppSecret="微信的 AppSectet"/>
+        AppId="wxeaa0ced96671fcf0"
+        AppSecret="33c41f4a94e98fdb8abb38aaec08511a"/>
 
     <Facebook
         AppId="facebook 的 appId"

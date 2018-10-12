@@ -37,8 +37,9 @@ export default class MineOrder extends React.Component {
 
     constructor(props) {
         super(props);
+        let {params} = this.props.navigation.state;
         this.state = {
-            type: 1,
+            type: params && params.type ? params.type : 1,
             curIndex: 0,
             nav_arr: [
                 {title: '全部', status: 0},
@@ -86,7 +87,7 @@ export default class MineOrder extends React.Component {
     };
 
     render() {
-        let {loading, nav_arr} = this.state;
+        let {loading, nav_arr, type} = this.state;
         let {resourceStore} = this.props;
         let {params} = this.props.navigation.state;
         let pageTitle = params && params.pageTitle ? params.pageTitle : '我的订单';
@@ -98,6 +99,7 @@ export default class MineOrder extends React.Component {
                 <SegmentedControlTab
                     values={['换购订单', '积分订单']}
                     tabStyle={styles.tab}
+                    selectedIndex={type - 1}
                     activeTabStyle={styles.activeTabStyle}
                     tabTextStyle={styles.tabTextStyle}
                     activeTabTextStyle={styles.activeTabTextStyle}

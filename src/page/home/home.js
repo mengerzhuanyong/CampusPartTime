@@ -96,6 +96,8 @@ export default class Home extends Component {
         // console.warn(data);
     };
 
+    updateAddress = (address) => {};
+
     renderNavigationBarView = (status) => {
         return (
             <View style={styles.headerView}>
@@ -103,6 +105,7 @@ export default class Home extends Component {
                     style={styles.headerLeftView}
                     // iconStyle={}
                     titleStyle={styles.headerIconTitle}
+                    updateAddress={(address) => this.updateAddress(address)}
                 />
                 <Text style={[CusTheme.headerTitle, styles.headerTitle]}>首页</Text>
                 <TouchableOpacity

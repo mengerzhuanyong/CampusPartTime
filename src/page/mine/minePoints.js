@@ -193,17 +193,29 @@ export default class MinePoints extends Component {
         );
     };
 
+    renderRightAction = () => {
+        return (
+            <Button
+                title={'我的订单'}
+                style={styles.headerRightView}
+                titleStyle={styles.headerRightTitle}
+                onPress={() => RouterHelper.navigate('我的订单', 'MineOrder', {type: 2})}
+            />
+        );
+    };
+
     render() {
         let {loading, listData} = this.state;
         let {mineStore} = this.props;
         let {pointsInfo, pointsDetail} = mineStore;
         let {params} = this.props.navigation.state;
-        let pageTitle = params && params.pageTitle ? params.pageTitle : '工分明细';
+        let pageTitle = params && params.pageTitle ? params.pageTitle : '积分明细';
         return (
             <View style={styles.container}>
                 <NavigationBar
                     title={pageTitle}
                     style={{backgroundColor: '#67c590'}}
+                    renderRightAction={() => this.renderRightAction()}
                     // backgroundImage={Images.img_bg_nav_bar2}
                     // backgroundImage={null}
                 />
@@ -229,6 +241,13 @@ export default class MinePoints extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+    },
+    headerRightView: {
+        borderWidth: 0,
+        backgroundColor: 'transparent',
+    },
+    headerRightTitle: {
+        color: '#fff',
     },
     content: {
         flex: 1,

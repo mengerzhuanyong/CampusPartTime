@@ -78,14 +78,6 @@ export default class MineAccount extends Component {
                         onPress={() => RouterHelper.navigate('兼职收入明细', 'MinePartTimeIncome', {})}
                     />
                     <ListRow
-                        title={'我的订单'}
-                        detail={''}
-                        style={styles.contentTitleView}
-                        titleStyle={CusTheme.contentTitle}
-                        accessory={<Image source={Images.icon_arrow_right} style={[CusTheme.contentRightIcon, {}]} />}
-                        onPress={() => RouterHelper.navigate('我的订单', 'MineOrder', {})}
-                    />
-                    <ListRow
                         title={'提前还款'}
                         detail={''}
                         style={styles.contentTitleView}

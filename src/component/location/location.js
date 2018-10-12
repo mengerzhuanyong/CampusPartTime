@@ -54,6 +54,7 @@ export default class Location extends PureComponent {
     static defaultProps = {
         style: null,
         titleStyle: null,
+        updateAddress: () => {},
     };
 
     componentDidMount() {
@@ -105,6 +106,7 @@ export default class Location extends PureComponent {
     };
 
     getLocation = async () => {
+        let {updateAddress} = this.props;
         this.setState({
             canPress: false
         });
@@ -130,6 +132,7 @@ export default class Location extends PureComponent {
                 district: data.district || data.city,
             });
             this.postLocation(data.latitude, data.longitude);
+            updateAddress && updateAddress(data);
         }
     };
 

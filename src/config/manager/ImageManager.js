@@ -84,6 +84,7 @@ const Images = {
     icon_wechat_timelines: require('../../asset/icon/icon_wechat_timelines.png'),
     icon_work_space: require('../../asset/icon/icon_work_space.png'),
     icon_user_wechat: require('../../asset/icon/icon_user_wechat.png'),
+    icon_order_list: require('../../asset/icon/icon_order_list.png'),
 
 
     // IMAGES

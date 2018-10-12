@@ -51,7 +51,7 @@ export default class Mine extends Component {
             loading: false,
             refreshing: false,
         };
-        this.page = 0
+        this.page = 0;
     }
 
     componentDidMount() {
@@ -236,6 +236,16 @@ export default class Mine extends Component {
                             detail={''}
                             accessory={<Image source={Images.icon_arrow_right} style={[CusTheme.contentRightIcon, {}]} />}
                             onPress={() => RouterHelper.navigate('我的积分', 'MinePoints', {})}
+                            // bottomSeparator={'none'}
+                        />
+                        <ListRow
+                            style={styles.contentTitleView}
+                            title={'我的订单'}
+                            titleStyle={CusTheme.contentTitle}
+                            icon={<Image source={Images.icon_order_list} style={[CusTheme.contentTitleIcon, {}]} />}
+                            detail={''}
+                            accessory={<Image source={Images.icon_arrow_right} style={[CusTheme.contentRightIcon, {}]} />}
+                            onPress={() => RouterHelper.navigate('我的订单', 'MineOrder', {})}
                             bottomSeparator={'none'}
                         />
                     </View>
