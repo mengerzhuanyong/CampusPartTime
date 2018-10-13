@@ -85,7 +85,9 @@ const Images = {
     icon_work_space: require('../../asset/icon/icon_work_space.png'),
     icon_user_wechat: require('../../asset/icon/icon_user_wechat.png'),
     icon_order_list: require('../../asset/icon/icon_order_list.png'),
-
+    icon_get_work: require('../../asset/icon/icon_get_work.png'),
+    icon_platform: require('../../asset/icon/icon_platform.png'),
+    icon_summer: require('../../asset/icon/icon_summer.png'),
 
     // IMAGES
     img_bg_nav_bar: require('../../asset/img/img_bg_nav_bar.png'),
@@ -112,7 +114,6 @@ const Images = {
     img_bg_dial: require('../../asset/img/img_bg_dial.png'),
     img_hand: require('../../asset/img/img_hand.png'),
     img_bg_credits: require('../../asset/img/img_bg_credits.png'),
-    img_platform: require('../../asset/img/img_platform.png'),
 
     // TABBARS
     icon_tabbar_home: require('../../asset/tabbar/icon_tabbar_home.png'),

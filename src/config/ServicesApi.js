@@ -58,6 +58,7 @@ module.exports = {
     job_platform_time: 'freetime',
     // 提交工作时间
     job_submit_platform_time: 'freetime_submit',
+    submitSummerJobs: 'summer_worker',
 
     // 换购首页
     work_goods_list: 'work_goods_list',

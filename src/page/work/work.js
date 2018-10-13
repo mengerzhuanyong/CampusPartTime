@@ -25,6 +25,7 @@ import {
 import NavigationBar from '../../component/navigation/NavigationBar'
 import SegmentedView from '../../component/segmentedView/index'
 import ImageView from '../../component/common/ImageView'
+import ActionButton from 'react-native-action-button'
 import {inject, observer} from 'mobx-react'
 import {Button} from 'teaset'
 import FlatListView from '../../component/common/FlatListView'
@@ -429,6 +430,43 @@ export default class Work extends Component {
         return 200;
     };
 
+    renderIcon = () => {
+        return <Image source={Images.icon_get_work} style={styles.btnIcon}/>;
+    };
+
+    renderGetWorkButton = () => {
+        return (
+            <ActionButton
+                spacing={10}
+                offsetX={15}
+                offsetY={15}
+                renderIcon={() => this.renderIcon()}
+                buttonColor={'transparent'}
+                buttonTextStyle={{fontSize: 40,}}
+            >
+                <ActionButton.Item
+                    spaceBetween={3}
+                    buttonColor={'transparent'}
+                    title="平台分配工作"
+                    shadowStyle={{elevation: 10}}
+                    onPress={() => RouterHelper.navigate('平台分配工作', 'AutoGetWork')}
+                >
+                    <Image source={Images.icon_platform} style={[styles.btnIcon]}/>
+                </ActionButton.Item>
+                <ActionButton.Item
+                    spaceBetween={3}
+                    buttonColor={'transparent'}
+                    title="暑假工"
+                    shadowStyle={{elevation: 10}}
+                    onPress={() => RouterHelper.navigate('暑假工报名', 'SubmitSummerJobs')}
+                >
+                    <Image source={Images.icon_summer} style={[styles.btnIcon]}/>
+                </ActionButton.Item>
+            </ActionButton>
+        );
+
+    };
+
     render() {
         const {workStore, resourceStore, homeStore} = this.props;
         let {getWorkDataSource} = resourceStore;
@@ -489,12 +527,7 @@ export default class Work extends Component {
                         />
                     </Animated.View>
                 ) : null}
-                <TouchableOpacity
-                    style={styles.btnView}
-                    onPress={() => RouterHelper.navigate('平台分配工作', 'AutoGetWork')}
-                >
-                    <Image source={Images.img_platform} style={styles.btnIcon}/>
-                </TouchableOpacity>
+                {this.renderGetWorkButton()}
             </View>
         );
     }
@@ -649,11 +682,18 @@ const styles = StyleSheet.create({
         right: 10,
     },
     btnIcon: {
-        width: ScaleSize(110),
-        height: ScaleSize(110),
+        width: ScaleSize(100),
+        height: ScaleSize(100),
         resizeMode: 'contain',
     },
-    
+    addBtnIcon: {
+        borderRadius: ScaleSize(45),
+        width: ScaleSize(90),
+        height: ScaleSize(90),
+        overflow: 'hidden',
+        backgroundColor: 'transparent',
+    },
+
     // 下拉菜单
     dropDownMenuView: {
         flex: 1,

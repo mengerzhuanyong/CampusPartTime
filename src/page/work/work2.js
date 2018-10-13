@@ -315,7 +315,7 @@ export default class Work extends Component {
                     style={styles.btnView}
                     onPress={() => RouterHelper.navigate('平台分配工作', 'AutoGetWork')}
                 >
-                    <Image source={Images.img_platform} style={styles.btnIcon}/>
+                    <Image source={Images.icon_platform} style={styles.btnIcon}/>
                 </TouchableOpacity>
             </View>
         );

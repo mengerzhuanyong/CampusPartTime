@@ -22,6 +22,7 @@ import Register from '../page/login/register'
 import RecoverPwd from '../page/login/recoverPwd'
 
 import AutoGetWork from '../page/work/autoGetWork'
+import SubmitSummerJobs from '../page/work/submitSummerJobs'
 import WorkSignUpStepOne from '../page/work/workSignUpStepOne'
 import WorkSignUpStepTwo from '../page/work/workSignUpStepTwo'
 import WorkSignUpStepThree from '../page/work/workSignUpStepThree'
@@ -111,8 +112,8 @@ const TabNavigator = createBottomTabNavigator({
         })
     },
 }, {
-    initialRouteName: 'Home',
-    // initialRouteName: 'Work',
+    // initialRouteName: 'Home',
+    initialRouteName: 'Work',
     tabBarOptions: {
         showIcon: true,
         indicatorStyle: {height: 0},
@@ -146,6 +147,7 @@ const StackNavigator = createStackNavigator(configRouter({
     PointGoodsDetail: {screen: PointGoodsDetail},
 
     AutoGetWork: {screen: AutoGetWork},
+    SubmitSummerJobs: {screen: SubmitSummerJobs},
     WorkDetail: {screen: WorkDetail},
     WorkSignUpStepOne: {screen: WorkSignUpStepOne},
     WorkSignUpStepTwo: {screen: WorkSignUpStepTwo},
