@@ -33,6 +33,12 @@ module.exports = {
 
     // 登录
     login: 'login',
+    // 登录
+    loginWeChat: 'login_wechat',
+    // 微信登录绑定手机号
+    bindMobile: 'bind_mobile',
+    // 登录
+    loginQQ: 'login_qq',
     // 注册
     register: 'register',
     // 忘记密码

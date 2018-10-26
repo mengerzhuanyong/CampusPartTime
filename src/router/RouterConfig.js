@@ -18,6 +18,7 @@ import Shop from "../page/shop/shop"
 import CommonWebPage from '../page/common/commonWebPage'
 
 import Login from '../page/login/login'
+import BindMobile from '../page/login/bindMobile'
 import Register from '../page/login/register'
 import RecoverPwd from '../page/login/recoverPwd'
 
@@ -112,8 +113,8 @@ const TabNavigator = createBottomTabNavigator({
         })
     },
 }, {
-    // initialRouteName: 'Home',
-    initialRouteName: 'Work',
+    initialRouteName: 'Home',
+    // initialRouteName: 'Work',
     tabBarOptions: {
         showIcon: true,
         indicatorStyle: {height: 0},
@@ -136,6 +137,7 @@ const StackNavigator = createStackNavigator(configRouter({
     CommonWebPage: {screen: CommonWebPage},
 
     Login: {screen: Login},
+    BindMobile: {screen: BindMobile},
     Register: {screen: Register},
     RecoverPwd: {screen: RecoverPwd},
 

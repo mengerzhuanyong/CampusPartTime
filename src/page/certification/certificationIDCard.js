@@ -151,7 +151,7 @@ export default class CertificationIDCard extends Component {
                                             :
                                             <View style={styles.uploadContentTips}>
                                                 <Image source={Images.icon_plus} style={styles.uploadIcon}/>
-                                                <Text style={styles.uploadBtnName}>手持证件照</Text>
+                                                <Text style={styles.uploadBtnName}>身份证正面照</Text>
                                             </View>
                                         }
                                     </View>
@@ -171,7 +171,7 @@ export default class CertificationIDCard extends Component {
                                             :
                                             <View style={styles.uploadContentTips}>
                                                 <Image source={Images.icon_plus} style={styles.uploadIcon}/>
-                                                <Text style={styles.uploadBtnName}>身份证正面照</Text>
+                                                <Text style={styles.uploadBtnName}>身份证反面照</Text>
                                             </View>
                                         }
                                     </View>
@@ -187,7 +187,7 @@ export default class CertificationIDCard extends Component {
                                 <TextInput
                                     style={styles.userInfoItemInput}
                                     underlineColorAndroid={'rgba(0, 0, 0, 0)'}
-                                    placeholder={'自动识别您的姓名'}
+                                    placeholder={'系统将自动识别您的姓名'}
                                     returnKeyType={'done'}
                                     editable={false}
                                     value={idCardInfo.name}
@@ -199,7 +199,7 @@ export default class CertificationIDCard extends Component {
                                 <TextInput
                                     style={styles.userInfoItemInput}
                                     underlineColorAndroid={'rgba(0, 0, 0, 0)'}
-                                    placeholder={'自动识别您的身份证号'}
+                                    placeholder={'系统将自动识别您的身份证号'}
                                     maxLength={18}
                                     returnKeyType={'done'}
                                     editable={false}

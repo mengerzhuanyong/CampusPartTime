@@ -53,7 +53,13 @@ export default class SendSMS extends PureComponent {
         // console.log(mobile);
         let {dismiss} = this.props;
         dismiss && dismiss();
-        type = type === 'register' ? 1 : 2;
+        if (type === 'register') {
+            type = 1;
+        } else if (type === 'bind_mobile') {
+            type = 3;
+        } else {
+            type = 2;
+        }
         let url = ServicesApi.getVerificationCode;
         let data = {
             mobile,

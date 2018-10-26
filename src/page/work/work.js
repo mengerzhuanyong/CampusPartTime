@@ -62,8 +62,8 @@ export default class Work extends Component {
             sortPositionId: 0,
             sortType: '', // 1: need_count 2: price 3: ''
             sortOrderType: 1,
-            sortArea: '黄岛区',
-            location: ['山东', '青岛', '黄岛区'],
+            sortArea: '',
+            location: [],
         };
         this.page = 1;
         this.pageSize = 10;

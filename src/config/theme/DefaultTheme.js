@@ -20,6 +20,7 @@ export default {
 
     screen_width: width,
     screen_height: height,
+    textColor: '#333',
 
     // 弹窗提示组件的样式
     alertWidth: 300,

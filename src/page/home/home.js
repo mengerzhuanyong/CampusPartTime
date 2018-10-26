@@ -54,6 +54,7 @@ export default class Home extends Component {
             loading: false,
             refreshing: false,
             type: 1,
+            location: [],
         };
         this.page = 1;
     }
@@ -81,9 +82,12 @@ export default class Home extends Component {
     };
 
     requestDataSource = async () => {
+        let {location} = this.state;
         const {homeStore} = this.props;
         let url = ServicesApi.index;
-        let data = {};
+        let data = {
+            location,
+        };
         let result = await homeStore.requestDataSource(url, data);
     };
 
@@ -96,7 +100,12 @@ export default class Home extends Component {
         // console.warn(data);
     };
 
-    updateAddress = (address) => {};
+    updateAddress = (address) => {
+        // console.log(address);
+        this.setState({
+            location: [address.province, address.city, address.district],
+        }, () => this.loadNetData());
+    };
 
     renderNavigationBarView = (status) => {
         return (

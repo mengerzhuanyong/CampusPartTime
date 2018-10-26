@@ -167,10 +167,10 @@ dependencies {
     compile project(':react-native-baidu-map')
     compile project(':react-native-background-timer')
     compile project(':react-native-device-info')
-    compile (project(':react-native-camera')) {
+    implementation (project(':react-native-camera')) {
         exclude group: "com.google.android.gms"
         compile 'com.android.support:exifinterface:27.+'
-        compile ('com.google.android.gms:play-services-vision:12.0.1') {
+        compile ('com.google.android.gms:play-services-vision:15.0.1') {
             force = true
         }
     }

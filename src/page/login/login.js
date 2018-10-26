@@ -24,6 +24,8 @@ import Container from '../../component/common/Container'
 
 import {HorizontalLine, VerticalLine} from '../../component/common/commonLine'
 import {checkMobile} from "../../util/Tool";
+import ExtendsLogin from "../../component/login/extendsLogin";
+import JShareModule from "jshare-react-native";
 
 @inject('loginStore')
 @observer
@@ -80,6 +82,89 @@ export default class Login extends Component {
 
     _onNavigateRegister = () => {
         RouterHelper.navigate('', 'Register');
+    };
+
+    checkWeChatInstalled = () => {
+        let url = ServicesApi.loginWeChat;
+        let param = {
+            platform: "wechat_session"
+        };
+        this.extendsLogin(param, url);
+        // JShareModule.isClientValid(param, (isInstalled) => {
+        //     if (isInstalled) {
+        //     } else {
+        //         ToastManager.show('您当前没有安装微信，请您安装微信之后再试');
+        //     }
+        // });
+    };
+
+    checkQQInstalled = () => {
+        let url = ServicesApi.loginQQ;
+        let param = {
+            platform: "qq"
+        };
+        JShareModule.isQQInstalled((isInstalled) => {
+            if (isInstalled) {
+                this.extendsLogin(param, url);
+            } else {
+                ToastManager.show('您当前没有安装QQ，请您安装微信之后再试');
+            }
+        });
+    };
+
+    extendsLogin = async (param, url) => {
+        // console.log(param, url);
+        // this.onPushToBindPhone();
+        const {loginStore} = this.props;
+        JShareModule.getSocialUserInfo(param, async (map) => {
+            try {
+                const result = await loginStore.doExtendsLogin(url, map);
+                if (result.code === 1) {
+                    if (result.data.mobile === '') {
+                        this.onPushToBindPhone(result.data);
+                    } else {
+                        RouterHelper.reset('', 'Tab');
+                    }
+                } else {
+                    ToastManager.show(result.msg);
+                }
+            } catch (e) {
+                ToastManager.show('error');
+            }
+            // console.log(param, url, map);
+            // Services.post(url, map)
+            //     .then(result => {
+            //         // // consoleLog('微信登录', result);
+            //         // return;
+            //         if (result.data.mobile !== '') {
+            //             // this.saveToLocalStorage(result.data);
+            //             // this.onPushToTabNavScreen();
+            //         } else {
+            //             // this.onPushToNextPage('绑定手机号', 'BindPhone', {user: result.data});
+            //         }
+            //     })
+            //     .catch(error => {
+            //         // ToastManager.show('error',)
+            //     })
+        }, (errorCode) => {
+            // console.log(errorCode);
+            this.cleanAuthWithPlatform(param);
+        });
+    };
+
+    onPushToBindPhone = (user) => {
+        this.timer2 = setTimeout(() => {
+            RouterHelper.navigate('绑定手机号', 'BindMobile', {user});
+            // RouterHelper.reset('绑定手机号', 'BindMobile', {user});
+        }, 200);
+    };
+
+    cleanAuthWithPlatform = (param) => {
+        JShareModule.cancelAuthWithPlatform(param, (code) => {
+            // console.log(code);
+        }, (errorCode) => {
+            // console.log(errorCode);
+        });
     };
 
     render() {
@@ -153,6 +238,10 @@ export default class Login extends Component {
                                 onPress={this._onNavigateRecoverPwd}
                             >忘记密码？</Text>
                         </View>
+                        <ExtendsLogin
+                            style={styles.extendsLoginView}
+                            weChatLogin = {() => this.checkWeChatInstalled()}
+                        />
                     </ScrollView>
                 </KeyboardAvoidingView>
             </Container>
@@ -227,5 +316,8 @@ const styles = StyleSheet.create({
         color: '#fff',
         // width: FontSize(11),
         fontSize: FontSize(11),
+    },
+    extendsLoginView: {
+        marginBottom: 60,
     },
 });

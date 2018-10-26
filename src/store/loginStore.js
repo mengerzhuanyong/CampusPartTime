@@ -13,10 +13,14 @@ export default class LoginStore extends BaseStore {
 
     constructor(params) {
         super(params);
-        this.userInfo = { mobile: '', token: '' }
+        this.userInfo = { mobile: '', token: '' };
+        this.openid = '';
+        this.unionid = '';
     }
 
     @observable userInfo;
+    @observable openid;
+    @observable unionid;
 
     @action
     doLogin = async (url, data) => {
@@ -27,6 +31,23 @@ export default class LoginStore extends BaseStore {
             
             if (result.code === 1) {
                 this.saveUserInfo(result.data)
+            }
+        });
+        return result;
+    };
+
+    @action
+    doExtendsLogin = async (url, data) => {
+
+        const result = await Services.post(url, data, true);
+        // console.log('result', result);
+        runInAction(() => {
+            if (result) {
+                this.openid = result.data.openid;
+                this.unionid = result.data.unionid;
+                if (result.code === 1 && result.data.mobile !== '') {
+                    this.saveUserInfo(result.data);
+                }
             }
         });
         return result;
