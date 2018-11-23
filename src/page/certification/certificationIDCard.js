@@ -27,7 +27,7 @@ import SpinnerLoading from "../../component/common/SpinnerLoading";
 const options = {
     imageCount: 1,             // 最大选择图片数目，默认6
     isCamera: true,            // 是否允许用户在内部拍照，默认true
-    isCrop: false,             // 是否允许裁剪，默认false
+    isCrop: true,             // 是否允许裁剪，默认false
     CropW: ~~(SCREEN_WIDTH * 0.8),    // 裁剪宽度，默认屏幕宽度60%
     CropH: ~~(SCREEN_WIDTH * 0.5),    // 裁剪高度，默认屏幕宽度60%
     showCropFrame: true,       // 是否显示裁剪区域，默认true
@@ -142,12 +142,12 @@ export default class CertificationIDCard extends Component {
                                 style={styles.uploadItemView}
                                 onPress={() => this.handlerImages(1)}
                             >
-                                {image_1 !== '' ?
+                                {image_1 !== '' && !uploading1 ?
                                     <Image source={{uri: image_1}} style={styles.uploadImage}/>
                                     :
                                     <View style={styles.uploadContent}>
                                         {uploading1 ?
-                                            <SpinnerLoading isVisible={uploading1}/>
+                                            <SpinnerLoading isVisible={true}/>
                                             :
                                             <View style={styles.uploadContentTips}>
                                                 <Image source={Images.icon_plus} style={styles.uploadIcon}/>
@@ -162,7 +162,7 @@ export default class CertificationIDCard extends Component {
                                 style={styles.uploadItemView}
                                 onPress={() => this.handlerImages(2)}
                             >
-                                {image_2 !== '' ?
+                                {image_2 !== '' && !uploading2 ?
                                     <Image source={{uri: image_2}} style={styles.uploadImage}/>
                                     :
                                     <View style={styles.uploadContent}>
@@ -300,6 +300,9 @@ const styles = StyleSheet.create({
     },
     uploadContent: {
         flex: 1,
+        width: '100%',
+        height: '100%',
+        // backgroundColor: '#123',
     },
     uploadContentTips: {
         alignItems: 'center',
