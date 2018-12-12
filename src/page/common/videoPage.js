@@ -1,6 +1,6 @@
 /**
  * 校园空兼 - VideoPage
- * https://menger.me
+ * http://menger.me
  * @大梦
  */
  

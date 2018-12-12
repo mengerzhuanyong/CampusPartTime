@@ -1,6 +1,6 @@
 /**
  * 校园空兼 - AppStore
- * https://menger.me
+ * http://menger.me
  * @大梦
  */
 

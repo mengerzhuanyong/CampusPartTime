@@ -1,6 +1,6 @@
 /**
  * 校园空兼 - Chat
- * https://menger.me
+ * http://menger.me
  * @大梦
  */
  

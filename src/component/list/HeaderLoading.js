@@ -17,7 +17,8 @@ class HeaderLoading extends React.PureComponent {
 
     static defaultProps = {
         isRefreshing: false,
-        refreshableColors: ['green'],
+        titleColor: '#fff',
+        refreshableColors: ['#fff'],
         refreshableTitle: '  正在加载...',
     }
 

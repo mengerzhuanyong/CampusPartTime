@@ -14,14 +14,15 @@ class ToastManager {
         });
     };
 
-    static showCustom = (text, icon) => {
-        icon = icon ? {icon} : <ActivityIndicator size='large' color={CusTheme.toastIconTintColor}/>;
+    static showCustom = (text, duration = 2000, icon) => {
+        icon = icon ? {icon} : <ActivityIndicator size='large' color={Theme.toastIconTintColor}/>;
         if (ToastManager.customKey) {
-            return;
+            ToastManager.hideCustom();
         }
         ToastManager.customKey = Toast.show({
             text: text,
             icon: icon,
+            duration: duration,
         });
     };
 

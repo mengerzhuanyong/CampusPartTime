@@ -1,6 +1,6 @@
 /**
  * 校园空兼 - MineWorkList
- * https://menger.me
+ * http://menger.me
  * @大梦
  */
 

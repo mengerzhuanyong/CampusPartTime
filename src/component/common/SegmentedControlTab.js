@@ -1,6 +1,6 @@
 /**
  * 校园空兼 - SegmentedControlTab
- * https://menger.me
+ * http://menger.me
  * @大梦
  */
 

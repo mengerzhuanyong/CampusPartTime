@@ -1,6 +1,6 @@
 /**
  * 校园空兼 - RouterConfig
- * https://menger.me
+ * http://menger.me
  * @大梦
  */
 

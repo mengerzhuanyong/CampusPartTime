@@ -1,6 +1,6 @@
 /**
  * 校园空兼 - PointShop
- * https://menger.me
+ * http://menger.me
  * @大梦
  */
 

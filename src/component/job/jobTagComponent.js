@@ -1,6 +1,6 @@
 /**
  * 校园空兼 - JobTagComponent
- * https://menger.me
+ * http://menger.me
  * @大梦
  */
 

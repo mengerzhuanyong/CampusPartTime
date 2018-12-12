@@ -1,6 +1,6 @@
 /**
  * 校园空兼 - GoodsList
- * https://menger.me
+ * http://menger.me
  * @大梦
  */
 
